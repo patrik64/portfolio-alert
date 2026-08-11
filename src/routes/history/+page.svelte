@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { repo } from 'remult';
+	import Spinner from '$lib/components/Spinner.svelte';
 	import { Company } from '../../shared/Company';
 	import { FUNDS } from '../../shared/funds';
 
@@ -60,7 +61,7 @@
 	</div>
 
 	{#if loading}
-		<p class="mt-6 text-sm text-gray-600">loading…</p>
+		<Spinner label="loading history" />
 	{:else if days.length === 0}
 		<p class="mt-6 text-sm text-gray-600">
 			no companies yet — run a fetch from the <a href="/" class="font-semibold text-tertiary-600">dashboard</a>

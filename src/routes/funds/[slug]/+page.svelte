@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { repo } from 'remult';
+	import Spinner from '$lib/components/Spinner.svelte';
 	import { Company } from '../../../shared/Company';
 	import { fundBySlug } from '../../../shared/funds';
 
@@ -57,9 +58,11 @@
 				{name}
 			{/if}
 		</h1>
-		<span class="text-sm text-gray-600">
-			{loading ? 'loading…' : `${filtered.length} of ${companies.length} companies`}
-		</span>
+		{#if !loading}
+			<span class="text-sm text-gray-600">
+				{filtered.length} of {companies.length} companies
+			</span>
+		{/if}
 	</div>
 
 	<input
@@ -69,7 +72,9 @@
 		class="form-input mt-3 w-full focus:shadow-outline-green"
 	/>
 
-	{#if !loading && companies.length === 0}
+	{#if loading}
+		<Spinner label="loading companies" />
+	{:else if companies.length === 0}
 		<p class="mt-6 text-sm text-gray-600">
 			no companies yet — run a fetch from the <a href="/" class="font-semibold text-tertiary-600">dashboard</a>
 		</p>
