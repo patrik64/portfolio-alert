@@ -7,26 +7,39 @@ const UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 const BATCH_SIZE = 20;
 
-// the site has no sector taxonomy; detail pages carry the company status
-// ("Active", ...) and the company website
-async function fetchDetail(path: string): Promise<{ status: string; website: string }> {
+// the site publishes no sector taxonomy anywhere; the only per-company facts
+// are the year of investment, the status and the website
+function labelled(html: string, label: string): string {
+  return (
+    html
+      .match(
+        new RegExp(
+          `text---label-primary[^>]*>\\s*${label}\\s*</div>\\s*<div class="headline xs">([^<]+)</div>`,
+        ),
+      )?.[1]
+      ?.replace(/&amp;/g, "&")
+      .trim() ?? ""
+  );
+}
+
+async function fetchDetail(
+  path: string,
+): Promise<{ year: string; status: string; website: string }> {
   try {
     const resp = await fetch(`${BASE_URL}${path}`, { headers: { "User-Agent": UA } });
-    if (!resp.ok) return { status: "", website: "" };
+    if (!resp.ok) return { year: "", status: "", website: "" };
     const html = await resp.text();
-    const status =
-      html.match(
-        /text---label-primary[^>]*>\s*Status\s*<\/div>\s*<div class="headline xs">([^<]+)<\/div>/,
-      )?.[1]
-        ?.replace(/&amp;/g, "&")
-        .trim() ?? "";
     const website =
       html.match(
         /<div class="company-logo"><a href="(https?:\/\/[^"]+)"/,
       )?.[1] ?? "";
-    return { status, website };
+    return {
+      year: labelled(html, "Year partnered"),
+      status: labelled(html, "Status"),
+      website,
+    };
   } catch {
-    return { status: "", website: "" };
+    return { year: "", status: "", website: "" };
   }
 }
 
@@ -51,7 +64,7 @@ export async function scrape(): Promise<ScrapedCompany[]> {
     entries.push({ name, path });
   });
 
-  const detailByPath = new Map<string, { status: string; website: string }>();
+  const detailByPath = new Map<string, { year: string; status: string; website: string }>();
   for (let i = 0; i < entries.length; i += BATCH_SIZE) {
     const batch = entries.slice(i, i + BATCH_SIZE);
     const results = await Promise.all(
@@ -63,11 +76,13 @@ export async function scrape(): Promise<ScrapedCompany[]> {
   }
 
   const companies: ScrapedCompany[] = entries.map((e) => {
-    const detail = detailByPath.get(e.path) ?? { status: "", website: "" };
+    const detail = detailByPath.get(e.path) ?? { year: "", status: "", website: "" };
     return {
       name: e.name,
-      // only non-default statuses are informative
-      category: detail.status !== "Active" ? detail.status : "",
+      // "Active" is the default state and carries no signal, unlike the exits
+      category: [detail.year, detail.status !== "Active" ? detail.status : ""]
+        .filter(Boolean)
+        .join(", "),
       url: detail.website || (e.path ? `${BASE_URL}${e.path}` : ""),
     };
   });
