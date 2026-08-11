@@ -64,6 +64,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>portfolio alert</title>
+</svelte:head>
+
 <div
 	class="mx-auto mt-2 w-full max-w-[70rem] p-4 lg:rounded-[5px] lg:border lg:border-dashed lg:border-gray-600"
 >
