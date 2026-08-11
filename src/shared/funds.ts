@@ -15,6 +15,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'alumni', name: 'Alumni Ventures', url: 'https://www.av.vc/portfolio' },
 	{ slug: 'a16z', name: 'Andreessen Horowitz', url: 'https://a16z.com/portfolio/' },
 	{ slug: 'antler', name: 'Antler', url: 'https://www.antler.co/portfolio' },
+	{ slug: 'baincapital', name: 'Bain Capital Ventures', url: 'https://baincapitalventures.com/portfolio/' },
 	{ slug: 'base10', name: 'Base10', url: 'https://base10.vc/' },
 	{ slug: 'battery', name: 'Battery Ventures', url: 'https://www.battery.com/list-of-all-companies/' },
 	{ slug: 'bessemer', name: 'Bessemer Venture Partners', url: 'https://www.bvp.com/companies' },

@@ -5,6 +5,7 @@ import { scrape as advent } from './advent';
 import { scrape as aisling } from './aisling';
 import { scrape as alumni } from './alumni';
 import { scrape as antler } from './antler';
+import { scrape as baincapital } from './baincapital';
 import { scrape as base10 } from './base10';
 import { scrape as battery } from './battery';
 import { scrape as bessemer } from './bessemer';
@@ -44,6 +45,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	aisling,
 	alumni,
 	antler,
+	baincapital,
 	base10,
 	battery,
 	bessemer,
