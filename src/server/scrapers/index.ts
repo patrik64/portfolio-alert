@@ -13,7 +13,9 @@ import { scrape as boxgroup } from './boxgroup';
 import { scrape as draper } from './draper';
 import { scrape as eclipse } from './eclipse';
 import { scrape as filrouge } from './filrouge';
+import { scrape as flybridge } from './flybridge';
 import { scrape as generalcatalyst } from './generalcatalyst';
+import { scrape as glasswing } from './glasswing';
 import { scrape as greycroft } from './greycroft';
 import { scrape as indexventures } from './indexventures';
 import { scrape as indiebio } from './indiebio';
@@ -26,6 +28,7 @@ import { scrape as nexus } from './nexus';
 import { scrape as norwest } from './norwest';
 import { scrape as octopus } from './octopus';
 import { scrape as pear } from './pear';
+import { scrape as pillar } from './pillar';
 import { scrape as plugandplay } from './plugandplay';
 import { scrape as polaris } from './polaris';
 import { scrape as redpoint } from './redpoint';
@@ -34,6 +37,7 @@ import { scrape as sapphire } from './sapphire';
 import { scrape as sequoia } from './sequoia';
 import { scrape as slow } from './slow';
 import { scrape as sosv } from './sosv';
+import { scrape as spark } from './spark';
 import { scrape as techstars } from './techstars';
 import { scrape as townhall } from './townhall';
 import { scrape as transformation } from './transformation';
@@ -53,7 +57,9 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	draper,
 	eclipse,
 	filrouge,
+	flybridge,
 	generalcatalyst,
+	glasswing,
 	greycroft,
 	indexventures,
 	indiebio,
@@ -66,6 +72,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	norwest,
 	octopus,
 	pear,
+	pillar,
 	plugandplay,
 	polaris,
 	redpoint,
@@ -74,6 +81,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	sequoia,
 	slow,
 	sosv,
+	spark,
 	techstars,
 	townhall,
 	transformation,
