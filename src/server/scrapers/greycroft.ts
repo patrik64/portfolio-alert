@@ -19,14 +19,17 @@ export async function scrape(): Promise<ScrapedCompany[]> {
     const name = $(el).find(".portfolio-card__title").text().trim();
     if (!name) return;
 
-    const description = $(el)
-      .find('.portfolio-card__accordion div[style="grid-area: description;"] p')
-      .text()
-      .trim();
+    // strategy is the sector ("Software", "Consumer Brands", ...); the status
+    // ("Acquired", "IPO") is appended when the company is no longer active
+    const strategy = $(el).find(".portfolio-card__strategy").first().text().trim();
+    const status = $(el).find(".portfolio-card__status").first().text().trim();
+    const category = [strategy, status !== "Active" ? status : ""]
+      .filter(Boolean)
+      .join(", ");
 
     const url = $(el).find(".portfolio-card__top-link a").attr("href") || "";
 
-    companies.push({ name, category: description, url });
+    companies.push({ name, category, url });
   });
 
   return companies;

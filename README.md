@@ -7,6 +7,10 @@ fund's portfolio since the last fetch.
 
 Built with SvelteKit 2, Svelte 5, remult and Tailwind CSS 4.
 
+## Try
+
+live at https://portfolio-alert.vercel.app
+
 ## Pages
 
 - **dashboard** (`/`) — one card per fund with company count, newcomer badge and
