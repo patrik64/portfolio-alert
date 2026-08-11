@@ -1,5 +1,6 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
+	import Footer from '$lib/components/Footer.svelte';
 	import '../app.css';
 
 	let { children } = $props();
@@ -84,4 +85,8 @@
 	<main class="flex-1">
 		{@render children()}
 	</main>
+
+	<footer>
+		<Footer />
+	</footer>
 </div>
