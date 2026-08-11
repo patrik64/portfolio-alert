@@ -7,3 +7,4 @@ build/
 db/
 .DS_Store
 vite.config.ts.timestamp-*
+plan.md
