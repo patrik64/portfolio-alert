@@ -30,8 +30,7 @@ export const GET = (event: RequestEvent) =>
 						name: c.name,
 						category: c.category,
 						url: c.url,
-						firstSeenAt: c.firstSeenAt,
-						isNewcomer: c.isNewcomer
+						firstSeenAt: c.firstSeenAt
 					}))
 				};
 			})

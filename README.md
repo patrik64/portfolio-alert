@@ -28,7 +28,7 @@ live at https://portfolio-alert.vercel.app
   category (server-side, debounced), listing name, category, fund and first-seen
   date.
 - **download** (`/download`) — downloads a JSON file with all companies grouped
-  by fund (name, category, url, first-seen date, newcomer flag per company).
+  by fund (name, category, url and first-seen date per company).
 
 Every company row shows when the company was first encountered ("first seen").
 
