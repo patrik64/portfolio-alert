@@ -76,6 +76,15 @@
 					>
 						download
 					</a>
+					<a
+						href="https://github.com/patrik64/portfolio-alert"
+						target="_blank"
+						rel="external noreferrer"
+						onclick={() => (menuOpen = false)}
+						class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+					>
+						github
+					</a>
 				</div>
 			{/if}
 		</div>
