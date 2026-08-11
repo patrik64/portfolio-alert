@@ -1,0 +1,82 @@
+import { FUNDS } from '../../shared/funds';
+import type { ScrapedCompany } from './types';
+import { scrape as a16z } from './a16z';
+import { scrape as advent } from './advent';
+import { scrape as aisling } from './aisling';
+import { scrape as alumni } from './alumni';
+import { scrape as antler } from './antler';
+import { scrape as base10 } from './base10';
+import { scrape as battery } from './battery';
+import { scrape as bessemer } from './bessemer';
+import { scrape as boxgroup } from './boxgroup';
+import { scrape as draper } from './draper';
+import { scrape as eclipse } from './eclipse';
+import { scrape as generalcatalyst } from './generalcatalyst';
+import { scrape as greycroft } from './greycroft';
+import { scrape as indexventures } from './indexventures';
+import { scrape as indiebio } from './indiebio';
+import { scrape as inovia } from './inovia';
+import { scrape as insight } from './insight';
+import { scrape as kleiner } from './kleiner';
+import { scrape as lightspeed } from './lightspeed';
+import { scrape as menlo } from './menlo';
+import { scrape as nexus } from './nexus';
+import { scrape as norwest } from './norwest';
+import { scrape as octopus } from './octopus';
+import { scrape as pear } from './pear';
+import { scrape as plugandplay } from './plugandplay';
+import { scrape as polaris } from './polaris';
+import { scrape as redpoint } from './redpoint';
+import { scrape as salesforce } from './salesforce';
+import { scrape as sapphire } from './sapphire';
+import { scrape as sequoia } from './sequoia';
+import { scrape as slow } from './slow';
+import { scrape as sosv } from './sosv';
+import { scrape as townhall } from './townhall';
+import { scrape as transformation } from './transformation';
+import { scrape as venrock } from './venrock';
+
+const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
+	a16z,
+	advent,
+	aisling,
+	alumni,
+	antler,
+	base10,
+	battery,
+	bessemer,
+	boxgroup,
+	draper,
+	eclipse,
+	generalcatalyst,
+	greycroft,
+	indexventures,
+	indiebio,
+	inovia,
+	insight,
+	kleiner,
+	lightspeed,
+	menlo,
+	nexus,
+	norwest,
+	octopus,
+	pear,
+	plugandplay,
+	polaris,
+	redpoint,
+	salesforce,
+	sapphire,
+	sequoia,
+	slow,
+	sosv,
+	townhall,
+	transformation,
+	venrock
+};
+
+if (Object.keys(impls).length !== FUNDS.length || FUNDS.some((f) => !impls[f.slug]))
+	throw new Error('scraper registry and shared FUNDS list are out of sync');
+
+export const scrapers = FUNDS.map((f) => ({ ...f, scrape: impls[f.slug] }));
+export const scraperBySlug = new Map(scrapers.map((s) => [s.slug, s]));
+export type { ScrapedCompany } from './types';
