@@ -42,6 +42,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'sequoia', name: 'Sequoia Capital', url: 'https://www.sequoiacap.com/our-companies/' },
 	{ slug: 'slow', name: 'Slow Ventures', url: 'https://slow.co/about/' },
 	{ slug: 'sosv', name: 'SOSV', url: 'https://sosv.com/portfolio/' },
+	{ slug: 'techstars', name: 'Techstars', url: 'https://www.techstars.com/portfolio' },
 	{ slug: 'townhall', name: 'Town Hall Ventures', url: 'https://www.townhallventures.com/portfolio' },
 	{ slug: 'transformation', name: 'Transformation Capital', url: 'https://transformcap.com/partner-companies' },
 	{ slug: 'venrock', name: 'Venrock', url: 'https://www.venrock.com/companies/' }

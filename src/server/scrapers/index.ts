@@ -32,6 +32,7 @@ import { scrape as sapphire } from './sapphire';
 import { scrape as sequoia } from './sequoia';
 import { scrape as slow } from './slow';
 import { scrape as sosv } from './sosv';
+import { scrape as techstars } from './techstars';
 import { scrape as townhall } from './townhall';
 import { scrape as transformation } from './transformation';
 import { scrape as venrock } from './venrock';
@@ -69,6 +70,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	sequoia,
 	slow,
 	sosv,
+	techstars,
 	townhall,
 	transformation,
 	venrock
