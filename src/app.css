@@ -77,3 +77,26 @@ body {
 @utility shadow-xs {
 	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
+
+/* Page frame. Firefox stretches the dashes of a long `border-dashed` side to
+   fit that side, so on tall pages the vertical dashes become long lines with
+   big gaps. Draw the frame from small tiled gradients instead: the 12px
+   pattern repeats identically at any height, in every browser. */
+@utility dashed-frame {
+	background-image:
+		linear-gradient(to right, var(--color-gray-600) 0 2px, transparent 2px 6px),
+		linear-gradient(to right, var(--color-gray-600) 0 2px, transparent 2px 6px),
+		linear-gradient(to bottom, var(--color-gray-600) 0 2px, transparent 2px 6px),
+		linear-gradient(to bottom, var(--color-gray-600) 0 2px, transparent 2px 6px);
+	background-size:
+		6px 2px,
+		6px 2px,
+		2px 6px,
+		2px 6px;
+	background-position:
+		0 0,
+		0 100%,
+		100% 0,
+		0 0;
+	background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+}

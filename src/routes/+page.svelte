@@ -69,7 +69,7 @@
 </svelte:head>
 
 <div
-	class="mx-auto mt-2 w-full max-w-[70rem] p-4 lg:rounded-[5px] lg:border lg:border-dashed lg:border-gray-600"
+	class="mx-auto mt-2 w-full max-w-[71rem] px-6 py-4 lg:dashed-frame"
 >
 	<div class="flex flex-wrap items-center justify-between gap-2">
 		<h1 class="text-lg font-semibold">funds</h1>
