@@ -5,6 +5,7 @@ import { scrape as advent } from './advent';
 import { scrape as aisling } from './aisling';
 import { scrape as alumni } from './alumni';
 import { scrape as antler } from './antler';
+import { scrape as atlas } from './atlas';
 import { scrape as baincapital } from './baincapital';
 import { scrape as base10 } from './base10';
 import { scrape as battery } from './battery';
@@ -13,6 +14,7 @@ import { scrape as boxgroup } from './boxgroup';
 import { scrape as draper } from './draper';
 import { scrape as eclipse } from './eclipse';
 import { scrape as filrouge } from './filrouge';
+import { scrape as flagship } from './flagship';
 import { scrape as flybridge } from './flybridge';
 import { scrape as generalcatalyst } from './generalcatalyst';
 import { scrape as glasswing } from './glasswing';
@@ -31,6 +33,7 @@ import { scrape as pear } from './pear';
 import { scrape as pillar } from './pillar';
 import { scrape as plugandplay } from './plugandplay';
 import { scrape as polaris } from './polaris';
+import { scrape as racap } from './racap';
 import { scrape as redpoint } from './redpoint';
 import { scrape as salesforce } from './salesforce';
 import { scrape as sapphire } from './sapphire';
@@ -49,6 +52,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	aisling,
 	alumni,
 	antler,
+	atlas,
 	baincapital,
 	base10,
 	battery,
@@ -57,6 +61,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	draper,
 	eclipse,
 	filrouge,
+	flagship,
 	flybridge,
 	generalcatalyst,
 	glasswing,
@@ -75,6 +80,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	pillar,
 	plugandplay,
 	polaris,
+	racap,
 	redpoint,
 	salesforce,
 	sapphire,
