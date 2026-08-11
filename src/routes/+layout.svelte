@@ -59,6 +59,15 @@
 					>
 						search
 					</a>
+					<a
+						href="/download"
+						download
+						data-sveltekit-reload
+						onclick={() => (menuOpen = false)}
+						class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+					>
+						download
+					</a>
 				</div>
 			{/if}
 		</div>
