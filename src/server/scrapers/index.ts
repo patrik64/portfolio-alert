@@ -23,6 +23,7 @@ import { scrape as indexventures } from './indexventures';
 import { scrape as indiebio } from './indiebio';
 import { scrape as inovia } from './inovia';
 import { scrape as insight } from './insight';
+import { scrape as kima } from './kima';
 import { scrape as kleiner } from './kleiner';
 import { scrape as lightspeed } from './lightspeed';
 import { scrape as menlo } from './menlo';
@@ -38,10 +39,12 @@ import { scrape as redpoint } from './redpoint';
 import { scrape as salesforce } from './salesforce';
 import { scrape as sapphire } from './sapphire';
 import { scrape as sequoia } from './sequoia';
+import { scrape as silversmith } from './silversmith';
 import { scrape as slow } from './slow';
 import { scrape as sosv } from './sosv';
 import { scrape as spark } from './spark';
 import { scrape as techstars } from './techstars';
+import { scrape as thomabravo } from './thomabravo';
 import { scrape as townhall } from './townhall';
 import { scrape as transformation } from './transformation';
 import { scrape as venrock } from './venrock';
@@ -70,6 +73,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	indiebio,
 	inovia,
 	insight,
+	kima,
 	kleiner,
 	lightspeed,
 	menlo,
@@ -85,10 +89,12 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	salesforce,
 	sapphire,
 	sequoia,
+	silversmith,
 	slow,
 	sosv,
 	spark,
 	techstars,
+	thomabravo,
 	townhall,
 	transformation,
 	venrock
