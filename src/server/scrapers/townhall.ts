@@ -29,9 +29,14 @@ export async function scrape(): Promise<ScrapedCompany[]> {
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join(" ");
 
-    // Extract tags from hidden span
+    // Extract tags from hidden span — status ("Current"/"Exited") and stage
+    // ("Venture"/"Growth"); "Current" is the default state and carries no signal
     const tagsMatch = item.match(/<span class="tags"[^>]*>([^<]+)<\/span>/);
-    const category = tagsMatch?.[1]?.trim() || "";
+    const category = (tagsMatch?.[1] ?? "")
+      .split(",")
+      .map((t) => t.trim())
+      .filter((t) => t && t !== "Current")
+      .join(", ");
 
     companies.push({ name, category, url: "" });
   }

@@ -11,6 +11,31 @@ export interface FetchResult {
 	baseline: boolean;
 }
 
+// scraped text often carries HTML entities ("Abbot&#8217;s", "AI &amp; ML");
+// decode once here so every fund gets clean names and categories
+const NAMED_ENTITIES: Record<string, string> = {
+	amp: '&',
+	lt: '<',
+	gt: '>',
+	quot: '"',
+	apos: "'",
+	nbsp: ' ',
+	ndash: '–',
+	mdash: '—',
+	rsquo: '’',
+	lsquo: '‘',
+	rdquo: '”',
+	ldquo: '“'
+};
+
+const decodeEntities = (s: string) =>
+	s
+		.replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(Number(d)))
+		.replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+		.replace(/&([a-z]+);/gi, (m, name) => NAMED_ENTITIES[name.toLowerCase()] ?? m)
+		.replace(/[​‌‍﻿]/g, '')
+		.trim();
+
 // company identity within a fund — urls and categories are too unreliable to key on
 const nameKey = (name: string) => name.trim().toLowerCase().replace(/\s+/g, ' ');
 
@@ -41,8 +66,9 @@ export class ScrapeController {
 
 			const byKey = new Map<string, ScrapedCompany>();
 			for (const c of scraped) {
-				const key = nameKey(c.name ?? '');
-				if (key && !byKey.has(key)) byKey.set(key, c);
+				const name = decodeEntities(c.name ?? '');
+				const key = nameKey(name);
+				if (key && !byKey.has(key)) byKey.set(key, { ...c, name });
 			}
 
 			const companies = repo(Company);
@@ -66,8 +92,8 @@ export class ScrapeController {
 							id: `${slug}:${key}`,
 							fundSlug: slug,
 							name: c.name.trim(),
-							category: c.category ?? '',
-							url: c.url ?? '',
+							category: decodeEntities(c.category ?? ''),
+							url: (c.url ?? '').replace(/&amp;/g, '&'),
 							isNewcomer: !baseline
 						})
 					)

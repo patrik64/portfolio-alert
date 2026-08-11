@@ -5,6 +5,21 @@ const BASE_URL = "https://www.boxgroup.com/portfolio";
 const UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
+// the portfolio tabs load these per-category pages in hidden iframes; each
+// page lists that category's companies (identified by their external link)
+const CATEGORIES: [string, string][] = [
+  ["consumer", "Consumer"],
+  ["enterprise", "Enterprise"],
+  ["infra-devtools", "Infra / Devtools"],
+  ["fintech", "FinTech"],
+  ["healthcare", "Healthcare"],
+  ["marketplaces", "Marketplaces"],
+  ["climate", "Climate"],
+  ["frontier", "Frontier"],
+  ["web3", "Web3"],
+  ["exits", "Exited"],
+];
+
 function extractName(imgUrl: string, companyUrl: string): string {
   const filename = decodeURIComponent(imgUrl.split("/").pop() || "");
   // Remove the Webflow hash prefix (hex_) and file extension
@@ -27,17 +42,24 @@ function extractName(imgUrl: string, companyUrl: string): string {
       cleaned = withoutHash;
     }
   }
+  // logo filenames are often all-lowercase single words ("clay" -> "Clay")
+  if (/^[a-z0-9]+$/.test(cleaned)) {
+    cleaned = cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+  }
   return cleaned;
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-  const companies: ScrapedCompany[] = [];
-  const seen = new Set<string>();
+  interface Entry {
+    name: string;
+    url: string;
+    labels: string[];
+  }
+  const byUrl = new Map<string, Entry>();
   let page = 1;
 
   while (true) {
-    const url =
-      page === 1 ? BASE_URL : `${BASE_URL}?31f24c7f_page=${page}`;
+    const url = page === 1 ? BASE_URL : `${BASE_URL}?31f24c7f_page=${page}`;
     const resp = await fetch(url, { headers: { "User-Agent": UA } });
     if (!resp.ok) break;
 
@@ -52,16 +74,20 @@ export async function scrape(): Promise<ScrapedCompany[]> {
     items.each((_, el) => {
       const link = $(el).find("a.port_tabs-item_link");
       const companyUrl = link.attr("href") || "";
-      if (!companyUrl || seen.has(companyUrl)) return;
-      seen.add(companyUrl);
+      if (!companyUrl || byUrl.has(companyUrl)) return;
 
       const bgStyle = link.find(".port_tabs-item_link-inner").attr("style") || "";
       const imgMatch = bgStyle.match(/url\(&quot;([^&]+)&|url\("([^"]+)"\)/);
       const imgUrl = imgMatch?.[1] || imgMatch?.[2] || "";
       const name = extractName(imgUrl, companyUrl);
 
-      const category = "";
-      companies.push({ name, category, url: companyUrl });
+      const labels: string[] = [];
+      const ipo = $(el).find(".port_tabs-ipo");
+      if (ipo.length > 0 && !(ipo.attr("class") || "").includes("w-condition-invisible")) {
+        labels.push("IPO");
+      }
+
+      byUrl.set(companyUrl, { name, url: companyUrl, labels });
       newCount++;
     });
 
@@ -74,5 +100,21 @@ export async function scrape(): Promise<ScrapedCompany[]> {
     page++;
   }
 
-  return companies;
+  for (const [slug, label] of CATEGORIES) {
+    const resp = await fetch(`https://www.boxgroup.com/category/${slug}`, {
+      headers: { "User-Agent": UA },
+    });
+    if (!resp.ok) continue;
+    const html = await resp.text();
+    for (const m of html.matchAll(/<a href="([^"]+)" target="_blank" class="port_tabs-item_link/g)) {
+      const entry = byUrl.get(m[1]);
+      if (entry && !entry.labels.includes(label)) entry.labels.push(label);
+    }
+  }
+
+  return [...byUrl.values()].map((e) => ({
+    name: e.name,
+    category: e.labels.join(", "),
+    url: e.url,
+  }));
 }
