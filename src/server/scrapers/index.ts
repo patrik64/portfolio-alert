@@ -11,6 +11,7 @@ import { scrape as bessemer } from './bessemer';
 import { scrape as boxgroup } from './boxgroup';
 import { scrape as draper } from './draper';
 import { scrape as eclipse } from './eclipse';
+import { scrape as filrouge } from './filrouge';
 import { scrape as generalcatalyst } from './generalcatalyst';
 import { scrape as greycroft } from './greycroft';
 import { scrape as indexventures } from './indexventures';
@@ -49,6 +50,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	boxgroup,
 	draper,
 	eclipse,
+	filrouge,
 	generalcatalyst,
 	greycroft,
 	indexventures,

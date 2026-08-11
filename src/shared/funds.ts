@@ -21,6 +21,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'boxgroup', name: 'BoxGroup', url: 'https://www.boxgroup.com/portfolio' },
 	{ slug: 'draper', name: 'Draper Associates', url: 'https://www.draper.vc/portfolio' },
 	{ slug: 'eclipse', name: 'Eclipse Ventures', url: 'https://eclipse.capital/portfolio/' },
+	{ slug: 'filrouge', name: 'Fil Rouge Capital', url: 'https://www.filrougecapital.com/portfolio' },
 	{ slug: 'generalcatalyst', name: 'General Catalyst', url: 'https://www.generalcatalyst.com/portfolio' },
 	{ slug: 'greycroft', name: 'Greycroft', url: 'https://www.greycroft.com/portfolio/' },
 	{ slug: 'indexventures', name: 'Index Ventures', url: 'https://www.indexventures.com/companies/backed/all/' },
