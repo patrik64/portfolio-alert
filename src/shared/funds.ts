@@ -10,6 +10,7 @@ export interface FundInfo {
 }
 
 export const FUNDS: FundInfo[] = [
+	{ slug: 'acapital', name: 'A Capital', url: 'https://acapital.com/portfolio' },
 	{ slug: 'advent', name: 'Advent International', url: 'https://www.adventinternational.com/investments/' },
 	{ slug: 'aisling', name: 'Aisling Capital', url: 'https://www.aislingcapital.com/portfolio' },
 	{ slug: 'alumni', name: 'Alumni Ventures', url: 'https://www.av.vc/portfolio' },
@@ -25,6 +26,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'eclipse', name: 'Eclipse Ventures', url: 'https://eclipse.capital/portfolio/' },
 	{ slug: 'filrouge', name: 'Fil Rouge Capital', url: 'https://www.filrougecapital.com/portfolio' },
 	{ slug: 'flagship', name: 'Flagship Pioneering', url: 'https://www.flagshippioneering.com/companies' },
+	{ slug: 'fly', name: 'Fly', url: 'https://fly.vc/portfolio' },
 	{ slug: 'flybridge', name: 'Flybridge', url: 'https://www.flybridge.com/portfolio' },
 	{ slug: 'generalcatalyst', name: 'General Catalyst', url: 'https://www.generalcatalyst.com/portfolio' },
 	{ slug: 'glasswing', name: 'Glasswing Ventures', url: 'https://glasswing.vc/our-companies/' },
@@ -57,7 +59,8 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'thomabravo', name: 'Thoma Bravo', url: 'https://www.thomabravo.com/portfolio' },
 	{ slug: 'townhall', name: 'Town Hall Ventures', url: 'https://www.townhallventures.com/portfolio' },
 	{ slug: 'transformation', name: 'Transformation Capital', url: 'https://transformcap.com/partner-companies' },
-	{ slug: 'venrock', name: 'Venrock', url: 'https://www.venrock.com/companies/' }
+	{ slug: 'venrock', name: 'Venrock', url: 'https://www.venrock.com/companies/' },
+	{ slug: 'ycombinator', name: 'Y Combinator', url: 'https://www.ycombinator.com/companies' }
 ];
 
 export const fundName = new Map(FUNDS.map((f) => [f.slug, f.name]));

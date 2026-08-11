@@ -1,6 +1,7 @@
 import { FUNDS } from '../../shared/funds';
 import type { ScrapedCompany } from './types';
 import { scrape as a16z } from './a16z';
+import { scrape as acapital } from './acapital';
 import { scrape as advent } from './advent';
 import { scrape as aisling } from './aisling';
 import { scrape as alumni } from './alumni';
@@ -15,6 +16,7 @@ import { scrape as draper } from './draper';
 import { scrape as eclipse } from './eclipse';
 import { scrape as filrouge } from './filrouge';
 import { scrape as flagship } from './flagship';
+import { scrape as fly } from './fly';
 import { scrape as flybridge } from './flybridge';
 import { scrape as generalcatalyst } from './generalcatalyst';
 import { scrape as glasswing } from './glasswing';
@@ -48,9 +50,11 @@ import { scrape as thomabravo } from './thomabravo';
 import { scrape as townhall } from './townhall';
 import { scrape as transformation } from './transformation';
 import { scrape as venrock } from './venrock';
+import { scrape as ycombinator } from './ycombinator';
 
 const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	a16z,
+	acapital,
 	advent,
 	aisling,
 	alumni,
@@ -65,6 +69,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	eclipse,
 	filrouge,
 	flagship,
+	fly,
 	flybridge,
 	generalcatalyst,
 	glasswing,
@@ -97,7 +102,8 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	thomabravo,
 	townhall,
 	transformation,
-	venrock
+	venrock,
+	ycombinator
 };
 
 if (Object.keys(impls).length !== FUNDS.length || FUNDS.some((f) => !impls[f.slug]))
