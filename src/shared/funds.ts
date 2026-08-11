@@ -18,7 +18,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'atlas', name: 'Atlas Venture', url: 'https://atlasventure.com/portfolio/' },
 	{ slug: 'baincapital', name: 'Bain Capital Ventures', url: 'https://baincapitalventures.com/portfolio/' },
 	{ slug: 'base10', name: 'Base10', url: 'https://base10.vc/' },
-	{ slug: 'battery', name: 'Battery Ventures', url: 'https://www.battery.com/list-of-all-companies/' },
+	{ slug: 'battery', name: 'Battery Ventures', url: 'https://www.battery.com/company/' },
 	{ slug: 'bessemer', name: 'Bessemer Venture Partners', url: 'https://www.bvp.com/companies' },
 	{ slug: 'boxgroup', name: 'BoxGroup', url: 'https://www.boxgroup.com/portfolio' },
 	{ slug: 'draper', name: 'Draper Associates', url: 'https://www.draper.vc/portfolio' },
