@@ -9,6 +9,13 @@
 	let results = $state<Company[]>([]);
 	let searching = $state(false);
 	let searched = $state(false);
+	let total = $state(0);
+
+	$effect(() => {
+		repo(Company)
+			.count()
+			.then((n) => (total = n));
+	});
 
 	$effect(() => {
 		const q = search.trim();
@@ -50,6 +57,8 @@
 				searching…
 			{:else if searched}
 				{results.length === LIMIT ? `first ${LIMIT} matches` : `${results.length} matches`}
+			{:else if total}
+				({total} companies)
 			{/if}
 		</span>
 	</div>
