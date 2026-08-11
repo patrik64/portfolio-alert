@@ -21,6 +21,7 @@ import { scrape as flybridge } from './flybridge';
 import { scrape as generalcatalyst } from './generalcatalyst';
 import { scrape as glasswing } from './glasswing';
 import { scrape as greycroft } from './greycroft';
+import { scrape as headline } from './headline';
 import { scrape as indexventures } from './indexventures';
 import { scrape as indiebio } from './indiebio';
 import { scrape as inovia } from './inovia';
@@ -37,6 +38,7 @@ import { scrape as pillar } from './pillar';
 import { scrape as plugandplay } from './plugandplay';
 import { scrape as polaris } from './polaris';
 import { scrape as racap } from './racap';
+import { scrape as recall } from './recall';
 import { scrape as redpoint } from './redpoint';
 import { scrape as salesforce } from './salesforce';
 import { scrape as sapphire } from './sapphire';
@@ -50,6 +52,7 @@ import { scrape as thomabravo } from './thomabravo';
 import { scrape as townhall } from './townhall';
 import { scrape as transformation } from './transformation';
 import { scrape as venrock } from './venrock';
+import { scrape as xyz } from './xyz';
 import { scrape as ycombinator } from './ycombinator';
 
 const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
@@ -74,6 +77,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	generalcatalyst,
 	glasswing,
 	greycroft,
+	headline,
 	indexventures,
 	indiebio,
 	inovia,
@@ -90,6 +94,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	plugandplay,
 	polaris,
 	racap,
+	recall,
 	redpoint,
 	salesforce,
 	sapphire,
@@ -103,6 +108,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	townhall,
 	transformation,
 	venrock,
+	xyz,
 	ycombinator
 };
 

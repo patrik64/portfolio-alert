@@ -31,6 +31,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'generalcatalyst', name: 'General Catalyst', url: 'https://www.generalcatalyst.com/portfolio' },
 	{ slug: 'glasswing', name: 'Glasswing Ventures', url: 'https://glasswing.vc/our-companies/' },
 	{ slug: 'greycroft', name: 'Greycroft', url: 'https://www.greycroft.com/portfolio/' },
+	{ slug: 'headline', name: 'Headline', url: 'https://headline.com/portfolio' },
 	{ slug: 'indexventures', name: 'Index Ventures', url: 'https://www.indexventures.com/companies/backed/all/' },
 	{ slug: 'indiebio', name: 'Indie Bio', url: 'https://indiebio.co/' },
 	{ slug: 'inovia', name: 'Inovia Capital', url: 'https://www.inovia.vc/active-companies' },
@@ -47,6 +48,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'plugandplay', name: 'Plug and Play', url: 'https://www.plugandplaytechcenter.com/innovation-services/startups/our-startups' },
 	{ slug: 'polaris', name: 'Polaris Partners', url: 'https://polarispartners.com/companies-list' },
 	{ slug: 'racap', name: 'RA Capital', url: 'https://www.racap.com/portfolio' },
+	{ slug: 'recall', name: 'Recall Capital', url: 'https://www.recall.capital/portfolio' },
 	{ slug: 'redpoint', name: 'Redpoint', url: 'https://www.redpoint.com/companies/' },
 	{ slug: 'salesforce', name: 'Salesforce Ventures', url: 'https://salesforceventures.com/portfolio/' },
 	{ slug: 'sapphire', name: 'Sapphire Ventures', url: 'https://sapphireventures.com/companies/' },
@@ -60,6 +62,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'townhall', name: 'Town Hall Ventures', url: 'https://www.townhallventures.com/portfolio' },
 	{ slug: 'transformation', name: 'Transformation Capital', url: 'https://transformcap.com/partner-companies' },
 	{ slug: 'venrock', name: 'Venrock', url: 'https://www.venrock.com/companies/' },
+	{ slug: 'xyz', name: 'XYZ', url: 'https://www.xyz.vc/portfolio' },
 	{ slug: 'ycombinator', name: 'Y Combinator', url: 'https://www.ycombinator.com/companies' }
 ];
 
