@@ -7,6 +7,7 @@ import { scrape as aisling } from './aisling';
 import { scrape as alumni } from './alumni';
 import { scrape as antler } from './antler';
 import { scrape as atlas } from './atlas';
+import { scrape as av8 } from './av8';
 import { scrape as avp } from './avp';
 import { scrape as baincapital } from './baincapital';
 import { scrape as base10 } from './base10';
@@ -54,6 +55,7 @@ import { scrape as silversmith } from './silversmith';
 import { scrape as slow } from './slow';
 import { scrape as sosv } from './sosv';
 import { scrape as spark } from './spark';
+import { scrape as superhero } from './superhero';
 import { scrape as techstars } from './techstars';
 import { scrape as thomabravo } from './thomabravo';
 import { scrape as townhall } from './townhall';
@@ -70,6 +72,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	alumni,
 	antler,
 	atlas,
+	av8,
 	avp,
 	baincapital,
 	base10,
@@ -117,6 +120,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	slow,
 	sosv,
 	spark,
+	superhero,
 	techstars,
 	thomabravo,
 	townhall,
