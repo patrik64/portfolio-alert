@@ -36,6 +36,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'hvcapital', name: 'HV Capital', url: 'https://www.hvcapital.com/portfolio' },
 	{ slug: 'indexventures', name: 'Index Ventures', url: 'https://www.indexventures.com/companies/backed/all/' },
 	{ slug: 'indiebio', name: 'Indie Bio', url: 'https://indiebio.co/' },
+	{ slug: 'innovestor', name: 'Innovestor', url: 'https://innovestorgroup.com/venture-capital/portfolio-companies/' },
 	{ slug: 'inovia', name: 'Inovia Capital', url: 'https://www.inovia.vc/active-companies' },
 	{ slug: 'insight', name: 'Insight Partners', url: 'https://www.insightpartners.com/portfolio/' },
 	{ slug: 'kima', name: 'Kima Ventures', url: 'https://www.kimaventures.com/portfolio' },

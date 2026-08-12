@@ -26,6 +26,7 @@ import { scrape as headline } from './headline';
 import { scrape as hvcapital } from './hvcapital';
 import { scrape as indexventures } from './indexventures';
 import { scrape as indiebio } from './indiebio';
+import { scrape as innovestor } from './innovestor';
 import { scrape as inovia } from './inovia';
 import { scrape as insight } from './insight';
 import { scrape as kima } from './kima';
@@ -88,6 +89,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	hvcapital,
 	indexventures,
 	indiebio,
+	innovestor,
 	inovia,
 	insight,
 	kima,
