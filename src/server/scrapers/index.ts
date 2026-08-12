@@ -9,6 +9,7 @@ import { scrape as advent } from './advent';
 import { scrape as aisling } from './aisling';
 import { scrape as alumni } from './alumni';
 import { scrape as antler } from './antler';
+import { scrape as apex } from './apex';
 import { scrape as atlas } from './atlas';
 import { scrape as av8 } from './av8';
 import { scrape as avp } from './avp';
@@ -17,7 +18,9 @@ import { scrape as base10 } from './base10';
 import { scrape as battery } from './battery';
 import { scrape as bessemer } from './bessemer';
 import { scrape as blume } from './blume';
+import { scrape as calmstorm } from './calmstorm';
 import { scrape as boxgroup } from './boxgroup';
+import { scrape as creandum } from './creandum';
 import { scrape as draper } from './draper';
 import { scrape as eclipse } from './eclipse';
 import { scrape as filrouge } from './filrouge';
@@ -42,6 +45,7 @@ import { scrape as menlo } from './menlo';
 import { scrape as mig } from './mig';
 import { scrape as mouro } from './mouro';
 import { scrape as nexus } from './nexus';
+import { scrape as northzone } from './northzone';
 import { scrape as norwest } from './norwest';
 import { scrape as octopus } from './octopus';
 import { scrape as otb } from './otb';
@@ -80,6 +84,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	aisling,
 	alumni,
 	antler,
+	apex,
 	atlas,
 	av8,
 	avp,
@@ -88,7 +93,9 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	battery,
 	bessemer,
 	blume,
+	calmstorm,
 	boxgroup,
+	creandum,
 	draper,
 	eclipse,
 	filrouge,
@@ -113,6 +120,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	mig,
 	mouro,
 	nexus,
+	northzone,
 	norwest,
 	octopus,
 	otb,
