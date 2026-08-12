@@ -10,6 +10,7 @@ export interface FundInfo {
 }
 
 export const FUNDS: FundInfo[] = [
+	{ slug: '01a', name: '01A', url: 'https://01a.com/portfolio' },
 	{ slug: 'acapital', name: 'A Capital', url: 'https://acapital.com/portfolio' },
 	{ slug: 'advent', name: 'Advent International', url: 'https://www.adventinternational.com/investments/' },
 	{ slug: 'aisling', name: 'Aisling Capital', url: 'https://www.aislingcapital.com/portfolio' },
@@ -42,6 +43,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'insight', name: 'Insight Partners', url: 'https://www.insightpartners.com/portfolio/' },
 	{ slug: 'kima', name: 'Kima Ventures', url: 'https://www.kimaventures.com/portfolio' },
 	{ slug: 'kleiner', name: 'Kleiner Perkins', url: 'https://jobs.kleinerperkins.com/companies' },
+	{ slug: 'kurma', name: 'Kurma Partners', url: 'https://www.kurmapartners.com/en/portfolio' },
 	{ slug: 'lightspeed', name: 'Lightspeed Ventures', url: 'https://lsvp.com/companies/' },
 	{ slug: 'menlo', name: 'Menlo Ventures', url: 'https://menlovc.com/portfolio/' },
 	{ slug: 'mig', name: 'MIG Capital', url: 'https://www.mig.ag/en/portfolio/' },
@@ -49,6 +51,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'nexus', name: 'Nexus Venture Partners', url: 'https://nexusvp.com/companies/' },
 	{ slug: 'norwest', name: 'Norwest', url: 'https://www.norwest.com/companies' },
 	{ slug: 'octopus', name: 'Octopus Ventures', url: 'https://octopusventures.com/portfolio/' },
+	{ slug: 'otb', name: 'OTB Ventures', url: 'https://otb.vc/portfolio/' },
 	{ slug: 'pear', name: 'Pear VC', url: 'https://pear.vc/companies/' },
 	{ slug: 'pillar', name: 'Pillar VC', url: 'https://www.pillar.vc/companies/' },
 	{ slug: 'plugandplay', name: 'Plug and Play', url: 'https://www.plugandplaytechcenter.com/innovation-services/startups/our-startups' },

@@ -1,5 +1,7 @@
 import { FUNDS } from '../../shared/funds';
 import type { ScrapedCompany } from './types';
+// the slug leads with a digit, so the binding can't be named after it
+import { scrape as zeroonea } from './01a';
 import { scrape as a16z } from './a16z';
 import { scrape as acapital } from './acapital';
 import { scrape as advent } from './advent';
@@ -32,6 +34,7 @@ import { scrape as inovia } from './inovia';
 import { scrape as insight } from './insight';
 import { scrape as kima } from './kima';
 import { scrape as kleiner } from './kleiner';
+import { scrape as kurma } from './kurma';
 import { scrape as lightspeed } from './lightspeed';
 import { scrape as menlo } from './menlo';
 import { scrape as mig } from './mig';
@@ -39,6 +42,7 @@ import { scrape as mouro } from './mouro';
 import { scrape as nexus } from './nexus';
 import { scrape as norwest } from './norwest';
 import { scrape as octopus } from './octopus';
+import { scrape as otb } from './otb';
 import { scrape as pear } from './pear';
 import { scrape as pillar } from './pillar';
 import { scrape as plugandplay } from './plugandplay';
@@ -65,6 +69,7 @@ import { scrape as xyz } from './xyz';
 import { scrape as ycombinator } from './ycombinator';
 
 const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
+	'01a': zeroonea,
 	a16z,
 	acapital,
 	advent,
@@ -97,6 +102,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	insight,
 	kima,
 	kleiner,
+	kurma,
 	lightspeed,
 	menlo,
 	mig,
@@ -104,6 +110,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	nexus,
 	norwest,
 	octopus,
+	otb,
 	pear,
 	pillar,
 	plugandplay,
