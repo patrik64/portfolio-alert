@@ -7,6 +7,7 @@ import { scrape as aisling } from './aisling';
 import { scrape as alumni } from './alumni';
 import { scrape as antler } from './antler';
 import { scrape as atlas } from './atlas';
+import { scrape as avp } from './avp';
 import { scrape as baincapital } from './baincapital';
 import { scrape as base10 } from './base10';
 import { scrape as battery } from './battery';
@@ -32,6 +33,7 @@ import { scrape as kleiner } from './kleiner';
 import { scrape as lightspeed } from './lightspeed';
 import { scrape as menlo } from './menlo';
 import { scrape as mig } from './mig';
+import { scrape as mouro } from './mouro';
 import { scrape as nexus } from './nexus';
 import { scrape as norwest } from './norwest';
 import { scrape as octopus } from './octopus';
@@ -39,6 +41,7 @@ import { scrape as pear } from './pear';
 import { scrape as pillar } from './pillar';
 import { scrape as plugandplay } from './plugandplay';
 import { scrape as polaris } from './polaris';
+import { scrape as quantonation } from './quantonation';
 import { scrape as racap } from './racap';
 import { scrape as recall } from './recall';
 import { scrape as redpoint } from './redpoint';
@@ -66,6 +69,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	alumni,
 	antler,
 	atlas,
+	avp,
 	baincapital,
 	base10,
 	battery,
@@ -91,6 +95,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	lightspeed,
 	menlo,
 	mig,
+	mouro,
 	nexus,
 	norwest,
 	octopus,
@@ -98,6 +103,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	pillar,
 	plugandplay,
 	polaris,
+	quantonation,
 	racap,
 	recall,
 	redpoint,
