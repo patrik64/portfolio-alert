@@ -45,14 +45,14 @@
 </script>
 
 <svelte:head>
-	<title>history — portfolio alert</title>
+	<title>timeline — portfolio alert</title>
 </svelte:head>
 
 <div
 	class="mx-auto mt-2 w-full max-w-[53rem] px-6 py-4 lg:dashed-frame"
 >
 	<div class="flex flex-wrap items-center justify-between gap-2">
-		<h1 class="text-lg font-semibold">history</h1>
+		<h1 class="text-lg font-semibold">timeline</h1>
 		{#if !loading}
 			<span class="text-sm text-gray-600">
 				{companies.length} companies over {days.length} {days.length === 1 ? 'day' : 'days'}
@@ -61,7 +61,7 @@
 	</div>
 
 	{#if loading}
-		<Spinner label="loading history" />
+		<Spinner label="loading timeline" />
 	{:else if days.length === 0}
 		<p class="mt-6 text-sm text-gray-600">
 			no companies yet — run a fetch from the <a href="/" class="font-semibold text-tertiary-600">dashboard</a>

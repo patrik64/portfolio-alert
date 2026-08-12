@@ -27,7 +27,7 @@ live at https://portfolio-alert.vercel.app
 - **search** (`/search`) — searches all companies across every fund by name or
   category (server-side, debounced), listing name, category, fund and first-seen
   date.
-- **history** (`/history`) — every company grouped by the day it first appeared
+- **timeline** (`/timeline`) — every company grouped by the day it first appeared
   and then by fund, newest day first, in collapsible sections.
 - **download** (`/download`) — downloads a JSON file with all companies grouped
   by fund (name, category, url and first-seen date per company).
