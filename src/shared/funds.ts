@@ -11,8 +11,10 @@ export interface FundInfo {
 
 export const FUNDS: FundInfo[] = [
 	{ slug: '01a', name: '01A', url: 'https://01a.com/portfolio' },
+	{ slug: '2150', name: '2150', url: 'https://www.2150.vc/investments' },
 	{ slug: '3vc', name: '3VC', url: 'https://three.vc/portfolio/' },
 	{ slug: 'acapital', name: 'A Capital', url: 'https://acapital.com/portfolio' },
+	{ slug: 'accel', name: 'Accel', url: 'https://www.accel.com/companies' },
 	{ slug: 'advent', name: 'Advent International', url: 'https://www.adventinternational.com/investments/' },
 	{ slug: 'aisling', name: 'Aisling Capital', url: 'https://www.aislingcapital.com/portfolio' },
 	{ slug: 'alumni', name: 'Alumni Ventures', url: 'https://www.av.vc/portfolio' },
@@ -23,6 +25,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'av8', name: 'AV8', url: 'https://av8.vc/our-portfolio/' },
 	{ slug: 'avp', name: 'AVP', url: 'https://avpcap.com/companies/' },
 	{ slug: 'baincapital', name: 'Bain Capital Ventures', url: 'https://baincapitalventures.com/portfolio/' },
+	{ slug: 'b2venture', name: 'b2venture', url: 'https://www.b2venture.vc/portfolio' },
 	{ slug: 'base10', name: 'Base10', url: 'https://base10.vc/' },
 	{ slug: 'battery', name: 'Battery Ventures', url: 'https://www.battery.com/company/' },
 	{ slug: 'behold', name: 'Behold Ventures', url: 'https://behold.vc/portfolio' },
@@ -88,7 +91,8 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'transformation', name: 'Transformation Capital', url: 'https://transformcap.com/partner-companies' },
 	{ slug: 'venrock', name: 'Venrock', url: 'https://www.venrock.com/companies/' },
 	{ slug: 'xyz', name: 'XYZ', url: 'https://www.xyz.vc/portfolio' },
-	{ slug: 'ycombinator', name: 'Y Combinator', url: 'https://www.ycombinator.com/companies' }
+	{ slug: 'ycombinator', name: 'Y Combinator', url: 'https://www.ycombinator.com/companies' },
+	{ slug: 'zcg', name: 'ZCG', url: 'https://www.zcg.com/portfolio' }
 ];
 
 export const fundName = new Map(FUNDS.map((f) => [f.slug, f.name]));
