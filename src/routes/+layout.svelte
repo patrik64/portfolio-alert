@@ -27,7 +27,7 @@
 					e.stopPropagation();
 					menuOpen = !menuOpen;
 				}}
-				class="flex h-8 w-8 items-center justify-center rounded-full transition duration-150 ease-in-out hover:bg-tertiary-500 focus:outline-none"
+				class="flex h-8 w-8 items-center justify-center rounded-full border border-gray-600 transition duration-150 ease-in-out hover:bg-tertiary-500 focus:outline-none"
 			>
 				<svg width="20" height="20" viewBox="0 0 20 20" fill="gray">
 					<path
