@@ -11,6 +11,7 @@ export interface FundInfo {
 
 export const FUNDS: FundInfo[] = [
 	{ slug: '01a', name: '01A', url: 'https://01a.com/portfolio' },
+	{ slug: '3vc', name: '3VC', url: 'https://three.vc/portfolio/' },
 	{ slug: 'acapital', name: 'A Capital', url: 'https://acapital.com/portfolio' },
 	{ slug: 'advent', name: 'Advent International', url: 'https://www.adventinternational.com/investments/' },
 	{ slug: 'aisling', name: 'Aisling Capital', url: 'https://www.aislingcapital.com/portfolio' },
@@ -24,6 +25,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'base10', name: 'Base10', url: 'https://base10.vc/' },
 	{ slug: 'battery', name: 'Battery Ventures', url: 'https://www.battery.com/company/' },
 	{ slug: 'bessemer', name: 'Bessemer Venture Partners', url: 'https://www.bvp.com/companies' },
+	{ slug: 'blume', name: 'Blume', url: 'https://blume.vc/startups' },
 	{ slug: 'boxgroup', name: 'BoxGroup', url: 'https://www.boxgroup.com/portfolio' },
 	{ slug: 'draper', name: 'Draper Associates', url: 'https://www.draper.vc/portfolio' },
 	{ slug: 'eclipse', name: 'Eclipse Ventures', url: 'https://eclipse.capital/portfolio/' },
@@ -68,6 +70,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'slow', name: 'Slow Ventures', url: 'https://slow.co/about/' },
 	{ slug: 'sosv', name: 'SOSV', url: 'https://sosv.com/portfolio/' },
 	{ slug: 'spark', name: 'Spark Capital', url: 'https://www.sparkcapital.com/companies' },
+	{ slug: 'speedinvest', name: 'Speedinvest', url: 'https://www.speedinvest.com/portfolio' },
 	{ slug: 'superhero', name: 'Superhero', url: 'https://superherocapital.com/portfolio/' },
 	{ slug: 'techstars', name: 'Techstars', url: 'https://www.techstars.com/portfolio' },
 	{ slug: 'thomabravo', name: 'Thoma Bravo', url: 'https://www.thomabravo.com/portfolio' },
