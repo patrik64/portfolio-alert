@@ -56,6 +56,7 @@ import { scrape as nexus } from './nexus';
 import { scrape as northzone } from './northzone';
 import { scrape as norwest } from './norwest';
 import { scrape as octopus } from './octopus';
+import { scrape as openocean } from './openocean';
 import { scrape as otb } from './otb';
 import { scrape as palladium } from './palladium';
 import { scrape as pear } from './pear';
@@ -141,6 +142,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	northzone,
 	norwest,
 	octopus,
+	openocean,
 	otb,
 	palladium,
 	pear,
