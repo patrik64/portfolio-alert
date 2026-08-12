@@ -16,6 +16,7 @@ import { scrape as avp } from './avp';
 import { scrape as baincapital } from './baincapital';
 import { scrape as base10 } from './base10';
 import { scrape as battery } from './battery';
+import { scrape as behold } from './behold';
 import { scrape as bessemer } from './bessemer';
 import { scrape as blume } from './blume';
 import { scrape as calmstorm } from './calmstorm';
@@ -23,6 +24,7 @@ import { scrape as boxgroup } from './boxgroup';
 import { scrape as creandum } from './creandum';
 import { scrape as draper } from './draper';
 import { scrape as eclipse } from './eclipse';
+import { scrape as eqt } from './eqt';
 import { scrape as filrouge } from './filrouge';
 import { scrape as flagship } from './flagship';
 import { scrape as fly } from './fly';
@@ -34,11 +36,13 @@ import { scrape as headline } from './headline';
 import { scrape as hvcapital } from './hvcapital';
 import { scrape as indexventures } from './indexventures';
 import { scrape as indiebio } from './indiebio';
+import { scrape as industrifonden } from './industrifonden';
 import { scrape as innovestor } from './innovestor';
 import { scrape as inovia } from './inovia';
 import { scrape as insight } from './insight';
 import { scrape as kima } from './kima';
 import { scrape as kleiner } from './kleiner';
+import { scrape as kinnevik } from './kinnevik';
 import { scrape as kurma } from './kurma';
 import { scrape as lightspeed } from './lightspeed';
 import { scrape as menlo } from './menlo';
@@ -49,6 +53,7 @@ import { scrape as northzone } from './northzone';
 import { scrape as norwest } from './norwest';
 import { scrape as octopus } from './octopus';
 import { scrape as otb } from './otb';
+import { scrape as palladium } from './palladium';
 import { scrape as pear } from './pear';
 import { scrape as pillar } from './pillar';
 import { scrape as plugandplay } from './plugandplay';
@@ -91,6 +96,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	baincapital,
 	base10,
 	battery,
+	behold,
 	bessemer,
 	blume,
 	calmstorm,
@@ -98,6 +104,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	creandum,
 	draper,
 	eclipse,
+	eqt,
 	filrouge,
 	flagship,
 	fly,
@@ -109,11 +116,13 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	hvcapital,
 	indexventures,
 	indiebio,
+	industrifonden,
 	innovestor,
 	inovia,
 	insight,
 	kima,
 	kleiner,
+	kinnevik,
 	kurma,
 	lightspeed,
 	menlo,
@@ -124,6 +133,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	norwest,
 	octopus,
 	otb,
+	palladium,
 	pear,
 	pillar,
 	plugandplay,
