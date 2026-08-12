@@ -9,6 +9,15 @@ interface RichText {
   text?: string;
 }
 
+// titles trail the ticker or the acquirer in brackets — "36kr (NASDAQ: KRKR)",
+// "Segment (acq. by Twilio)" — which is status, not part of the company's name
+const cleanName = (s: string) =>
+  s
+    .replace(/\([^)]*\)/g, " ")
+    .split("\n")[0]
+    .replace(/\s+/g, " ")
+    .trim();
+
 interface CompanyDoc {
   uid?: string;
   data?: {
@@ -63,7 +72,7 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 
   const companies: ScrapedCompany[] = [];
   for (const doc of docs) {
-    const name = doc.data?.page_title?.[0]?.text?.trim();
+    const name = cleanName(doc.data?.page_title?.[0]?.text ?? "");
     if (!name) continue;
 
     const f = fields(doc);
