@@ -5,6 +5,20 @@ const PAGE_URL = `${BASE_URL}/portfolio`;
 const UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
+// speedinvest sits behind a bot filter that turned away requests claiming to be
+// a browser in the user agent while sending none of the headers a browser sends
+// with a page request. it answers a request whose headers match its user agent.
+const HEADERS = {
+  "User-Agent": UA,
+  Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+  "Accept-Language": "en-US,en;q=0.9",
+  "Upgrade-Insecure-Requests": "1",
+  "Sec-Fetch-Dest": "document",
+  "Sec-Fetch-Mode": "navigate",
+  "Sec-Fetch-Site": "none",
+  "Sec-Fetch-User": "?1",
+};
+
 const text = (s: string) =>
   s
     .replace(/<[^>]+>/g, " ")
@@ -17,7 +31,7 @@ const text = (s: string) =>
     .trim();
 
 async function fetchPage(url: string) {
-  const resp = await fetch(url, { headers: { "User-Agent": UA } });
+  const resp = await fetch(url, { headers: HEADERS });
   if (!resp.ok) {
     throw new Error(`Failed to fetch ${url}: ${resp.status}`);
   }

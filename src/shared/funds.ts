@@ -42,6 +42,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'glasswing', name: 'Glasswing Ventures', url: 'https://glasswing.vc/our-companies/' },
 	{ slug: 'greycroft', name: 'Greycroft', url: 'https://www.greycroft.com/portfolio/' },
 	{ slug: 'headline', name: 'Headline', url: 'https://headline.com/portfolio' },
+	{ slug: 'htgf', name: 'HTGF', url: 'https://www.htgf.de/en/portfolio/' },
 	{ slug: 'hvcapital', name: 'HV Capital', url: 'https://www.hvcapital.com/portfolio' },
 	{ slug: 'indexventures', name: 'Index Ventures', url: 'https://www.indexventures.com/companies/backed/all/' },
 	{ slug: 'indiebio', name: 'Indie Bio', url: 'https://indiebio.co/' },

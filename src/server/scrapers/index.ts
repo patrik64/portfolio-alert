@@ -33,6 +33,7 @@ import { scrape as generalcatalyst } from './generalcatalyst';
 import { scrape as glasswing } from './glasswing';
 import { scrape as greycroft } from './greycroft';
 import { scrape as headline } from './headline';
+import { scrape as htgf } from './htgf';
 import { scrape as hvcapital } from './hvcapital';
 import { scrape as indexventures } from './indexventures';
 import { scrape as indiebio } from './indiebio';
@@ -113,6 +114,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	glasswing,
 	greycroft,
 	headline,
+	htgf,
 	hvcapital,
 	indexventures,
 	indiebio,
