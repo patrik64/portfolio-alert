@@ -4,6 +4,7 @@ import type { ScrapedCompany } from './types';
 import { scrape as zeroonea } from './01a';
 import { scrape as twentyonefifty } from './twentyonefifty';
 import { scrape as threevc } from './3vc';
+import { scrape as fivehundred } from './fivehundred';
 import { scrape as a16z } from './a16z';
 import { scrape as acapital } from './acapital';
 import { scrape as accel } from './accel';
@@ -33,6 +34,7 @@ import { scrape as filrouge } from './filrouge';
 import { scrape as flagship } from './flagship';
 import { scrape as fly } from './fly';
 import { scrape as flybridge } from './flybridge';
+import { scrape as g2 } from './g2';
 import { scrape as generalcatalyst } from './generalcatalyst';
 import { scrape as glasswing } from './glasswing';
 import { scrape as greycroft } from './greycroft';
@@ -84,6 +86,8 @@ import { scrape as thomabravo } from './thomabravo';
 import { scrape as townhall } from './townhall';
 import { scrape as transformation } from './transformation';
 import { scrape as venrock } from './venrock';
+import { scrape as viking } from './viking';
+import { scrape as wellington } from './wellington';
 import { scrape as xyz } from './xyz';
 import { scrape as ycombinator } from './ycombinator';
 import { scrape as zcg } from './zcg';
@@ -92,6 +96,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	'01a': zeroonea,
 	'2150': twentyonefifty,
 	'3vc': threevc,
+	'500': fivehundred,
 	a16z,
 	acapital,
 	accel,
@@ -121,6 +126,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	flagship,
 	fly,
 	flybridge,
+	g2,
 	generalcatalyst,
 	glasswing,
 	greycroft,
@@ -172,6 +178,8 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	townhall,
 	transformation,
 	venrock,
+	viking,
+	wellington,
 	xyz,
 	ycombinator,
 	zcg

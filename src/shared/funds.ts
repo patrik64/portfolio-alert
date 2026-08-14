@@ -13,6 +13,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: '01a', name: '01A', url: 'https://01a.com/portfolio' },
 	{ slug: '2150', name: '2150', url: 'https://www.2150.vc/investments' },
 	{ slug: '3vc', name: '3VC', url: 'https://three.vc/portfolio/' },
+	{ slug: '500', name: '500 Global', url: 'https://500.co/portfolio' },
 	{ slug: 'acapital', name: 'A Capital', url: 'https://acapital.com/portfolio' },
 	{ slug: 'accel', name: 'Accel', url: 'https://www.accel.com/companies' },
 	{ slug: 'advent', name: 'Advent International', url: 'https://www.adventinternational.com/investments/' },
@@ -42,6 +43,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'flagship', name: 'Flagship Pioneering', url: 'https://www.flagshippioneering.com/companies' },
 	{ slug: 'fly', name: 'Fly', url: 'https://fly.vc/portfolio' },
 	{ slug: 'flybridge', name: 'Flybridge', url: 'https://www.flybridge.com/portfolio' },
+	{ slug: 'g2', name: 'G2', url: 'https://g2vp.com/portfolio/' },
 	{ slug: 'generalcatalyst', name: 'General Catalyst', url: 'https://www.generalcatalyst.com/portfolio' },
 	{ slug: 'glasswing', name: 'Glasswing Ventures', url: 'https://glasswing.vc/our-companies/' },
 	{ slug: 'greycroft', name: 'Greycroft', url: 'https://www.greycroft.com/portfolio/' },
@@ -93,6 +95,12 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'townhall', name: 'Town Hall Ventures', url: 'https://www.townhallventures.com/portfolio' },
 	{ slug: 'transformation', name: 'Transformation Capital', url: 'https://transformcap.com/partner-companies' },
 	{ slug: 'venrock', name: 'Venrock', url: 'https://www.venrock.com/companies/' },
+	{ slug: 'viking', name: 'Viking', url: 'https://vikingglobal.com/private-equity-portfolio/' },
+	{
+		slug: 'wellington',
+		name: 'Wellington',
+		url: 'https://www.wellington.com/en/capabilities/private-investing/our-investments'
+	},
 	{ slug: 'xyz', name: 'XYZ', url: 'https://www.xyz.vc/portfolio' },
 	{ slug: 'ycombinator', name: 'Y Combinator', url: 'https://www.ycombinator.com/companies' },
 	{ slug: 'zcg', name: 'ZCG', url: 'https://www.zcg.com/portfolio' }
