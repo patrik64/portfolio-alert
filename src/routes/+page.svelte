@@ -15,7 +15,9 @@
 	);
 
 	async function reloadFunds() {
-		const rows = await repo(Fund).find({ limit: 100 });
+		// explicit limit — remult's REST API defaults to 100 rows per page, and
+		// there are more funds than that now
+		const rows = await repo(Fund).find({ limit: 1000 });
 		funds = Object.fromEntries(rows.map((f) => [f.slug, f]));
 	}
 

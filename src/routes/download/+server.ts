@@ -10,7 +10,7 @@ export const GET = (event: RequestEvent) =>
 	api.withRemult(event, async () => {
 		const [companies, fundRows] = await Promise.all([
 			repo(Company).find({ orderBy: { name: 'asc' }, limit: 100_000 }),
-			repo(Fund).find({ limit: 100 })
+			repo(Fund).find({ limit: 1000 })
 		]);
 		const bySlug = new Map(fundRows.map((f) => [f.slug, f]));
 
