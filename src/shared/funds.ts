@@ -52,6 +52,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'fly', name: 'Fly', url: 'https://fly.vc/portfolio' },
 	{ slug: 'flybridge', name: 'Flybridge', url: 'https://www.flybridge.com/portfolio' },
 	{ slug: 'g2', name: 'G2', url: 'https://g2vp.com/portfolio/' },
+	{ slug: 'generalatlantic', name: 'General Atlantic', url: 'https://www.generalatlantic.com/investments/' },
 	{ slug: 'generalcatalyst', name: 'General Catalyst', url: 'https://www.generalcatalyst.com/portfolio' },
 	{ slug: 'glasswing', name: 'Glasswing Ventures', url: 'https://glasswing.vc/our-companies/' },
 	{ slug: 'greycroft', name: 'Greycroft', url: 'https://www.greycroft.com/portfolio/' },
@@ -84,6 +85,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'pillar', name: 'Pillar VC', url: 'https://www.pillar.vc/companies/' },
 	{ slug: 'plugandplay', name: 'Plug and Play', url: 'https://www.plugandplaytechcenter.com/innovation-services/startups/our-startups' },
 	{ slug: 'polaris', name: 'Polaris Partners', url: 'https://polarispartners.com/companies-list' },
+	{ slug: 'push', name: 'PUSH VC', url: 'https://push.vc/portfolio' },
 	{ slug: 'quantonation', name: 'Quantonation', url: 'https://www.quantonation.com/portfolio/' },
 	{ slug: 'racap', name: 'RA Capital', url: 'https://www.racap.com/portfolio' },
 	{ slug: 'recall', name: 'Recall Capital', url: 'https://www.recall.capital/portfolio' },
@@ -102,6 +104,11 @@ export const FUNDS: FundInfo[] = [
 	},
 	{ slug: 'spark', name: 'Spark Capital', url: 'https://www.sparkcapital.com/companies' },
 	{ slug: 'speedinvest', name: 'Speedinvest', url: 'https://www.speedinvest.com/portfolio' },
+	{
+		slug: 'standardindustries',
+		name: 'Standard Industries',
+		url: 'https://standardindustries.com/our-businesses/standard-investments/venture-capital'
+	},
 	{ slug: 'superhero', name: 'Superhero', url: 'https://superherocapital.com/portfolio/' },
 	{ slug: 'targetglobal', name: 'Target Global', url: 'https://www.targetglobal.vc/portfolio' },
 	{ slug: 'techstars', name: 'Techstars', url: 'https://www.techstars.com/portfolio' },

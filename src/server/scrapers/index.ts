@@ -39,6 +39,7 @@ import { scrape as flagship } from './flagship';
 import { scrape as fly } from './fly';
 import { scrape as flybridge } from './flybridge';
 import { scrape as g2 } from './g2';
+import { scrape as generalatlantic } from './generalatlantic';
 import { scrape as generalcatalyst } from './generalcatalyst';
 import { scrape as glasswing } from './glasswing';
 import { scrape as greycroft } from './greycroft';
@@ -71,6 +72,7 @@ import { scrape as pear } from './pear';
 import { scrape as pillar } from './pillar';
 import { scrape as plugandplay } from './plugandplay';
 import { scrape as polaris } from './polaris';
+import { scrape as push } from './push';
 import { scrape as quantonation } from './quantonation';
 import { scrape as racap } from './racap';
 import { scrape as recall } from './recall';
@@ -85,6 +87,7 @@ import { scrape as sosv } from './sosv';
 import { scrape as southparkcommons } from './southparkcommons';
 import { scrape as spark } from './spark';
 import { scrape as speedinvest } from './speedinvest';
+import { scrape as standardindustries } from './standardindustries';
 import { scrape as superhero } from './superhero';
 import { scrape as targetglobal } from './targetglobal';
 import { scrape as techstars } from './techstars';
@@ -137,6 +140,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	fly,
 	flybridge,
 	g2,
+	generalatlantic,
 	generalcatalyst,
 	glasswing,
 	greycroft,
@@ -169,6 +173,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	pillar,
 	plugandplay,
 	polaris,
+	push,
 	quantonation,
 	racap,
 	recall,
@@ -183,6 +188,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	southparkcommons,
 	spark,
 	speedinvest,
+	standardindustries,
 	superhero,
 	targetglobal,
 	techstars,
