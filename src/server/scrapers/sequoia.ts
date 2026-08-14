@@ -1,107 +1,90 @@
-import * as cheerio from 'cheerio';
 import type { ScrapedCompany } from './types';
 
-const BASE_API = "https://sequoiacap.com/wp-json/wp/v2";
+const BASE_URL = "https://sequoiacap.com";
+const BATCH_SIZE = 16;
 const UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
-interface CompanyPost {
-  slug: string;
-  title: { rendered: string };
-  categories: number[];
-}
+const text = (s: string) =>
+  s
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&#0?38;|&amp;/g, "&")
+    .replace(/&#0?39;|&#8217;|&#x27;|&rsquo;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&#8211;/g, "–")
+    .replace(/&#8203;|&#x200b;|\u200b/gi, "")
+    .replace(/&nbsp;|\u00a0/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
-// Fetch external URLs from individual company pages (in batches of 20)
-async function fetchCompanyUrl(slug: string): Promise<string> {
-  try {
-    const resp = await fetch(
-      `https://sequoiacap.com/companies/${slug}/`,
-      { headers: { "User-Agent": UA } },
-    );
-    const html = await resp.text();
-    const $ = cheerio.load(html);
-
-    let url = "";
-    $("a[href]").each((_, el) => {
-      if (url) return;
-      const href = $(el).attr("href") || "";
-      const text = $(el).text().trim().toLowerCase();
-      // Website links show the domain as text (e.g. "stripe.com")
-      if (
-        href.startsWith("http") &&
-        text.includes(".") &&
-        text.length < 40 &&
-        href.indexOf("sequoiacap") === -1
-      ) {
-        url = href;
-      }
-    });
-    return url;
-  } catch {
-    return "";
+async function fetchPage(url: string) {
+  const resp = await fetch(url, { headers: { "User-Agent": UA } });
+  if (!resp.ok) {
+    throw new Error(`Failed to fetch ${url}: ${resp.status}`);
   }
+  return resp.text();
 }
 
-const BATCH_SIZE = 20;
+// sequoia rebuilt its site on framer; the wordpress api the old scraper read is
+// gone, and the list page renders only a spotlight of companies, so the sitemap
+// is what enumerates the portfolio — one page per company
+async function detailOf(slug: string): Promise<ScrapedCompany> {
+  const html = await fetchPage(`${BASE_URL}/companies/${slug}`);
+
+  const name = text(html.match(/<title>([\s\S]*?)<\/title>/)?.[1] ?? "").replace(
+    /\s*\|\s*Sequoia Capital$/,
+    "",
+  );
+  if (!name) {
+    throw new Error(`sequoia: ${slug} names no company — the page layout moved`);
+  }
+
+  // the sectors are the chips linking back to the filtered company list
+  const sectors: string[] = [];
+  for (const chip of html.matchAll(
+    /href="\/our-companies\?categories=[a-z0-9-]+"[^>]*>([\s\S]*?)<\/a>/g,
+  )) {
+    const sector = text(chip[1]);
+    if (sector && !sectors.includes(sector)) sectors.push(sector);
+  }
+
+  const partnered = html.match(/>Partnered (\d{4})</)?.[1] ?? "";
+  // an ipo or acquisition is a milestone here, as sequoia states it — not a
+  // claim that the fund is out
+  const milestones = [...html.matchAll(/>((?:IPO|Acquired) \d{4})</g)].map((m) => m[1]);
+
+  return {
+    name,
+    category: [...sectors, partnered, ...milestones].filter(Boolean).join(", "),
+    url: html.match(/data-framer-name="14px"[^>]*href="(https?:\/\/[^"]+)"/)?.[1] ?? "",
+  };
+}
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-  // Fetch category terms to build an id->name map
-  const categoryMap = new Map<number, string>();
-  const catResp = await fetch(`${BASE_API}/categories?per_page=100`, {
-    headers: { "User-Agent": UA },
-  });
-  if (catResp.ok) {
-    for (const c of await catResp.json()) {
-      if (c.name !== "Uncategorized") {
-        const name = c.name
-          .replace(/&amp;/g, "&")
-          .replace(/&#039;/g, "'");
-        categoryMap.set(c.id, name);
-      }
-    }
+  const sitemap = await fetchPage(`${BASE_URL}/sitemap.xml`);
+  const slugs = [
+    ...new Set(
+      [...sitemap.matchAll(/<loc>https:\/\/(?:www\.)?sequoiacap\.com\/companies\/([^<\/]+?)\/?<\/loc>/g)].map(
+        (m) => m[1],
+      ),
+    ),
+  ];
+  if (slugs.length === 0) {
+    throw new Error("sequoia: no company pages in the sitemap");
   }
 
-  // Fetch all companies via WP REST API (paginated, 100 per page)
-  const posts: CompanyPost[] = [];
-  let page = 1;
-
-  while (true) {
-    const resp = await fetch(
-      `${BASE_API}/company?per_page=100&page=${page}&_fields=slug,title,categories`,
-      { headers: { "User-Agent": UA } },
-    );
-    if (resp.status === 400) break;
-
-    const data: CompanyPost[] = await resp.json();
-    if (data.length === 0) break;
-    posts.push(...data);
-    page++;
+  const companies: ScrapedCompany[] = [];
+  for (let i = 0; i < slugs.length; i += BATCH_SIZE) {
+    const batch = await Promise.all(slugs.slice(i, i + BATCH_SIZE).map(detailOf));
+    companies.push(...batch);
   }
 
-  const urlMap = new Map<string, string>();
-
-  for (let i = 0; i < posts.length; i += BATCH_SIZE) {
-    const batch = posts.slice(i, i + BATCH_SIZE);
-    const results = await Promise.all(
-      batch.map(async (p) => ({
-        slug: p.slug,
-        url: await fetchCompanyUrl(p.slug),
-      })),
-    );
-    for (const r of results) {
-      urlMap.set(r.slug, r.url);
-    }
+  if (!companies.some((company) => company.category)) {
+    throw new Error("sequoia: the company pages' sectors and milestones moved");
   }
-
-  // Build final company list
-  const companies: ScrapedCompany[] = posts.map((p) => ({
-    name: p.title.rendered,
-    category: p.categories
-      .map((id) => categoryMap.get(id))
-      .filter(Boolean)
-      .join(", "),
-    url: urlMap.get(p.slug) || "",
-  }));
+  if (!companies.some((company) => company.url)) {
+    throw new Error("sequoia: the company pages' website links moved");
+  }
 
   return companies;
 }
