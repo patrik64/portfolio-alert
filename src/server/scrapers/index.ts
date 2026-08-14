@@ -23,6 +23,7 @@ import { scrape as behold } from './behold';
 import { scrape as bessemer } from './bessemer';
 import { scrape as blume } from './blume';
 import { scrape as calmstorm } from './calmstorm';
+import { scrape as canapi } from './canapi';
 import { scrape as boxgroup } from './boxgroup';
 import { scrape as creandum } from './creandum';
 import { scrape as draper } from './draper';
@@ -56,6 +57,7 @@ import { scrape as nexus } from './nexus';
 import { scrape as northzone } from './northzone';
 import { scrape as norwest } from './norwest';
 import { scrape as octopus } from './octopus';
+import { scrape as oneequity } from './oneequity';
 import { scrape as openocean } from './openocean';
 import { scrape as otb } from './otb';
 import { scrape as palladium } from './palladium';
@@ -109,6 +111,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	bessemer,
 	blume,
 	calmstorm,
+	canapi,
 	boxgroup,
 	creandum,
 	draper,
@@ -142,6 +145,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	northzone,
 	norwest,
 	octopus,
+	oneequity,
 	openocean,
 	otb,
 	palladium,
