@@ -1,20 +1,16 @@
 <script lang="ts">
-	import { repo } from 'remult';
-	import { Company } from '../../shared/Company';
 	import { fundName } from '../../shared/funds';
-
-	const LIMIT = 500;
+	import { ScrapeController, SEARCH_LIMIT, type SearchHit } from '../../shared/ScrapeController';
 
 	let search = $state('');
-	let results = $state<Company[]>([]);
+	let results = $state<SearchHit[]>([]);
 	let searching = $state(false);
 	let searched = $state(false);
 	let total = $state(0);
 
 	$effect(() => {
-		repo(Company)
-			.count()
-			.then((n) => (total = n));
+		// a company backed by several funds is counted once
+		ScrapeController.countCompanies().then((n) => (total = n));
 	});
 
 	$effect(() => {
@@ -28,11 +24,7 @@
 		searching = true;
 		// debounce; the cleanup cancels the pending query when the user keeps typing
 		const timer = setTimeout(async () => {
-			const rows = await repo(Company).find({
-				where: { $or: [{ name: { $contains: q } }, { category: { $contains: q } }] },
-				orderBy: { name: 'asc' },
-				limit: LIMIT
-			});
+			const rows = await ScrapeController.searchCompanies(q);
 			if (q === search.trim()) {
 				results = rows;
 				searching = false;
@@ -56,9 +48,11 @@
 			{#if searching}
 				searching…
 			{:else if searched}
-				{results.length === LIMIT ? `first ${LIMIT} matches` : `${results.length} matches`}
+				{results.length === SEARCH_LIMIT
+					? `first ${SEARCH_LIMIT} matches`
+					: `${results.length} matches`}
 			{:else if total}
-				({total} companies)
+				({total.toLocaleString()} companies)
 			{/if}
 		</span>
 	</div>
@@ -66,7 +60,7 @@
 	<!-- svelte-ignore a11y_autofocus -->
 	<input
 		type="text"
-		placeholder="search all companies by name or category…"
+		placeholder='search all companies by name or category… wrap in "quotes" for exact matches'
 		bind:value={search}
 		autofocus
 		class="form-input mt-3 w-full focus:shadow-outline-green"
@@ -104,7 +98,11 @@
 						>
 							{fundName.get(company.fundSlug) ?? company.fundSlug}
 						</a>
-						<span>first seen {company.firstSeenAt?.toLocaleDateString()}</span>
+						<span>
+						first seen {company.firstSeenAt
+							? new Date(company.firstSeenAt).toLocaleDateString()
+							: ''}
+					</span>
 					</div>
 				</li>
 			{/each}

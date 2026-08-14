@@ -11,6 +11,18 @@ export interface FetchResult {
 	baseline: boolean;
 }
 
+// a search result row; firstSeenAt travels as an ISO string over the wire
+export interface SearchHit {
+	id: string;
+	fundSlug: string;
+	name: string;
+	category: string;
+	url: string;
+	firstSeenAt: string;
+}
+
+export const SEARCH_LIMIT = 500;
+
 // scraped text often carries HTML entities ("Abbot&#8217;s", "AI &amp; ML");
 // decode once here so every fund gets clean names and categories
 const NAMED_ENTITIES: Record<string, string> = {
@@ -121,6 +133,61 @@ export class ScrapeController {
 		} finally {
 			inFlight.delete(slug);
 		}
+	}
+
+	// a term in quotes asks for exact matches only: a company named exactly
+	// that, or carrying exactly that category tag — both case-insensitively.
+	// exactness is decided here rather than in the browser, because the rows a
+	// substring query returns are capped and the exact ones must not be lost
+	// behind that cap
+	@BackendMethod({ allowed: true })
+	static async searchCompanies(term: string): Promise<SearchHit[]> {
+		const q = term.trim();
+		const quoted = q.match(/^"([\s\S]+)"$/) ?? q.match(/^'([\s\S]+)'$/);
+		const needle = (quoted?.[1] ?? q).trim();
+		if (!needle) return [];
+
+		const rows = await repo(Company).find({
+			where: { $or: [{ name: { $contains: needle } }, { category: { $contains: needle } }] },
+			orderBy: { name: 'asc' },
+			limit: quoted ? 100_000 : SEARCH_LIMIT
+		});
+
+		const key = needle.toLowerCase();
+		const hits = quoted
+			? rows.filter(
+					(company) =>
+						company.name.trim().toLowerCase() === key ||
+						company.category
+							.toLowerCase()
+							.split(',')
+							.some((tag) => tag.trim() === key)
+				)
+			: rows;
+
+		return hits.slice(0, SEARCH_LIMIT).map((company) => ({
+			id: company.id,
+			fundSlug: company.fundSlug,
+			name: company.name,
+			category: company.category,
+			url: company.url,
+			firstSeenAt: company.firstSeenAt?.toISOString() ?? ''
+		}));
+	}
+
+	// the same company may be backed by several funds, so it is counted once:
+	// by the address it lives at, or by its name (case-insensitively) when no
+	// address is published
+	@BackendMethod({ allowed: true })
+	static async countCompanies(): Promise<number> {
+		const rows = await repo(Company).find({ limit: 100_000 });
+		const urls = new Set<string>();
+		const names = new Set<string>();
+		for (const company of rows) {
+			if (company.url) urls.add(company.url);
+			else names.add(nameKey(company.name));
+		}
+		return urls.size + names.size;
 	}
 
 	// "clean" on the newcomers page: acknowledge the current newcomers so the
