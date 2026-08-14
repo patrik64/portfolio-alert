@@ -18,6 +18,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'accel', name: 'Accel', url: 'https://www.accel.com/companies' },
 	{ slug: 'advent', name: 'Advent International', url: 'https://www.adventinternational.com/investments/' },
 	{ slug: 'aisling', name: 'Aisling Capital', url: 'https://www.aislingcapital.com/portfolio' },
+	{
+		slug: 'alchemist',
+		name: 'Alchemist Accelerator',
+		url: 'https://www.alchemistaccelerator.com/portfolio'
+	},
 	{ slug: 'alumni', name: 'Alumni Ventures', url: 'https://www.av.vc/portfolio' },
 	{ slug: 'a16z', name: 'Andreessen Horowitz', url: 'https://a16z.com/portfolio/' },
 	{ slug: 'antler', name: 'Antler', url: 'https://www.antler.co/portfolio' },
@@ -38,6 +43,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'creandum', name: 'Creandum', url: 'https://creandum.com/commitments/' },
 	{ slug: 'draper', name: 'Draper Associates', url: 'https://www.draper.vc/portfolio' },
 	{ slug: 'eclipse', name: 'Eclipse Ventures', url: 'https://eclipse.capital/portfolio/' },
+	{ slug: 'ef', name: 'Entrepreneurs First', url: 'https://www.joinef.com/portfolio/' },
 	{ slug: 'eqt', name: 'EQT Group', url: 'https://eqtgroup.com/about/current-portfolio' },
 	{ slug: 'filrouge', name: 'Fil Rouge Capital', url: 'https://www.filrougecapital.com/portfolio' },
 	{ slug: 'flagship', name: 'Flagship Pioneering', url: 'https://www.flagshippioneering.com/companies' },
@@ -87,6 +93,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'silversmith', name: 'Silversmith', url: 'https://www.silversmith.com/portfolio' },
 	{ slug: 'slow', name: 'Slow Ventures', url: 'https://slow.co/about/' },
 	{ slug: 'sosv', name: 'SOSV', url: 'https://sosv.com/portfolio/' },
+	{
+		slug: 'southparkcommons',
+		name: 'South Park Commons',
+		url: 'https://www.southparkcommons.com/companies'
+	},
 	{ slug: 'spark', name: 'Spark Capital', url: 'https://www.sparkcapital.com/companies' },
 	{ slug: 'speedinvest', name: 'Speedinvest', url: 'https://www.speedinvest.com/portfolio' },
 	{ slug: 'superhero', name: 'Superhero', url: 'https://superherocapital.com/portfolio/' },

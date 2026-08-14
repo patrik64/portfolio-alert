@@ -10,6 +10,7 @@ import { scrape as acapital } from './acapital';
 import { scrape as accel } from './accel';
 import { scrape as advent } from './advent';
 import { scrape as aisling } from './aisling';
+import { scrape as alchemist } from './alchemist';
 import { scrape as alumni } from './alumni';
 import { scrape as antler } from './antler';
 import { scrape as apex } from './apex';
@@ -29,6 +30,7 @@ import { scrape as boxgroup } from './boxgroup';
 import { scrape as creandum } from './creandum';
 import { scrape as draper } from './draper';
 import { scrape as eclipse } from './eclipse';
+import { scrape as ef } from './ef';
 import { scrape as eqt } from './eqt';
 import { scrape as filrouge } from './filrouge';
 import { scrape as flagship } from './flagship';
@@ -78,6 +80,7 @@ import { scrape as sequoia } from './sequoia';
 import { scrape as silversmith } from './silversmith';
 import { scrape as slow } from './slow';
 import { scrape as sosv } from './sosv';
+import { scrape as southparkcommons } from './southparkcommons';
 import { scrape as spark } from './spark';
 import { scrape as speedinvest } from './speedinvest';
 import { scrape as superhero } from './superhero';
@@ -102,6 +105,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	accel,
 	advent,
 	aisling,
+	alchemist,
 	alumni,
 	antler,
 	apex,
@@ -121,6 +125,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	creandum,
 	draper,
 	eclipse,
+	ef,
 	eqt,
 	filrouge,
 	flagship,
@@ -170,6 +175,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	silversmith,
 	slow,
 	sosv,
+	southparkcommons,
 	spark,
 	speedinvest,
 	superhero,
