@@ -1,5 +1,17 @@
 <script lang="ts">
+	import { repo } from 'remult';
+	import { Fund } from '../../shared/Fund';
 	import { FUNDS } from '../../shared/funds';
+
+	let companyCount = $state(0);
+
+	$effect(() => {
+		repo(Fund)
+			.find({ limit: 100 })
+			.then((rows) => {
+				companyCount = rows.reduce((total, fund) => total + fund.companyCount, 0);
+			});
+	});
 </script>
 
 <svelte:head>
@@ -7,7 +19,17 @@
 </svelte:head>
 
 <div class="mx-auto mt-2 w-full max-w-[53rem] px-6 py-4 lg:dashed-frame">
-	<h1 class="text-lg font-semibold">about</h1>
+	<div class="flex flex-wrap items-center justify-between gap-2">
+		<h1 class="text-lg font-semibold">about</h1>
+		<!-- the counts come from the funds themselves, so they are whatever the
+		     last fetch of each one found -->
+		<span class="text-sm text-gray-600">
+			{FUNDS.length} funds
+			{#if companyCount > 0}
+				· {companyCount.toLocaleString()} companies
+			{/if}
+		</span>
+	</div>
 
 	<div class="mt-4 flex flex-col gap-4 text-sm text-gray-700">
 		<p>
