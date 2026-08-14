@@ -17,12 +17,14 @@ import { scrape as apex } from './apex';
 import { scrape as atlas } from './atlas';
 import { scrape as av8 } from './av8';
 import { scrape as avp } from './avp';
+import { scrape as aws } from './aws';
 import { scrape as baincapital } from './baincapital';
 import { scrape as b2venture } from './b2venture';
 import { scrape as base10 } from './base10';
 import { scrape as battery } from './battery';
 import { scrape as behold } from './behold';
 import { scrape as bessemer } from './bessemer';
+import { scrape as bluventures } from './bluventures';
 import { scrape as blume } from './blume';
 import { scrape as calmstorm } from './calmstorm';
 import { scrape as canapi } from './canapi';
@@ -84,6 +86,7 @@ import { scrape as southparkcommons } from './southparkcommons';
 import { scrape as spark } from './spark';
 import { scrape as speedinvest } from './speedinvest';
 import { scrape as superhero } from './superhero';
+import { scrape as targetglobal } from './targetglobal';
 import { scrape as techstars } from './techstars';
 import { scrape as thomabravo } from './thomabravo';
 import { scrape as townhall } from './townhall';
@@ -112,12 +115,14 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	atlas,
 	av8,
 	avp,
+	aws,
 	baincapital,
 	b2venture,
 	base10,
 	battery,
 	behold,
 	bessemer,
+	bluventures,
 	blume,
 	calmstorm,
 	canapi,
@@ -179,6 +184,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	spark,
 	speedinvest,
 	superhero,
+	targetglobal,
 	techstars,
 	thomabravo,
 	townhall,
