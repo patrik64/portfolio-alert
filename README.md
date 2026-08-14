@@ -31,6 +31,7 @@ live at https://portfolio-alert.vercel.app
   and then by fund, newest day first, in collapsible sections.
 - **download** (`/download`) — downloads a JSON file with all companies grouped
   by fund (name, category, url and first-seen date per company).
+- **about** (`/about`) — what the app does and how the pages fit together.
 
 Every company row shows when the company was first encountered ("first seen").
 

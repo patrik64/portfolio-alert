@@ -47,18 +47,18 @@
 						home
 					</a>
 					<a
-						href="/newcomers"
-						onclick={() => (menuOpen = false)}
-						class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-					>
-						newcomers
-					</a>
-					<a
 						href="/search"
 						onclick={() => (menuOpen = false)}
 						class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
 					>
 						search
+					</a>
+					<a
+						href="/newcomers"
+						onclick={() => (menuOpen = false)}
+						class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+					>
+						newcomers
 					</a>
 					<a
 						href="/timeline"
@@ -84,6 +84,13 @@
 						class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
 					>
 						github
+					</a>
+					<a
+						href="/about"
+						onclick={() => (menuOpen = false)}
+						class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+					>
+						about
 					</a>
 				</div>
 			{/if}
