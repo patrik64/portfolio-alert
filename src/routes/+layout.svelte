@@ -27,7 +27,7 @@
 					e.stopPropagation();
 					menuOpen = !menuOpen;
 				}}
-				class="flex h-8 w-8 items-center justify-center rounded-full border border-gray-600 transition duration-150 ease-in-out hover:bg-tertiary-500 focus:outline-none"
+				class="flex h-8 w-8 items-center justify-center rounded-full border border-frame transition duration-150 ease-in-out hover:bg-tertiary-500 focus:outline-none"
 			>
 				<svg width="20" height="20" viewBox="0 0 20 20" fill="gray">
 					<path
@@ -44,7 +44,7 @@
 						onclick={() => (menuOpen = false)}
 						class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
 					>
-						home
+						funds
 					</a>
 					<a
 						href="/search"

@@ -24,13 +24,18 @@
 	--color-medium-500: #bbc4c3;
 	--color-light-500: #eaf0f0;
 
-	/* Tailwind v1 gray/red scales (qlist predates the v2+ palette change) */
+	/* Tailwind v1 gray/red scales (qlist predates the v2+ palette change).
+	   500 and 600 carry the muted text — categories, counts, dates — and are
+	   darkened from the original scale so that text is readable on white */
 	--color-gray-100: #f7fafc;
 	--color-gray-200: #edf2f7;
 	--color-gray-300: #e2e8f0;
 	--color-gray-400: #cbd5e0;
-	--color-gray-500: #a0aec0;
-	--color-gray-600: #718096;
+	--color-gray-500: #68778c;
+	--color-gray-600: #55637a;
+	/* the page frame and the menu button keep the lighter grey the text used
+	   to be drawn in — they are lines, not something to read */
+	--color-frame: #718096;
 	--color-gray-700: #4a5568;
 	--color-gray-800: #2d3748;
 	--color-gray-900: #1a202c;
@@ -84,10 +89,10 @@ body {
    pattern repeats identically at any height, in every browser. */
 @utility dashed-frame {
 	background-image:
-		linear-gradient(to right, var(--color-gray-600) 0 2px, transparent 2px 6px),
-		linear-gradient(to right, var(--color-gray-600) 0 2px, transparent 2px 6px),
-		linear-gradient(to bottom, var(--color-gray-600) 0 2px, transparent 2px 6px),
-		linear-gradient(to bottom, var(--color-gray-600) 0 2px, transparent 2px 6px);
+		linear-gradient(to right, var(--color-frame) 0 2px, transparent 2px 6px),
+		linear-gradient(to right, var(--color-frame) 0 2px, transparent 2px 6px),
+		linear-gradient(to bottom, var(--color-frame) 0 2px, transparent 2px 6px),
+		linear-gradient(to bottom, var(--color-frame) 0 2px, transparent 2px 6px);
 	background-size:
 		6px 2px,
 		6px 2px,
