@@ -26,13 +26,16 @@ import { scrape as behold } from './behold';
 import { scrape as bessemer } from './bessemer';
 import { scrape as bluventures } from './bluventures';
 import { scrape as blume } from './blume';
+import { scrape as broocknell } from './broocknell';
 import { scrape as calmstorm } from './calmstorm';
 import { scrape as canapi } from './canapi';
 import { scrape as boxgroup } from './boxgroup';
+import { scrape as credo } from './credo';
 import { scrape as creandum } from './creandum';
 import { scrape as draper } from './draper';
 import { scrape as eclipse } from './eclipse';
 import { scrape as ef } from './ef';
+import { scrape as episode1 } from './episode1';
 import { scrape as eqt } from './eqt';
 import { scrape as filrouge } from './filrouge';
 import { scrape as flagship } from './flagship';
@@ -93,6 +96,7 @@ import { scrape as targetglobal } from './targetglobal';
 import { scrape as techstars } from './techstars';
 import { scrape as thomabravo } from './thomabravo';
 import { scrape as townhall } from './townhall';
+import { scrape as trianglepeak } from './trianglepeak';
 import { scrape as transformation } from './transformation';
 import { scrape as venrock } from './venrock';
 import { scrape as viking } from './viking';
@@ -127,13 +131,16 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	bessemer,
 	bluventures,
 	blume,
+	broocknell,
 	calmstorm,
 	canapi,
 	boxgroup,
+	credo,
 	creandum,
 	draper,
 	eclipse,
 	ef,
+	episode1,
 	eqt,
 	filrouge,
 	flagship,
@@ -194,6 +201,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	techstars,
 	thomabravo,
 	townhall,
+	trianglepeak,
 	transformation,
 	venrock,
 	viking,
