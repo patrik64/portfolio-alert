@@ -3,9 +3,16 @@
 	import Spinner from '$lib/components/Spinner.svelte';
 	import { Company } from '../../shared/Company';
 	import { FUNDS } from '../../shared/funds';
+	import { ScrapeController } from '../../shared/ScrapeController';
 
 	let companies = $state<Company[]>([]);
 	let loading = $state(true);
+	let total = $state(0);
+
+	$effect(() => {
+		// a company backed by several funds is counted once
+		ScrapeController.countCompanies().then((n) => (total = n));
+	});
 
 	$effect(() => {
 		repo(Company)
@@ -53,9 +60,9 @@
 >
 	<div class="flex flex-wrap items-center justify-between gap-2">
 		<h1 class="text-lg font-semibold">timeline</h1>
-		{#if !loading}
+		{#if !loading && total}
 			<span class="text-sm text-gray-600">
-				{companies.length} companies over {days.length} {days.length === 1 ? 'day' : 'days'}
+				{total.toLocaleString()} companies over {days.length} {days.length === 1 ? 'day' : 'days'}
 			</span>
 		{/if}
 	</div>
