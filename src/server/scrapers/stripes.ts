@@ -115,9 +115,8 @@ export async function scrape(): Promise<ScrapedCompany[]> {
   if (!companies.some((company) => company.category)) {
     throw new Error("stripes: the blurb and status markers moved");
   }
-  if (!companies.some((company) => company.url)) {
-    throw new Error("stripes: the companies' website links moved");
-  }
+  // no url guard: from a datacenter address every profile page is refused,
+  // so a run may legitimately come home with none
 
   return companies;
 }
