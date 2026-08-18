@@ -30,7 +30,6 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'a16z', name: 'Andreessen Horowitz', url: 'https://a16z.com/portfolio/' },
 	{ slug: 'antler', name: 'Antler', url: 'https://www.antler.co/portfolio' },
 	{ slug: 'archventure', name: 'ARCH Venture Partners', url: 'https://archventure.com/portfolio/' },
-	{ slug: 'atomico', name: 'Atomico', url: 'https://atomico.com/partners' },
 	{ slug: 'apex', name: 'Apex Ventures', url: 'https://www.apex.ventures/portfolio' },
 	{ slug: 'atlas', name: 'Atlas Venture', url: 'https://atlasventure.com/portfolio/' },
 	{ slug: 'av8', name: 'AV8', url: 'https://av8.vc/our-portfolio/' },
@@ -111,6 +110,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'palladium', name: 'Palladium', url: 'https://www.palladiumequity.com/investments' },
 	{ slug: 'pear', name: 'Pear VC', url: 'https://pear.vc/companies/' },
 	{ slug: 'pillar', name: 'Pillar VC', url: 'https://www.pillar.vc/companies/' },
+	{ slug: 'pitango', name: 'Pitango', url: 'https://www.pitango.com/portfolio/' },
 	{ slug: 'plugandplay', name: 'Plug and Play', url: 'https://www.plugandplaytechcenter.com/innovation-services/startups/our-startups' },
 	{ slug: 'pointnine', name: 'Point Nine', url: 'https://www.pointnine.com/companies' },
 	{ slug: 'polaris', name: 'Polaris Partners', url: 'https://polarispartners.com/companies-list' },
@@ -157,6 +157,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'usv', name: 'Union Square Ventures', url: 'https://www.usv.com/companies/' },
 	{ slug: 'venrock', name: 'Venrock', url: 'https://www.venrock.com/companies/' },
 	{ slug: 'viking', name: 'Viking', url: 'https://vikingglobal.com/private-equity-portfolio/' },
+	{ slug: 'viola', name: 'Viola', url: 'https://www.viola-group.com/portfolio/' },
 	{
 		slug: 'wellington',
 		name: 'Wellington',

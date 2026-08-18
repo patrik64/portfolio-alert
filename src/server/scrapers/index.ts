@@ -18,7 +18,6 @@ import { scrape as alumni } from './alumni';
 import { scrape as antler } from './antler';
 import { scrape as apex } from './apex';
 import { scrape as archventure } from './archventure';
-import { scrape as atomico } from './atomico';
 import { scrape as atlas } from './atlas';
 import { scrape as av8 } from './av8';
 import { scrape as avp } from './avp';
@@ -98,6 +97,7 @@ import { scrape as otb } from './otb';
 import { scrape as palladium } from './palladium';
 import { scrape as pear } from './pear';
 import { scrape as pillar } from './pillar';
+import { scrape as pitango } from './pitango';
 import { scrape as plugandplay } from './plugandplay';
 import { scrape as pointnine } from './pointnine';
 import { scrape as polaris } from './polaris';
@@ -132,6 +132,7 @@ import { scrape as uncork } from './uncork';
 import { scrape as usv } from './usv';
 import { scrape as venrock } from './venrock';
 import { scrape as viking } from './viking';
+import { scrape as viola } from './viola';
 import { scrape as wellington } from './wellington';
 import { scrape as xyz } from './xyz';
 import { scrape as ycombinator } from './ycombinator';
@@ -155,7 +156,6 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	antler,
 	apex,
 	archventure,
-	atomico,
 	atlas,
 	av8,
 	avp,
@@ -235,6 +235,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	palladium,
 	pear,
 	pillar,
+	pitango,
 	plugandplay,
 	pointnine,
 	polaris,
@@ -269,6 +270,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	usv,
 	venrock,
 	viking,
+	viola,
 	wellington,
 	xyz,
 	ycombinator,
