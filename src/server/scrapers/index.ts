@@ -37,6 +37,7 @@ import { scrape as calmstorm } from './calmstorm';
 import { scrape as canapi } from './canapi';
 import { scrape as congruent } from './congruent';
 import { scrape as boxgroup } from './boxgroup';
+import { scrape as craft } from './craft';
 import { scrape as credo } from './credo';
 import { scrape as creandum } from './creandum';
 import { scrape as dcvc } from './dcvc';
@@ -67,10 +68,12 @@ import { scrape as hvcapital } from './hvcapital';
 import { scrape as indexventures } from './indexventures';
 import { scrape as indiebio } from './indiebio';
 import { scrape as industrifonden } from './industrifonden';
+import { scrape as initialized } from './initialized';
 import { scrape as innovestor } from './innovestor';
 import { scrape as inovia } from './inovia';
 import { scrape as insight } from './insight';
 import { scrape as invus } from './invus';
+import { scrape as ivp } from './ivp';
 import { scrape as khosla } from './khosla';
 import { scrape as kima } from './kima';
 import { scrape as kleiner } from './kleiner';
@@ -165,6 +168,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	canapi,
 	congruent,
 	boxgroup,
+	craft,
 	credo,
 	creandum,
 	dcvc,
@@ -195,10 +199,12 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	indexventures,
 	indiebio,
 	industrifonden,
+	initialized,
 	innovestor,
 	inovia,
 	insight,
 	invus,
+	ivp,
 	khosla,
 	kima,
 	kleiner,
