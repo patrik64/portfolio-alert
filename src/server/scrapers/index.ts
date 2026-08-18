@@ -5,6 +5,7 @@ import { scrape as zeroonea } from './01a';
 import { scrape as twentyonefifty } from './twentyonefifty';
 import { scrape as threevc } from './3vc';
 import { scrape as fivehundred } from './fivehundred';
+import { scrape as sevenpercent } from './sevenpercent';
 import { scrape as a16z } from './a16z';
 import { scrape as acapital } from './acapital';
 import { scrape as accel } from './accel';
@@ -30,6 +31,7 @@ import { scrape as blume } from './blume';
 import { scrape as broocknell } from './broocknell';
 import { scrape as calmstorm } from './calmstorm';
 import { scrape as canapi } from './canapi';
+import { scrape as congruent } from './congruent';
 import { scrape as boxgroup } from './boxgroup';
 import { scrape as credo } from './credo';
 import { scrape as creandum } from './creandum';
@@ -46,6 +48,7 @@ import { scrape as flybridge } from './flybridge';
 import { scrape as g2 } from './g2';
 import { scrape as generalatlantic } from './generalatlantic';
 import { scrape as generalcatalyst } from './generalcatalyst';
+import { scrape as gigascale } from './gigascale';
 import { scrape as glasswing } from './glasswing';
 import { scrape as greycroft } from './greycroft';
 import { scrape as headline } from './headline';
@@ -79,6 +82,7 @@ import { scrape as pear } from './pear';
 import { scrape as pillar } from './pillar';
 import { scrape as plugandplay } from './plugandplay';
 import { scrape as polaris } from './polaris';
+import { scrape as prelude } from './prelude';
 import { scrape as push } from './push';
 import { scrape as quantonation } from './quantonation';
 import { scrape as racap } from './racap';
@@ -114,6 +118,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	'2150': twentyonefifty,
 	'3vc': threevc,
 	'500': fivehundred,
+	'7percent': sevenpercent,
 	a16z,
 	acapital,
 	accel,
@@ -139,6 +144,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	broocknell,
 	calmstorm,
 	canapi,
+	congruent,
 	boxgroup,
 	credo,
 	creandum,
@@ -155,6 +161,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	g2,
 	generalatlantic,
 	generalcatalyst,
+	gigascale,
 	glasswing,
 	greycroft,
 	headline,
@@ -188,6 +195,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	pillar,
 	plugandplay,
 	polaris,
+	prelude,
 	push,
 	quantonation,
 	racap,
