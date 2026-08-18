@@ -45,6 +45,11 @@
 	--color-red-600: #e53e3e;
 	--color-red-700: #c53030;
 
+	/* a light teal — primary-500 thinned onto white, a shade past the
+	   light-500 hover — marking rows that came in with a fund's baseline
+	   import rather than as genuine newcomers */
+	--color-baseline: #e0efed;
+
 	/* page background — soft green */
 	--color-page-500: #cde5c0;
 }

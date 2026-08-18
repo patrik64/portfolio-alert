@@ -28,6 +28,19 @@
 	const dayKey = (d: Date) =>
 		`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
+	// a fund's first-ever day on the timeline is its baseline import — those
+	// rows are tinted to set them apart from genuine newcomers
+	const firstDayByFund = $derived.by(() => {
+		const first = new Map<string, string>();
+		for (const c of companies) {
+			if (!c.firstSeenAt) continue;
+			const key = dayKey(c.firstSeenAt);
+			const known = first.get(c.fundSlug);
+			if (!known || key < known) first.set(c.fundSlug, key);
+		}
+		return first;
+	});
+
 	const days = $derived.by(() => {
 		const byDay = new Map<string, Company[]>();
 		for (const c of companies) {
@@ -63,6 +76,7 @@
 		{#if !loading && total}
 			<span class="text-sm text-gray-600">
 				{total.toLocaleString()} companies over {days.length} {days.length === 1 ? 'day' : 'days'}
+				· <span class="rounded bg-baseline px-1.5 py-0.5">baseline import</span>
 			</span>
 		{/if}
 	</div>
@@ -84,16 +98,24 @@
 				</h2>
 				<div class="mt-3 flex flex-col gap-3">
 					{#each day.funds as group (group.slug)}
+						{@const baseline = firstDayByFund.get(group.slug) === day.day}
 						<details class="rounded-lg bg-white shadow-lg">
 							<summary
 								class="cursor-pointer px-4 py-3 font-semibold text-gray-800 transition duration-150 select-none hover:text-tertiary-600"
 							>
 								{group.name}
 								<span class="ml-1 text-sm font-normal text-gray-500">({group.companies.length})</span>
+								{#if baseline}
+									<span class="ml-1 rounded bg-baseline px-1.5 py-0.5 text-xs font-normal text-gray-600">
+										baseline import
+									</span>
+								{/if}
 							</summary>
 							<ul class="divide-y divide-gray-200 border-t border-gray-200">
 								{#each group.companies as company (company.id)}
-									<li class="flex items-center justify-between gap-3 px-4 py-2">
+									<li
+										class={`flex items-center justify-between gap-3 px-4 py-2 ${baseline ? 'bg-baseline' : ''}`}
+									>
 										<div class="min-w-0">
 											{#if company.url.startsWith('http')}
 												<a
