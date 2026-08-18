@@ -46,11 +46,13 @@ import { scrape as flagship } from './flagship';
 import { scrape as fly } from './fly';
 import { scrape as flybridge } from './flybridge';
 import { scrape as g2 } from './g2';
+import { scrape as gv } from './gv';
 import { scrape as generalatlantic } from './generalatlantic';
 import { scrape as generalcatalyst } from './generalcatalyst';
 import { scrape as gigascale } from './gigascale';
 import { scrape as glasswing } from './glasswing';
 import { scrape as greycroft } from './greycroft';
+import { scrape as greylock } from './greylock';
 import { scrape as headline } from './headline';
 import { scrape as htgf } from './htgf';
 import { scrape as hvcapital } from './hvcapital';
@@ -61,6 +63,7 @@ import { scrape as innovestor } from './innovestor';
 import { scrape as inovia } from './inovia';
 import { scrape as insight } from './insight';
 import { scrape as invus } from './invus';
+import { scrape as khosla } from './khosla';
 import { scrape as kima } from './kima';
 import { scrape as kleiner } from './kleiner';
 import { scrape as kinnevik } from './kinnevik';
@@ -159,11 +162,13 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	fly,
 	flybridge,
 	g2,
+	gv,
 	generalatlantic,
 	generalcatalyst,
 	gigascale,
 	glasswing,
 	greycroft,
+	greylock,
 	headline,
 	htgf,
 	hvcapital,
@@ -174,6 +179,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	inovia,
 	insight,
 	invus,
+	khosla,
 	kima,
 	kleiner,
 	kinnevik,
