@@ -6,12 +6,14 @@ import { scrape as twentyonefifty } from './twentyonefifty';
 import { scrape as threevc } from './3vc';
 import { scrape as fivehundred } from './fivehundred';
 import { scrape as sevenpercent } from './sevenpercent';
+import { scrape as eightythreenorth } from './eightythreenorth';
 import { scrape as a16z } from './a16z';
 import { scrape as acapital } from './acapital';
 import { scrape as accel } from './accel';
 import { scrape as advent } from './advent';
 import { scrape as aisling } from './aisling';
 import { scrape as alchemist } from './alchemist';
+import { scrape as aleph } from './aleph';
 import { scrape as alumni } from './alumni';
 import { scrape as antler } from './antler';
 import { scrape as apex } from './apex';
@@ -38,6 +40,7 @@ import { scrape as credo } from './credo';
 import { scrape as creandum } from './creandum';
 import { scrape as dcvc } from './dcvc';
 import { scrape as draper } from './draper';
+import { scrape as earlybird } from './earlybird';
 import { scrape as eclipse } from './eclipse';
 import { scrape as ef } from './ef';
 import { scrape as episode1 } from './episode1';
@@ -128,12 +131,14 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	'3vc': threevc,
 	'500': fivehundred,
 	'7percent': sevenpercent,
+	'83north': eightythreenorth,
 	a16z,
 	acapital,
 	accel,
 	advent,
 	aisling,
 	alchemist,
+	aleph,
 	alumni,
 	antler,
 	apex,
@@ -160,6 +165,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	creandum,
 	dcvc,
 	draper,
+	earlybird,
 	eclipse,
 	ef,
 	episode1,

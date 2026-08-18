@@ -15,6 +15,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: '3vc', name: '3VC', url: 'https://three.vc/portfolio/' },
 	{ slug: '500', name: '500 Global', url: 'https://500.co/portfolio' },
 	{ slug: '7percent', name: '7percent', url: 'https://www.7pc.vc/portfolio' },
+	{ slug: '83north', name: '83North', url: 'https://www.83north.com/companies/' },
 	{ slug: 'acapital', name: 'A Capital', url: 'https://acapital.com/portfolio' },
 	{ slug: 'accel', name: 'Accel', url: 'https://www.accel.com/companies' },
 	{ slug: 'advent', name: 'Advent International', url: 'https://www.adventinternational.com/investments/' },
@@ -24,6 +25,7 @@ export const FUNDS: FundInfo[] = [
 		name: 'Alchemist Accelerator',
 		url: 'https://www.alchemistaccelerator.com/portfolio'
 	},
+	{ slug: 'aleph', name: 'Aleph', url: 'https://www.aleph.vc/companies' },
 	{ slug: 'alumni', name: 'Alumni Ventures', url: 'https://www.av.vc/portfolio' },
 	{ slug: 'a16z', name: 'Andreessen Horowitz', url: 'https://a16z.com/portfolio/' },
 	{ slug: 'antler', name: 'Antler', url: 'https://www.antler.co/portfolio' },
@@ -51,6 +53,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'creandum', name: 'Creandum', url: 'https://creandum.com/commitments/' },
 	{ slug: 'dcvc', name: 'DCVC', url: 'https://www.dcvc.com/companies' },
 	{ slug: 'draper', name: 'Draper Associates', url: 'https://www.draper.vc/portfolio' },
+	{ slug: 'earlybird', name: 'Earlybird', url: 'https://earlybird.com/companies' },
 	{ slug: 'eclipse', name: 'Eclipse Ventures', url: 'https://eclipse.capital/portfolio/' },
 	{ slug: 'ef', name: 'Entrepreneurs First', url: 'https://www.joinef.com/portfolio/' },
 	{ slug: 'episode1', name: 'Episode 1', url: 'https://www.episode1.com/portfolio' },
