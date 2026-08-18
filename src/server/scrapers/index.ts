@@ -43,6 +43,7 @@ import { scrape as episode1 } from './episode1';
 import { scrape as eqt } from './eqt';
 import { scrape as filrouge } from './filrouge';
 import { scrape as flagship } from './flagship';
+import { scrape as foundersfund } from './foundersfund';
 import { scrape as fly } from './fly';
 import { scrape as flybridge } from './flybridge';
 import { scrape as g2 } from './g2';
@@ -73,6 +74,7 @@ import { scrape as lightspeed } from './lightspeed';
 import { scrape as menlo } from './menlo';
 import { scrape as mig } from './mig';
 import { scrape as mouro } from './mouro';
+import { scrape as nea } from './nea';
 import { scrape as nexus } from './nexus';
 import { scrape as northzone } from './northzone';
 import { scrape as norwest } from './norwest';
@@ -109,6 +111,7 @@ import { scrape as thomabravo } from './thomabravo';
 import { scrape as townhall } from './townhall';
 import { scrape as trianglepeak } from './trianglepeak';
 import { scrape as transformation } from './transformation';
+import { scrape as usv } from './usv';
 import { scrape as venrock } from './venrock';
 import { scrape as viking } from './viking';
 import { scrape as wellington } from './wellington';
@@ -159,6 +162,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	eqt,
 	filrouge,
 	flagship,
+	foundersfund,
 	fly,
 	flybridge,
 	g2,
@@ -189,6 +193,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	menlo,
 	mig,
 	mouro,
+	nea,
 	nexus,
 	northzone,
 	norwest,
@@ -225,6 +230,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	townhall,
 	trianglepeak,
 	transformation,
+	usv,
 	venrock,
 	viking,
 	wellington,

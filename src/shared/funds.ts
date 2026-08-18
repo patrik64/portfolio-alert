@@ -56,6 +56,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'eqt', name: 'EQT Group', url: 'https://eqtgroup.com/about/current-portfolio' },
 	{ slug: 'filrouge', name: 'Fil Rouge Capital', url: 'https://www.filrougecapital.com/portfolio' },
 	{ slug: 'flagship', name: 'Flagship Pioneering', url: 'https://www.flagshippioneering.com/companies' },
+	{ slug: 'foundersfund', name: 'Founders Fund', url: 'https://foundersfund.com/portfolio/' },
 	{ slug: 'fly', name: 'Fly', url: 'https://fly.vc/portfolio' },
 	{ slug: 'flybridge', name: 'Flybridge', url: 'https://www.flybridge.com/portfolio' },
 	{ slug: 'g2', name: 'G2', url: 'https://g2vp.com/portfolio/' },
@@ -86,6 +87,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'menlo', name: 'Menlo Ventures', url: 'https://menlovc.com/portfolio/' },
 	{ slug: 'mig', name: 'MIG Capital', url: 'https://www.mig.ag/en/portfolio/' },
 	{ slug: 'mouro', name: 'Mouro Capital', url: 'https://www.mourocapital.com/our-portfolio/' },
+	{ slug: 'nea', name: 'NEA', url: 'https://www.nea.com/portfolio?category=all' },
 	{ slug: 'nexus', name: 'Nexus Venture Partners', url: 'https://nexusvp.com/companies/' },
 	{ slug: 'northzone', name: 'Northzone', url: 'https://northzone.com/portfolio' },
 	{ slug: 'norwest', name: 'Norwest', url: 'https://www.norwest.com/companies' },
@@ -134,6 +136,7 @@ export const FUNDS: FundInfo[] = [
 		url: 'https://www.trianglepeakpartners.com/technology/'
 	},
 	{ slug: 'transformation', name: 'Transformation Capital', url: 'https://transformcap.com/partner-companies' },
+	{ slug: 'usv', name: 'Union Square Ventures', url: 'https://www.usv.com/companies/' },
 	{ slug: 'venrock', name: 'Venrock', url: 'https://www.venrock.com/companies/' },
 	{ slug: 'viking', name: 'Viking', url: 'https://vikingglobal.com/private-equity-portfolio/' },
 	{
