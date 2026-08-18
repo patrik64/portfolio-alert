@@ -48,13 +48,15 @@ async function fetchPage(url: string) {
 }
 
 // the company's website is published on its profile page, behind the
-// "Visit Website" button
+// "Visit Website" button. the site refuses these deeper pages to datacenter
+// addresses with 403s, so a blocked or missing profile costs the company its
+// url but never the refresh — existing rows keep the urls a local run found
 async function websiteOf(slug: string): Promise<string> {
   let html: string;
   try {
     html = await fetchPage(`${PAGE_URL}/${slug}`);
   } catch (err) {
-    if (err instanceof Error && err.message.endsWith(": 404")) return "";
+    if (err instanceof Error && /: (403|404|429)$/.test(err.message)) return "";
     throw err;
   }
   return html.match(/<a href="(https?:\/\/[^"]+)" target="_blank" class="btn-large"/)?.[1] ?? "";
