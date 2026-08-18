@@ -17,6 +17,7 @@ import { scrape as aleph } from './aleph';
 import { scrape as alumni } from './alumni';
 import { scrape as antler } from './antler';
 import { scrape as apex } from './apex';
+import { scrape as archventure } from './archventure';
 import { scrape as atomico } from './atomico';
 import { scrape as atlas } from './atlas';
 import { scrape as av8 } from './av8';
@@ -45,7 +46,9 @@ import { scrape as eclipse } from './eclipse';
 import { scrape as ef } from './ef';
 import { scrape as episode1 } from './episode1';
 import { scrape as eqt } from './eqt';
+import { scrape as felicis } from './felicis';
 import { scrape as filrouge } from './filrouge';
+import { scrape as firstround } from './firstround';
 import { scrape as flagship } from './flagship';
 import { scrape as foundersfund } from './foundersfund';
 import { scrape as fly } from './fly';
@@ -142,6 +145,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	alumni,
 	antler,
 	apex,
+	archventure,
 	atomico,
 	atlas,
 	av8,
@@ -170,7 +174,9 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	ef,
 	episode1,
 	eqt,
+	felicis,
 	filrouge,
+	firstround,
 	flagship,
 	foundersfund,
 	fly,
