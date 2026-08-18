@@ -15,6 +15,7 @@ import { scrape as alchemist } from './alchemist';
 import { scrape as alumni } from './alumni';
 import { scrape as antler } from './antler';
 import { scrape as apex } from './apex';
+import { scrape as atomico } from './atomico';
 import { scrape as atlas } from './atlas';
 import { scrape as av8 } from './av8';
 import { scrape as avp } from './avp';
@@ -69,6 +70,7 @@ import { scrape as kima } from './kima';
 import { scrape as kleiner } from './kleiner';
 import { scrape as kinnevik } from './kinnevik';
 import { scrape as kurma } from './kurma';
+import { scrape as lakestar } from './lakestar';
 import { scrape as lifeline } from './lifeline';
 import { scrape as lightspeed } from './lightspeed';
 import { scrape as menlo } from './menlo';
@@ -86,6 +88,7 @@ import { scrape as palladium } from './palladium';
 import { scrape as pear } from './pear';
 import { scrape as pillar } from './pillar';
 import { scrape as plugandplay } from './plugandplay';
+import { scrape as pointnine } from './pointnine';
 import { scrape as polaris } from './polaris';
 import { scrape as prelude } from './prelude';
 import { scrape as push } from './push';
@@ -134,6 +137,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	alumni,
 	antler,
 	apex,
+	atomico,
 	atlas,
 	av8,
 	avp,
@@ -188,6 +192,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	kleiner,
 	kinnevik,
 	kurma,
+	lakestar,
 	lifeline,
 	lightspeed,
 	menlo,
@@ -205,6 +210,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	pear,
 	pillar,
 	plugandplay,
+	pointnine,
 	polaris,
 	prelude,
 	push,
