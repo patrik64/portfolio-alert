@@ -19,6 +19,7 @@ import { scrape as av8 } from './av8';
 import { scrape as avp } from './avp';
 import { scrape as aws } from './aws';
 import { scrape as baincapital } from './baincapital';
+import { scrape as balderton } from './balderton';
 import { scrape as b2venture } from './b2venture';
 import { scrape as base10 } from './base10';
 import { scrape as battery } from './battery';
@@ -32,6 +33,7 @@ import { scrape as canapi } from './canapi';
 import { scrape as boxgroup } from './boxgroup';
 import { scrape as credo } from './credo';
 import { scrape as creandum } from './creandum';
+import { scrape as dcvc } from './dcvc';
 import { scrape as draper } from './draper';
 import { scrape as eclipse } from './eclipse';
 import { scrape as ef } from './ef';
@@ -55,10 +57,12 @@ import { scrape as industrifonden } from './industrifonden';
 import { scrape as innovestor } from './innovestor';
 import { scrape as inovia } from './inovia';
 import { scrape as insight } from './insight';
+import { scrape as invus } from './invus';
 import { scrape as kima } from './kima';
 import { scrape as kleiner } from './kleiner';
 import { scrape as kinnevik } from './kinnevik';
 import { scrape as kurma } from './kurma';
+import { scrape as lifeline } from './lifeline';
 import { scrape as lightspeed } from './lightspeed';
 import { scrape as menlo } from './menlo';
 import { scrape as mig } from './mig';
@@ -124,6 +128,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	avp,
 	aws,
 	baincapital,
+	balderton,
 	b2venture,
 	base10,
 	battery,
@@ -137,6 +142,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	boxgroup,
 	credo,
 	creandum,
+	dcvc,
 	draper,
 	eclipse,
 	ef,
@@ -160,10 +166,12 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	innovestor,
 	inovia,
 	insight,
+	invus,
 	kima,
 	kleiner,
 	kinnevik,
 	kurma,
+	lifeline,
 	lightspeed,
 	menlo,
 	mig,
