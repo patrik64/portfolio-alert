@@ -32,6 +32,7 @@ import { scrape as behold } from './behold';
 import { scrape as bessemer } from './bessemer';
 import { scrape as bluventures } from './bluventures';
 import { scrape as blume } from './blume';
+import { scrape as breakthrough } from './breakthrough';
 import { scrape as broocknell } from './broocknell';
 import { scrape as calmstorm } from './calmstorm';
 import { scrape as canapi } from './canapi';
@@ -82,6 +83,7 @@ import { scrape as kurma } from './kurma';
 import { scrape as lakestar } from './lakestar';
 import { scrape as lifeline } from './lifeline';
 import { scrape as lightspeed } from './lightspeed';
+import { scrape as lux } from './lux';
 import { scrape as menlo } from './menlo';
 import { scrape as mig } from './mig';
 import { scrape as mouro } from './mouro';
@@ -101,6 +103,7 @@ import { scrape as pointnine } from './pointnine';
 import { scrape as polaris } from './polaris';
 import { scrape as prelude } from './prelude';
 import { scrape as push } from './push';
+import { scrape as qed } from './qed';
 import { scrape as quantonation } from './quantonation';
 import { scrape as racap } from './racap';
 import { scrape as recall } from './recall';
@@ -116,13 +119,16 @@ import { scrape as southparkcommons } from './southparkcommons';
 import { scrape as spark } from './spark';
 import { scrape as speedinvest } from './speedinvest';
 import { scrape as standardindustries } from './standardindustries';
+import { scrape as stripes } from './stripes';
 import { scrape as superhero } from './superhero';
 import { scrape as targetglobal } from './targetglobal';
+import { scrape as tcv } from './tcv';
 import { scrape as techstars } from './techstars';
 import { scrape as thomabravo } from './thomabravo';
 import { scrape as townhall } from './townhall';
 import { scrape as trianglepeak } from './trianglepeak';
 import { scrape as transformation } from './transformation';
+import { scrape as uncork } from './uncork';
 import { scrape as usv } from './usv';
 import { scrape as venrock } from './venrock';
 import { scrape as viking } from './viking';
@@ -163,6 +169,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	bessemer,
 	bluventures,
 	blume,
+	breakthrough,
 	broocknell,
 	calmstorm,
 	canapi,
@@ -213,6 +220,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	lakestar,
 	lifeline,
 	lightspeed,
+	lux,
 	menlo,
 	mig,
 	mouro,
@@ -232,6 +240,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	polaris,
 	prelude,
 	push,
+	qed,
 	quantonation,
 	racap,
 	recall,
@@ -247,13 +256,16 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	spark,
 	speedinvest,
 	standardindustries,
+	stripes,
 	superhero,
 	targetglobal,
+	tcv,
 	techstars,
 	thomabravo,
 	townhall,
 	trianglepeak,
 	transformation,
+	uncork,
 	usv,
 	venrock,
 	viking,
