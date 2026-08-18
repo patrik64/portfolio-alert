@@ -26,6 +26,13 @@
 	</div>
 
 	<div class="mt-4 flex flex-col gap-4 text-sm text-gray-700">
+    	<p>
+            Hi, my name is Patrik Simic - <a href="https://www.github.com/patrik64" class="font-semibold text-tertiary-600">github.com/patrik64</a>
+            and I created this app to help me find new work.
+        </p>
+        <p> If you have some ideas/suggestions how to improve this app,
+            feel free to send me an email (the email address is on my github page).
+    	</p>
 		<p>
 			<span class="font-semibold">portfolio alert</span> tracks the portfolio companies of
 			{FUNDS.length} venture capital and private equity funds. It reads each fund's public
