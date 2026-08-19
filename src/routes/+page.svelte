@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
 	import { repo } from 'remult';
 	import { Fund } from '../shared/Fund';
 	import { FUNDS } from '../shared/funds';
@@ -75,14 +76,16 @@
 >
 	<div class="flex flex-wrap items-center justify-between gap-2">
 		<h1 class="text-lg font-semibold">funds</h1>
-		<button
-			type="button"
-			onclick={fetchAll}
-			disabled={running}
-			class="rounded-md border border-transparent bg-primary-600 px-4 py-1 text-sm leading-5 font-semibold text-white shadow-sm transition duration-150 ease-in-out hover:bg-primary-400 focus:shadow-outline-green focus:outline-none disabled:cursor-default disabled:bg-gray-300"
-		>
-			{running ? 'fetching…' : 'fetch all'}
-		</button>
+		{#if dev}
+			<button
+				type="button"
+				onclick={fetchAll}
+				disabled={running}
+				class="rounded-md border border-transparent bg-primary-600 px-4 py-1 text-sm leading-5 font-semibold text-white shadow-sm transition duration-150 ease-in-out hover:bg-primary-400 focus:shadow-outline-green focus:outline-none disabled:cursor-default disabled:bg-gray-300"
+			>
+				{running ? 'fetching…' : 'fetch all'}
+			</button>
+		{/if}
 	</div>
 
 	<div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -118,15 +121,17 @@
 							? `fetched ${card.fund.lastFetchedAt.toLocaleString()}`
 							: ''}
 					</span>
-					<button
-						type="button"
-						aria-label={`refresh ${card.name}`}
-						onclick={() => fetchOne(card.slug)}
-						disabled={running || card.status === 'running'}
-						class="relative rounded-md px-2 py-0.5 font-semibold text-primary-700 transition duration-150 ease-in-out hover:bg-primary-300 focus:shadow-outline-green focus:outline-none disabled:cursor-default disabled:text-gray-400"
-					>
-						refresh
-					</button>
+					{#if dev}
+						<button
+							type="button"
+							aria-label={`refresh ${card.name}`}
+							onclick={() => fetchOne(card.slug)}
+							disabled={running || card.status === 'running'}
+							class="relative rounded-md px-2 py-0.5 font-semibold text-primary-700 transition duration-150 ease-in-out hover:bg-primary-300 focus:shadow-outline-green focus:outline-none disabled:cursor-default disabled:text-gray-400"
+						>
+							refresh
+						</button>
+					{/if}
 				</div>
 				{#if card.fund?.lastError}
 					<p class="mt-1 text-xs text-danger-500">{card.fund.lastError}</p>

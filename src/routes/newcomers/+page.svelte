@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
 	import { repo } from 'remult';
 	import Spinner from '$lib/components/Spinner.svelte';
 	import { Company } from '../../shared/Company';
@@ -51,7 +52,7 @@
 				<span class="text-sm text-gray-600">
 					{newcomers.length} new {newcomers.length === 1 ? 'company' : 'companies'}
 				</span>
-				{#if newcomers.length > 0}
+				{#if dev && newcomers.length > 0}
 					<button
 						type="button"
 						onclick={clean}
