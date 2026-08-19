@@ -42,9 +42,9 @@
 		</p>
 		<p>
 			The <a href="/" class="font-semibold text-tertiary-600">dashboard</a> shows one card per
-			fund with its company count, newcomer badge and last-fetch time. From there you can fetch
-			a single fund or all of them; the first fetch of a fund imports a baseline and is not
-			counted as newcomers. Every company row shows when it was first encountered.
+			fund with its company count, newcomer badge and last-fetch time. The first fetch of a
+			fund imports a baseline and is not counted as newcomers. Every company row shows when
+			it was first encountered.
 		</p>
 		<p>
 			<a href="/search" class="font-semibold text-tertiary-600">search</a> finds companies
