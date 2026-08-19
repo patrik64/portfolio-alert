@@ -76,7 +76,6 @@
 		{#if !loading && total}
 			<span class="text-sm text-gray-600">
 				{total.toLocaleString()} companies over {days.length} {days.length === 1 ? 'day' : 'days'}
-				· <span class="rounded bg-baseline px-1.5 py-0.5">baseline import</span>
 			</span>
 		{/if}
 	</div>

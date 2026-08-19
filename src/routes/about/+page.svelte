@@ -25,7 +25,7 @@
 		</span>
 	</div>
 
-	<div class="mt-4 flex flex-col gap-4 text-sm text-gray-700">
+	<div class="mt-4 flex flex-col gap-4 text-sm text-black">
     	<p>
             Hi, my name is Patrik Simic - <a href="https://www.github.com/patrik64" class="font-semibold text-tertiary-600">github.com/patrik64</a>
             and I created this app to help me find new work.
@@ -53,6 +53,16 @@
 			the day they first appeared, and
 			<a href="/download" class="font-semibold text-tertiary-600">download</a> exports
 			everything as JSON.
+		</p>
+		<p>
+			Every night the funds are refreshed automatically, and whatever newcomers turn up are
+			announced on bluesky at
+			<a
+				href="https://bsky.app/profile/portfolio-alert.bsky.social"
+				target="_blank"
+				rel="external noreferrer"
+				class="font-semibold text-tertiary-600">@portfolio-alert.bsky.social</a
+			>.
 		</p>
 		<p>
 			Built with SvelteKit, Svelte 5, remult and Tailwind CSS on a Supabase postgres database.
