@@ -121,10 +121,12 @@ import { scrape as speedinvest } from './speedinvest';
 import { scrape as standardindustries } from './standardindustries';
 import { scrape as stripes } from './stripes';
 import { scrape as superhero } from './superhero';
+import { scrape as svangel } from './svangel';
 import { scrape as targetglobal } from './targetglobal';
 import { scrape as tcv } from './tcv';
 import { scrape as techstars } from './techstars';
 import { scrape as thomabravo } from './thomabravo';
+import { scrape as tlv } from './tlv';
 import { scrape as townhall } from './townhall';
 import { scrape as trianglepeak } from './trianglepeak';
 import { scrape as transformation } from './transformation';
@@ -259,10 +261,12 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	standardindustries,
 	stripes,
 	superhero,
+	svangel,
 	targetglobal,
 	tcv,
 	techstars,
 	thomabravo,
+	tlv,
 	townhall,
 	trianglepeak,
 	transformation,

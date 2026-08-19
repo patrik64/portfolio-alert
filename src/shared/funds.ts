@@ -142,10 +142,12 @@ export const FUNDS: FundInfo[] = [
 	},
 	{ slug: 'stripes', name: 'Stripes', url: 'https://www.stripes.co/investments#sort=all' },
 	{ slug: 'superhero', name: 'Superhero', url: 'https://superherocapital.com/portfolio/' },
+	{ slug: 'svangel', name: 'SV Angel', url: 'https://svangel.com/portfolio' },
 	{ slug: 'targetglobal', name: 'Target Global', url: 'https://www.targetglobal.vc/portfolio' },
 	{ slug: 'tcv', name: 'TCV', url: 'https://www.tcv.com/partnerships' },
 	{ slug: 'techstars', name: 'Techstars', url: 'https://www.techstars.com/portfolio' },
 	{ slug: 'thomabravo', name: 'Thoma Bravo', url: 'https://www.thomabravo.com/portfolio' },
+	{ slug: 'tlv', name: 'TLV Partners', url: 'https://tlv.partners/portfolio/' },
 	{ slug: 'townhall', name: 'Town Hall Ventures', url: 'https://www.townhallventures.com/portfolio' },
 	{
 		slug: 'trianglepeak',
