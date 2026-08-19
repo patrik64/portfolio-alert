@@ -7,6 +7,11 @@ on:
     - cron: '0 2 * * *'
     - cron: '0 3 * * *'
   workflow_dispatch:
+    inputs:
+      announce_only:
+        description: 'skip the refresh, just announce the current newcomers'
+        type: boolean
+        default: false
 
 concurrency:
   group: daily-fetch
@@ -36,6 +41,18 @@ jobs:
         with:
           node-version: 22
 
-      - if: steps.guard.outputs.run == 'true'
+      - if: steps.guard.outputs.run == 'true' && github.event.inputs.announce_only != 'true'
         name: refresh every fund
         run: node scripts/fetch-all.mjs
+
+      # a night where too many scrapers broke still found companies worth
+      # announcing, so this runs even when the refresh above reports failure
+      - if: ${{ !cancelled() && steps.guard.outputs.run == 'true' }}
+        name: announce the newcomers on bluesky
+        env:
+          BLUESKY_IDENTIFIER: portfolio-alert.bsky.social
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          # by hand, the announcement covers the whole newcomers page rather
+          # than one run's findings
+          MODE: ${{ github.event.inputs.announce_only == 'true' && '--current' || '' }}
+        run: node scripts/post-newcomers.mjs $MODE

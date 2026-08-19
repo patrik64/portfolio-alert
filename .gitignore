@@ -7,6 +7,7 @@ build/
 db/
 .DS_Store
 vite.config.ts.timestamp-*
+fetch-results.json
 plan.md
 .vercel
 .env*

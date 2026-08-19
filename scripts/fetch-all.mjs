@@ -4,17 +4,24 @@
 //
 //   node scripts/fetch-all.mjs                  refresh every fund
 //   node scripts/fetch-all.mjs --only a16z,gv   refresh a subset (smoke test)
+//
+// What each fund gained lands in fetch-results.json, which post-newcomers.mjs
+// reads to announce the night's finds.
+
+import { writeFileSync } from 'node:fs';
 
 const BASE_URL = process.env.BASE_URL ?? 'https://portfolio-alert.vercel.app';
 const CONCURRENCY = 5;
 // fetchFund aborts its scrape after 4 minutes; give the request a little more
 const REQUEST_TIMEOUT = 300_000;
 
-const only = process.argv
-	.find((a) => a.startsWith('--only'))
-	?.split('=')[1]
-	?.split(',')
-	.filter(Boolean);
+const arg = (name) => {
+	const found = process.argv.find((a) => a === name || a.startsWith(`${name}=`));
+	return found?.includes('=') ? found.slice(found.indexOf('=') + 1) : undefined;
+};
+
+const only = arg('--only')?.split(',').filter(Boolean);
+const RESULTS_FILE = arg('--results') ?? 'fetch-results.json';
 
 const fundsResp = await fetch(`${BASE_URL}/api/funds?_limit=1000`);
 if (!fundsResp.ok) {
@@ -48,16 +55,20 @@ async function worker() {
 						return body;
 					}
 				})();
-				results.push({ slug: fund.slug, error: `${resp.status} ${message}`.slice(0, 200) });
+				results.push({
+					slug: fund.slug,
+					name: fund.name,
+					error: `${resp.status} ${message}`.slice(0, 200)
+				});
 				console.log(`FAIL ${fund.slug.padEnd(20)} ${seconds}s  ${message.slice(0, 120)}`);
 			} else {
 				const { data } = await resp.json();
-				results.push({ slug: fund.slug, ...data });
+				results.push({ slug: fund.slug, name: fund.name, ...data });
 				console.log(`ok   ${fund.slug.padEnd(20)} ${seconds}s  ${data.total} companies, ${data.added} new`);
 			}
 		} catch (err) {
 			const seconds = Math.round((Date.now() - started) / 1000);
-			results.push({ slug: fund.slug, error: String(err).slice(0, 200) });
+			results.push({ slug: fund.slug, name: fund.name, error: String(err).slice(0, 200) });
 			console.log(`FAIL ${fund.slug.padEnd(20)} ${seconds}s  ${String(err).slice(0, 120)}`);
 		}
 	}
@@ -71,6 +82,9 @@ console.log(`\n${results.length - failed.length}/${results.length} funds refresh
 if (failed.length) {
 	console.log(`failed: ${failed.map((f) => f.slug).join(', ')}`);
 }
+
+// what the run found, for post-newcomers.mjs
+writeFileSync(RESULTS_FILE, JSON.stringify(results, null, 2));
 
 // a summary for the workflow-run page
 if (process.env.GITHUB_STEP_SUMMARY) {

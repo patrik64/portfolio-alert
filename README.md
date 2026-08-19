@@ -69,9 +69,46 @@ vercel          # preview deploy
 vercel --prod   # production deploy
 ```
 
-The deployed app and local dev share the same database. Full fetch-alls are
-best run locally: the slowest scrapers take minutes and can exceed serverless
-function duration limits.
+The deployed app and local dev share the same database. A fetch-all started
+from the browser is best run locally — the slowest scrapers take minutes and can
+exceed serverless function duration limits — while the nightly job below drives
+production one fund at a time, which stays inside them.
+
+## Nightly refresh
+
+`.github/workflows/daily-fetch.yml` refreshes every fund at 4am Central
+European time. GitHub's cron only speaks UTC, so both candidate hours fire and
+a guard step keeps whichever one is 4am in Berlin; the workflow can also be run
+by hand from the Actions tab.
+
+```sh
+pnpm fetch-all                       # refresh every fund against production
+pnpm fetch-all --only=a16z,gv        # ...or just some of them
+pnpm post-newcomers --dry-run        # compose the bluesky post, post nothing
+pnpm post-newcomers                  # ...and publish it
+pnpm post-newcomers --current        # ...covering the whole newcomers page
+pnpm post-newcomers --check          # prove the app password still works
+```
+
+`scripts/fetch-all.mjs` calls the same `fetchFund` endpoint the dashboard's
+buttons use, five funds at a time, and leaves what each fund gained in
+`fetch-results.json`. A single stubborn site (Speedinvest refuses datacenter
+addresses) does not turn the night red — only a broad failure does.
+
+`scripts/post-newcomers.mjs` then announces the finds on Bluesky as
+[@portfolio-alert.bsky.social](https://bsky.app/profile/portfolio-alert.bsky.social),
+naming every company and linking it to its own site. A long list continues into
+a thread, and a flood day turns into a count per fund instead. Quiet nights stay
+quiet. It needs one repository secret:
+
+```sh
+gh secret set BLUESKY_APP_PASSWORD   # an app password, never the account password
+```
+
+Without that secret the step is a no-op, so the refresh keeps working on its
+own. Running the workflow by hand offers a **skip the refresh, just announce the
+current newcomers** switch, for announcing finds that a run has already
+recorded.
 
 ## Scrapers
 
