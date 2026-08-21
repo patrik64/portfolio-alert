@@ -50,7 +50,7 @@
 			<a href="/search" class="font-semibold text-tertiary-600">search</a> finds companies
 			across every fund by name or category,
 			<a href="/timeline" class="font-semibold text-tertiary-600">timeline</a> groups them by
-			the day they first appeared, and
+			the day they first appeared (from 20 August 2026 on, when the nightly refresh went live), and
 			<a href="/download" class="font-semibold text-tertiary-600">download</a> exports
 			everything as JSON.
 		</p>

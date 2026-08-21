@@ -3,42 +3,36 @@
 	import Spinner from '$lib/components/Spinner.svelte';
 	import { Company } from '../../shared/Company';
 	import { FUNDS } from '../../shared/funds';
-	import { ScrapeController } from '../../shared/ScrapeController';
+	import { TIMELINE_START } from '../../shared/timeline';
 
 	let companies = $state<Company[]>([]);
+	// each fund's first-ever day: its baseline import, tinted to set those rows
+	// apart from genuine newcomers
+	let firstDayByFund = $state(new Map<string, string>());
 	let loading = $state(true);
-	let total = $state(0);
-
-	$effect(() => {
-		// a company backed by several funds is counted once
-		ScrapeController.countCompanies().then((n) => (total = n));
-	});
-
-	$effect(() => {
-		repo(Company)
-			// explicit limit — remult's REST API defaults to 100 rows per page
-			.find({ orderBy: { name: 'asc' }, limit: 100_000 })
-			.then((rows) => {
-				companies = rows;
-				loading = false;
-			});
-	});
 
 	// local YYYY-MM-DD key so day boundaries follow the viewer's timezone
 	const dayKey = (d: Date) =>
 		`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
-	// a fund's first-ever day on the timeline is its baseline import — those
-	// rows are tinted to set them apart from genuine newcomers
-	const firstDayByFund = $derived.by(() => {
-		const first = new Map<string, string>();
-		for (const c of companies) {
-			if (!c.firstSeenAt) continue;
-			const key = dayKey(c.firstSeenAt);
-			const known = first.get(c.fundSlug);
-			if (!known || key < known) first.set(c.fundSlug, key);
-		}
-		return first;
+	$effect(() => {
+		Promise.all([
+			repo(Company).find({
+				where: { firstSeenAt: { $gte: TIMELINE_START } },
+				orderBy: { name: 'asc' },
+				// explicit limit — remult's REST API defaults to 100 rows per page
+				limit: 100_000
+			}),
+			// the first days come from an aggregate over every row, since a
+			// fund's baseline import usually predates the timeline
+			repo(Company).groupBy({ group: ['fundSlug'], min: ['firstSeenAt'] })
+		]).then(([rows, firsts]) => {
+			companies = rows;
+			firstDayByFund = new Map(
+				firsts.flatMap((g) => (g.firstSeenAt.min ? [[g.fundSlug, dayKey(g.firstSeenAt.min)]] : []))
+			);
+			loading = false;
+		});
 	});
 
 	const days = $derived.by(() => {
@@ -73,9 +67,9 @@
 >
 	<div class="flex flex-wrap items-center justify-between gap-2">
 		<h1 class="text-lg font-semibold">timeline</h1>
-		{#if !loading && total}
+		{#if !loading && companies.length}
 			<span class="text-sm text-gray-600">
-				{total.toLocaleString()} companies over {days.length} {days.length === 1 ? 'day' : 'days'}
+				{companies.length.toLocaleString()} companies over {days.length} {days.length === 1 ? 'day' : 'days'}
 			</span>
 		{/if}
 	</div>
@@ -84,7 +78,7 @@
 		<Spinner label="loading timeline" />
 	{:else if days.length === 0}
 		<p class="mt-6 text-sm text-gray-600">
-			no companies yet — run a fetch from the <a href="/" class="font-semibold text-tertiary-600">dashboard</a>
+			nothing yet — the timeline starts on {TIMELINE_START.toLocaleDateString()}
 		</p>
 	{:else}
 		{#each days as day (day.day)}

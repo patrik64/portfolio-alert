@@ -27,8 +27,10 @@ live at https://portfolio-alert.vercel.app
 - **search** (`/search`) — searches all companies across every fund by name or
   category (server-side, debounced), listing name, category, fund and first-seen
   date.
-- **timeline** (`/timeline`) — every company grouped by the day it first appeared
-  and then by fund, newest day first, in collapsible sections.
+- **timeline** (`/timeline`) — every company first seen since the nightly
+  refresh went live (20 Aug 2026), grouped by the day it appeared and then by
+  fund, newest day first, in collapsible sections. The start date lives in
+  `src/shared/timeline.ts`.
 - **download** (`/download`) — downloads a JSON file with all companies grouped
   by fund (name, category, url and first-seen date per company).
 - **about** (`/about`) — what the app does and how the pages fit together.
