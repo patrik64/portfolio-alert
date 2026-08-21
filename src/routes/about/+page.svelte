@@ -62,7 +62,9 @@
 				target="_blank"
 				rel="external noreferrer"
 				class="font-semibold text-tertiary-600">@portfolio-alert.bsky.social</a
-			>.
+			>
+			and in the
+			<a href="/rss.xml" target="_blank" class="font-semibold text-tertiary-600">rss feed</a>.
 		</p>
 		<p>
 			Built with SvelteKit, Svelte 5, remult and Tailwind CSS on a Supabase postgres database.

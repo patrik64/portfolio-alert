@@ -34,6 +34,8 @@ live at https://portfolio-alert.vercel.app
 - **download** (`/download`) — downloads a JSON file with all companies grouped
   by fund (name, category, url and first-seen date per company).
 - **about** (`/about`) — what the app does and how the pages fit together.
+- **rss** (`/rss.xml`) — the nightly newcomer digests as a feed: one item per
+  night that found some, naming every company under its fund.
 
 Every company row shows when the company was first encountered ("first seen").
 
@@ -111,6 +113,12 @@ Without that secret the step is a no-op, so the refresh keeps working on its
 own. Running the workflow by hand offers a **skip the refresh, just announce the
 current newcomers** switch, for announcing finds that a run has already
 recorded.
+
+The same digests are served as an RSS feed at `/rss.xml`, straight from the
+database and covering the same stretch as the timeline: one item per night
+that found newcomers, with the companies named under their funds and linked to
+their sites. A night still being written is
+held back until it has settled, so readers never cache a half-announced one.
 
 ## Scrapers
 

@@ -56,6 +56,13 @@
 				})).filter((g) => g.companies.length > 0)
 			}));
 	});
+
+	// the rss feed links a night as /timeline#YYYY-MM-DD; the days only exist
+	// once the rows are in, so the jump happens here rather than on page load
+	$effect(() => {
+		if (loading || days.length === 0) return;
+		document.getElementById(location.hash.slice(1))?.scrollIntoView();
+	});
 </script>
 
 <svelte:head>
@@ -82,7 +89,7 @@
 		</p>
 	{:else}
 		{#each days as day (day.day)}
-			<div class="mt-6">
+			<div id={day.day} class="mt-6 scroll-mt-4">
 				<h2 class="font-semibold text-gray-800">
 					{day.label}
 					<span class="ml-1 text-sm font-normal text-gray-500">
