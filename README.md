@@ -11,6 +11,14 @@ Built with SvelteKit 2, Svelte 5, remult and Tailwind CSS 4.
 
 live at https://portfolio-alert.vercel.app
 
+## Bluesky
+
+https://bsky.app/profile/portfolio-alert.bsky.social
+
+## RSS
+
+https://portfolio-alert.vercel.app/rss.xml
+
 ## Pages
 
 - **dashboard** (`/`) — one card per fund with company count, newcomer badge and
