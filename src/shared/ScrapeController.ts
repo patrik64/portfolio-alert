@@ -139,9 +139,10 @@ export class ScrapeController {
 	// that, or carrying exactly that category tag — both case-insensitively.
 	// exactness is decided here rather than in the browser, because the rows a
 	// substring query returns are capped and the exact ones must not be lost
-	// behind that cap
+	// behind that cap. offset (a multiple of SEARCH_LIMIT) fetches the pages
+	// behind the "show more" link; the id tiebreak keeps them from shuffling
 	@BackendMethod({ allowed: true })
-	static async searchCompanies(term: string): Promise<SearchHit[]> {
+	static async searchCompanies(term: string, offset = 0): Promise<SearchHit[]> {
 		const q = term.trim();
 		const quoted = q.match(/^"([\s\S]+)"$/) ?? q.match(/^'([\s\S]+)'$/);
 		const needle = (quoted?.[1] ?? q).trim();
@@ -149,23 +150,26 @@ export class ScrapeController {
 
 		const rows = await repo(Company).find({
 			where: { $or: [{ name: { $contains: needle } }, { category: { $contains: needle } }] },
-			orderBy: { name: 'asc' },
-			limit: quoted ? 100_000 : SEARCH_LIMIT
+			orderBy: { name: 'asc', id: 'asc' },
+			limit: quoted ? 100_000 : SEARCH_LIMIT,
+			page: quoted ? 1 : Math.floor(offset / SEARCH_LIMIT) + 1
 		});
 
 		const key = needle.toLowerCase();
 		const hits = quoted
-			? rows.filter(
-					(company) =>
-						company.name.trim().toLowerCase() === key ||
-						company.category
-							.toLowerCase()
-							.split(',')
-							.some((tag) => tag.trim() === key)
-				)
+			? rows
+					.filter(
+						(company) =>
+							company.name.trim().toLowerCase() === key ||
+							company.category
+								.toLowerCase()
+								.split(',')
+								.some((tag) => tag.trim() === key)
+					)
+					.slice(offset, offset + SEARCH_LIMIT)
 			: rows;
 
-		return hits.slice(0, SEARCH_LIMIT).map((company) => ({
+		return hits.map((company) => ({
 			id: company.id,
 			fundSlug: company.fundSlug,
 			name: company.name,

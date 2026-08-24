@@ -6,6 +6,9 @@
 	let results = $state<SearchHit[]>([]);
 	let searching = $state(false);
 	let searched = $state(false);
+	// the last batch came back full, so another one may be waiting
+	let hasMore = $state(false);
+	let loadingMore = $state(false);
 	let total = $state(0);
 
 	$effect(() => {
@@ -19,6 +22,7 @@
 			results = [];
 			searching = false;
 			searched = false;
+			hasMore = false;
 			return;
 		}
 		searching = true;
@@ -27,12 +31,26 @@
 			const rows = await ScrapeController.searchCompanies(q);
 			if (q === search.trim()) {
 				results = rows;
+				hasMore = rows.length === SEARCH_LIMIT;
 				searching = false;
 				searched = true;
 			}
 		}, 250);
 		return () => clearTimeout(timer);
 	});
+
+	async function loadMore() {
+		const q = search.trim();
+		loadingMore = true;
+		const rows = await ScrapeController.searchCompanies(q, results.length);
+		// the query may have changed while the batch was in flight
+		if (q === search.trim()) {
+			const known = new Set(results.map((r) => r.id));
+			results = [...results, ...rows.filter((r) => !known.has(r.id))];
+			hasMore = rows.length === SEARCH_LIMIT;
+		}
+		loadingMore = false;
+	}
 </script>
 
 <svelte:head>
@@ -48,9 +66,9 @@
 			{#if searching}
 				searching…
 			{:else if searched}
-				{results.length === SEARCH_LIMIT
-					? `first ${SEARCH_LIMIT} matches`
-					: `${results.length} matches`}
+				{hasMore
+					? `first ${results.length.toLocaleString()} matches`
+					: `${results.length.toLocaleString()} matches`}
 			{:else if total}
 				({total.toLocaleString()} companies)
 			{/if}
@@ -106,6 +124,18 @@
 					</div>
 				</li>
 			{/each}
+			{#if hasMore}
+				<li>
+					<button
+						type="button"
+						onclick={loadMore}
+						disabled={loadingMore}
+						class="w-full cursor-pointer px-4 py-2 text-center text-sm font-semibold text-gray-600 transition duration-150 hover:text-tertiary-600 disabled:cursor-default disabled:text-gray-400"
+					>
+						{loadingMore ? 'loading…' : `show ${SEARCH_LIMIT} more`}
+					</button>
+				</li>
+			{/if}
 		</ul>
 	{/if}
 </div>
