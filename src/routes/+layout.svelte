@@ -113,7 +113,7 @@
 				</div>
 			{/if}
 		</div>
-		<a href="/" class="-mt-1 pl-2 font-semibold text-black">portfolio alert</a>
+		<a href="/" class="-mt-1 pl-2 font-semibold text-black transition duration-150 hover:text-white">portfolio alert</a>
 		<!-- each link drops out at the width where it stops fitting, rightmost first,
 		     so the icons on the right always keep their place; the menu holds them all -->
 		<nav class="-mt-1 flex items-center gap-3 pl-4 text-sm">
