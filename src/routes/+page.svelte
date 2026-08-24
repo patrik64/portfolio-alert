@@ -91,7 +91,7 @@
 	<div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 		{#each cards as card (card.slug)}
 			<div
-				class="group relative rounded-lg bg-white px-4 py-3 shadow-lg transition duration-500 ease-in-out hover:bg-light-500"
+				class="group relative rounded-lg bg-white px-4 py-3 shadow-lg transition duration-500 ease-in-out hover:bg-gray-300"
 			>
 				<div class="flex items-start justify-between gap-2">
 					<!-- stretched link: the ::after overlay makes the whole card clickable -->
