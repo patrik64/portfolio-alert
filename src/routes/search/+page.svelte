@@ -62,7 +62,7 @@
 >
 	<div class="flex flex-wrap items-center justify-between gap-2">
 		<h1 class="text-lg font-semibold">search</h1>
-		<span class="text-sm text-gray-600">
+		<span class="text-sm text-gray-900">
 			{#if searching}
 				searching…
 			{:else if searched}
@@ -81,13 +81,13 @@
 		placeholder='search all companies by name or category… wrap in "quotes" for exact matches'
 		bind:value={search}
 		autofocus
-		class="form-input mt-3 w-full focus:shadow-outline-green"
+		class="form-input mt-3 w-full focus:shadow-outline-gray"
 	/>
 
 	{#if !searched && !searching}
-		<p class="mt-6 text-sm text-gray-600">type at least 2 characters to search all companies</p>
+		<p class="mt-6 text-sm text-gray-900">type at least 2 characters to search all companies</p>
 	{:else if searched && results.length === 0}
-		<p class="mt-6 text-sm text-gray-600">no companies match "{search.trim()}"</p>
+		<p class="mt-6 text-sm text-gray-900">no companies match "{search.trim()}"</p>
 	{:else if results.length > 0}
 		<ul class="mt-4 divide-y divide-gray-200 rounded-lg bg-white shadow-lg">
 			{#each results as company (company.id)}
@@ -98,7 +98,7 @@
 								href={company.url}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="font-medium text-gray-800 transition duration-150 hover:text-tertiary-600"
+								class="font-medium text-gray-800 transition duration-150 hover:underline"
 							>
 								{company.name}
 							</a>
@@ -106,13 +106,13 @@
 							<span class="font-medium text-gray-800">{company.name}</span>
 						{/if}
 						{#if company.category}
-							<span class="ml-2 text-xs text-gray-500">{company.category}</span>
+							<span class="ml-2 text-xs text-gray-900">{company.category}</span>
 						{/if}
 					</div>
-					<div class="flex shrink-0 items-center gap-3 text-xs text-gray-500">
+					<div class="flex shrink-0 items-center gap-3 text-xs text-gray-900">
 						<a
 							href={`/funds/${company.fundSlug}`}
-							class="font-semibold transition duration-150 hover:text-tertiary-600"
+							class="font-semibold transition duration-150 hover:underline"
 						>
 							{fundName.get(company.fundSlug) ?? company.fundSlug}
 						</a>
@@ -130,7 +130,7 @@
 						type="button"
 						onclick={loadMore}
 						disabled={loadingMore}
-						class="w-full cursor-pointer px-4 py-2 text-center text-sm font-semibold text-gray-600 transition duration-150 hover:text-tertiary-600 disabled:cursor-default disabled:text-gray-400"
+						class="w-full cursor-pointer px-4 py-2 text-center text-sm font-semibold text-black transition duration-150 hover:underline disabled:cursor-default disabled:text-gray-400"
 					>
 						{loadingMore ? 'loading…' : `show ${SEARCH_LIMIT} more`}
 					</button>

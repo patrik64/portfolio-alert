@@ -17,7 +17,7 @@
 	<div class="flex flex-wrap items-center justify-between gap-2">
 		<h1 class="text-lg font-semibold">about</h1>
 		<!-- a company backed by several funds is counted once -->
-		<span class="text-sm text-gray-600">
+		<span class="text-sm text-gray-900">
 			{FUNDS.length} funds
 			{#if companyCount > 0}
 				· {companyCount.toLocaleString()} companies
@@ -27,7 +27,7 @@
 
 	<div class="mt-4 flex flex-col gap-4 text-sm text-black">
     	<p>
-            Hi, my name is Patrik Simic - <a href="https://www.github.com/patrik64" class="font-semibold text-tertiary-600">github.com/patrik64</a>
+            Hi, my name is Patrik Simic - <a href="https://www.github.com/patrik64" class="font-semibold text-black transition duration-150 hover:text-white">github.com/patrik64</a>
             and I created this app to help me find new work.
         </p>
         <p> If you have some ideas/suggestions how to improve this app,
@@ -37,21 +37,21 @@
 			<span class="font-semibold">portfolio alert</span> tracks the portfolio companies of
 			{FUNDS.length} venture capital and private equity funds. It reads each fund's public
 			portfolio page, keeps every company it has ever seen, and highlights
-			<a href="/newcomers" class="font-semibold text-tertiary-600">newcomers</a> — companies
+			<a href="/newcomers" class="font-semibold text-black transition duration-150 hover:text-white">newcomers</a> — companies
 			that appeared in a fund's portfolio since the last fetch.
 		</p>
 		<p>
-			The <a href="/" class="font-semibold text-tertiary-600">dashboard</a> shows one card per
+			The <a href="/" class="font-semibold text-black transition duration-150 hover:text-white">dashboard</a> shows one card per
 			fund with its company count, newcomer badge and last-fetch time. The first fetch of a
 			fund imports a baseline and is not counted as newcomers. Every company row shows when
 			it was first encountered.
 		</p>
 		<p>
-			<a href="/search" class="font-semibold text-tertiary-600">search</a> finds companies
+			<a href="/search" class="font-semibold text-black transition duration-150 hover:text-white">search</a> finds companies
 			across every fund by name or category,
-			<a href="/timeline" class="font-semibold text-tertiary-600">timeline</a> groups them by
+			<a href="/timeline" class="font-semibold text-black transition duration-150 hover:text-white">timeline</a> groups them by
 			the day they first appeared (from 20 August 2026 on, when the nightly refresh went live), and
-			<a href="/download" class="font-semibold text-tertiary-600">download</a> exports
+			<a href="/download" class="font-semibold text-black transition duration-150 hover:text-white">download</a> exports
 			everything as JSON.
 		</p>
 		<p>
@@ -61,10 +61,10 @@
 				href="https://bsky.app/profile/portfolio-alert.bsky.social"
 				target="_blank"
 				rel="external noreferrer"
-				class="font-semibold text-tertiary-600">@portfolio-alert.bsky.social</a
+				class="font-semibold text-black transition duration-150 hover:text-white">@portfolio-alert.bsky.social</a
 			>
 			and in the
-			<a href="/rss.xml" target="_blank" class="font-semibold text-tertiary-600">rss feed</a>.
+			<a href="/rss.xml" target="_blank" class="font-semibold text-black transition duration-150 hover:text-white">rss feed</a>.
 		</p>
 		<p>
 			Built with SvelteKit, Svelte 5, remult and Tailwind CSS on a Supabase postgres database.
@@ -73,7 +73,7 @@
 				href="https://github.com/patrik64/portfolio-alert"
 				target="_blank"
 				rel="external noreferrer"
-				class="font-semibold text-tertiary-600">github</a
+				class="font-semibold text-black transition duration-150 hover:text-white">github</a
 			>.
 		</p>
 	</div>

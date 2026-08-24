@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Quicksand:100,200,300,400,500,600,700,800,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..1000&display=swap');
 @import 'tailwindcss';
 
 /* qlist theme — Nord-based palette and Quicksand font, shared with tres-palabras */
 @theme {
-	--font-sans: 'Quicksand', 'Helvetica', sans-serif;
+	--font-sans: 'DM Sans', 'Helvetica', sans-serif;
 
 	--color-primary-300: #cfe2e2;
 	--color-primary-400: #afcfce;
@@ -50,8 +50,8 @@
 	   import rather than as genuine newcomers */
 	--color-baseline: #e0efed;
 
-	/* page background — soft green */
-	--color-page-500: #cde5c0;
+	/* page background — warm stone grey */
+	--color-page-500: #b4afaa;
 }
 
 body {
@@ -75,6 +75,9 @@ body {
 /* Tailwind v1 @tailwindcss/ui focus rings (shadow-outline-*) */
 @utility shadow-outline-green {
 	box-shadow: 0 0 0 3px rgba(154, 230, 180, 0.45);
+}
+@utility shadow-outline-gray {
+	box-shadow: 0 0 0 3px var(--color-gray-400);
 }
 @utility shadow-outline-blue {
 	box-shadow: 0 0 0 3px rgba(164, 202, 254, 0.45);

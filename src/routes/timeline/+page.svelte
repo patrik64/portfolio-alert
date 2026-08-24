@@ -75,7 +75,7 @@
 	<div class="flex flex-wrap items-center justify-between gap-2">
 		<h1 class="text-lg font-semibold">timeline</h1>
 		{#if !loading && companies.length}
-			<span class="text-sm text-gray-600">
+			<span class="text-sm text-gray-900">
 				{companies.length.toLocaleString()} companies over {days.length} {days.length === 1 ? 'day' : 'days'}
 			</span>
 		{/if}
@@ -84,7 +84,7 @@
 	{#if loading}
 		<Spinner label="loading timeline" />
 	{:else if days.length === 0}
-		<p class="mt-6 text-sm text-gray-600">
+		<p class="mt-6 text-sm text-gray-900">
 			nothing yet — the timeline starts on {TIMELINE_START.toLocaleDateString()}
 		</p>
 	{:else}
@@ -92,7 +92,7 @@
 			<div id={day.day} class="mt-6 scroll-mt-4">
 				<h2 class="font-semibold text-gray-800">
 					{day.label}
-					<span class="ml-1 text-sm font-normal text-gray-500">
+					<span class="ml-1 text-sm font-normal text-gray-900">
 						({day.total} {day.total === 1 ? 'company' : 'companies'})
 					</span>
 				</h2>
@@ -101,10 +101,10 @@
 						{@const baseline = firstDayByFund.get(group.slug) === day.day}
 						<details class="rounded-lg bg-white shadow-lg">
 							<summary
-								class="cursor-pointer px-4 py-3 font-semibold text-gray-800 transition duration-150 select-none hover:text-tertiary-600"
+								class="cursor-pointer px-4 py-3 font-semibold text-gray-800 transition duration-150 select-none hover:underline"
 							>
 								{group.name}
-								<span class="ml-1 text-sm font-normal text-gray-500">({group.companies.length})</span>
+								<span class="ml-1 text-sm font-normal text-gray-900">({group.companies.length})</span>
 								{#if baseline}
 									<span class="ml-1 rounded bg-baseline px-1.5 py-0.5 text-xs font-normal text-gray-600">
 										baseline import
@@ -122,7 +122,7 @@
 													href={company.url}
 													target="_blank"
 													rel="noopener noreferrer"
-													class="font-medium text-gray-800 transition duration-150 hover:text-tertiary-600"
+													class="font-medium text-gray-800 transition duration-150 hover:underline"
 												>
 													{company.name}
 												</a>
@@ -130,10 +130,10 @@
 												<span class="font-medium text-gray-800">{company.name}</span>
 											{/if}
 											{#if company.category}
-												<span class="ml-2 text-xs text-gray-500">{company.category}</span>
+												<span class="ml-2 text-xs text-gray-900">{company.category}</span>
 											{/if}
 										</div>
-										<span class="shrink-0 text-xs text-gray-500">
+										<span class="shrink-0 text-xs text-gray-900">
 											{company.firstSeenAt?.toLocaleTimeString()}
 										</span>
 									</li>

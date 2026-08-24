@@ -50,7 +50,7 @@
 					href={fund.url}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="transition duration-150 hover:text-tertiary-600"
+					class="transition duration-150 hover:text-white"
 				>
 					{name}
 				</a>
@@ -59,7 +59,7 @@
 			{/if}
 		</h1>
 		{#if !loading}
-			<span class="text-sm text-gray-600">
+			<span class="text-sm text-gray-900">
 				{filtered.length} of {companies.length} companies
 			</span>
 		{/if}
@@ -69,14 +69,14 @@
 		type="text"
 		placeholder="search name or category…"
 		bind:value={search}
-		class="form-input mt-3 w-full focus:shadow-outline-green"
+		class="form-input mt-3 w-full focus:shadow-outline-gray"
 	/>
 
 	{#if loading}
 		<Spinner label="loading companies" />
 	{:else if companies.length === 0}
-		<p class="mt-6 text-sm text-gray-600">
-			no companies yet — run a fetch from the <a href="/" class="font-semibold text-tertiary-600">dashboard</a>
+		<p class="mt-6 text-sm text-gray-900">
+			no companies yet — run a fetch from the <a href="/" class="font-semibold text-black transition duration-150 hover:text-white">dashboard</a>
 		</p>
 	{:else}
 		<ul class="mt-4 divide-y divide-gray-200 rounded-lg bg-white shadow-lg">
@@ -88,7 +88,7 @@
 								href={company.url}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="font-medium text-gray-800 transition duration-150 hover:text-tertiary-600"
+								class="font-medium text-gray-800 transition duration-150 hover:underline"
 							>
 								{company.name}
 							</a>
@@ -96,7 +96,7 @@
 							<span class="font-medium text-gray-800">{company.name}</span>
 						{/if}
 						{#if company.category}
-							<span class="ml-2 text-xs text-gray-500">{company.category}</span>
+							<span class="ml-2 text-xs text-gray-900">{company.category}</span>
 						{/if}
 					</div>
 					<div class="flex shrink-0 items-center gap-3">
@@ -105,7 +105,7 @@
 								new
 							</span>
 						{/if}
-						<span class="text-xs text-gray-500">
+						<span class="text-xs text-gray-900">
 							first seen {company.firstSeenAt?.toLocaleDateString()}
 						</span>
 					</div>

@@ -49,7 +49,7 @@
 		<h1 class="text-lg font-semibold">newcomers</h1>
 		{#if !loading}
 			<div class="flex items-center gap-3">
-				<span class="text-sm text-gray-600">
+				<span class="text-sm text-gray-900">
 					{newcomers.length} new {newcomers.length === 1 ? 'company' : 'companies'}
 				</span>
 				{#if dev && newcomers.length > 0}
@@ -69,18 +69,18 @@
 	{#if loading}
 		<Spinner label="loading newcomers" />
 	{:else if groups.length === 0}
-		<p class="mt-6 text-sm text-gray-600">
-			no newcomers — run a fetch from the <a href="/" class="font-semibold text-tertiary-600">dashboard</a>
+		<p class="mt-6 text-sm text-gray-900">
+			no newcomers — run a fetch from the <a href="/" class="font-semibold text-black transition duration-150 hover:text-white">dashboard</a>
 		</p>
 	{:else}
 		<div class="mt-4 flex flex-col gap-4">
 			{#each groups as group (group.slug)}
 				<details class="rounded-lg bg-white shadow-lg">
 					<summary
-						class="cursor-pointer px-4 py-3 font-semibold text-gray-800 transition duration-150 select-none hover:text-tertiary-600"
+						class="cursor-pointer px-4 py-3 font-semibold text-gray-800 transition duration-150 select-none hover:underline"
 					>
 						{group.name}
-						<span class="ml-1 text-sm font-normal text-gray-500">({group.companies.length})</span>
+						<span class="ml-1 text-sm font-normal text-gray-900">({group.companies.length})</span>
 					</summary>
 					<ul class="divide-y divide-gray-200 border-t border-gray-200">
 						{#each group.companies as company (company.id)}
@@ -91,7 +91,7 @@
 											href={company.url}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="font-medium text-gray-800 transition duration-150 hover:text-tertiary-600"
+											class="font-medium text-gray-800 transition duration-150 hover:underline"
 										>
 											{company.name}
 										</a>
@@ -99,10 +99,10 @@
 										<span class="font-medium text-gray-800">{company.name}</span>
 									{/if}
 									{#if company.category}
-										<span class="ml-2 text-xs text-gray-500">{company.category}</span>
+										<span class="ml-2 text-xs text-gray-900">{company.category}</span>
 									{/if}
 								</div>
-								<span class="shrink-0 text-xs text-gray-500">
+								<span class="shrink-0 text-xs text-gray-900">
 									first seen {company.firstSeenAt?.toLocaleDateString()}
 								</span>
 							</li>

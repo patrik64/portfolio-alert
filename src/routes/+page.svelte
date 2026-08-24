@@ -97,7 +97,7 @@
 					<!-- stretched link: the ::after overlay makes the whole card clickable -->
 					<a
 						href={`/funds/${card.slug}`}
-						class="font-semibold text-gray-800 transition duration-150 after:absolute after:inset-0 group-hover:text-tertiary-600"
+						class="font-semibold text-gray-800 transition duration-150 after:absolute after:inset-0 group-hover:underline"
 					>
 						{card.name}
 					</a>
