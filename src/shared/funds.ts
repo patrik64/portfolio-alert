@@ -1,4 +1,4 @@
-// The 138 tracked funds, in case-insensitive alphabetical order by name — the
+// The 141 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -21,6 +21,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'acapital', name: 'A Capital', url: 'https://acapital.com/portfolio' },
 	{ slug: 'accel', name: 'Accel', url: 'https://www.accel.com/companies' },
 	{ slug: 'advent', name: 'Advent International', url: 'https://www.adventinternational.com/investments/' },
+	{
+		slug: 'airbusventures',
+		name: 'Airbus Ventures',
+		url: 'https://www.airbusventures.vc/portfolio'
+	},
 	{ slug: 'aisling', name: 'Aisling Capital', url: 'https://www.aislingcapital.com/portfolio' },
 	{
 		slug: 'alchemist',
@@ -51,6 +56,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'broocknell', name: 'Broocknell Ventures', url: 'https://broocknell.com/all-projects/' },
 	{ slug: 'calmstorm', name: 'Calm/Storm', url: 'https://www.calmstorm.vc/portfolio' },
 	{ slug: 'canapi', name: 'Canapi', url: 'https://www.canapi.com/portfolio' },
+	{ slug: 'cherry', name: 'Cherry Ventures', url: 'https://www.cherry.vc/founders' },
 	{ slug: 'congruent', name: 'Congruent Ventures', url: 'https://www.congruentvc.com/portfolio' },
 	{ slug: 'craft', name: 'Craft Ventures', url: 'https://www.craftventures.com/portfolio' },
 	{ slug: 'creandum', name: 'Creandum', url: 'https://creandum.com/commitments/' },
@@ -114,6 +120,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'pillar', name: 'Pillar VC', url: 'https://www.pillar.vc/companies/' },
 	{ slug: 'pitango', name: 'Pitango', url: 'https://www.pitango.com/portfolio/' },
 	{ slug: 'plugandplay', name: 'Plug and Play', url: 'https://www.plugandplaytechcenter.com/innovation-services/startups/our-startups' },
+	{ slug: 'plural', name: 'Plural', url: 'https://www.pluralplatform.com/portfolio' },
 	{ slug: 'pointnine', name: 'Point Nine', url: 'https://www.pointnine.com/companies' },
 	{ slug: 'polaris', name: 'Polaris Partners', url: 'https://polarispartners.com/companies-list' },
 	{ slug: 'prelude', name: 'Prelude Ventures', url: 'https://www.preludeventures.com/portfolio' },

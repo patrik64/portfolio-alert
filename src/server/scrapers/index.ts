@@ -11,6 +11,7 @@ import { scrape as a16z } from './a16z';
 import { scrape as acapital } from './acapital';
 import { scrape as accel } from './accel';
 import { scrape as advent } from './advent';
+import { scrape as airbusventures } from './airbusventures';
 import { scrape as aisling } from './aisling';
 import { scrape as alchemist } from './alchemist';
 import { scrape as aleph } from './aleph';
@@ -35,6 +36,7 @@ import { scrape as breakthrough } from './breakthrough';
 import { scrape as broocknell } from './broocknell';
 import { scrape as calmstorm } from './calmstorm';
 import { scrape as canapi } from './canapi';
+import { scrape as cherry } from './cherry';
 import { scrape as congruent } from './congruent';
 import { scrape as boxgroup } from './boxgroup';
 import { scrape as craft } from './craft';
@@ -99,6 +101,7 @@ import { scrape as pear } from './pear';
 import { scrape as pillar } from './pillar';
 import { scrape as pitango } from './pitango';
 import { scrape as plugandplay } from './plugandplay';
+import { scrape as plural } from './plural';
 import { scrape as pointnine } from './pointnine';
 import { scrape as polaris } from './polaris';
 import { scrape as prelude } from './prelude';
@@ -151,6 +154,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	acapital,
 	accel,
 	advent,
+	airbusventures,
 	aisling,
 	alchemist,
 	aleph,
@@ -175,6 +179,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	broocknell,
 	calmstorm,
 	canapi,
+	cherry,
 	congruent,
 	boxgroup,
 	craft,
@@ -239,6 +244,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	pillar,
 	pitango,
 	plugandplay,
+	plural,
 	pointnine,
 	polaris,
 	prelude,
