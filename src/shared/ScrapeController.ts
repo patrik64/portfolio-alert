@@ -106,7 +106,8 @@ export class ScrapeController {
 							name: c.name.trim(),
 							category: decodeEntities(c.category ?? ''),
 							url: (c.url ?? '').replace(/&amp;/g, '&'),
-							isNewcomer: !baseline
+							isNewcomer: !baseline,
+							isBaseline: baseline
 						})
 					)
 				);

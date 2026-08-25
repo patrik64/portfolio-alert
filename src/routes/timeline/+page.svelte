@@ -5,8 +5,11 @@
 	import { FUNDS } from '../../shared/funds';
 
 	let companies = $state<Company[]>([]);
+	let baselineRows = $state<Company[]>([]);
 	let loading = $state(true);
+	let loadingBaseline = $state(false);
 	let includeBaseline = $state(false);
+	let baselineLoaded = false;
 
 	// local YYYY-MM-DD key so day boundaries follow the viewer's timezone
 	const dayKey = (d: Date) =>
@@ -15,6 +18,7 @@
 	$effect(() => {
 		repo(Company)
 			.find({
+				where: { isBaseline: false },
 				orderBy: { name: 'asc' },
 				// explicit limit — remult's REST API defaults to 100 rows per page
 				limit: 100_000
@@ -25,22 +29,23 @@
 			});
 	});
 
-	// each fund's first-ever day: its baseline import, tinted to set those rows
-	// apart from genuine newcomers
-	const firstDayByFund = $derived.by(() => {
-		const first = new Map<string, string>();
-		for (const c of companies) {
-			if (!c.firstSeenAt) continue;
-			const key = dayKey(c.firstSeenAt);
-			const prev = first.get(c.fundSlug);
-			if (!prev || key < prev) first.set(c.fundSlug, key);
-		}
-		return first;
+	// the ~50k baseline rows are only fetched the first time the box is ticked;
+	// unticking just filters them back out locally
+	$effect(() => {
+		if (!includeBaseline || baselineLoaded) return;
+		baselineLoaded = true;
+		loadingBaseline = true;
+		repo(Company)
+			.find({ where: { isBaseline: true }, orderBy: { name: 'asc' }, limit: 100_000 })
+			.then((rows) => {
+				baselineRows = rows;
+				loadingBaseline = false;
+			});
 	});
 
 	const days = $derived.by(() => {
 		const byDay = new Map<string, Company[]>();
-		for (const c of companies) {
+		for (const c of includeBaseline ? [...companies, ...baselineRows] : companies) {
 			if (!c.firstSeenAt) continue;
 			const key = dayKey(c.firstSeenAt);
 			const list = byDay.get(key);
@@ -52,18 +57,16 @@
 			.map(([day, rows]) => {
 				const funds = FUNDS.map((f) => ({
 					...f,
-					companies: rows.filter((c) => c.fundSlug === f.slug)
-				})).filter(
-					(g) => g.companies.length > 0 && (includeBaseline || firstDayByFund.get(g.slug) !== day)
-				);
+					// both sources arrive name-sorted, so merged groups re-sort
+					companies: rows.filter((c) => c.fundSlug === f.slug).sort((a, b) => a.name.localeCompare(b.name))
+				})).filter((g) => g.companies.length > 0);
 				return {
 					day,
 					label: new Date(`${day}T00:00:00`).toLocaleDateString(),
-					total: funds.reduce((n, g) => n + g.companies.length, 0),
+					total: rows.length,
 					funds
 				};
-			})
-			.filter((d) => d.funds.length > 0);
+			});
 	});
 
 	const shownCount = $derived(days.reduce((n, d) => n + d.total, 0));
@@ -107,12 +110,12 @@
 		{/if}
 	</div>
 
-	{#if loading}
+	{#if loading || loadingBaseline}
 		<Spinner label="loading timeline" />
 	{:else if days.length === 0}
 		<p class="mt-6 text-sm text-gray-900">
-			{#if companies.length}
-				only baseline imports so far — check the box above to show them
+			{#if !includeBaseline}
+				no newcomers yet — tick the box above to include the baseline imports
 			{:else}
 				nothing yet — run a fetch from the dashboard
 			{/if}
@@ -128,7 +131,7 @@
 				</h2>
 				<div class="mt-3 flex flex-col gap-3">
 					{#each day.funds as group (group.slug)}
-						{@const baseline = firstDayByFund.get(group.slug) === day.day}
+						{@const baseline = group.companies.some((c) => c.isBaseline)}
 						<details class="rounded-lg bg-white shadow-lg">
 							<summary
 								class="cursor-pointer px-4 py-3 font-semibold text-gray-800 transition duration-150 select-none hover:underline"

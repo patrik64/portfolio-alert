@@ -27,6 +27,11 @@ export class Company {
 	@Fields.boolean()
 	isNewcomer = false;
 
+	// set on the rows a fund's very first fetch imports — the portfolio as it
+	// already stood, which the timeline only shows on request
+	@Fields.boolean()
+	isBaseline = false;
+
 	@Fields.createdAt()
 	firstSeenAt?: Date;
 }
