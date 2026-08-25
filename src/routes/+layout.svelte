@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
 	import favicon from '$lib/assets/favicon.svg';
 	import Footer from '$lib/components/Footer.svelte';
 	import '../app.css';
@@ -68,15 +69,17 @@
 					>
 						timeline
 					</a>
-					<a
-						href="/download"
-						download
-						data-sveltekit-reload
-						onclick={() => (menuOpen = false)}
-						class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-					>
-						download
-					</a>
+					{#if dev}
+						<a
+							href="/download"
+							download
+							data-sveltekit-reload
+							onclick={() => (menuOpen = false)}
+							class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+						>
+							download
+						</a>
+					{/if}
 					<a
 						href="https://bsky.app/profile/portfolio-alert.bsky.social"
 						target="_blank"
@@ -143,22 +146,24 @@
 			</a>
 		</nav>
 		<div class="-mt-1 ml-auto flex items-center gap-3 pr-1 text-black">
-			<a
-				href="/download"
-				download
-				data-sveltekit-reload
-				aria-label="download"
-				title="download"
-				class="transition duration-150 hover:text-white"
-			>
-				<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-					<path
-						fill-rule="evenodd"
-						d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-						clip-rule="evenodd"
-					/>
-				</svg>
-			</a>
+			{#if dev}
+				<a
+					href="/download"
+					download
+					data-sveltekit-reload
+					aria-label="download"
+					title="download"
+					class="transition duration-150 hover:text-white"
+				>
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+						<path
+							fill-rule="evenodd"
+							d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+							clip-rule="evenodd"
+						/>
+					</svg>
+				</a>
+			{/if}
 			<a
 				href="/rss.xml"
 				target="_blank"

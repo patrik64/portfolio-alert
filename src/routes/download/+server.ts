@@ -1,13 +1,17 @@
-import type { RequestEvent } from '@sveltejs/kit';
+import { dev } from '$app/environment';
+import { error, type RequestEvent } from '@sveltejs/kit';
 import { repo } from 'remult';
 import { api } from '../../server/api';
 import { Company } from '../../shared/Company';
 import { Fund } from '../../shared/Fund';
 import { FUNDS } from '../../shared/funds';
 
-// GET /download — all companies grouped by fund, served as a JSON attachment
-export const GET = (event: RequestEvent) =>
-	api.withRemult(event, async () => {
+// GET /download — all companies grouped by fund, served as a JSON attachment.
+// dev only: the full export pulls every row from the database, and in
+// production that transfer adds up against the free-tier egress quota
+export const GET = (event: RequestEvent) => {
+	if (!dev) error(404, 'Not found');
+	return api.withRemult(event, async () => {
 		const [companies, fundRows] = await Promise.all([
 			repo(Company).find({ orderBy: { name: 'asc' }, limit: 100_000 }),
 			repo(Fund).find({ limit: 1000 })
@@ -43,3 +47,4 @@ export const GET = (event: RequestEvent) =>
 			}
 		});
 	});
+};

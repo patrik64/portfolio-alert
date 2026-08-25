@@ -48,11 +48,9 @@
 		</p>
 		<p>
 			<a href="/search" class="font-semibold text-black transition duration-150 hover:text-white">search</a> finds companies
-			across every fund by name or category,
+			across every fund by name or category, and
 			<a href="/timeline" class="font-semibold text-black transition duration-150 hover:text-white">timeline</a> groups them by
-			the day they first appeared, and
-			<a href="/download" class="font-semibold text-black transition duration-150 hover:text-white">download</a> exports
-			everything as JSON.
+			the day they first appeared.
 		</p>
 		<p>
 			Every night the funds are refreshed automatically, and whatever newcomers turn up are
