@@ -2,6 +2,7 @@ import { FUNDS } from '../../shared/funds';
 import type { ScrapedCompany } from './types';
 // these slugs lead with a digit, so the bindings can't be named after them
 import { scrape as zeroonea } from './01a';
+import { scrape as tend } from './10d';
 import { scrape as twentyonefifty } from './twentyonefifty';
 import { scrape as threevc } from './3vc';
 import { scrape as fivehundred } from './fivehundred';
@@ -42,13 +43,16 @@ import { scrape as boxgroup } from './boxgroup';
 import { scrape as craft } from './craft';
 import { scrape as credo } from './credo';
 import { scrape as creandum } from './creandum';
+import { scrape as cyberstarts } from './cyberstarts';
 import { scrape as dcvc } from './dcvc';
 import { scrape as draper } from './draper';
 import { scrape as earlybird } from './earlybird';
 import { scrape as eclipse } from './eclipse';
+import { scrape as entree } from './entree';
 import { scrape as ef } from './ef';
 import { scrape as episode1 } from './episode1';
 import { scrape as eqt } from './eqt';
+import { scrape as f2 } from './f2';
 import { scrape as felicis } from './felicis';
 import { scrape as filrouge } from './filrouge';
 import { scrape as firstround } from './firstround';
@@ -62,8 +66,10 @@ import { scrape as generalatlantic } from './generalatlantic';
 import { scrape as generalcatalyst } from './generalcatalyst';
 import { scrape as gigascale } from './gigascale';
 import { scrape as glasswing } from './glasswing';
+import { scrape as glilot } from './glilot';
 import { scrape as greycroft } from './greycroft';
 import { scrape as greylock } from './greylock';
+import { scrape as grove } from './grove';
 import { scrape as headline } from './headline';
 import { scrape as htgf } from './htgf';
 import { scrape as hvcapital } from './hvcapital';
@@ -108,6 +114,7 @@ import { scrape as prelude } from './prelude';
 import { scrape as push } from './push';
 import { scrape as qed } from './qed';
 import { scrape as quantonation } from './quantonation';
+import { scrape as qumra } from './qumra';
 import { scrape as racap } from './racap';
 import { scrape as recall } from './recall';
 import { scrape as redpoint } from './redpoint';
@@ -121,12 +128,14 @@ import { scrape as sosv } from './sosv';
 import { scrape as southparkcommons } from './southparkcommons';
 import { scrape as spark } from './spark';
 import { scrape as speedinvest } from './speedinvest';
+import { scrape as stageone } from './stageone';
 import { scrape as standardindustries } from './standardindustries';
 import { scrape as stripes } from './stripes';
 import { scrape as superhero } from './superhero';
 import { scrape as svangel } from './svangel';
 import { scrape as targetglobal } from './targetglobal';
 import { scrape as tcv } from './tcv';
+import { scrape as team8 } from './team8';
 import { scrape as techstars } from './techstars';
 import { scrape as thomabravo } from './thomabravo';
 import { scrape as tlv } from './tlv';
@@ -136,6 +145,7 @@ import { scrape as transformation } from './transformation';
 import { scrape as uncork } from './uncork';
 import { scrape as usv } from './usv';
 import { scrape as venrock } from './venrock';
+import { scrape as vertex } from './vertex';
 import { scrape as viking } from './viking';
 import { scrape as viola } from './viola';
 import { scrape as wellington } from './wellington';
@@ -145,6 +155,7 @@ import { scrape as zcg } from './zcg';
 
 const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	'01a': zeroonea,
+	'10d': tend,
 	'2150': twentyonefifty,
 	'3vc': threevc,
 	'500': fivehundred,
@@ -185,13 +196,16 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	craft,
 	credo,
 	creandum,
+	cyberstarts,
 	dcvc,
 	draper,
 	earlybird,
 	eclipse,
+	entree,
 	ef,
 	episode1,
 	eqt,
+	f2,
 	felicis,
 	filrouge,
 	firstround,
@@ -205,8 +219,10 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	generalcatalyst,
 	gigascale,
 	glasswing,
+	glilot,
 	greycroft,
 	greylock,
+	grove,
 	headline,
 	htgf,
 	hvcapital,
@@ -251,6 +267,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	push,
 	qed,
 	quantonation,
+	qumra,
 	racap,
 	recall,
 	redpoint,
@@ -264,12 +281,14 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	southparkcommons,
 	spark,
 	speedinvest,
+	stageone,
 	standardindustries,
 	stripes,
 	superhero,
 	svangel,
 	targetglobal,
 	tcv,
+	team8,
 	techstars,
 	thomabravo,
 	tlv,
@@ -279,6 +298,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	uncork,
 	usv,
 	venrock,
+	vertex,
 	viking,
 	viola,
 	wellington,

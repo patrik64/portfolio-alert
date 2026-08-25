@@ -1,4 +1,4 @@
-// The 141 tracked funds, in case-insensitive alphabetical order by name — the
+// The 151 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -13,6 +13,7 @@ export interface FundInfo {
 
 export const FUNDS: FundInfo[] = [
 	{ slug: '01a', name: '01A', url: 'https://01a.com/portfolio' },
+	{ slug: '10d', name: '10D', url: 'https://www.10d.vc/portfolio/' },
 	{ slug: '2150', name: '2150', url: 'https://www.2150.vc/investments' },
 	{ slug: '3vc', name: '3VC', url: 'https://three.vc/portfolio/' },
 	{ slug: '500', name: '500 Global', url: 'https://500.co/portfolio' },
@@ -61,13 +62,16 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'craft', name: 'Craft Ventures', url: 'https://www.craftventures.com/portfolio' },
 	{ slug: 'creandum', name: 'Creandum', url: 'https://creandum.com/commitments/' },
 	{ slug: 'credo', name: 'Credo', url: 'https://www.credoventures.com/portfolio' },
+	{ slug: 'cyberstarts', name: 'Cyberstarts', url: 'https://www.cyberstarts.com/portfolio' },
 	{ slug: 'dcvc', name: 'DCVC', url: 'https://www.dcvc.com/companies' },
 	{ slug: 'draper', name: 'Draper Associates', url: 'https://www.draper.vc/portfolio' },
 	{ slug: 'earlybird', name: 'Earlybird', url: 'https://earlybird.com/companies' },
 	{ slug: 'eclipse', name: 'Eclipse Ventures', url: 'https://eclipse.capital/portfolio/' },
+	{ slug: 'entree', name: 'Entrée Capital', url: 'https://entreecap.com/companies' },
 	{ slug: 'ef', name: 'Entrepreneurs First', url: 'https://www.joinef.com/portfolio/' },
 	{ slug: 'episode1', name: 'Episode 1', url: 'https://www.episode1.com/portfolio' },
 	{ slug: 'eqt', name: 'EQT Group', url: 'https://eqtgroup.com/about/current-portfolio' },
+	{ slug: 'f2', name: 'F2 Venture Capital', url: 'https://www.f2vc.com/companies' },
 	{ slug: 'felicis', name: 'Felicis', url: 'https://www.felicis.com/companies' },
 	{ slug: 'filrouge', name: 'Fil Rouge Capital', url: 'https://www.filrougecapital.com/portfolio' },
 	{ slug: 'firstround', name: 'First Round', url: 'https://www.firstround.com/companies' },
@@ -80,9 +84,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'generalcatalyst', name: 'General Catalyst', url: 'https://www.generalcatalyst.com/portfolio' },
 	{ slug: 'gigascale', name: 'Gigascale', url: 'https://gigascale.com/portfolio/' },
 	{ slug: 'glasswing', name: 'Glasswing Ventures', url: 'https://glasswing.vc/our-companies/' },
+	{ slug: 'glilot', name: 'Glilot Capital', url: 'https://glilotcapital.com/portfolio/' },
 	{ slug: 'gv', name: 'Google Ventures', url: 'https://www.gv.com/portfolio' },
 	{ slug: 'greycroft', name: 'Greycroft', url: 'https://www.greycroft.com/portfolio/' },
 	{ slug: 'greylock', name: 'Greylock', url: 'https://greylock.com/portfolio/' },
+	{ slug: 'grove', name: 'Grove Ventures', url: 'https://www.grovevc.com/grove-portfolio-companies/' },
 	{ slug: 'headline', name: 'Headline', url: 'https://headline.com/portfolio' },
 	{ slug: 'htgf', name: 'HTGF', url: 'https://www.htgf.de/en/portfolio/' },
 	{ slug: 'hvcapital', name: 'HV Capital', url: 'https://www.hvcapital.com/portfolio' },
@@ -127,6 +133,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'push', name: 'PUSH VC', url: 'https://push.vc/portfolio' },
 	{ slug: 'qed', name: 'QED Investors', url: 'https://www.qedinvestors.com/companies' },
 	{ slug: 'quantonation', name: 'Quantonation', url: 'https://www.quantonation.com/portfolio/' },
+	{ slug: 'qumra', name: 'Qumra Capital', url: 'https://qumracapital.com/portfolio/' },
 	{ slug: 'racap', name: 'RA Capital', url: 'https://www.racap.com/portfolio' },
 	{ slug: 'recall', name: 'Recall Capital', url: 'https://www.recall.capital/portfolio' },
 	{ slug: 'redpoint', name: 'Redpoint', url: 'https://www.redpoint.com/companies/' },
@@ -144,6 +151,7 @@ export const FUNDS: FundInfo[] = [
 	},
 	{ slug: 'spark', name: 'Spark Capital', url: 'https://www.sparkcapital.com/companies' },
 	{ slug: 'speedinvest', name: 'Speedinvest', url: 'https://www.speedinvest.com/portfolio' },
+	{ slug: 'stageone', name: 'StageOne Ventures', url: 'https://stageonevc.com/portfolio/' },
 	{
 		slug: 'standardindustries',
 		name: 'Standard Industries',
@@ -154,6 +162,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'svangel', name: 'SV Angel', url: 'https://svangel.com/portfolio' },
 	{ slug: 'targetglobal', name: 'Target Global', url: 'https://www.targetglobal.vc/portfolio' },
 	{ slug: 'tcv', name: 'TCV', url: 'https://www.tcv.com/partnerships' },
+	{ slug: 'team8', name: 'Team8', url: 'https://team8.vc/portfolio/' },
 	{ slug: 'techstars', name: 'Techstars', url: 'https://www.techstars.com/portfolio' },
 	{ slug: 'thomabravo', name: 'Thoma Bravo', url: 'https://www.thomabravo.com/portfolio' },
 	{ slug: 'tlv', name: 'TLV Partners', url: 'https://tlv.partners/portfolio/' },
@@ -167,6 +176,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'uncork', name: 'Uncork Capital', url: 'https://uncorkcapital.com/companies/' },
 	{ slug: 'usv', name: 'Union Square Ventures', url: 'https://www.usv.com/companies/' },
 	{ slug: 'venrock', name: 'Venrock', url: 'https://www.venrock.com/companies/' },
+	{
+		slug: 'vertex',
+		name: 'Vertex Ventures Israel',
+		url: 'https://www.vertexventures.co.il/#portfolio'
+	},
 	{ slug: 'viking', name: 'Viking', url: 'https://vikingglobal.com/private-equity-portfolio/' },
 	{ slug: 'viola', name: 'Viola', url: 'https://www.viola-group.com/portfolio/' },
 	{
