@@ -1,4 +1,4 @@
-import { BackendMethod, repo } from 'remult';
+import { BackendMethod, repo, SqlDatabase } from 'remult';
 import type { ScrapedCompany } from '../server/scrapers/types';
 import { Company } from './Company';
 import { Fund } from './Fund';
@@ -52,6 +52,16 @@ const decodeEntities = (s: string) =>
 const nameKey = (name: string) => name.trim().toLowerCase().replace(/\s+/g, ' ');
 
 const inFlight = new Set<string>();
+
+// the sql database when one is connected; undefined on the json fallback
+// store (dev without DATABASE_URL), where callers filter in memory instead
+function sqlDb(): SqlDatabase | undefined {
+	try {
+		return SqlDatabase.getDb();
+	} catch {
+		return undefined;
+	}
+}
 
 export class ScrapeController {
 	@BackendMethod({ allowed: true })
@@ -149,26 +159,51 @@ export class ScrapeController {
 		const needle = (quoted?.[1] ?? q).trim();
 		if (!needle) return [];
 
-		const rows = await repo(Company).find({
-			where: { $or: [{ name: { $contains: needle } }, { category: { $contains: needle } }] },
-			orderBy: { name: 'asc', id: 'asc' },
-			limit: quoted ? 100_000 : SEARCH_LIMIT,
-			page: quoted ? 1 : Math.floor(offset / SEARCH_LIMIT) + 1
-		});
-
 		const key = needle.toLowerCase();
-		const hits = quoted
-			? rows
-					.filter(
-						(company) =>
-							company.name.trim().toLowerCase() === key ||
-							company.category
-								.toLowerCase()
-								.split(',')
-								.some((tag) => tag.trim() === key)
-					)
-					.slice(offset, offset + SEARCH_LIMIT)
-			: rows;
+		const page = Math.floor(offset / SEARCH_LIMIT) + 1;
+		const db = quoted ? sqlDb() : undefined;
+
+		let hits: Company[];
+		if (quoted && db) {
+			// exactness decided in the database: the exact name, or exactly one
+			// of the comma-separated category tags — instead of pulling every
+			// substring match over the wire and filtering here
+			hits = await repo(Company).find({
+				where: SqlDatabase.rawFilter(
+					({ param }) =>
+						`lower(trim(name)) = ${param(key)} or exists (
+						   select 1 from unnest(string_to_array(category, ',')) tag
+						   where lower(trim(tag)) = ${param(key)})`
+				),
+				orderBy: { name: 'asc', id: 'asc' },
+				limit: SEARCH_LIMIT,
+				page
+			});
+		} else if (quoted) {
+			// json fallback store: filter in memory as before
+			const rows = await repo(Company).find({
+				where: { $or: [{ name: { $contains: needle } }, { category: { $contains: needle } }] },
+				orderBy: { name: 'asc', id: 'asc' },
+				limit: 100_000
+			});
+			hits = rows
+				.filter(
+					(company) =>
+						company.name.trim().toLowerCase() === key ||
+						company.category
+							.toLowerCase()
+							.split(',')
+							.some((tag) => tag.trim() === key)
+				)
+				.slice(offset, offset + SEARCH_LIMIT);
+		} else {
+			hits = await repo(Company).find({
+				where: { $or: [{ name: { $contains: needle } }, { category: { $contains: needle } }] },
+				orderBy: { name: 'asc', id: 'asc' },
+				limit: SEARCH_LIMIT,
+				page
+			});
+		}
 
 		return hits.map((company) => ({
 			id: company.id,
@@ -182,9 +217,20 @@ export class ScrapeController {
 
 	// the same company may be backed by several funds, so it is counted once:
 	// by the address it lives at, or by its name (case-insensitively) when no
-	// address is published
+	// address is published. the counting happens in the database — shipping
+	// every row over the wire just to count it was the site's single biggest
+	// data-transfer cost
 	@BackendMethod({ allowed: true })
 	static async countCompanies(): Promise<number> {
+		const db = sqlDb();
+		if (db) {
+			const result = await db.execute(
+				`select count(distinct url) filter (where url <> '')
+				     + count(distinct lower(regexp_replace(trim(name), '\\s+', ' ', 'g'))) filter (where url = '') as n
+				  from companies`
+			);
+			return Number(result.rows[0].n);
+		}
 		const rows = await repo(Company).find({ limit: 100_000 });
 		const urls = new Set<string>();
 		const names = new Set<string>();
