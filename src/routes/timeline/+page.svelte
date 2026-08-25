@@ -3,36 +3,39 @@
 	import Spinner from '$lib/components/Spinner.svelte';
 	import { Company } from '../../shared/Company';
 	import { FUNDS } from '../../shared/funds';
-	import { TIMELINE_START } from '../../shared/timeline';
 
 	let companies = $state<Company[]>([]);
-	// each fund's first-ever day: its baseline import, tinted to set those rows
-	// apart from genuine newcomers
-	let firstDayByFund = $state(new Map<string, string>());
 	let loading = $state(true);
+	let includeBaseline = $state(false);
 
 	// local YYYY-MM-DD key so day boundaries follow the viewer's timezone
 	const dayKey = (d: Date) =>
 		`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
 	$effect(() => {
-		Promise.all([
-			repo(Company).find({
-				where: { firstSeenAt: { $gte: TIMELINE_START } },
+		repo(Company)
+			.find({
 				orderBy: { name: 'asc' },
 				// explicit limit — remult's REST API defaults to 100 rows per page
 				limit: 100_000
-			}),
-			// the first days come from an aggregate over every row, since a
-			// fund's baseline import usually predates the timeline
-			repo(Company).groupBy({ group: ['fundSlug'], min: ['firstSeenAt'] })
-		]).then(([rows, firsts]) => {
-			companies = rows;
-			firstDayByFund = new Map(
-				firsts.flatMap((g) => (g.firstSeenAt.min ? [[g.fundSlug, dayKey(g.firstSeenAt.min)]] : []))
-			);
-			loading = false;
-		});
+			})
+			.then((rows) => {
+				companies = rows;
+				loading = false;
+			});
+	});
+
+	// each fund's first-ever day: its baseline import, tinted to set those rows
+	// apart from genuine newcomers
+	const firstDayByFund = $derived.by(() => {
+		const first = new Map<string, string>();
+		for (const c of companies) {
+			if (!c.firstSeenAt) continue;
+			const key = dayKey(c.firstSeenAt);
+			const prev = first.get(c.fundSlug);
+			if (!prev || key < prev) first.set(c.fundSlug, key);
+		}
+		return first;
 	});
 
 	const days = $derived.by(() => {
@@ -46,21 +49,32 @@
 		}
 		return [...byDay.entries()]
 			.sort((a, b) => (a[0] < b[0] ? 1 : -1))
-			.map(([day, rows]) => ({
-				day,
-				label: new Date(`${day}T00:00:00`).toLocaleDateString(),
-				total: rows.length,
-				funds: FUNDS.map((f) => ({
+			.map(([day, rows]) => {
+				const funds = FUNDS.map((f) => ({
 					...f,
 					companies: rows.filter((c) => c.fundSlug === f.slug)
-				})).filter((g) => g.companies.length > 0)
-			}));
+				})).filter(
+					(g) => g.companies.length > 0 && (includeBaseline || firstDayByFund.get(g.slug) !== day)
+				);
+				return {
+					day,
+					label: new Date(`${day}T00:00:00`).toLocaleDateString(),
+					total: funds.reduce((n, g) => n + g.companies.length, 0),
+					funds
+				};
+			})
+			.filter((d) => d.funds.length > 0);
 	});
+
+	const shownCount = $derived(days.reduce((n, d) => n + d.total, 0));
 
 	// the rss feed links a night as /timeline#YYYY-MM-DD; the days only exist
 	// once the rows are in, so the jump happens here rather than on page load
+	// (once only — toggling the baseline checkbox must not re-scroll)
+	let jumped = false;
 	$effect(() => {
-		if (loading || days.length === 0) return;
+		if (jumped || loading || days.length === 0) return;
+		jumped = true;
 		document.getElementById(location.hash.slice(1))?.scrollIntoView();
 	});
 </script>
@@ -74,10 +88,22 @@
 >
 	<div class="flex flex-wrap items-center justify-between gap-2">
 		<h1 class="text-lg font-semibold">timeline</h1>
-		{#if !loading && companies.length}
-			<span class="text-sm text-gray-900">
-				{companies.length.toLocaleString()} companies over {days.length} {days.length === 1 ? 'day' : 'days'}
-			</span>
+		{#if !loading}
+			<div class="flex flex-wrap items-center gap-4">
+				<label class="flex cursor-pointer items-center gap-1.5 text-sm text-gray-900 select-none">
+					<input
+						type="checkbox"
+						bind:checked={includeBaseline}
+						class="form-checkbox h-4 w-4 cursor-pointer text-gray-800 transition duration-150 focus:shadow-outline-gray focus:outline-none"
+					/>
+					include baseline imports
+				</label>
+				{#if shownCount}
+					<span class="text-sm text-gray-900">
+						{shownCount.toLocaleString()} companies over {days.length} {days.length === 1 ? 'day' : 'days'}
+					</span>
+				{/if}
+			</div>
 		{/if}
 	</div>
 
@@ -85,7 +111,11 @@
 		<Spinner label="loading timeline" />
 	{:else if days.length === 0}
 		<p class="mt-6 text-sm text-gray-900">
-			nothing yet — the timeline starts on {TIMELINE_START.toLocaleDateString()}
+			{#if companies.length}
+				only baseline imports so far — check the box above to show them
+			{:else}
+				nothing yet — run a fetch from the dashboard
+			{/if}
 		</p>
 	{:else}
 		{#each days as day (day.day)}

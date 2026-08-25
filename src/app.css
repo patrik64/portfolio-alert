@@ -72,6 +72,29 @@ body {
 	}
 }
 
+/* Tailwind v1 @tailwindcss/custom-forms `form-checkbox`, as used in qlist —
+   size and color it at the call site (h-4 w-4 text-*): when checked, the box
+   fills with currentColor under a white checkmark */
+@utility form-checkbox {
+	appearance: none;
+	display: inline-block;
+	vertical-align: middle;
+	flex-shrink: 0;
+	user-select: none;
+	background-origin: border-box;
+	background-color: #fff;
+	border: 1px solid var(--color-gray-300);
+	border-radius: 0.25rem;
+	&:checked {
+		background-color: currentColor;
+		border-color: transparent;
+		background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+		background-size: 100% 100%;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+}
+
 /* Tailwind v1 @tailwindcss/ui focus rings (shadow-outline-*) */
 @utility shadow-outline-green {
 	box-shadow: 0 0 0 3px rgba(154, 230, 180, 0.45);
