@@ -151,7 +151,12 @@ import { scrape as viola } from './viola';
 import { scrape as wellington } from './wellington';
 import { scrape as xyz } from './xyz';
 import { scrape as ycombinator } from './ycombinator';
+import { scrape as ylventures } from './ylventures';
 import { scrape as zcg } from './zcg';
+import { scrape as zeal } from './zeal';
+import { scrape as zenda } from './zenda';
+import { scrape as zetta } from './zetta';
+import { scrape as zigg } from './zigg';
 
 const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	'01a': zeroonea,
@@ -304,7 +309,12 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	wellington,
 	xyz,
 	ycombinator,
-	zcg
+	ylventures,
+	zcg,
+	zeal,
+	zenda,
+	zetta,
+	zigg
 };
 
 if (Object.keys(impls).length !== FUNDS.length || FUNDS.some((f) => !impls[f.slug]))

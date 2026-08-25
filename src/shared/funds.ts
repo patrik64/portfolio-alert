@@ -1,4 +1,4 @@
-// The 151 tracked funds, in case-insensitive alphabetical order by name — the
+// The 156 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -190,7 +190,16 @@ export const FUNDS: FundInfo[] = [
 	},
 	{ slug: 'xyz', name: 'XYZ', url: 'https://www.xyz.vc/portfolio' },
 	{ slug: 'ycombinator', name: 'Y Combinator', url: 'https://www.ycombinator.com/companies' },
-	{ slug: 'zcg', name: 'ZCG', url: 'https://www.zcg.com/portfolio' }
+	{ slug: 'ylventures', name: 'YL Ventures', url: 'https://www.ylventures.com/portfolio/' },
+	{ slug: 'zcg', name: 'ZCG', url: 'https://www.zcg.com/portfolio' },
+	{
+		slug: 'zeal',
+		name: 'Zeal Capital Partners',
+		url: 'https://www.zealcapitalpartners.com/portfolio/'
+	},
+	{ slug: 'zenda', name: 'Zenda', url: 'https://www.zenda.vc/portfolio/' },
+	{ slug: 'zetta', name: 'Zetta Venture Partners', url: 'https://www.zettavp.com/companies' },
+	{ slug: 'zigg', name: 'Zigg Capital', url: 'https://ziggcap.com/#portfolio' }
 ];
 
 export const fundName = new Map(FUNDS.map((f) => [f.slug, f.name]));
