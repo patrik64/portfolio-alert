@@ -78,14 +78,24 @@
 	<!-- svelte-ignore a11y_autofocus -->
 	<input
 		type="text"
-		placeholder='search all companies by name or category… wrap in "quotes" for exact matches'
+		placeholder="search all companies by name or category…"
 		bind:value={search}
 		autofocus
 		class="form-input mt-3 w-full focus:shadow-outline-gray"
 	/>
 
 	{#if !searched && !searching}
-		<p class="mt-6 text-sm text-white">type at least 2 characters to search all companies</p>
+		<ul class="mt-6 ml-5 flex list-disc flex-col gap-1.5 text-sm text-white">
+			<li>
+				a term in "quotes" matches exactly: a company named exactly that, or a whole category tag
+			</li>
+			<li>
+				uppercase <span class="font-semibold">AND</span> and
+				<span class="font-semibold">OR</span> combine terms, AND binding tighter — ai AND health,
+				fintech OR insurtech
+			</li>
+			<li>type at least 2 characters to search all companies</li>
+		</ul>
 	{:else if searched && results.length === 0}
 		<p class="mt-6 text-sm text-white">no companies match "{search.trim()}"</p>
 	{:else if results.length > 0}

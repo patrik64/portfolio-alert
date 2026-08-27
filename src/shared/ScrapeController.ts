@@ -23,6 +23,60 @@ export interface SearchHit {
 
 export const SEARCH_LIMIT = 500;
 
+// one operand of a search term: what to look for, and whether it must match a
+// field exactly (it was written in quotes) or merely appear in one
+interface SearchPart {
+	needle: string;
+	exact: boolean;
+}
+
+// a term parses into an OR of AND-groups: an uppercase OR starts a new group,
+// an uppercase AND separates operands within one — so AND binds tighter — and
+// a quoted stretch is one operand whatever it says inside. lowercase and/or
+// are ordinary text, as is an apostrophe inside a word ("women's health");
+// only a '…' standing free the way a "…" does quotes
+const parseSearch = (term: string): SearchPart[][] => {
+	const groups: SearchPart[][] = [];
+	let group: SearchPart[] = [];
+	let buf = '';
+	const endPart = () => {
+		const q = buf.trim();
+		buf = '';
+		const quoted = q.match(/^"([\s\S]+)"$/) ?? q.match(/^'([\s\S]+)'$/);
+		const needle = (quoted?.[1] ?? q).trim();
+		if (needle) group.push({ needle, exact: !!quoted });
+	};
+	const endGroup = () => {
+		endPart();
+		if (group.length) groups.push(group);
+		group = [];
+	};
+	for (const token of term.match(/"[^"]*"|(?<=^|\s)'[^']*'(?=\s|$)|\s+|[^\s"]+|"/g) ?? []) {
+		if (token === 'OR') endGroup();
+		else if (token === 'AND') endPart();
+		else buf += token;
+	}
+	endGroup();
+	return groups;
+};
+
+// whether one company satisfies one operand, the way the comment on
+// searchCompanies spells out
+const partMatches = (company: Company, part: SearchPart): boolean => {
+	const key = part.needle.toLowerCase();
+	if (!part.exact)
+		return (
+			company.name.toLowerCase().includes(key) || company.category.toLowerCase().includes(key)
+		);
+	return (
+		company.name.trim().toLowerCase() === key ||
+		company.category
+			.toLowerCase()
+			.split(',')
+			.some((tag) => tag.trim() === key)
+	);
+};
+
 // scraped text often carries HTML entities ("Abbot&#8217;s", "AI &amp; ML");
 // decode once here so every fund gets clean names and categories
 const NAMED_ENTITIES: Record<string, string> = {
@@ -146,64 +200,40 @@ export class ScrapeController {
 		}
 	}
 
-	// a term in quotes asks for exact matches only: a company named exactly
-	// that, or carrying exactly that category tag — both case-insensitively.
-	// exactness is decided here rather than in the browser, because the rows a
-	// substring query returns are capped and the exact ones must not be lost
-	// behind that cap. offset (a multiple of SEARCH_LIMIT) fetches the pages
-	// behind the "show more" link; the id tiebreak keeps them from shuffling
+	// a term is an OR of AND-groups (see parseSearch). An operand matches a
+	// company when its name or category contains it — or, written in quotes,
+	// when the name is exactly that, or a category tag is — all
+	// case-insensitively. exactness is decided here rather than in the
+	// browser, because the rows a substring query returns are capped and the
+	// exact ones must not be lost behind that cap. offset (a multiple of
+	// SEARCH_LIMIT) fetches the pages behind the "show more" link; the id
+	// tiebreak keeps them from shuffling
 	@BackendMethod({ allowed: true })
 	static async searchCompanies(term: string, offset = 0): Promise<SearchHit[]> {
-		const q = term.trim();
-		const quoted = q.match(/^"([\s\S]+)"$/) ?? q.match(/^'([\s\S]+)'$/);
-		const needle = (quoted?.[1] ?? q).trim();
-		if (!needle) return [];
-
-		const key = needle.toLowerCase();
+		const groups = parseSearch(term);
+		if (groups.length === 0) return [];
 		const page = Math.floor(offset / SEARCH_LIMIT) + 1;
-		const db = quoted ? sqlDb() : undefined;
 
-		let hits: Company[];
-		if (quoted && db) {
-			// exactness decided in the database: the exact name, or exactly one
-			// of the comma-separated category tags — instead of pulling every
-			// substring match over the wire and filtering here
-			hits = await repo(Company).find({
-				where: SqlDatabase.rawFilter(
-					({ param }) =>
-						`lower(trim(name)) = ${param(key)} or exists (
-						   select 1 from unnest(string_to_array(category, ',')) tag
-						   where lower(trim(tag)) = ${param(key)})`
-				),
-				orderBy: { name: 'asc', id: 'asc' },
-				limit: SEARCH_LIMIT,
-				page
-			});
-		} else if (quoted) {
-			// json fallback store: filter in memory as before
-			const rows = await repo(Company).find({
-				where: { $or: [{ name: { $contains: needle } }, { category: { $contains: needle } }] },
-				orderBy: { name: 'asc', id: 'asc' },
-				limit: 100_000
-			});
-			hits = rows
-				.filter(
-					(company) =>
-						company.name.trim().toLowerCase() === key ||
-						company.category
-							.toLowerCase()
-							.split(',')
-							.some((tag) => tag.trim() === key)
-				)
-				.slice(offset, offset + SEARCH_LIMIT);
-		} else {
-			hits = await repo(Company).find({
-				where: { $or: [{ name: { $contains: needle } }, { category: { $contains: needle } }] },
-				orderBy: { name: 'asc', id: 'asc' },
-				limit: SEARCH_LIMIT,
-				page
-			});
-		}
+		// the store narrows by substrings — an exact match is one of those
+		// too — and any exact operands are then judged here on the capped rows
+		const anyContains = (needle: string) => ({
+			$or: [{ name: { $contains: needle } }, { category: { $contains: needle } }]
+		});
+		const hasExact = groups.some((g) => g.some((p) => p.exact));
+		const rows = await repo(Company).find({
+			where: { $or: groups.map((g) => ({ $and: g.map((p) => anyContains(p.needle)) })) },
+			orderBy: { name: 'asc', id: 'asc' },
+			limit: hasExact ? 100_000 : SEARCH_LIMIT,
+			// with an exact operand the filtering happens below, after the
+			// fetch — it pages there too
+			...(hasExact ? {} : { page })
+		});
+
+		const hits = hasExact
+			? rows
+					.filter((company) => groups.some((g) => g.every((p) => partMatches(company, p))))
+					.slice(offset, offset + SEARCH_LIMIT)
+			: rows;
 
 		return hits.map((company) => ({
 			id: company.id,
