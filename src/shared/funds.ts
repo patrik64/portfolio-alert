@@ -1,4 +1,4 @@
-// The 156 tracked funds, in case-insensitive alphabetical order by name — the
+// The 166 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -188,8 +188,34 @@ export const FUNDS: FundInfo[] = [
 		name: 'Wellington',
 		url: 'https://www.wellington.com/en/capabilities/private-investing/our-investments'
 	},
+	{ slug: 'wischoff', name: 'Wischoff Ventures', url: 'https://www.wischoff.com/' },
+	{
+		slug: 'worklife',
+		name: 'Worklife Ventures',
+		url: 'https://www.worklife.vc/companies'
+	},
+	{ slug: 'worldfund', name: 'World Fund', url: 'https://www.worldfund.vc/portfolio' },
+	{
+		slug: 'wvvcapital',
+		name: 'WVV Capital',
+		url: 'https://www.wvvcapital.com/portfolio-companies'
+	},
+	{ slug: 'wxrfund', name: 'WXR Fund', url: 'https://www.wxrfund.com/portfolio' },
+	{ slug: 'xange', name: 'XAnge', url: 'https://www.xange.vc/portfolio' },
+	{
+		slug: 'xfactorventures',
+		name: 'XFactor Ventures',
+		url: 'https://www.xfactor.ventures/portfolio'
+	},
+	{ slug: 'xfund', name: 'Xfund', url: 'https://www.xfund.com/portfolio' },
+	{
+		slug: 'xrcventures',
+		name: 'XRC Ventures',
+		url: 'https://www.xrcventures.com/portfolio'
+	},
 	{ slug: 'xyz', name: 'XYZ', url: 'https://www.xyz.vc/portfolio' },
 	{ slug: 'ycombinator', name: 'Y Combinator', url: 'https://www.ycombinator.com/companies' },
+	{ slug: 'yesvc', name: 'Yes VC', url: 'https://yes.vc/portfolio/' },
 	{ slug: 'ylventures', name: 'YL Ventures', url: 'https://www.ylventures.com/portfolio/' },
 	{ slug: 'zcg', name: 'ZCG', url: 'https://www.zcg.com/portfolio' },
 	{

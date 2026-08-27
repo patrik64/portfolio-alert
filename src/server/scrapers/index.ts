@@ -149,8 +149,18 @@ import { scrape as vertex } from './vertex';
 import { scrape as viking } from './viking';
 import { scrape as viola } from './viola';
 import { scrape as wellington } from './wellington';
+import { scrape as wischoff } from './wischoff';
+import { scrape as worklife } from './worklife';
+import { scrape as worldfund } from './worldfund';
+import { scrape as wvvcapital } from './wvvcapital';
+import { scrape as wxrfund } from './wxrfund';
+import { scrape as xange } from './xange';
+import { scrape as xfactorventures } from './xfactorventures';
+import { scrape as xfund } from './xfund';
+import { scrape as xrcventures } from './xrcventures';
 import { scrape as xyz } from './xyz';
 import { scrape as ycombinator } from './ycombinator';
+import { scrape as yesvc } from './yesvc';
 import { scrape as ylventures } from './ylventures';
 import { scrape as zcg } from './zcg';
 import { scrape as zeal } from './zeal';
@@ -307,8 +317,18 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	viking,
 	viola,
 	wellington,
+	wischoff,
+	worklife,
+	worldfund,
+	wvvcapital,
+	wxrfund,
+	xange,
+	xfactorventures,
+	xfund,
+	xrcventures,
 	xyz,
 	ycombinator,
+	yesvc,
 	ylventures,
 	zcg,
 	zeal,

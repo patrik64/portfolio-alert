@@ -41,16 +41,16 @@
 </svelte:head>
 
 <div
-	class="mx-auto mt-2 w-full max-w-[53rem] px-6 py-4"
+	class="mx-auto mt-2 w-full max-w-[53rem] px-6 py-4 lg:dashed-frame"
 >
 	<div class="flex flex-wrap items-center justify-between gap-2">
-		<h1 class="text-lg font-semibold text-white">
+		<h1 class="text-lg font-semibold">
 			{#if fund}
 				<a
 					href={fund.url}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="transition duration-150 hover:text-gray-400"
+					class="transition duration-150 hover:text-white"
 				>
 					{name}
 				</a>
@@ -59,7 +59,7 @@
 			{/if}
 		</h1>
 		{#if !loading}
-			<span class="text-sm text-white">
+			<span class="text-sm text-gray-900">
 				{filtered.length} of {companies.length} companies
 			</span>
 		{/if}
@@ -75,8 +75,8 @@
 	{#if loading}
 		<Spinner label="loading companies" />
 	{:else if companies.length === 0}
-		<p class="mt-6 text-sm text-white">
-			no companies yet — run a fetch from the <a href="/" class="font-semibold text-white transition duration-150 hover:text-gray-400">dashboard</a>
+		<p class="mt-6 text-sm text-gray-900">
+			no companies yet — run a fetch from the <a href="/" class="font-semibold text-black transition duration-150 hover:text-white">dashboard</a>
 		</p>
 	{:else}
 		<ul class="mt-4 divide-y divide-gray-200 rounded-lg bg-white shadow-lg">

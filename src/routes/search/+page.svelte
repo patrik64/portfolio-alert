@@ -58,11 +58,11 @@
 </svelte:head>
 
 <div
-	class="mx-auto mt-2 w-full max-w-[53rem] px-6 py-4"
+	class="mx-auto mt-2 w-full max-w-[53rem] px-6 py-4 lg:dashed-frame"
 >
 	<div class="flex flex-wrap items-center justify-between gap-2">
-		<h1 class="text-lg font-semibold text-white">search</h1>
-		<span class="text-sm text-white">
+		<h1 class="text-lg font-semibold">search</h1>
+		<span class="text-sm text-gray-900">
 			{#if searching}
 				searching…
 			{:else if searched}
@@ -85,7 +85,7 @@
 	/>
 
 	{#if !searched && !searching}
-		<ul class="mt-6 ml-5 flex list-disc flex-col gap-1.5 text-sm text-white">
+		<ul class="mt-6 ml-5 flex list-disc flex-col gap-1.5 text-sm text-gray-900">
 			<li>
 				a term in "quotes" matches exactly: a company named exactly that, or a whole category tag
 			</li>
@@ -97,7 +97,7 @@
 			<li>type at least 2 characters to search all companies</li>
 		</ul>
 	{:else if searched && results.length === 0}
-		<p class="mt-6 text-sm text-white">no companies match "{search.trim()}"</p>
+		<p class="mt-6 text-sm text-gray-900">no companies match "{search.trim()}"</p>
 	{:else if results.length > 0}
 		<ul class="mt-4 divide-y divide-gray-200 rounded-lg bg-white shadow-lg">
 			{#each results as company (company.id)}
