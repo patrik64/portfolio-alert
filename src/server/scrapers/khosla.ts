@@ -1,8 +1,6 @@
 import type { ScrapedCompany } from './types';
 
 const BASE_URL = "https://www.khoslaventures.com";
-const PAGE_URL = `${BASE_URL}/portfolio`;
-const BATCH_SIZE = 8;
 const UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
@@ -46,75 +44,50 @@ interface Entry {
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-  const portal = await fetchPage(PAGE_URL);
-
-  // the portfolio page names the category pages; "Exits" is one of them
-  const categories = new Map<string, string>();
-  for (const m of portal.matchAll(
-    /<a href="\/category\/([a-z0-9-]+)"[^>]*>\s*<div class="category-text">([^<]+)</g,
-  )) {
-    categories.set(m[1], text(m[2]));
-  }
-  if (categories.size === 0) {
+  // the portfolio page only shows each category as a teaser carousel; the full
+  // grids live on the category pages, which the sitemap is the one place to
+  // enumerate — "exits" among them, which the portfolio page doesn't link
+  const sitemap = await fetchPage(`${BASE_URL}/sitemap.xml`);
+  const slugs = [
+    ...new Set(
+      [...sitemap.matchAll(/<loc>https:\/\/www\.khoslaventures\.com\/category\/([^<]+)<\/loc>/g)].map(
+        (m) => m[1],
+      ),
+    ),
+  ];
+  if (slugs.length === 0) {
     throw new Error("khosla: the category links moved");
   }
 
   // a company may sit in several categories, so tags accumulate per name
   const byName = new Map<string, Entry>();
-  for (const [slug, label] of categories) {
+  for (const slug of slugs) {
     const html = await fetchPage(`${BASE_URL}/category/${slug}`);
+    // the page titles itself "Khosla Ventures - <category>"
+    const label = text(
+      html.match(/<title>([^<]*)<\/title>/)?.[1]?.replace(/^Khosla Ventures\s*-\s*/, "") ?? "",
+    );
     // the category khosla calls "Select Exits" is the exit marker here
-    const isExits = /exits?$/i.test(label);
+    const isExits = /exits?$/i.test(label || slug);
     for (const card of html.split('class="company-card-item w-dyn-item">').slice(1)) {
-      const url = card.match(/<a[^>]*href="(https?:\/\/[^"]+)"[^>]*class="company-slide/)?.[1] ?? "";
-      const name = text(card.match(/<img[^>]*alt="([^"]*)"/)?.[1] ?? "");
+      // the card's face shows the tagline; the name is on its flip side, with
+      // the logo's alt text as the fallback
+      const name = text(
+        card.match(/class="back-company-title">([\s\S]*?)<\/div>/)?.[1] ??
+          card.match(/<img[^>]*alt="([^"]*)"[^>]*class="company-card-image"/)?.[1] ??
+          "",
+      );
       if (!name) continue;
+      const url = card.match(/<a[^>]*href="(https?:\/\/[^"]+)"[^>]*class="company-card-wrapper/)?.[1] ?? "";
       const entry = byName.get(name) ?? { tags: [], exited: false, url: "" };
       if (isExits) entry.exited = true;
-      else if (!entry.tags.includes(label)) entry.tags.push(label);
+      else if (label && !entry.tags.includes(label)) entry.tags.push(label);
       if (!entry.url) entry.url = url;
       byName.set(name, entry);
     }
   }
   if (byName.size === 0) {
     throw new Error("khosla: no companies found on the category pages");
-  }
-
-  // the sitemap's featured profile pages carry a handful of companies the
-  // category grids may not; their status label sits next to the website link
-  const sitemap = await fetchPage(`${BASE_URL}/sitemap.xml`);
-  const slugs = [
-    ...new Set(
-      [...sitemap.matchAll(/<loc>https:\/\/www\.khoslaventures\.com\/portfolio\/([^<]+)<\/loc>/g)].map(
-        (m) => m[1],
-      ),
-    ),
-  ];
-  for (let i = 0; i < slugs.length; i += BATCH_SIZE) {
-    await Promise.all(
-      slugs.slice(i, i + BATCH_SIZE).map(async (slug) => {
-        // the sitemap keeps entries for profiles that have since been taken
-        // down; a page that is gone simply adds nothing
-        let html: string;
-        try {
-          html = await fetchPage(`${BASE_URL}/portfolio/${slug}`);
-        } catch (err) {
-          if (err instanceof Error && err.message.endsWith(": 404")) return;
-          throw err;
-        }
-        const name = text(
-          html.match(/<title>([^<]*)<\/title>/)?.[1]?.replace(/^Khosla Ventures\s*-\s*/, "") ?? "",
-        );
-        if (!name || byName.has(name)) return;
-        const status = text(html.match(/company-fact-label">([^<]*)<\/div>\s*<a /)?.[1] ?? "");
-        byName.set(name, {
-          // "Public" and "Acquired" are milestones as khosla states them
-          tags: status && status !== "Private" ? [status] : [],
-          exited: false,
-          url: html.match(/<a href="(https?:\/\/[^"]+)" class="company-fact-text"/)?.[1] ?? "",
-        });
-      }),
-    );
   }
 
   const companies = [...byName.entries()].map(([name, entry]) => ({

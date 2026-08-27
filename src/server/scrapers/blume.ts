@@ -4,6 +4,22 @@ const BASE_URL = "https://blume.vc";
 const UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
+// cloudflare sits in front of blume and scores requests; the fuller the
+// browser disguise, the better the odds it lets a plain fetch through
+const HEADERS = {
+  "User-Agent": UA,
+  Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+  "Accept-Language": "en-US,en;q=0.9",
+  "Sec-Ch-Ua": '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
+  "Sec-Ch-Ua-Mobile": "?0",
+  "Sec-Ch-Ua-Platform": '"macOS"',
+  "Sec-Fetch-Dest": "document",
+  "Sec-Fetch-Mode": "navigate",
+  "Sec-Fetch-Site": "none",
+  "Sec-Fetch-User": "?1",
+  "Upgrade-Insecure-Requests": "1",
+};
+
 // blume publishes its portfolio as two lists that share no companies: the main
 // one, and the small-cheque Discovery programme it runs alongside
 const LISTINGS = [
@@ -24,7 +40,14 @@ const text = (s: string) =>
 
 // the site rate-limits hard, so nothing here is fetched in parallel
 async function fetchPage(url: string) {
-  const resp = await fetch(url, { headers: { "User-Agent": UA } });
+  const resp = await fetch(url, { headers: HEADERS });
+  // when cloudflare turns the request away anyway, say so — the block is on
+  // where the request comes from, and the scrape runs fine from a laptop
+  if (resp.status === 403) {
+    throw new Error(
+      "blume: refused this request (403) — cloudflare blocks fetches from datacenter addresses",
+    );
+  }
   if (!resp.ok) {
     throw new Error(`Failed to fetch ${url}: ${resp.status}`);
   }
