@@ -13,7 +13,7 @@
 	<title>about — portfolio alert</title>
 </svelte:head>
 
-<div class="mx-auto mt-2 w-full max-w-[53rem] px-6 py-4 lg:dashed-frame">
+<div class="mx-auto mt-2 w-full max-w-[53rem] px-6 py-4">
 	<div class="flex flex-wrap items-center justify-between gap-2">
 		<h1 class="text-lg font-semibold text-white">about</h1>
 		<!-- a company backed by several funds is counted once -->
