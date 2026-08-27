@@ -90,10 +90,10 @@
 	class="mx-auto mt-2 w-full max-w-[53rem] px-6 py-4 lg:dashed-frame"
 >
 	<div class="flex flex-wrap items-center justify-between gap-2">
-		<h1 class="text-lg font-semibold">timeline</h1>
+		<h1 class="text-lg font-semibold text-white">timeline</h1>
 		{#if !loading}
 			<div class="flex flex-wrap items-center gap-4">
-				<label class="flex cursor-pointer items-center gap-1.5 text-sm text-gray-900 select-none">
+				<label class="flex cursor-pointer items-center gap-1.5 text-sm text-white select-none">
 					<input
 						type="checkbox"
 						bind:checked={includeBaseline}
@@ -102,7 +102,7 @@
 					include baseline imports
 				</label>
 				{#if shownCount}
-					<span class="text-sm text-gray-900">
+					<span class="text-sm text-white">
 						{shownCount.toLocaleString()} companies over {days.length} {days.length === 1 ? 'day' : 'days'}
 					</span>
 				{/if}
@@ -113,7 +113,7 @@
 	{#if loading || loadingBaseline}
 		<Spinner label="loading timeline" />
 	{:else if days.length === 0}
-		<p class="mt-6 text-sm text-gray-900">
+		<p class="mt-6 text-sm text-white">
 			{#if !includeBaseline}
 				no newcomers yet — tick the box above to include the baseline imports
 			{:else}
@@ -123,9 +123,9 @@
 	{:else}
 		{#each days as day (day.day)}
 			<div id={day.day} class="mt-6 scroll-mt-4">
-				<h2 class="font-semibold text-gray-800">
+				<h2 class="font-semibold text-white">
 					{day.label}
-					<span class="ml-1 text-sm font-normal text-gray-900">
+					<span class="ml-1 text-sm font-normal text-white">
 						({day.total} {day.total === 1 ? 'company' : 'companies'})
 					</span>
 				</h2>

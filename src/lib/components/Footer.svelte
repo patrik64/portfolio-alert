@@ -4,7 +4,7 @@
 		href="https://github.com/patrik64/portfolio-alert"
 		target="_blank"
 		aria-label="GitHub repository"
-		class="block text-black transition duration-150 hover:text-white"
+		class="block text-white transition duration-150 hover:text-gray-400"
 	>
 		<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="currentColor">
 			<path

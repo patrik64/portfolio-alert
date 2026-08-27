@@ -75,7 +75,7 @@
 	class="mx-auto mt-2 w-full max-w-[71rem] px-6 py-4 lg:dashed-frame"
 >
 	<div class="flex flex-wrap items-center justify-between gap-2">
-		<h1 class="text-lg font-semibold">funds</h1>
+		<h1 class="text-lg font-semibold text-white">funds</h1>
 		{#if dev}
 			<button
 				type="button"
