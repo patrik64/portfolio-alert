@@ -3,9 +3,10 @@ name: daily fetch
 on:
   schedule:
     # cron runs in UTC while 4am Central European time moves with DST, so
-    # both candidate hours fire and the guard keeps whichever is 4am local
-    - cron: '0 2 * * *'
-    - cron: '0 3 * * *'
+    # both candidate hours fire and the guard keeps whichever is 4am local;
+    # :07 dodges the top-of-the-hour rush, when GitHub delays or drops runs
+    - cron: '7 2 * * *'
+    - cron: '7 3 * * *'
   workflow_dispatch:
     inputs:
       announce_only:
