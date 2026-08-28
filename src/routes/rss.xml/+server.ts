@@ -31,6 +31,9 @@ export const GET = (event: RequestEvent) =>
 				? []
 				: await repo(Company).find({
 						where: {
+							// rows absorbed as baseline after a fund's first day (a site
+							// redesign listing its back catalog) are not newcomers either
+							isBaseline: false,
 							firstSeenAt: { $gte: since },
 							$or: [...fundsByBaselineEnd].map(([end, slugs]) => ({
 								fundSlug: { $in: slugs },
