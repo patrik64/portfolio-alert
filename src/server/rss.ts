@@ -11,8 +11,8 @@ import { FUNDS } from '../shared/funds';
 export const SITE_URL = 'https://portfolio-alert.vercel.app';
 export const FEED_URL = `${SITE_URL}/rss.xml`;
 // nights are told apart by the calendar day in the timezone the nightly job
-// keeps (it runs at 4am in Berlin)
-export const TIME_ZONE = 'Europe/Berlin';
+// keeps (it runs at 1:13 utc, the small hours in Vienna)
+export const TIME_ZONE = 'Europe/Vienna';
 // how far back the feed reaches at most (it never predates the timeline), and
 // at most how many nights it carries
 export const WINDOW_DAYS = 90;
@@ -31,21 +31,21 @@ const clock = new Intl.DateTimeFormat('en', {
 	hour: '2-digit',
 	hourCycle: 'h23'
 });
-const inBerlin = (d: Date) =>
+const inVienna = (d: Date) =>
 	Object.fromEntries(clock.formatToParts(d).map((p) => [p.type, p.value]));
 
-// YYYY-MM-DD in Berlin
+// YYYY-MM-DD in Vienna
 export const dayKey = (d: Date) => {
-	const t = inBerlin(d);
+	const t = inVienna(d);
 	return `${t.year}-${t.month}-${t.day}`;
 };
 
-// the instant a Berlin day ends: midnight the next day, which is 22:00 utc in
+// the instant a Vienna day ends: midnight the next day, which is 22:00 utc in
 // summer time and 23:00 otherwise
 export const dayEnd = (day: string) => {
 	const [y, m, d] = day.split('-').map(Number);
 	const summer = new Date(Date.UTC(y, m - 1, d + 1, -2));
-	return Number(inBerlin(summer).hour) % 24 === 0 ? summer : new Date(summer.getTime() + 3_600_000);
+	return Number(inVienna(summer).hour) % 24 === 0 ? summer : new Date(summer.getTime() + 3_600_000);
 };
 
 export interface FeedRow {

@@ -1,5 +1,5 @@
 // One-off backfill: mark the rows each fund's very first fetch imported (its
-// baseline portfolio) with isBaseline, using the same Berlin-day rule as the
+// baseline portfolio) with isBaseline, using the same Vienna-day rule as the
 // rss feed — expressed in SQL, so ~50k rows update in one statement instead of
 // row by row through the pooler. Safe to re-run: marked rows are skipped.
 //
@@ -25,7 +25,7 @@ const result = await pool.query(
 	 WHERE c."fundSlug" = f."fundSlug"
 	   AND NOT c."isBaseline"
 	   AND c."firstSeenAt" <= (((f.first AT TIME ZONE $1)::date + 1)::timestamp AT TIME ZONE $1)`,
-	['Europe/Berlin']
+	['Europe/Vienna']
 );
 console.log(`done — ${result.rowCount} rows marked baseline`);
 await pool.end();

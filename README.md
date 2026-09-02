@@ -88,10 +88,9 @@ production one fund at a time, which stays inside them.
 
 ## Nightly refresh
 
-`.github/workflows/daily-fetch.yml` refreshes every fund at 4am Central
-European time. GitHub's cron only speaks UTC, so both candidate hours fire and
-a guard step keeps whichever one is 4am in Berlin; the workflow can also be run
-by hand from the Actions tab.
+`.github/workflows/daily-fetch.yml` refreshes every fund at 1:13am UTC (the
+small hours in Vienna); the workflow can also be run by hand from the Actions
+tab.
 
 ```sh
 pnpm fetch-all                       # refresh every fund against production
