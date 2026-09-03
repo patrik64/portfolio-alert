@@ -4,6 +4,11 @@
 //
 //   node scripts/fetch-all.mjs                  refresh every fund
 //   node scripts/fetch-all.mjs --only a16z,gv   refresh a subset (smoke test)
+//   node scripts/fetch-all.mjs --force          ...even if one just ran
+//
+// A full run stands down when most of the list was refreshed in the last
+// MIN_GAP_HOURS (12): a second run of the day finds nothing and clears the
+// newcomers the first one marked.
 //
 // What each fund gained lands in fetch-results.json, which post-newcomers.mjs
 // reads to announce the night's finds.
@@ -22,6 +27,12 @@ const arg = (name) => {
 
 const only = arg('--only')?.split(',').filter(Boolean);
 const RESULTS_FILE = arg('--results') ?? 'fetch-results.json';
+const FORCE = process.argv.includes('--force');
+// how recently a full refresh must have run for this one to stand down; 0
+// turns the check off
+const MIN_GAP_HOURS = Number(process.env.MIN_GAP_HOURS ?? 12);
+// the share of the list that must be that fresh to call it a full refresh
+const FRESH_SHARE = 0.8;
 
 const fundsResp = await fetch(`${BASE_URL}/api/funds?_limit=1000`);
 if (!fundsResp.ok) {
@@ -29,6 +40,33 @@ if (!fundsResp.ok) {
 	process.exit(1);
 }
 let funds = await fundsResp.json();
+
+// A refresh that lands a few hours after the last one finds nothing — the
+// previous run already took it — and clears the isNewcomer flags that run
+// set, so the night's finds disappear off the fund cards. Github's scheduler
+// is late often enough that a hand-started run and a late nightly can land
+// the same morning: so a full run stands down when the list has just been
+// refreshed, and the newcomer flags survive for MIN_GAP_HOURS.
+//
+// A subset run never stands down: it is a smoke test or a new fund's first
+// import, and neither is a duplicate of anything.
+if (!only && !FORCE && MIN_GAP_HOURS > 0) {
+	const cutoff = Date.now() - MIN_GAP_HOURS * 3_600_000;
+	const fresh = funds.filter((f) => f.lastFetchedAt && Date.parse(f.lastFetchedAt) > cutoff).length;
+	// a couple of funds fail every night, so a full refresh is recognised by
+	// most of the list being fresh rather than all of it
+	if (fresh >= funds.length * FRESH_SHARE) {
+		console.log(
+			`${fresh} of ${funds.length} funds were refreshed in the last ${MIN_GAP_HOURS}h — ` +
+				'a full refresh has already run today. Standing down; pass --force to refresh anyway.'
+		);
+		// an empty results file keeps post-newcomers.mjs quiet, rather than
+		// leaving it to announce whatever an earlier run left lying about
+		writeFileSync(RESULTS_FILE, '[]');
+		process.exit(0);
+	}
+}
+
 if (only) funds = funds.filter((f) => only.includes(f.slug));
 console.log(`refreshing ${funds.length} funds against ${BASE_URL}\n`);
 

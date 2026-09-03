@@ -11,6 +11,10 @@ on:
         description: 'skip the refresh, just announce the current newcomers'
         type: boolean
         default: false
+      force:
+        description: 'refresh even if a full refresh already ran in the last 12 hours'
+        type: boolean
+        default: false
 
 concurrency:
   group: daily-fetch
@@ -27,9 +31,12 @@ jobs:
         with:
           node-version: 22
 
+      # the script stands down on its own when a full refresh already ran in
+      # the last 12 hours — a hand-started run and a late nightly landing the
+      # same morning would clear the day's newcomers — and 'force' overrides
       - if: github.event.inputs.announce_only != 'true'
         name: refresh every fund
-        run: node scripts/fetch-all.mjs
+        run: node scripts/fetch-all.mjs ${{ github.event.inputs.force == 'true' && '--force' || '' }}
 
       # a night where too many scrapers broke still found companies worth
       # announcing, so this runs even when the refresh above reports failure
