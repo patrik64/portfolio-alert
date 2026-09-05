@@ -1,4 +1,4 @@
-// The 458 tracked funds, in case-insensitive alphabetical order by name — the
+// The 477 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -110,10 +110,28 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'kinnevik', name: 'Kinnevik', url: 'https://www.kinnevik.com/investments/' },
 	{ slug: 'kleiner', name: 'Kleiner Perkins', url: 'https://jobs.kleinerperkins.com/companies' },
 	{ slug: 'kurma', name: 'Kurma Partners', url: 'https://www.kurmapartners.com/en/portfolio' },
+	{ slug: 'laconia', name: 'Laconia', url: 'https://www.laconiacapitalgroup.com/portfolio' },
+	{ slug: 'lakehouse', name: 'Lakehouse Ventures', url: 'https://lakehouse.vc/portfolio/' },
 	{ slug: 'lakestar', name: 'Lakestar', url: 'https://www.lakestar.com/funds' },
+	{ slug: 'launchny', name: 'Launch NY', url: 'https://launchny.org/portfolio/' },
+	{ slug: 'ldv', name: 'LDV Capital', url: 'https://www.ldv.co/capital' },
+	{ slug: 'leadout', name: 'Leadout Capital', url: 'https://www.leadoutcapital.com/portfolio' },
+	{ slug: 'learncapital', name: 'Learn Capital', url: 'https://www.learn.vc/ventures' },
+	{ slug: 'learnstart', name: 'LearnStart', url: 'https://www.learnstart.vc/portfolio' },
+	{ slug: 'leftlane', name: 'Left Lane Capital', url: 'https://www.leftlane.com/companies' },
+	{ slug: 'lererhippeau', name: 'Lerer Hippeau', url: 'https://www.lererhippeau.com/portfolio' },
+	{ slug: 'lifeforce', name: 'Lifeforce Capital', url: 'https://www.lifeforcecap.com/portfolio' },
 	{ slug: 'lifeline', name: 'Lifeline Ventures', url: 'https://www.lifelineventures.com/companies/' },
+	{ slug: 'lightbank', name: 'Lightbank', url: 'https://www.lightbank.com/companies' },
 	{ slug: 'lightspeed', name: 'Lightspeed Ventures', url: 'https://lsvp.com/companies/' },
+	{ slug: 'linkventures', name: 'Link Ventures', url: 'https://www.linkventures.com/portfolio' },
+	{ slug: 'localglobe', name: 'LocalGlobe', url: 'https://www.phoenixcourt.vc/localglobe/companies' },
+	{ slug: 'lookingglass', name: 'Looking Glass Capital', url: 'https://lookingglass.vc/investments' },
+	{ slug: 'longjourney', name: 'Long Journey Ventures', url: 'https://www.longjourney.vc/portfolio' },
+	{ slug: 'lorimer', name: 'Lorimer Ventures', url: 'https://www.lorimerventures.com/portfolio' },
+	{ slug: 'lowercarbon', name: 'Lowercarbon Capital', url: 'https://lowercarbon.com/companies/' },
 	{ slug: 'lux', name: 'Lux Capital', url: 'https://www.luxcapital.com/companies' },
+	{ slug: 'lyticalventures', name: 'Lytical Ventures', url: 'https://www.lyticalventures.com/companies' },
 	{ slug: 'm12', name: 'M12', url: 'https://m12.vc/portfolio/' },
 	{ slug: 'm13', name: 'M13', url: 'https://www.m13.co/portfolio' },
 	{ slug: 'm1c', name: 'M1C', url: 'https://m1c.vc/portfolio' },
@@ -445,6 +463,7 @@ export const FUNDS: FundInfo[] = [
 		url: 'https://thefootprintfirm.com/investment/our-portfolio'
 	},
 	{ slug: 'helm', name: 'The Helm', url: 'https://thehelm.co/invest/our-portfolio/' },
+	{ slug: 'thelab', name: 'The Lab Ventures', url: 'https://www.thelabventures.com/#portfolio' },
 	{ slug: 'longevity', name: 'The Longevity Fund', url: 'https://longevity.vc/portfolio' },
 	{ slug: 'venturecity', name: 'The Venture City', url: 'https://www.theventure.city/companies' },
 	{

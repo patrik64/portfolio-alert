@@ -91,10 +91,28 @@ import { scrape as kima } from './kima';
 import { scrape as kleiner } from './kleiner';
 import { scrape as kinnevik } from './kinnevik';
 import { scrape as kurma } from './kurma';
+import { scrape as laconia } from './laconia';
+import { scrape as lakehouse } from './lakehouse';
 import { scrape as lakestar } from './lakestar';
+import { scrape as launchny } from './launchny';
+import { scrape as ldv } from './ldv';
+import { scrape as leadout } from './leadout';
+import { scrape as learncapital } from './learncapital';
+import { scrape as learnstart } from './learnstart';
+import { scrape as leftlane } from './leftlane';
+import { scrape as lererhippeau } from './lererhippeau';
+import { scrape as lifeforce } from './lifeforce';
 import { scrape as lifeline } from './lifeline';
+import { scrape as lightbank } from './lightbank';
 import { scrape as lightspeed } from './lightspeed';
+import { scrape as linkventures } from './linkventures';
+import { scrape as localglobe } from './localglobe';
+import { scrape as lookingglass } from './lookingglass';
+import { scrape as longjourney } from './longjourney';
+import { scrape as lorimer } from './lorimer';
+import { scrape as lowercarbon } from './lowercarbon';
 import { scrape as lux } from './lux';
+import { scrape as lyticalventures } from './lyticalventures';
 import { scrape as m12 } from './m12';
 import { scrape as m13 } from './m13';
 import { scrape as m1c } from './m1c';
@@ -354,6 +372,7 @@ import { scrape as artemis } from './artemis';
 import { scrape as council } from './council';
 import { scrape as footprint } from './footprint';
 import { scrape as helm } from './helm';
+import { scrape as thelab } from './thelab';
 import { scrape as longevity } from './longevity';
 import { scrape as venturecity } from './venturecity';
 import { scrape as tvc } from './tvc';
@@ -550,10 +569,28 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	kleiner,
 	kinnevik,
 	kurma,
+	laconia,
+	lakehouse,
 	lakestar,
+	launchny,
+	ldv,
+	leadout,
+	learncapital,
+	learnstart,
+	leftlane,
+	lererhippeau,
+	lifeforce,
 	lifeline,
+	lightbank,
 	lightspeed,
+	linkventures,
+	localglobe,
+	lookingglass,
+	longjourney,
+	lorimer,
+	lowercarbon,
 	lux,
+	lyticalventures,
 	m12,
 	m13,
 	m1c,
@@ -813,6 +850,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	council,
 	footprint,
 	helm,
+	thelab,
 	longevity,
 	venturecity,
 	tvc,
