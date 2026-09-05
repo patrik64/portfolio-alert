@@ -35,11 +35,12 @@ interface Card {
 
 function parseList(html: string, cards: Map<string, Card>) {
   let found = 0;
-  for (const raw of html.split('class="filters5_company-list-item w-dyn-item"').slice(1)) {
-    // the row ends at the link that carries the (client-side) location, and
-    // cutting there keeps the last row of a page out of the sidebar below it
-    const item = raw.split('class="location-nest-link')[0];
-    const slug = item.match(/href="\/portfolio\/([^"]+)" class="filters5_company-link/)?.[1] ?? "";
+  for (const item of html.split('class="filters5_company-list-item w-dyn-item"').slice(1)) {
+    // the row opens on a link to the company's page and carries that same
+    // address again further down, so the first one is the row's own. the last
+    // row of a page runs on into what follows it, which is why every field
+    // here is the first of its kind rather than all of them
+    const slug = item.match(/href="\/portfolio\/([^"]+)"/)?.[1] ?? "";
     const name = text(item.match(/fs-cmsfilter-field="name"[^>]*>([\s\S]*?)<\/div>/)?.[1] ?? "");
     if (!slug || !name) continue;
     found++;
@@ -47,10 +48,14 @@ function parseList(html: string, cards: Map<string, Card>) {
 
     const field = (key: string) =>
       text(item.match(new RegExp(`fs-cmsfilter-field="${key}"[^>]*>([\\s\\S]*?)</div>`))?.[1] ?? "");
+    // the fund files a company's countries under the same field name as its
+    // industries, so the industries are taken from the list that holds them
+    // rather than by the name they share
+    const industries = item.match(/filters5_industry-list-wrapper[\s\S]*?(?=filters5_status-cell)/)?.[0] ?? "";
     cards.set(slug, {
       name,
       industries: [
-        ...item.matchAll(/fs-cmsfilter-field="industry"[^>]*>([\s\S]*?)<\/div>/g),
+        ...industries.matchAll(/fs-cmsfilter-field="industry"[^>]*>([\s\S]*?)<\/div>/g),
       ].map((m) => text(m[1])),
       stage: field("stage"),
       status: field("status"),
@@ -64,11 +69,13 @@ async function detailOf(slug: string) {
   const info = new Map<string, string[]>();
   const block = html.match(/class="company20_info-list">([\s\S]*?)(?=<div style=|<\/section>)/)?.[1] ?? "";
   for (const piece of block.split('<div class="company20_info-item">').slice(1)) {
-    const label = piece.match(/text-weight-semibold">([^<]*)<\/div>/)?.[1];
+    // the label is set apart from its values by a colour, which is the only
+    // thing telling the two kinds of line apart
+    const label = piece.match(/class="label-medium text-color-tertiary">([^<]*)<\/div>/)?.[1];
     if (!label) continue;
     info.set(
       text(label),
-      [...piece.matchAll(/class="label-small">([\s\S]*?)<\/div>/g)].map((m) => text(m[1])),
+      [...piece.matchAll(/class="label-medium">([\s\S]*?)<\/div>/g)].map((m) => text(m[1])),
     );
   }
   return {
@@ -76,10 +83,8 @@ async function detailOf(slug: string) {
     // the year northzone came in, which the site keeps apart from the year the
     // company was founded
     partnered: (info.get("Partnered") ?? [])[0] ?? "",
-    url:
-      html.match(
-        /href="(https?:\/\/[^"]+)"[^>]*class="button w-button">Company website<\/a>/,
-      )?.[1] ?? "",
+    // the only button on a company's page that leads off the site
+    url: html.match(/href="(https?:\/\/[^"]+)"[^>]*class="button is-icon[^"]*"/)?.[1] ?? "",
   };
 }
 
