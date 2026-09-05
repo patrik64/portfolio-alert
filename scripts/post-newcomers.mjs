@@ -36,6 +36,13 @@ const arg = (name) => {
 const DRY_RUN = process.argv.includes('--dry-run');
 const RESULTS_FILE = arg('--results') ?? 'fetch-results.json';
 
+// each fund's own portfolio page, for linking its heading — parsed from the
+// repo's registry, since the API's fund rows don't carry a url
+const registry = readFileSync(new URL('../src/shared/funds.ts', import.meta.url), 'utf8');
+const fundUrls = new Map(
+	[...registry.matchAll(/slug: '([^']+)',[\s\S]*?url: '([^']+)'/g)].map((m) => [m[1], m[2]])
+);
+
 const segmenter = new Intl.Segmenter();
 const graphemes = (s) => [...segmenter.segment(s)].length;
 
@@ -87,9 +94,13 @@ class Post {
 const headline = (total) => `${total} new portfolio ${total === 1 ? 'company' : 'companies'}`;
 
 // a fund's heading opens right after the headline, a blank line under the
-// previous group, or at the very top when it has been carried over into a
-// fresh post; its companies follow as bullet lines
-const openLine = (post, fund) => `${post.parts.length === 0 ? '' : '\n\n'}${fund}:`;
+// previous group, or at the very top when the group has been carried over
+// into a fresh post; it links to the fund's own portfolio page and its
+// companies follow as bullet lines
+const openGroup = (post, group) => {
+	if (post.parts.length > 0) post.add('\n\n');
+	post.add(group.name, group.url).add(':');
+};
 
 // every company by name on its own bullet line, each linking to its own site
 function composeDetailed(groups, total) {
@@ -101,17 +112,17 @@ function composeDetailed(groups, total) {
 		let open = false;
 		for (const company of group.companies) {
 			const uri = company.url.startsWith('http') ? company.url : undefined;
-			const lead = `${open ? '' : openLine(post, group.name)}\n• `;
-			if (!post.fits(lead + company.name)) {
+			const heading = open ? '' : `${post.parts.length === 0 ? '' : '\n\n'}${group.name}:`;
+			if (!post.fits(`${heading}\n• ${company.name}`)) {
 				// the post is full — carry the rest of the group into a new one
 				posts.push(post);
 				post = new Post(POST_LIMIT);
-				post.add(`${openLine(post, group.name)}\n• `);
-			} else {
-				post.add(lead);
+				openGroup(post, group);
+			} else if (!open) {
+				openGroup(post, group);
 			}
 			post.hasBody = true;
-			post.add(company.name, uri);
+			post.add('\n• ').add(company.name, uri);
 			open = true;
 		}
 	}
@@ -217,7 +228,11 @@ async function groupsFromResults() {
 			continue;
 		}
 		if (rows.length === 0) continue;
-		groups.push({ name: fund.name || fund.slug, companies: asCompanies(rows) });
+		groups.push({
+			name: fund.name || fund.slug,
+			url: fundUrls.get(fund.slug),
+			companies: asCompanies(rows)
+		});
 	}
 	return groups;
 }
@@ -238,6 +253,7 @@ async function groupsFromNewcomers() {
 	}
 	return [...byFund].map(([slug, rows]) => ({
 		name: names.get(slug) || slug,
+		url: fundUrls.get(slug),
 		companies: asCompanies(rows)
 	}));
 }

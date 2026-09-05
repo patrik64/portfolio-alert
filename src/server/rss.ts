@@ -77,13 +77,14 @@ function groupBy<T>(items: T[], key: (item: T) => string) {
 	return groups;
 }
 
-// a night's finds, fund by fund — the loudest funds first, as on bluesky
+// a night's finds, fund by fund — the loudest funds first, as on bluesky;
+// each fund heading links to the fund's own portfolio page
 const describe = (rows: FeedRow[]) => {
-	const names = new Map(FUNDS.map((f) => [f.slug, f.name]));
+	const funds = new Map(FUNDS.map((f) => [f.slug, f]));
 	return [...groupBy(rows, (r) => r.fundSlug)]
 		.map(([slug, companies]) => ({
-			slug,
-			name: names.get(slug) ?? slug,
+			name: funds.get(slug)?.name ?? slug,
+			url: funds.get(slug)?.url ?? '',
 			companies: [...companies].sort((a, b) => a.name.localeCompare(b.name))
 		}))
 		.sort((a, b) => b.companies.length - a.companies.length || a.name.localeCompare(b.name))
@@ -95,7 +96,8 @@ const describe = (rows: FeedRow[]) => {
 						: `<li>${escape(c.name)}</li>`
 				)
 				.join('\n');
-			return `<p><a href="${SITE_URL}/funds/${g.slug}">${escape(g.name)}</a>:</p>\n<ul>\n${items}\n</ul>`;
+			const heading = g.url ? `<a href="${escape(g.url)}">${escape(g.name)}</a>` : escape(g.name);
+			return `<p>${heading}:</p>\n<ul>\n${items}\n</ul>`;
 		})
 		.join('\n');
 };
