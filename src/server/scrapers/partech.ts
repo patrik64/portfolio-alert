@@ -15,7 +15,8 @@ const UA =
 // based. the fund is a vehicle rather than anything about the company, and the
 // country would crowd out the sector, so neither is kept.
 
-const DATA = /<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/;
+// the tag has grown a crossorigin attribute before, so any extras are allowed
+const DATA = /<script id="__NEXT_DATA__" type="application\/json"[^>]*>([\s\S]*?)<\/script>/;
 // the status of a company the fund still holds
 const HELD = /^current$/i;
 
