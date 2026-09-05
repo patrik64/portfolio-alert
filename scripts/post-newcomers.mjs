@@ -86,12 +86,12 @@ class Post {
 
 const headline = (total) => `${total} new portfolio ${total === 1 ? 'company' : 'companies'}`;
 
-// a fund's line opens right after the headline, under the previous line, or at
-// the very top when it has been carried over into a fresh post
-const openLine = (post, fund) =>
-	`${post.parts.length === 0 ? '' : post.hasBody ? '\n' : '\n\n'}${fund}: `;
+// a fund's heading opens right after the headline, a blank line under the
+// previous group, or at the very top when it has been carried over into a
+// fresh post; its companies follow as bullet lines
+const openLine = (post, fund) => `${post.parts.length === 0 ? '' : '\n\n'}${fund}:`;
 
-// every company by name, each linking to its own site
+// every company by name on its own bullet line, each linking to its own site
 function composeDetailed(groups, total) {
 	const footer = graphemes(`\n\n${NEWCOMERS_LABEL}`);
 	const posts = [];
@@ -101,13 +101,12 @@ function composeDetailed(groups, total) {
 		let open = false;
 		for (const company of group.companies) {
 			const uri = company.url.startsWith('http') ? company.url : undefined;
-			const lead = open ? ', ' : openLine(post, group.name);
+			const lead = `${open ? '' : openLine(post, group.name)}\n• `;
 			if (!post.fits(lead + company.name)) {
 				// the post is full — carry the rest of the group into a new one
 				posts.push(post);
 				post = new Post(POST_LIMIT);
-				post.add(openLine(post, group.name));
-				open = false;
+				post.add(`${openLine(post, group.name)}\n• `);
 			} else {
 				post.add(lead);
 			}

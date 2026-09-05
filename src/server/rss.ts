@@ -88,14 +88,14 @@ const describe = (rows: FeedRow[]) => {
 		}))
 		.sort((a, b) => b.companies.length - a.companies.length || a.name.localeCompare(b.name))
 		.map((g) => {
-			const list = g.companies
+			const items = g.companies
 				.map((c) =>
 					c.url.startsWith('http')
-						? `<a href="${escape(c.url)}">${escape(c.name)}</a>`
-						: escape(c.name)
+						? `<li><a href="${escape(c.url)}">${escape(c.name)}</a></li>`
+						: `<li>${escape(c.name)}</li>`
 				)
-				.join(', ');
-			return `<p><a href="${SITE_URL}/funds/${g.slug}">${escape(g.name)}</a>: ${list}</p>`;
+				.join('\n');
+			return `<p><a href="${SITE_URL}/funds/${g.slug}">${escape(g.name)}</a>:</p>\n<ul>\n${items}\n</ul>`;
 		})
 		.join('\n');
 };
