@@ -13,7 +13,7 @@
 // What each fund gained lands in fetch-results.json, which post-newcomers.mjs
 // reads to announce the night's finds.
 
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 
 const BASE_URL = process.env.BASE_URL ?? 'https://portfolio-alert.vercel.app';
 const CONCURRENCY = 5;
@@ -34,12 +34,42 @@ const MIN_GAP_HOURS = Number(process.env.MIN_GAP_HOURS ?? 12);
 // the share of the list that must be that fresh to call it a full refresh
 const FRESH_SHARE = 0.8;
 
-const fundsResp = await fetch(`${BASE_URL}/api/funds?_limit=1000`);
-if (!fundsResp.ok) {
-	console.error(`failed to list funds: ${fundsResp.status}`);
+// the fund list comes from the repo's canonical registry, not from the API:
+// the API only lists funds that have been fetched at least once, so a fund
+// newly added to funds.ts would otherwise never get its first fetch
+const registry = readFileSync(new URL('../src/shared/funds.ts', import.meta.url), 'utf8');
+// a name holding an apostrophe is written in double quotes, so both kinds count
+let funds = [...registry.matchAll(/slug: '([^']+)',\s*name: (?:'([^']*)'|"([^"]*)")/gs)].map(
+	(m) => ({ slug: m[1], name: m[2] ?? m[3] })
+);
+if (funds.length === 0) {
+	console.error('no funds parsed from src/shared/funds.ts');
 	process.exit(1);
 }
-let funds = await fundsResp.json();
+// a fund the pattern cannot read would be skipped every night without a word,
+// so the count is checked against the slugs the registry declares
+const declared = [...registry.matchAll(/\bslug: '/g)].length;
+if (funds.length !== declared) {
+	console.error(`parsed ${funds.length} funds but the registry declares ${declared}`);
+	process.exit(1);
+}
+
+// how many funds the app says were refreshed within the last `hours`
+async function freshlyFetched(hours) {
+	try {
+		const resp = await fetch(`${BASE_URL}/api/funds?_limit=1000`, {
+			signal: AbortSignal.timeout(30_000)
+		});
+		if (!resp.ok) throw new Error(String(resp.status));
+		const rows = await resp.json();
+		const cutoff = Date.now() - hours * 3_600_000;
+		return rows.filter((f) => f.lastFetchedAt && Date.parse(f.lastFetchedAt) > cutoff).length;
+	} catch (err) {
+		// a check that cannot be made must never be the reason a night is missed
+		console.log(`could not read when the funds were last refreshed (${String(err).slice(0, 80)})`);
+		return undefined;
+	}
+}
 
 // A refresh that lands a few hours after the last one finds nothing — the
 // previous run already took it — and clears the isNewcomer flags that run
@@ -51,11 +81,11 @@ let funds = await fundsResp.json();
 // A subset run never stands down: it is a smoke test or a new fund's first
 // import, and neither is a duplicate of anything.
 if (!only && !FORCE && MIN_GAP_HOURS > 0) {
-	const cutoff = Date.now() - MIN_GAP_HOURS * 3_600_000;
-	const fresh = funds.filter((f) => f.lastFetchedAt && Date.parse(f.lastFetchedAt) > cutoff).length;
-	// a couple of funds fail every night, so a full refresh is recognised by
-	// most of the list being fresh rather than all of it
-	if (fresh >= funds.length * FRESH_SHARE) {
+	const fresh = await freshlyFetched(MIN_GAP_HOURS);
+	// a couple of funds fail every night and a newly added one is imported on
+	// its own, so a full refresh is recognised by most of the list being fresh
+	// rather than all of it
+	if (fresh !== undefined && fresh >= funds.length * FRESH_SHARE) {
 		console.log(
 			`${fresh} of ${funds.length} funds were refreshed in the last ${MIN_GAP_HOURS}h — ` +
 				'a full refresh has already run today. Standing down; pass --force to refresh anyway.'
