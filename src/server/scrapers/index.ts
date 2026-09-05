@@ -260,7 +260,6 @@ import { scrape as recursive } from './recursive';
 import { scrape as redbear } from './redbear';
 import { scrape as redbud } from './redbud';
 import { scrape as redsea } from './redsea';
-import { scrape as redstick } from './redstick';
 import { scrape as redswan } from './redswan';
 import { scrape as refashiond } from './refashiond';
 import { scrape as relay } from './relay';
@@ -720,7 +719,6 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	redbear,
 	redbud,
 	redsea,
-	redstick,
 	redswan,
 	refashiond,
 	relay,

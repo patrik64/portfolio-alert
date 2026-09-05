@@ -1,4 +1,4 @@
-// The 459 tracked funds, in case-insensitive alphabetical order by name — the
+// The 458 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -280,7 +280,6 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'redswan', name: 'Red Swan Ventures', url: 'https://www.redswanventures.com/portfolio' },
 	{ slug: 'redbud', name: 'Redbud VC', url: 'https://redbud.vc/portfolio' },
 	{ slug: 'redpoint', name: 'Redpoint', url: 'https://www.redpoint.com/companies/' },
-	{ slug: 'redstick', name: 'Redstick Ventures', url: 'https://www.redstickvc.com/portfolio' },
 	{ slug: 'refashiond', name: 'REFASHIOND Ventures', url: 'https://www.refashiond.com/fund-i-portfolio' },
 	{ slug: 'relay', name: 'Relay Ventures', url: 'https://relay.vc/portfolio/' },
 	{ slug: 'renegade', name: 'Renegade Partners', url: 'https://www.renegadepartners.com/companies' },

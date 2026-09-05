@@ -1,8 +1,6 @@
 import type { ScrapedCompany } from './types';
 
 const PAGE_URL = 'https://okapivc.com/portfolio/';
-const UA =
-	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
 // wordpress on divi. the page draws a wall of logos, but everything the fund
 // knows about a company is written into the tile that holds it: the name, the
@@ -13,18 +11,12 @@ const UA =
 // Exited Companies, and the fund marks an exit nowhere else — so which half a
 // tile falls in is what says whether the company has gone.
 //
-// the fund is behind sucuri, which refuses a request it has to pass to the
-// site and answers one it has already cached. so this reads whatever sucuri
-// is holding: it comes back whole while the page is cached and 403s while it
-// is not, and a fetch that fails leaves the companies from the last one that
-// did.
-//
-// what warms that cache is a person opening the page, so whether this works on
-// any given night is a question about the fund's traffic rather than about
-// anything here. the fund's front page stays warm and is served to anyone, but
-// it carries none of the companies, so there is nothing else to read. the 403
-// says as much rather than showing a bare status, the way speedinvest's and
-// blume's do — a red card here is the expected state, not a break.
+// the fund is behind sucuri, which serves whatever it holds in cache to
+// anyone but is choosy about what it passes on to the site: a request
+// wearing a browser's user-agent without being one is refused (403) on a
+// cache miss, while a plain fetch that claims nothing is let through. so
+// this request goes out bare, and the 403 branch below remains for whatever
+// sucuri may still hold against a datacenter address.
 
 const TILE = /<div class="single-port"([^>]*)>/g;
 const EXITED = /<h2>\s*Exited Companies\s*<\/h2>/;
@@ -54,11 +46,9 @@ const clean = (s: string) =>
 const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	const resp = await fetch(PAGE_URL);
 	if (resp.status === 403) {
-		throw new Error(
-			'okapi: refused this request (403) — sucuri answers only what it already holds, and the portfolio page had gone cold'
-		);
+		throw new Error('okapi: sucuri refused this request (403)');
 	}
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
