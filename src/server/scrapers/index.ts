@@ -87,6 +87,14 @@ import { scrape as inovia } from './inovia';
 import { scrape as insight } from './insight';
 import { scrape as invus } from './invus';
 import { scrape as ivp } from './ivp';
+import { scrape as jamfund } from './jamfund';
+import { scrape as javelin } from './javelin';
+import { scrape as jazz } from './jazz';
+import { scrape as jllspark } from './jllspark';
+import { scrape as joule } from './joule';
+import { scrape as jovono } from './jovono';
+import { scrape as juniper } from './juniper';
+import { scrape as juvo } from './juvo';
 import { scrape as k5 } from './k5';
 import { scrape as k9 } from './k9';
 import { scrape as kapor } from './kapor';
@@ -574,6 +582,14 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	insight,
 	invus,
 	ivp,
+	jamfund,
+	javelin,
+	jazz,
+	jllspark,
+	joule,
+	jovono,
+	juniper,
+	juvo,
 	k5,
 	k9,
 	kapor,

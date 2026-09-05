@@ -1,4 +1,4 @@
-// The 486 tracked funds, in case-insensitive alphabetical order by name — the
+// The 494 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -106,6 +106,14 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'insight', name: 'Insight Partners', url: 'https://www.insightpartners.com/portfolio/' },
 	{ slug: 'invus', name: 'Invus', url: 'https://www.invus.com/invus-opportunities/#portfolio' },
 	{ slug: 'ivp', name: 'IVP', url: 'https://www.ivp.com/portfolio/' },
+	{ slug: 'jamfund', name: 'JAM Fund', url: 'https://jamfund.com/' },
+	{ slug: 'javelin', name: 'Javelin Venture Partners', url: 'https://www.javelinvp.com/companies' },
+	{ slug: 'jazz', name: 'Jazz Venture Partners', url: 'https://jazzvp.com/#portfolio' },
+	{ slug: 'jllspark', name: 'JLL Spark', url: 'https://spark.jllt.com/portfolio/' },
+	{ slug: 'joule', name: 'Joule Ventures', url: 'https://www.joulevc.com/portfolio' },
+	{ slug: 'jovono', name: 'Jovono', url: 'https://www.jovono.com/portfolio' },
+	{ slug: 'juniper', name: 'Juniper VC', url: 'https://www.junipervc.com/portfolio' },
+	{ slug: 'juvo', name: 'Juvo Ventures', url: 'https://juvovc.org/portfolio/' },
 	{ slug: 'k5', name: 'K5 Global', url: 'https://www.k5global.com/companies' },
 	{ slug: 'k9', name: 'K9 Ventures', url: 'https://www.k9ventures.com/startups/' },
 	{ slug: 'kapor', name: 'Kapor Capital', url: 'https://www.kaporcapital.com/portfolio/' },
