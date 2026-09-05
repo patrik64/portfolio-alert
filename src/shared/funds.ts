@@ -1,4 +1,4 @@
-// The 494 tracked funds, in case-insensitive alphabetical order by name — the
+// The 501 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -101,10 +101,25 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'indiebio', name: 'Indie Bio', url: 'https://indiebio.co/' },
 	{ slug: 'industrifonden', name: 'Industrifonden', url: 'https://industrifonden.com/portfolio/' },
 	{ slug: 'initialized', name: 'Initialized Capital', url: 'https://initialized.com/companies' },
+	{
+		slug: 'innovationendeavors',
+		name: 'Innovation Endeavors',
+		url: 'https://www.innovationendeavors.com/companies'
+	},
+	{
+		slug: 'innovationindustries',
+		name: 'Innovation Industries',
+		url: 'https://www.innovationindustries.com/portfolio'
+	},
 	{ slug: 'innovestor', name: 'Innovestor', url: 'https://innovestorgroup.com/venture-capital/portfolio-companies/' },
 	{ slug: 'inovia', name: 'Inovia Capital', url: 'https://www.inovia.vc/active-companies' },
 	{ slug: 'insight', name: 'Insight Partners', url: 'https://www.insightpartners.com/portfolio/' },
+	{ slug: 'inspired', name: 'Inspired Capital', url: 'https://www.inspiredcapital.com/portfolio' },
+	{ slug: 'intelcapital', name: 'Intel Capital', url: 'https://www.intelcapital.com/portfolio/' },
+	{ slug: 'interlace', name: 'Interlace Ventures', url: 'https://www.interlacevc.com/portfolio' },
 	{ slug: 'invus', name: 'Invus', url: 'https://www.invus.com/invus-opportunities/#portfolio' },
+	{ slug: 'ironspring', name: 'Ironspring Ventures', url: 'https://ironspring.com/portfolio-companies/' },
+	{ slug: 'isai', name: 'ISAI', url: 'https://www.isai.vc/portfolio' },
 	{ slug: 'ivp', name: 'IVP', url: 'https://www.ivp.com/portfolio/' },
 	{ slug: 'jamfund', name: 'JAM Fund', url: 'https://jamfund.com/' },
 	{ slug: 'javelin', name: 'Javelin Venture Partners', url: 'https://www.javelinvp.com/companies' },

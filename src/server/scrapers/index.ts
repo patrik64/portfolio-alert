@@ -82,10 +82,17 @@ import { scrape as indexventures } from './indexventures';
 import { scrape as indiebio } from './indiebio';
 import { scrape as industrifonden } from './industrifonden';
 import { scrape as initialized } from './initialized';
+import { scrape as innovationendeavors } from './innovationendeavors';
+import { scrape as innovationindustries } from './innovationindustries';
 import { scrape as innovestor } from './innovestor';
 import { scrape as inovia } from './inovia';
 import { scrape as insight } from './insight';
+import { scrape as inspired } from './inspired';
+import { scrape as intelcapital } from './intelcapital';
+import { scrape as interlace } from './interlace';
 import { scrape as invus } from './invus';
+import { scrape as ironspring } from './ironspring';
+import { scrape as isai } from './isai';
 import { scrape as ivp } from './ivp';
 import { scrape as jamfund } from './jamfund';
 import { scrape as javelin } from './javelin';
@@ -577,10 +584,17 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	indiebio,
 	industrifonden,
 	initialized,
+	innovationendeavors,
+	innovationindustries,
 	innovestor,
 	inovia,
 	insight,
+	inspired,
+	intelcapital,
+	interlace,
 	invus,
+	ironspring,
+	isai,
 	ivp,
 	jamfund,
 	javelin,
