@@ -12,6 +12,7 @@ import { scrape as eightythreenorth } from './eightythreenorth';
 import { scrape as a16z } from './a16z';
 import { scrape as acapital } from './acapital';
 import { scrape as accel } from './accel';
+import { scrape as actions } from './actions';
 import { scrape as advent } from './advent';
 import { scrape as airbusventures } from './airbusventures';
 import { scrape as aisling } from './aisling';
@@ -86,10 +87,18 @@ import { scrape as inovia } from './inovia';
 import { scrape as insight } from './insight';
 import { scrape as invus } from './invus';
 import { scrape as ivp } from './ivp';
+import { scrape as k5 } from './k5';
+import { scrape as k9 } from './k9';
+import { scrape as kapor } from './kapor';
+import { scrape as kdt } from './kdt';
 import { scrape as khosla } from './khosla';
+import { scrape as kickstart } from './kickstart';
 import { scrape as kima } from './kima';
+import { scrape as kittyhawk } from './kittyhawk';
 import { scrape as kleiner } from './kleiner';
+import { scrape as kindred } from './kindred';
 import { scrape as kinnevik } from './kinnevik';
+import { scrape as konvoy } from './konvoy';
 import { scrape as kurma } from './kurma';
 import { scrape as laconia } from './laconia';
 import { scrape as lakehouse } from './lakehouse';
@@ -490,6 +499,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	a16z,
 	acapital,
 	accel,
+	actions,
 	advent,
 	airbusventures,
 	aisling,
@@ -564,10 +574,18 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	insight,
 	invus,
 	ivp,
+	k5,
+	k9,
+	kapor,
+	kdt,
 	khosla,
+	kickstart,
 	kima,
+	kittyhawk,
 	kleiner,
+	kindred,
 	kinnevik,
+	konvoy,
 	kurma,
 	laconia,
 	lakehouse,

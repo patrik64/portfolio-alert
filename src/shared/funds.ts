@@ -1,4 +1,4 @@
-// The 477 tracked funds, in case-insensitive alphabetical order by name — the
+// The 486 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -22,6 +22,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: '83north', name: '83North', url: 'https://www.83north.com/companies/' },
 	{ slug: 'acapital', name: 'A Capital', url: 'https://acapital.com/portfolio' },
 	{ slug: 'accel', name: 'Accel', url: 'https://www.accel.com/companies' },
+	{ slug: 'actions', name: 'Actions Capital', url: 'https://www.actions.capital/founders' },
 	{ slug: 'advent', name: 'Advent International', url: 'https://www.adventinternational.com/investments/' },
 	{
 		slug: 'airbusventures',
@@ -105,10 +106,18 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'insight', name: 'Insight Partners', url: 'https://www.insightpartners.com/portfolio/' },
 	{ slug: 'invus', name: 'Invus', url: 'https://www.invus.com/invus-opportunities/#portfolio' },
 	{ slug: 'ivp', name: 'IVP', url: 'https://www.ivp.com/portfolio/' },
+	{ slug: 'k5', name: 'K5 Global', url: 'https://www.k5global.com/companies' },
+	{ slug: 'k9', name: 'K9 Ventures', url: 'https://www.k9ventures.com/startups/' },
+	{ slug: 'kapor', name: 'Kapor Capital', url: 'https://www.kaporcapital.com/portfolio/' },
+	{ slug: 'kdt', name: 'KdT Ventures', url: 'https://www.kdtvc.com/portfolio' },
 	{ slug: 'khosla', name: 'Khosla Ventures', url: 'https://www.khoslaventures.com/portfolio/' },
+	{ slug: 'kickstart', name: 'Kickstart Fund', url: 'https://kickstart.com/portfolio' },
 	{ slug: 'kima', name: 'Kima Ventures', url: 'https://www.kimaventures.com/portfolio' },
+	{ slug: 'kindred', name: 'Kindred Ventures', url: 'https://kindredventures.com/portfolio/' },
 	{ slug: 'kinnevik', name: 'Kinnevik', url: 'https://www.kinnevik.com/investments/' },
+	{ slug: 'kittyhawk', name: 'KittyHawk Ventures', url: 'https://www.kittyhawkvc.com/investments-portfolio' },
 	{ slug: 'kleiner', name: 'Kleiner Perkins', url: 'https://jobs.kleinerperkins.com/companies' },
+	{ slug: 'konvoy', name: 'Konvoy', url: 'https://www.konvoy.vc/portfolio' },
 	{ slug: 'kurma', name: 'Kurma Partners', url: 'https://www.kurmapartners.com/en/portfolio' },
 	{ slug: 'laconia', name: 'Laconia', url: 'https://www.laconiacapitalgroup.com/portfolio' },
 	{ slug: 'lakehouse', name: 'Lakehouse Ventures', url: 'https://lakehouse.vc/portfolio/' },
