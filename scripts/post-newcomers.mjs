@@ -93,6 +93,19 @@ class Post {
 
 const headline = (total) => `${total} new portfolio ${total === 1 ? 'company' : 'companies'}`;
 
+// a fund's page sometimes holds a malformed address ("https:// www..." with
+// a space, say), and bluesky refuses the whole post over one bad link — so
+// a company whose url cannot be parsed is named in plain text instead
+const linkable = (url) => {
+	if (!url.startsWith('http') || /\s/.test(url)) return false;
+	try {
+		new URL(url);
+		return true;
+	} catch {
+		return false;
+	}
+};
+
 // a fund's heading opens right after the headline, a blank line under the
 // previous group, or at the very top when the group has been carried over
 // into a fresh post; it links to the fund's own portfolio page and its
@@ -111,7 +124,7 @@ function composeDetailed(groups, total) {
 	for (const group of groups) {
 		let open = false;
 		for (const company of group.companies) {
-			const uri = company.url.startsWith('http') ? company.url : undefined;
+			const uri = linkable(company.url) ? company.url : undefined;
 			const heading = open ? '' : `${post.parts.length === 0 ? '' : '\n\n'}${group.name}:`;
 			if (!post.fits(`${heading}\n• ${company.name}`)) {
 				// the post is full — carry the rest of the group into a new one

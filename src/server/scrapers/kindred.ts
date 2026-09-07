@@ -45,8 +45,10 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 	for (let page = 1; page <= MAX_PAGES; page++) {
 		if (page > 1) await wait(PAGE_DELAY_MS);
 		let resp = await fetch(`${RESULTS_URL}${page}`, { headers: { 'User-Agent': UA } });
-		if (resp.status === 429) {
-			await wait(4 * PAGE_DELAY_MS);
+		// a ci runner's shared address is metered harder than a home one, so a
+		// 429 is waited out twice before the night is given up
+		for (let retry = 0; resp.status === 429 && retry < 2; retry++) {
+			await wait(6 * PAGE_DELAY_MS);
 			resp = await fetch(`${RESULTS_URL}${page}`, { headers: { 'User-Agent': UA } });
 		}
 		if (!resp.ok) {
