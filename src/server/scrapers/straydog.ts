@@ -53,11 +53,18 @@ function domainLabel(url: string): string {
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+	// the firewall's mood varies night to night — a blocked address gets a
+	// page without the grid and a 200 — so a gridless answer is asked about
+	// once more before the night is given up
+	let html = '';
+	for (let attempt = 0; attempt < 2 && !html.includes(GRID); attempt++) {
+		if (attempt > 0) await new Promise((resolve) => setTimeout(resolve, 10_000));
+		const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+		if (!resp.ok) {
+			throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+		}
+		html = await resp.text();
 	}
-	const html = await resp.text();
 
 	const grid = html.slice(html.indexOf(GRID));
 	const companies: ScrapedCompany[] = [];

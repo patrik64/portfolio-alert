@@ -42,21 +42,37 @@ const decode = (s: string) =>
 		.trim();
 
 async function fetchText(url: string): Promise<string> {
-	const resp = await fetch(url, { headers: { 'User-Agent': UA } });
+	const resp = await fetch(url, { headers: { 'User-Agent': UA, Referer: PAGE_URL } });
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${url}: ${resp.status}`);
 	}
 	return resp.text();
 }
 
+// the waf sometimes answers the rest feed with a challenge page rather than
+// json — status 200, body html — for a datacenter address. that mood passes,
+// so it is retried once before the night is given up with a clear word
+// instead of a parse error.
+async function fetchJson<T>(url: string): Promise<T> {
+	for (let attempt = 0; ; attempt++) {
+		const body = await fetchText(url);
+		try {
+			return JSON.parse(body) as T;
+		} catch {
+			if (attempt >= 1) {
+				throw new Error('vamosventures: the rest feed answered a challenge page, not json');
+			}
+			await new Promise((resolve) => setTimeout(resolve, 10_000));
+		}
+	}
+}
+
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const [html, listJson, termJson] = await Promise.all([
+	const [html, posts, terms] = await Promise.all([
 		fetchText(PAGE_URL),
-		fetchText(LIST_URL),
-		fetchText(CATEGORY_URL)
+		fetchJson<CompanyPost[]>(LIST_URL),
+		fetchJson<Term[]>(CATEGORY_URL)
 	]);
-	const posts = JSON.parse(listJson) as CompanyPost[];
-	const terms = JSON.parse(termJson) as Term[];
 
 	const labels = new Map<number, string>();
 	for (const term of terms ?? []) labels.set(term.id, decode(term.name ?? ''));

@@ -57,15 +57,19 @@ async function fetchText(url: string): Promise<string> {
 
 // the firewall turns a blocked address away with a page and a 200 rather than
 // a refusal, so html where json was asked for means the request never reached
-// the api
+// the api. its mood varies night to night, so it is asked twice before the
+// night is given up.
 async function fetchJson(url: string) {
-	const body = await fetchText(url);
-	if (/^\s*</.test(body)) {
-		throw new Error(
-			'sante: answered with a page instead of json — the site only answers fetches run locally'
-		);
+	for (let attempt = 0; ; attempt++) {
+		const body = await fetchText(url);
+		if (!/^\s*</.test(body)) return JSON.parse(body);
+		if (attempt >= 1) {
+			throw new Error(
+				'sante: answered with a page instead of json — the site only answers fetches run locally'
+			);
+		}
+		await new Promise((resolve) => setTimeout(resolve, 10_000));
 	}
-	return JSON.parse(body);
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
