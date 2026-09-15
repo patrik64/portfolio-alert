@@ -10,33 +10,41 @@ const UA =
 // loads, whose name carries a build hash and is therefore taken from the page
 // rather than written down here.
 //
-// the script holds the portfolio three times over, once per tab: all of it,
-// the ones the fund still holds, and the handful it features. they are found by
-// shape rather than by name, since a bundler renames everything on each build:
-// the roster is the longest list of records that pair a name with a logo, and
-// what is known about a company beyond its name is in the shorter lists, the
-// ones whose records carry an address.
-//
-// so a hundred and thirty-four companies come back, sixty-five of them with
-// something said about them — a sector, or how it ended: $ASO, M&A, Acquired
-// by Opti9, "$AMAM | Acquired by Johnson & Johnson". only the twenty-two the
-// fund features carry an address, and the rest keep none rather than one
-// guessed at.
+// since september 2026 the script holds the portfolio once, as a list of
+// records that each carry a name, a logo, and what the fund says about the
+// company: its sectors (as slugs), the stage it first partnered at, its
+// address, and how it ended — $ASO, M&A, Acquired by Opti9, "$AMAM | Acquired
+// by Johnson & Johnson". the list is found by shape rather than by name,
+// since a bundler renames everything on each build: it is the longest list
+// of records pairing a name with a logo and an address. (it used to be three
+// lists, one per tab, and the roster among them carried no addresses.)
 
 const BUNDLE = /<script[^>]*\bsrc="(\/assets\/index-[A-Za-z0-9_-]+\.js)"/;
 const ARRAY = /=\s*\[\{name:"/g;
 const RECORD = /(?=\{name:")/;
 const NAME = /^\{name:"([^"]*)"/;
-const NOTE = /subtext:"([^"]*)"/;
+const NOTE = /subText:"([^"]*)"/i;
 const SECTORS = /sectors:\[([^\]]*)\]/;
 const QUOTED = /"([^"]*)"/g;
+const STAGE = /firstPartnered:"([^"]*)"/;
 const SITE = /websiteUrl:"([^"]*)"/;
-// a list that says more about a company than its name and its logo
-const DETAILED = 'websiteUrl:"';
-// a list that is the roster of companies rather than of anything else
+// what marks the roster of companies out from the lists of people and causes
 const LOGOS = 'logoUrl:';
+const SITES = 'websiteUrl:"';
+
+// the sectors are slugs now; these are the fund's own spellings of them
+const SECTOR_LABELS: Record<string, string> = {
+	ai: 'AI',
+	consumer: 'Consumer',
+	enterprise: 'Enterprise',
+	healthcare: 'Healthcare'
+};
 
 const clean = (s: string) => s.replace(/\s+/g, ' ').trim();
+const label = (slug: string) =>
+	SECTOR_LABELS[slug.toLowerCase()] ?? (slug ? slug[0].toUpperCase() + slug.slice(1) : '');
+// the addresses are typed by hand, some without a scheme
+const address = (s: string) => (s && !/^https?:\/\//i.test(s) ? `https://${s}` : s);
 
 async function fetchText(url: string): Promise<string> {
 	const resp = await fetch(url, { headers: { 'User-Agent': UA } });
@@ -74,25 +82,11 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 	const script = await fetchText(`${BASE_URL}${bundle}`);
 
 	let roster: string[] = [];
-	const known = new Map<string, { sectors: string[]; url: string }>();
 	for (const found of script.matchAll(ARRAY)) {
 		const list = arrayAt(script, script.indexOf('[', found.index));
+		if (!list.includes(LOGOS) || !list.includes(SITES)) continue;
 		const records = list.split(RECORD).filter((record) => NAME.test(record));
-		if (records.length === 0) continue;
-
-		if (list.includes(DETAILED)) {
-			for (const record of records) {
-				const name = clean(record.match(NAME)?.[1] ?? '');
-				if (!name) continue;
-				const said = known.get(name) ?? { sectors: [], url: '' };
-				const sectors = record.match(SECTORS)?.[1];
-				if (sectors) said.sectors = [...sectors.matchAll(QUOTED)].map((one) => clean(one[1]));
-				said.url = said.url || clean(record.match(SITE)?.[1] ?? '');
-				known.set(name, said);
-			}
-		} else if (list.includes(LOGOS) && records.length > roster.length) {
-			roster = records;
-		}
+		if (records.length > roster.length) roster = records;
 	}
 	if (roster.length === 0) {
 		throw new Error('maverick: the script holds no roster of companies');
@@ -105,13 +99,15 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		if (!name || seen.has(name.toLowerCase())) continue;
 		seen.add(name.toLowerCase());
 
-		const said = known.get(name);
+		const sectors = [...(record.match(SECTORS)?.[1] ?? '').matchAll(QUOTED)].map((one) =>
+			label(clean(one[1]))
+		);
 		companies.push({
 			name,
-			category: [...(said?.sectors ?? []), clean(record.match(NOTE)?.[1] ?? '')]
+			category: [...sectors, clean(record.match(STAGE)?.[1] ?? ''), clean(record.match(NOTE)?.[1] ?? '')]
 				.filter(Boolean)
 				.join(', '),
-			url: said?.url ?? ''
+			url: address(clean(record.match(SITE)?.[1] ?? ''))
 		});
 	}
 
