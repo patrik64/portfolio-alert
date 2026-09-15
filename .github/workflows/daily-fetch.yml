@@ -15,6 +15,10 @@ on:
         description: 'refresh even if a full refresh already ran in the last 12 hours'
         type: boolean
         default: false
+      funds:
+        description: 'with announce_only: limit the announcement to these fund slugs, comma-separated'
+        type: string
+        default: ''
 
 concurrency:
   group: daily-fetch
@@ -46,6 +50,7 @@ jobs:
           BLUESKY_IDENTIFIER: portfolio-alert.bsky.social
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
           # by hand, the announcement covers the whole newcomers page rather
-          # than one run's findings
+          # than one run's findings — or the named funds' share of it
           MODE: ${{ github.event.inputs.announce_only == 'true' && '--current' || '' }}
-        run: node scripts/post-newcomers.mjs $MODE
+          FUNDS: ${{ github.event.inputs.announce_only == 'true' && github.event.inputs.funds || '' }}
+        run: node scripts/post-newcomers.mjs $MODE ${FUNDS:+--funds=$FUNDS}

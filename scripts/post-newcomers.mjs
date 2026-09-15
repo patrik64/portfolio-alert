@@ -7,6 +7,8 @@
 //   node scripts/post-newcomers.mjs              compose and post
 //   node scripts/post-newcomers.mjs --current    ...announcing whatever the
 //                                                newcomers page shows instead
+//   node scripts/post-newcomers.mjs --current --funds=v1vc,maverick
+//                                                ...only those funds' part of it
 //   node scripts/post-newcomers.mjs --check      prove the credentials work
 //
 // Credentials come from the environment:
@@ -35,6 +37,14 @@ const arg = (name) => {
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const RESULTS_FILE = arg('--results') ?? 'fetch-results.json';
+// the funds a hand announcement is limited to — for when the page also shows
+// newcomers a nightly post already covered
+const ONLY_FUNDS = new Set(
+	(arg('--funds') ?? '')
+		.split(',')
+		.map((s) => s.trim())
+		.filter(Boolean)
+);
 
 // each fund's own portfolio page, for linking its heading — parsed from the
 // repo's registry, since the API's fund rows don't carry a url
@@ -261,6 +271,7 @@ async function groupsFromNewcomers() {
 
 	const byFund = new Map();
 	for (const row of rows) {
+		if (ONLY_FUNDS.size > 0 && !ONLY_FUNDS.has(row.fundSlug)) continue;
 		if (!byFund.has(row.fundSlug)) byFund.set(row.fundSlug, []);
 		byFund.get(row.fundSlug).push(row);
 	}
