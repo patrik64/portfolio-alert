@@ -116,7 +116,8 @@ export async function scrape(): Promise<ScrapedCompany[]> {
   // page loads rather than pinned here
   if (total > companies.size) {
     let action = "";
-    const bundles = [...new Set([...html.matchAll(/\/_next\/static\/chunks\/[a-z0-9]+\.js/g)].map((m) => m[0]))];
+    // turbopack names its chunks with dashes and underscores too
+    const bundles = [...new Set([...html.matchAll(/\/_next\/static\/chunks\/[\w-]+\.js/g)].map((m) => m[0]))];
     for (let i = 0; i < bundles.length && !action; i += 8) {
       const batch = await Promise.all(
         bundles.slice(i, i + 8).map((chunk) => fetchText(`${BASE_URL}${chunk}`).catch(() => "")),

@@ -1,10 +1,16 @@
 import type { ScrapedCompany } from './types';
 
-// the startup directory is served by Algolia; these are the site's public
-// search-only credentials, restricted to the public company index
+// the startup directory is served by Algolia with public search-only
+// credentials, restricted to the public company index. the site rotates the
+// key now and then (it did in september 2026), so the current one is read
+// off the directory page itself before every run — it is the page's one
+// long base64 string that decodes to a mention of the company index — and
+// the last known key stands in if the page stops carrying it.
+const PAGE_URL = "https://www.ycombinator.com/companies";
 const APP_ID = "45BWZJ1SGC";
-const API_KEY =
-  "NzllNTY5MzJiZGM2OTY2ZTQwMDEzOTNhYWZiZGRjODlhYzVkNjBmOGRjNzJiMWM4ZTU0ZDlhYTZjOTJiMjlhMWFuYWx5dGljc1RhZ3M9eWNkYyZyZXN0cmljdEluZGljZXM9WUNDb21wYW55X3Byb2R1Y3Rpb24lMkNZQ0NvbXBhbnlfQnlfTGF1bmNoX0RhdGVfcHJvZHVjdGlvbiZ0YWdGaWx0ZXJzPSU1QiUyMnljZGNfcHVibGljJTIyJTVE";
+const FALLBACK_API_KEY =
+  "NzJmMWExZWYxYzY5OGYwN2VkYWM5YzRiM2VlNDFlM2I0ODU2YjQ2Yjg0MTFiNWE5NzY0NTMyZGI1OWEwMzVjY2FuYWx5dGljc1RhZ3M9eWNkYyZyZXN0cmljdEluZGljZXM9WUNDb21wYW55X3Byb2R1Y3Rpb24lMkNZQ0NvbXBhbnlfQnlfTGF1bmNoX0RhdGVfcHJvZHVjdGlvbiZ0YWdGaWx0ZXJzPSU1QiUyMnljZGNfcHVibGljJTIyJTVE";
+let apiKey = FALLBACK_API_KEY;
 const QUERY_URL = `https://${APP_ID.toLowerCase()}-dsn.algolia.net/1/indexes/*/queries`;
 const INDEX = "YCCompany_production";
 const UA =
@@ -37,7 +43,7 @@ async function query(params: string): Promise<Result> {
       "User-Agent": UA,
       "Content-Type": "application/json",
       "x-algolia-application-id": APP_ID,
-      "x-algolia-api-key": API_KEY,
+      "x-algolia-api-key": apiKey,
     },
     body: JSON.stringify({ requests: [{ indexName: INDEX, params }] }),
   });
@@ -51,7 +57,24 @@ async function query(params: string): Promise<Result> {
   return data.results?.[0] ?? {};
 }
 
+async function refreshKey(): Promise<void> {
+  try {
+    const resp = await fetch(PAGE_URL, { headers: { "User-Agent": UA } });
+    if (!resp.ok) return;
+    const html = await resp.text();
+    for (const [, candidate] of html.matchAll(/["']([A-Za-z0-9+/=]{80,})["']/g)) {
+      if (Buffer.from(candidate, "base64").toString("utf8").includes("YCCompany")) {
+        apiKey = candidate;
+        return;
+      }
+    }
+  } catch {
+    // the fallback key answers for a page that cannot be read
+  }
+}
+
 export async function scrape(): Promise<ScrapedCompany[]> {
+  await refreshKey();
   // Algolia refuses to page beyond 1000 hits, so walk the directory one batch
   // at a time — the largest YC batch is a few hundred companies
   const facets = await query(
