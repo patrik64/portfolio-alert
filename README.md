@@ -88,8 +88,8 @@ production one fund at a time, which stays inside them.
 
 ## Nightly refresh
 
-`.github/workflows/daily-fetch.yml` refreshes every fund at 1:13am UTC (the
-small hours in Vienna); the workflow can also be run by hand from the Actions
+`.github/workflows/daily-fetch.yml` refreshes every fund at 22:23 UTC (around
+midnight in Vienna); the workflow can also be run by hand from the Actions
 tab.
 
 ```sh

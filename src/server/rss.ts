@@ -11,7 +11,7 @@ import { FUNDS } from '../shared/funds';
 export const SITE_URL = 'https://portfolio-alert.vercel.app';
 export const FEED_URL = `${SITE_URL}/rss.xml`;
 // nights are told apart by the calendar day in the timezone the nightly job
-// keeps (it runs at 1:13 utc, the small hours in Vienna)
+// keeps (it runs at 22:23 utc, around midnight in Vienna)
 export const TIME_ZONE = 'Europe/Vienna';
 // how far back the feed reaches at most (it never predates the timeline), and
 // at most how many nights it carries

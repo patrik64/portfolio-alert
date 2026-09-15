@@ -2,9 +2,9 @@ name: daily fetch
 
 on:
   schedule:
-    # a fixed utc time (2:13/3:13 in Vienna depending on dst); :13 dodges the
+    # a fixed utc time (23:23/0:23 in Vienna depending on dst); :23 dodges the
     # top-of-the-hour rush, when GitHub delays or drops scheduled runs
-    - cron: '13 1 * * *'
+    - cron: '23 22 * * *'
   workflow_dispatch:
     inputs:
       announce_only:
