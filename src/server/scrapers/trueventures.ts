@@ -9,18 +9,23 @@ const UA =
 // company where it belongs to more than one of its bands, so the links are
 // deduplicated by name.
 //
-// a "highlights" array in the flight payload gives sectors, but only for the
-// companies the fund features — the rest come back with no category rather
-// than a guessed one.
+// three arrays in the flight payload — highlights, exits, all — give each
+// company its sectors; the featured exit cards say besides how the exit went
+// (IPO, Acquired by Cisco). the page used to render only the highlights and
+// the featured exits as links; since september 2026 the whole portfolio is.
 
 const ANCHOR =
-	/<a[^>]*href="(https?:\/\/[^"]+)"[^>]*aria-label="([^"]*?) \(opens in new tab\)"/g;
+	/<a[^>]*href="(https?:\/\/[^"]+)"[^>]*aria-label="([^"]*?) \(opens in new tab\)"([\s\S]*?)<\/a>/g;
+const OUTCOME = /font-mono[^>]*>([^<]+)</;
 const PUSH = /self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)/g;
+const LISTS = ['highlights', 'exits', 'all'];
 
-interface Highlight {
+interface Entry {
 	name?: string;
 	sectors?: string[];
 }
+
+const clean = (s: string) => s.replace(/\s+/g, ' ').trim();
 
 // slice out the array starting at `from`, tracking strings so brackets inside
 // a description can't end it early
@@ -38,7 +43,7 @@ function sliceArray(payload: string, from: number): string {
 		else if (ch === '[') depth++;
 		else if (ch === ']' && --depth === 0) return payload.slice(from, i + 1);
 	}
-	throw new Error('trueventures: the highlights array never closes');
+	throw new Error('trueventures: a list in the payload never closes');
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
@@ -48,29 +53,34 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 	}
 	const html = await resp.text();
 
-	// sectors, for the companies that have them
+	// sectors by name, the lists' spellings differing from the links' now and
+	// then ("Duo" for Duo Security), so the lookup ignores case
 	const sectors = new Map<string, string>();
 	const payload = [...html.matchAll(PUSH)].map((m) => JSON.parse(m[1]) as string).join('');
-	const marker = '"highlights":';
-	const at = payload.indexOf(marker);
-	if (at >= 0) {
-		const highlights = JSON.parse(
-			sliceArray(payload, payload.indexOf('[', at + marker.length))
-		) as Highlight[];
-		for (const entry of highlights) {
-			const name = (entry.name ?? '').trim();
-			const tags = (entry.sectors ?? []).map((s) => s.trim()).filter(Boolean);
-			if (name && tags.length > 0) sectors.set(name, tags.join(', '));
+	for (const list of LISTS) {
+		const marker = `"${list}":[`;
+		const at = payload.indexOf(marker);
+		if (at < 0) continue;
+		const entries = JSON.parse(sliceArray(payload, at + marker.length - 1)) as Entry[];
+		for (const entry of entries) {
+			const name = clean(entry.name ?? '').toLowerCase();
+			const tags = (entry.sectors ?? []).map(clean).filter(Boolean);
+			if (name && tags.length > 0 && !sectors.has(name)) sectors.set(name, tags.join(', '));
 		}
 	}
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-	for (const [, url, label] of html.matchAll(ANCHOR)) {
-		const name = label.trim();
+	for (const [, url, label, body] of html.matchAll(ANCHOR)) {
+		const name = clean(label);
 		if (!name || seen.has(name)) continue;
 		seen.add(name);
-		companies.push({ name, category: sectors.get(name) ?? '', url });
+		const outcome = clean(body.match(OUTCOME)?.[1] ?? '');
+		companies.push({
+			name,
+			category: [sectors.get(name.toLowerCase()) ?? '', outcome].filter(Boolean).join(', '),
+			url
+		});
 	}
 
 	if (companies.length === 0) {

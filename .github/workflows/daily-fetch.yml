@@ -19,6 +19,10 @@ on:
         description: 'with announce_only: limit the announcement to these fund slugs, comma-separated'
         type: string
         default: ''
+      delete_post:
+        description: 'take back this bluesky post (url or rkey) instead of fetching or announcing'
+        type: string
+        default: ''
 
 concurrency:
   group: daily-fetch
@@ -38,13 +42,13 @@ jobs:
       # the script stands down on its own when a full refresh already ran in
       # the last 12 hours — a hand-started run and a late nightly landing the
       # same morning would clear the day's newcomers — and 'force' overrides
-      - if: github.event.inputs.announce_only != 'true'
+      - if: github.event.inputs.announce_only != 'true' && github.event.inputs.delete_post == ''
         name: refresh every fund
         run: node scripts/fetch-all.mjs ${{ github.event.inputs.force == 'true' && '--force' || '' }}
 
       # a night where too many scrapers broke still found companies worth
       # announcing, so this runs even when the refresh above reports failure
-      - if: ${{ !cancelled() }}
+      - if: ${{ !cancelled() && github.event.inputs.delete_post == '' }}
         name: announce the newcomers on bluesky
         env:
           BLUESKY_IDENTIFIER: portfolio-alert.bsky.social
@@ -54,3 +58,13 @@ jobs:
           MODE: ${{ github.event.inputs.announce_only == 'true' && '--current' || '' }}
           FUNDS: ${{ github.event.inputs.announce_only == 'true' && github.event.inputs.funds || '' }}
         run: node scripts/post-newcomers.mjs $MODE ${FUNDS:+--funds=$FUNDS}
+
+      # an announcement that turned out wrong — a page rendering its whole
+      # portfolio at once, say, counted as newcomers — is taken back here, the
+      # app password never leaving the runner
+      - if: github.event.inputs.delete_post != ''
+        name: take back a bluesky post
+        env:
+          BLUESKY_IDENTIFIER: portfolio-alert.bsky.social
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+        run: node scripts/delete-bluesky-post.mjs "${{ github.event.inputs.delete_post }}"
