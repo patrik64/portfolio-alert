@@ -82,6 +82,8 @@ import { scrape as indexventures } from './indexventures';
 import { scrape as indiebio } from './indiebio';
 import { scrape as industrifonden } from './industrifonden';
 import { scrape as initialized } from './initialized';
+import { scrape as innospark } from './innospark';
+import { scrape as innovatingcapital } from './innovatingcapital';
 import { scrape as innovationendeavors } from './innovationendeavors';
 import { scrape as innovationindustries } from './innovationindustries';
 import { scrape as innovestor } from './innovestor';
@@ -583,6 +585,8 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	indiebio,
 	industrifonden,
 	initialized,
+	innospark,
+	innovatingcapital,
 	innovationendeavors,
 	innovationindustries,
 	innovestor,
