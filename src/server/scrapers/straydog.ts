@@ -1,10 +1,17 @@
 import type { ScrapedCompany } from './types';
 
 const PAGE_URL = 'https://straydogcapital.com/our-portfolio/';
-// the site's firewall answers 403 to chrome user-agent strings and lets safari
-// through, as vamosventures' does
-const UA =
-	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15';
+// siteground's firewall answers 403 to chrome user-agent strings and lets
+// safari through, as vamosventures' does. what it thinks of the address
+// asking matters more: one it distrusts gets its captcha page under a 2xx
+// status, however the request is dressed — so the second attempt does not
+// repeat the first but says plainly who is asking, which the firewall accepts
+// from an address it has nothing against
+const ATTEMPTS = [
+	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15',
+	'portfolio-alert/1.0 (+https://portfolio-alert.vercel.app)'
+];
+const RETRY_DELAY_MS = 10_000;
 
 // wordpress, the portfolio built with a page builder: a grid of logos, each
 // linked to the company, with a green corner flash on the ones that have
@@ -53,17 +60,26 @@ function domainLabel(url: string): string {
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	// the firewall's mood varies night to night — a blocked address gets a
-	// page without the grid and a 200 — so a gridless answer is asked about
-	// once more before the night is given up
+	// the firewall's mood varies night to night, and vercel's addresses fall
+	// in and out of its favour for days at a time. an answer without the grid
+	// is the firewall's, not the site's, and the error says what it said
 	let html = '';
-	for (let attempt = 0; attempt < 2 && !html.includes(GRID); attempt++) {
-		if (attempt > 0) await new Promise((resolve) => setTimeout(resolve, 10_000));
-		const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
-		if (!resp.ok) {
-			throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
-		}
+	let answer = '';
+	for (const [attempt, ua] of ATTEMPTS.entries()) {
+		if (attempt > 0) await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
+		const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': ua } });
 		html = await resp.text();
+		if (resp.ok && html.includes(GRID)) break;
+		const title = html.match(/<title[^>]*>([^<]*)</)?.[1]?.replace(/\s+/g, ' ').trim() ?? '';
+		answer =
+			`${resp.status}${title ? ` "${title}"` : ''}` +
+			(/sgcaptcha/i.test(html) ? ", siteground's captcha" : '');
+		html = '';
+	}
+	if (!html) {
+		throw new Error(
+			`straydog: the site's firewall refused this address (${answer}) — it answers fetches run locally`
+		);
 	}
 
 	const grid = html.slice(html.indexOf(GRID));

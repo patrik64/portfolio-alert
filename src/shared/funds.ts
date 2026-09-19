@@ -1,4 +1,4 @@
-// The 501 tracked funds, in case-insensitive alphabetical order by name — the
+// The 500 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -458,7 +458,6 @@ export const FUNDS: FundInfo[] = [
 		name: 'Supernova Invest',
 		url: 'https://supernovainvest.com/portfolio-sni/'
 	},
-	{ slug: 'supplychange', name: 'Supply Change Capital', url: 'https://supplychange.fund/' },
 	{ slug: 'svangel', name: 'SV Angel', url: 'https://svangel.com/portfolio' },
 	{
 		slug: 'systemiq',

@@ -379,7 +379,6 @@ import { scrape as superhero } from './superhero';
 import { scrape as supermoon } from './supermoon';
 import { scrape as supernode } from './supernode';
 import { scrape as supernova } from './supernova';
-import { scrape as supplychange } from './supplychange';
 import { scrape as svangel } from './svangel';
 import { scrape as systemiq } from './systemiq';
 import { scrape as targetglobal } from './targetglobal';
@@ -881,7 +880,6 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	supermoon,
 	supernode,
 	supernova,
-	supplychange,
 	svangel,
 	systemiq,
 	targetglobal,
