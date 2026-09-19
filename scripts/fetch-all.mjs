@@ -168,6 +168,6 @@ if (process.env.GITHUB_STEP_SUMMARY) {
 	appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join('\n') + '\n');
 }
 
-// one stubborn site (speedinvest refuses datacenter addresses) must not turn
-// every night red — only a broad failure fails the run
+// one stubborn site (a firewall refusing datacenter addresses, say) must not
+// turn every night red — only a broad failure fails the run
 process.exit(failed.length > results.length * 0.2 ? 1 : 0);

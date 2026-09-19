@@ -1,4 +1,4 @@
-// The 502 tracked funds, in case-insensitive alphabetical order by name — the
+// The 500 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -55,7 +55,6 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'bessemer', name: 'Bessemer Venture Partners', url: 'https://www.bvp.com/companies' },
 	{ slug: 'bip', name: 'BIP Ventures', url: 'https://www.bipventures.vc/portfolio' },
 	{ slug: 'bluventures', name: 'Blu Ventures', url: 'https://www.bluventureinvestors.com/portfolio' },
-	{ slug: 'blume', name: 'Blume', url: 'https://blume.vc/startups' },
 	{ slug: 'boxgroup', name: 'BoxGroup', url: 'https://www.boxgroup.com/portfolio' },
 	{ slug: 'breakthrough', name: 'Breakthrough Energy', url: 'https://www.breakthroughenergy.org/portfolio/index.html' },
 	{ slug: 'broocknell', name: 'Broocknell Ventures', url: 'https://broocknell.com/all-projects/' },
@@ -411,7 +410,6 @@ export const FUNDS: FundInfo[] = [
 	},
 	{ slug: 'spacecadet', name: 'Space Cadet', url: 'https://spacecadet.ventures/portfolio' },
 	{ slug: 'spark', name: 'Spark Capital', url: 'https://www.sparkcapital.com/companies' },
-	{ slug: 'speedinvest', name: 'Speedinvest', url: 'https://www.speedinvest.com/portfolio' },
 	{ slug: 'spice', name: 'Spice Capital', url: 'https://www.spicecapital.xyz/portfolio' },
 	{
 		slug: 'springtime',

@@ -12,8 +12,8 @@ const BATCH_SIZE = 10;
 // rest api is read instead: it names every company and files it under one of
 // the fund's three sectors — biotech, healthtech, medtech.
 //
-// the firewall also refuses datacenter addresses, as blume's and speedinvest's
-// do, so this one answers from a laptop and fails from production.
+// the firewall also refuses datacenter addresses, so this one answers from a
+// laptop and fails from production.
 //
 // the company's own address is not in the api, only on the write-up each tile
 // links to, where it is the single link leaving the fund's site. those pages

@@ -36,7 +36,6 @@ import { scrape as behold } from './behold';
 import { scrape as bessemer } from './bessemer';
 import { scrape as bip } from './bip';
 import { scrape as bluventures } from './bluventures';
-import { scrape as blume } from './blume';
 import { scrape as breakthrough } from './breakthrough';
 import { scrape as broocknell } from './broocknell';
 import { scrape as calmstorm } from './calmstorm';
@@ -360,7 +359,6 @@ import { scrape as sosv } from './sosv';
 import { scrape as southparkcommons } from './southparkcommons';
 import { scrape as spacecadet } from './spacecadet';
 import { scrape as spark } from './spark';
-import { scrape as speedinvest } from './speedinvest';
 import { scrape as stageone } from './stageone';
 import { scrape as standardindustries } from './standardindustries';
 import { scrape as stripes } from './stripes';
@@ -539,7 +537,6 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	bessemer,
 	bip,
 	bluventures,
-	blume,
 	breakthrough,
 	broocknell,
 	calmstorm,
@@ -863,7 +860,6 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	southparkcommons,
 	spacecadet,
 	spark,
-	speedinvest,
 	stageone,
 	standardindustries,
 	stripes,

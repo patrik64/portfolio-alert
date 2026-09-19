@@ -1,6 +1,6 @@
 # portfolio-alert
 
-Up-to-date information about companies backed by 502 venture capital and private
+Up-to-date information about companies backed by 500 venture capital and private
 equity funds. Scrapes each fund's public portfolio page, stores companies in
 Supabase (postgres), and highlights newcomers — companies that appeared in a
 fund's portfolio since the last fetch.
@@ -65,7 +65,7 @@ local experiments. Tables are created automatically on first use.
 ```sh
 pnpm dev             # start the dev server
 pnpm check           # typecheck (svelte-check)
-pnpm test-scrapers   # smoke-test all 502 scrapers outside the app
+pnpm test-scrapers   # smoke-test all 500 scrapers outside the app
 pnpm test-scrapers townhall sequoia   # ...or just some of them
 pnpm build           # production build
 ```
@@ -103,8 +103,8 @@ pnpm post-newcomers --check          # prove the app password still works
 
 `scripts/fetch-all.mjs` calls the same `fetchFund` endpoint the dashboard's
 buttons use, five funds at a time, and leaves what each fund gained in
-`fetch-results.json`. A single stubborn site (Speedinvest refuses datacenter
-addresses) does not turn the night red — only a broad failure does.
+`fetch-results.json`. A single stubborn site (a firewall refusing datacenter
+addresses, say) does not turn the night red — only a broad failure does.
 
 `scripts/post-newcomers.mjs` then announces the finds on Bluesky as
 [@portfolio-alert.bsky.social](https://bsky.app/profile/portfolio-alert.bsky.social),
