@@ -10,6 +10,12 @@ const MAX_PAGES = 200; // safety stop
 // back, so pace the requests and back off hard when it does
 const PAGE_DELAY_MS = 400;
 const RATE_LIMIT_BACKOFF_MS = 5000;
+// a gateway error or a dropped connection is the site's backend catching its
+// breath, and it has needed longer than ten seconds to: these waits double
+// from five seconds, 75 in all, where a refusal the site means (a 404, a 403)
+// is only asked about again briefly
+const SERVER_ERROR_BACKOFF_MS = 5000;
+const CLIENT_ERROR_BACKOFF_MS = 1000;
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -23,7 +29,12 @@ async function fetchPage(page: number, attempt = 1): Promise<string> {
         waitMs: retryAfter > 0 ? retryAfter : RATE_LIMIT_BACKOFF_MS * attempt,
       });
     }
-    if (!resp.ok) throw new Error(`${resp.status}`);
+    if (!resp.ok) {
+      throw Object.assign(
+        new Error(`${resp.status}`),
+        resp.status < 500 ? { waitMs: CLIENT_ERROR_BACKOFF_MS * attempt } : {},
+      );
+    }
     return await resp.text();
   } catch (err) {
     // a transient failure must not silently truncate the directory
@@ -31,7 +42,7 @@ async function fetchPage(page: number, attempt = 1): Promise<string> {
       const waitMs =
         typeof err === "object" && err !== null && "waitMs" in err
           ? (err as { waitMs: number }).waitMs
-          : 1000 * attempt;
+          : SERVER_ERROR_BACKOFF_MS * 2 ** (attempt - 1);
       await sleep(waitMs);
       return fetchPage(page, attempt + 1);
     }
