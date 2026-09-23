@@ -65,12 +65,16 @@ import { scrape as foundersfund } from './foundersfund';
 import { scrape as fly } from './fly';
 import { scrape as flybridge } from './flybridge';
 import { scrape as g2 } from './g2';
+import { scrape as goldhouse } from './goldhouse';
+import { scrape as goldenpalm } from './goldenpalm';
+import { scrape as goldenseeds } from './goldenseeds';
 import { scrape as gv } from './gv';
 import { scrape as generalatlantic } from './generalatlantic';
 import { scrape as generalcatalyst } from './generalcatalyst';
 import { scrape as gigascale } from './gigascale';
 import { scrape as glasswing } from './glasswing';
 import { scrape as glilot } from './glilot';
+import { scrape as gorilla } from './gorilla';
 import { scrape as gradient } from './gradient';
 import { scrape as graph } from './graph';
 import { scrape as greatoaks } from './greatoaks';
@@ -607,12 +611,16 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	fly,
 	flybridge,
 	g2,
+	goldhouse,
+	goldenpalm,
+	goldenseeds,
 	gv,
 	generalatlantic,
 	generalcatalyst,
 	gigascale,
 	glasswing,
 	glilot,
+	gorilla,
 	gradient,
 	graph,
 	greatoaks,

@@ -1,4 +1,4 @@
-// The 541 tracked funds, in case-insensitive alphabetical order by name — the
+// The 545 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -89,7 +89,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'gigascale', name: 'Gigascale', url: 'https://gigascale.com/portfolio/' },
 	{ slug: 'glasswing', name: 'Glasswing Ventures', url: 'https://glasswing.vc/our-companies/' },
 	{ slug: 'glilot', name: 'Glilot Capital', url: 'https://glilotcapital.com/portfolio/' },
+	{ slug: 'goldhouse', name: 'Gold House Ventures', url: 'https://goldhouse.org/ghv-companies/' },
+	{ slug: 'goldenpalm', name: 'Golden Palm Investments', url: 'https://www.gpalminvestments.org/portfolio' },
+	{ slug: 'goldenseeds', name: 'Golden Seeds', url: 'https://www.goldenseeds.com/our-companies' },
 	{ slug: 'gv', name: 'Google Ventures', url: 'https://www.gv.com/portfolio' },
+	{ slug: 'gorilla', name: 'Gorilla Capital', url: 'https://gorillacapital.fi/portfolio/' },
 	{ slug: 'gradient', name: 'Gradient Ventures', url: 'https://www.gradient.com/portfolio/' },
 	{ slug: 'graph', name: 'Graph Ventures', url: 'https://www.graphventures.com/#companies' },
 	{ slug: 'greatoaks', name: 'Great Oaks Venture Capital', url: 'https://www.greatoaksvc.com/portfolio' },
