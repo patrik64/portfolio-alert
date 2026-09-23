@@ -17,8 +17,29 @@ const NAME = /class="grid-item-name h4">\s*([^<]*?)\s*</;
 const DETAIL = /<a href="(https?:\/\/thehelm\.co\/[^"]+)"/;
 const HEADING = /<h[1-3][^>]*>\s*(Fund|Membership)\s*<\/h[1-3]>/g;
 
+// the site is on wordpress.com's atomic hosting, which meters requests per
+// address and since september 2026 turns production away with a 429 now and
+// then. the refusal is waited out — as long as the host asks, within reason —
+// before the night is given up
+const RETRIES = 2;
+const RETRY_DELAY_MS = 30_000;
+const MAX_DELAY_MS = 60_000;
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function fetchPage(): Promise<Response> {
+	let resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	for (let retry = 0; resp.status === 429 && retry < RETRIES; retry++) {
+		// seconds when it is a number; a date, or nothing, gets the default
+		const asked = Number(resp.headers.get('retry-after')) * 1000;
+		await wait(Math.min(asked > 0 ? asked : RETRY_DELAY_MS, MAX_DELAY_MS));
+		resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	}
+	return resp;
+}
+
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	const resp = await fetchPage();
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}

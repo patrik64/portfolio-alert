@@ -61,8 +61,10 @@ export async function scrape(): Promise<ScrapedCompany[]> {
     throw new Error("south park commons: the portfolio came back empty");
   }
 
-  // one page per company, and the sitemap lists them all
-  const sitemap = await fetchPage(SITEMAP_URL);
+  // one page per company, and the sitemap lists them all — when it can be read:
+  // since september 2026 it answers "Not Allowed" to everyone, and the check it
+  // makes is a second opinion rather than the source, so it is skipped then
+  const sitemap = await fetchPage(SITEMAP_URL).catch(() => "");
   const published = new Set(
     [...sitemap.matchAll(/<loc>https:\/\/www\.southparkcommons\.com\/companies\/([^<]+?)\/?<\/loc>/g)]
       .map((m) => m[1])

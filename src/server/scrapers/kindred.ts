@@ -1,89 +1,103 @@
 import type { ScrapedCompany } from './types';
 
-const RESULTS_URL = 'https://kindredventures.com/portfolio?sf_data=results&sf_paged=';
-const MAX_PAGES = 20;
+const BASE_URL = 'https://kindredventures.com';
+const COMPANIES_URL = `${BASE_URL}/wp-json/wp/v2/company`;
+const PER_PAGE = 100;
+const MAX_PAGES = 10;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-// wordpress behind the search & filter plugin, whose results endpoint pages
-// the portfolio a couple dozen companies at a time under an infinite scroll.
-// every company arrives as a popup that names it, links its own address, and
-// carries its country and the fund's missions for it — the ones past the
-// first tucked into a tooltip. the pages are walked until one brings nobody
-// new, at a reader's pace: the site answers 429 when they are turned too
-// fast.
-const PAGE_DELAY_MS = 6000;
+// wordpress on wordpress.com's atomic hosting, which meters requests per
+// address and in september 2026 began turning production away with 429s
+// after a handful. the portfolio page's search results, two dozen companies
+// a request behind a redirect, cost a dozen requests a night; the rest api's
+// company type lists every company with the fund's missions and sectors for
+// it, and embedding the terms brings their names along, so the whole
+// portfolio takes two. it does not carry a company's own address, so a
+// company links to its page here.
+//
+// a refusal is waited out — as long as the host asks, within reason — before
+// the night is given up.
+const RETRIES = 2;
+const RETRY_DELAY_MS = 30_000;
+const MAX_DELAY_MS = 60_000;
+
+interface Term {
+	taxonomy?: string;
+	name?: string;
+}
+
+interface Company {
+	title?: { rendered?: string };
+	link?: string;
+	_embedded?: { 'wp:term'?: Term[][] };
+}
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const MODAL = 'micromodal portfolio_modal';
-const NAME = /class="name">\s*<h3>([^<]*)</;
-const SITE = /class="url">\s*<a href="(https?:[^"]+)"/;
-const TAG = /<div class="tag">([^<]*)</g;
-const MISSION = /mission_wrap[^>]*>\s*<p[^>]*>([\s\S]*?)<\/p>/g;
-const TOOLTIP = /tooltiptext">([^<]*)</g;
-
 const unescape = (s: string) =>
 	s
-		.replace(/&#0?39;|&apos;|&#8217;|&#038;/g, "'")
+		.replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
+		.replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCodePoint(parseInt(code, 16)))
 		.replace(/&quot;/g, '"')
-		.replace(/&lt;/g, '<')
-		.replace(/&gt;/g, '>')
 		.replace(/&nbsp;/g, ' ')
-		.replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
-		.replace(/&#0?38;|&amp;/g, '&');
+		.replace(/&amp;/g, '&');
 
 const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
 
 // the category is comma-joined, so a label holding a comma would read as two
 const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
+async function fetchPage(page: number): Promise<Response> {
+	const url = `${COMPANIES_URL}?per_page=${PER_PAGE}&page=${page}&_embed=wp:term`;
+	let resp = await fetch(url, { headers: { 'User-Agent': UA } });
+	for (let retry = 0; resp.status === 429 && retry < RETRIES; retry++) {
+		// seconds when it is a number; a date, or nothing, gets the default
+		const asked = Number(resp.headers.get('retry-after')) * 1000;
+		await wait(Math.min(asked > 0 ? asked : RETRY_DELAY_MS, MAX_DELAY_MS));
+		resp = await fetch(url, { headers: { 'User-Agent': UA } });
+	}
+	if (!resp.ok) {
+		throw new Error(`Failed to fetch ${url}: ${resp.status}`);
+	}
+	return resp;
+}
+
 export async function scrape(): Promise<ScrapedCompany[]> {
+	const listed: Company[] = [];
+	let total = 0;
+	for (let page = 1; page <= MAX_PAGES; page++) {
+		const resp = await fetchPage(page);
+		total = Number(resp.headers.get('x-wp-total')) || total;
+		const pages = Number(resp.headers.get('x-wp-totalpages')) || 1;
+		listed.push(...((await resp.json()) as Company[]));
+		if (page >= pages) break;
+	}
+	if (total > 0 && listed.length < total) {
+		throw new Error(`kindred: read ${listed.length} of the ${total} companies listed`);
+	}
+
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-
-	for (let page = 1; page <= MAX_PAGES; page++) {
-		if (page > 1) await wait(PAGE_DELAY_MS);
-		let resp = await fetch(`${RESULTS_URL}${page}`, { headers: { 'User-Agent': UA } });
-		// a ci runner's shared address is metered harder than a home one, so a
-		// 429 is waited out twice before the night is given up
-		for (let retry = 0; resp.status === 429 && retry < 2; retry++) {
-			await wait(6 * PAGE_DELAY_MS);
-			resp = await fetch(`${RESULTS_URL}${page}`, { headers: { 'User-Agent': UA } });
-		}
-		if (!resp.ok) {
-			throw new Error(`Failed to fetch page ${page}: ${resp.status}`);
-		}
-		const html = await resp.text();
-
-		let found = 0;
-		for (const modal of html.split(MODAL).slice(1)) {
-			const name = clean(modal.match(NAME)?.[1] ?? '');
-			if (!name || seen.has(name.toLowerCase())) continue;
-			seen.add(name.toLowerCase());
-			found++;
-
-			// the "+n" overflow counters are not missions themselves
-			const missions = [...modal.matchAll(MISSION)]
-				.map((m) => tag(m[1]))
-				.filter((t) => t && !/^\+\d+/.test(t));
-			companies.push({
-				name,
-				category: [
-					...missions,
-					...[...modal.matchAll(TOOLTIP)].map((m) => tag(m[1])),
-					...[...modal.matchAll(TAG)].map((m) => tag(m[1]))
-				]
-					.filter(Boolean)
-					.join(', '),
-				url: modal.match(SITE)?.[1] ?? ''
-			});
-		}
-		if (found === 0) break;
+	for (const company of listed) {
+		const name = clean(company.title?.rendered ?? '');
+		if (!name || seen.has(name.toLowerCase())) continue;
+		seen.add(name.toLowerCase());
+		const terms = (company._embedded?.['wp:term'] ?? []).flat();
+		companies.push({
+			name,
+			category: [
+				...terms.filter((t) => t.taxonomy === 'mission').map((t) => tag(t.name ?? '')),
+				...terms.filter((t) => t.taxonomy === 'sector').map((t) => tag(t.name ?? ''))
+			]
+				.filter((t, i, all) => t && all.indexOf(t) === i)
+				.join(', '),
+			url: company.link ?? ''
+		});
 	}
 
 	if (companies.length === 0) {
-		throw new Error('kindred: no companies in the portfolio results');
+		throw new Error('kindred: the rest api lists no companies');
 	}
 
 	return companies;
