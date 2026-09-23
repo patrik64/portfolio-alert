@@ -71,9 +71,20 @@ import { scrape as generalcatalyst } from './generalcatalyst';
 import { scrape as gigascale } from './gigascale';
 import { scrape as glasswing } from './glasswing';
 import { scrape as glilot } from './glilot';
+import { scrape as gradient } from './gradient';
+import { scrape as graph } from './graph';
+import { scrape as greatoaks } from './greatoaks';
+import { scrape as greatpoint } from './greatpoint';
+import { scrape as greenegg } from './greenegg';
+import { scrape as greenmeadow } from './greenmeadow';
 import { scrape as greycroft } from './greycroft';
 import { scrape as greylock } from './greylock';
+import { scrape as groundup } from './groundup';
+import { scrape as group11 } from './group11';
 import { scrape as grove } from './grove';
+import { scrape as gsv } from './gsv';
+import { scrape as gtmfund } from './gtmfund';
+import { scrape as gula } from './gula';
 import { scrape as halogen } from './halogen';
 import { scrape as hannahgrey } from './hannahgrey';
 import { scrape as harlem } from './harlem';
@@ -602,9 +613,20 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	gigascale,
 	glasswing,
 	glilot,
+	gradient,
+	graph,
+	greatoaks,
+	greatpoint,
+	greenegg,
+	greenmeadow,
 	greycroft,
 	greylock,
+	groundup,
+	group11,
 	grove,
+	gsv,
+	gtmfund,
+	gula,
 	halogen,
 	hannahgrey,
 	harlem,

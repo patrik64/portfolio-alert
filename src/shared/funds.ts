@@ -1,4 +1,4 @@
-// The 530 tracked funds, in case-insensitive alphabetical order by name — the
+// The 541 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -90,9 +90,20 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'glasswing', name: 'Glasswing Ventures', url: 'https://glasswing.vc/our-companies/' },
 	{ slug: 'glilot', name: 'Glilot Capital', url: 'https://glilotcapital.com/portfolio/' },
 	{ slug: 'gv', name: 'Google Ventures', url: 'https://www.gv.com/portfolio' },
+	{ slug: 'gradient', name: 'Gradient Ventures', url: 'https://www.gradient.com/portfolio/' },
+	{ slug: 'graph', name: 'Graph Ventures', url: 'https://www.graphventures.com/#companies' },
+	{ slug: 'greatoaks', name: 'Great Oaks Venture Capital', url: 'https://www.greatoaksvc.com/portfolio' },
+	{ slug: 'greatpoint', name: 'GreatPoint Ventures', url: 'https://www.gpv.com/companies' },
+	{ slug: 'greenegg', name: 'Green Egg Ventures', url: 'https://greenegg.vc/#portfolio' },
+	{ slug: 'greenmeadow', name: 'Green Meadow Ventures', url: 'https://www.greenmeadow.co/portfolio' },
 	{ slug: 'greycroft', name: 'Greycroft', url: 'https://www.greycroft.com/portfolio/' },
 	{ slug: 'greylock', name: 'Greylock', url: 'https://greylock.com/portfolio/' },
+	{ slug: 'groundup', name: 'GroundUp', url: 'https://www.groundup.vc/portfolio' },
+	{ slug: 'group11', name: 'Group 11', url: 'https://group11.vc/portfolio/' },
 	{ slug: 'grove', name: 'Grove Ventures', url: 'https://www.grovevc.com/grove-portfolio-companies/' },
+	{ slug: 'gsv', name: 'GSV Ventures', url: 'https://gsv.ventures/portfolio/' },
+	{ slug: 'gtmfund', name: 'GTMfund', url: 'https://www.gtmfund.com/portfolio/' },
+	{ slug: 'gula', name: 'Gula Tech Adventures', url: 'https://www.gula.tech/portfolio' },
 	{ slug: 'halogen', name: 'Halogen Ventures', url: 'https://halogenvc.com/portfolio' },
 	{ slug: 'hannahgrey', name: 'Hannah Grey', url: 'https://www.hannahgrey.com/portfolio-1' },
 	{ slug: 'harlem', name: 'Harlem Capital', url: 'https://harlem.capital/portfolio/' },
