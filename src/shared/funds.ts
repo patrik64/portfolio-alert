@@ -1,4 +1,4 @@
-// The 517 tracked funds, in case-insensitive alphabetical order by name — the
+// The 530 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -93,7 +93,20 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'greycroft', name: 'Greycroft', url: 'https://www.greycroft.com/portfolio/' },
 	{ slug: 'greylock', name: 'Greylock', url: 'https://greylock.com/portfolio/' },
 	{ slug: 'grove', name: 'Grove Ventures', url: 'https://www.grovevc.com/grove-portfolio-companies/' },
+	{ slug: 'halogen', name: 'Halogen Ventures', url: 'https://halogenvc.com/portfolio' },
+	{ slug: 'hannahgrey', name: 'Hannah Grey', url: 'https://www.hannahgrey.com/portfolio-1' },
+	{ slug: 'harlem', name: 'Harlem Capital', url: 'https://harlem.capital/portfolio/' },
+	{ slug: 'haun', name: 'Haun Ventures', url: 'https://www.haun.co/portfolio' },
+	{ slug: 'hax', name: 'HAX', url: 'https://hax.co/startups/' },
+	{ slug: 'haystack', name: 'Haystack', url: 'https://haystack.vc/portfolio' },
+	{ slug: 'hcvc', name: 'HCVC', url: 'https://www.hcvc.co/pages/portfolio' },
 	{ slug: 'headline', name: 'Headline', url: 'https://headline.com/portfolio' },
+	{ slug: 'healthx', name: 'HealthX Ventures', url: 'https://www.healthxventures.com/portfolio' },
+	{ slug: 'healthy', name: 'Healthy Ventures', url: 'https://healthy.vc/portfolio' },
+	{ slug: 'hearstlab', name: 'HearstLab', url: 'https://www.hearstlab.com/portfolio' },
+	{ slug: 'heartcore', name: 'Heartcore Capital', url: 'https://www.heartcore.com/companies' },
+	{ slug: 'heavybit', name: 'Heavybit', url: 'https://www.heavybit.com/portfolio' },
+	{ slug: 'helios', name: 'Helios Capital', url: 'https://www.helioscapital.us/portfolio-2/' },
 	{ slug: 'helium3', name: 'Helium-3 Ventures', url: 'https://www.helium-3ventures.com/#portfolio' },
 	{ slug: 'hetz', name: 'Hetz Ventures', url: 'https://www.hetz.vc/our-portfolio' },
 	{ slug: 'hofcapital', name: 'HOF Capital', url: 'https://hofcapital.com/portfolio' },

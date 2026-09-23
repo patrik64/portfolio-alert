@@ -74,7 +74,20 @@ import { scrape as glilot } from './glilot';
 import { scrape as greycroft } from './greycroft';
 import { scrape as greylock } from './greylock';
 import { scrape as grove } from './grove';
+import { scrape as halogen } from './halogen';
+import { scrape as hannahgrey } from './hannahgrey';
+import { scrape as harlem } from './harlem';
+import { scrape as haun } from './haun';
+import { scrape as hax } from './hax';
+import { scrape as haystack } from './haystack';
+import { scrape as hcvc } from './hcvc';
 import { scrape as headline } from './headline';
+import { scrape as healthx } from './healthx';
+import { scrape as healthy } from './healthy';
+import { scrape as hearstlab } from './hearstlab';
+import { scrape as heartcore } from './heartcore';
+import { scrape as heavybit } from './heavybit';
+import { scrape as helios } from './helios';
 import { scrape as helium3 } from './helium3';
 import { scrape as hetz } from './hetz';
 import { scrape as hofcapital } from './hofcapital';
@@ -592,7 +605,20 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	greycroft,
 	greylock,
 	grove,
+	halogen,
+	hannahgrey,
+	harlem,
+	haun,
+	hax,
+	haystack,
+	hcvc,
 	headline,
+	healthx,
+	healthy,
+	hearstlab,
+	heartcore,
+	heavybit,
+	helios,
 	helium3,
 	hetz,
 	hofcapital,
