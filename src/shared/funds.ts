@@ -1,4 +1,4 @@
-// The 500 tracked funds, in case-insensitive alphabetical order by name — the
+// The 508 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -96,9 +96,16 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'headline', name: 'Headline', url: 'https://headline.com/portfolio' },
 	{ slug: 'htgf', name: 'HTGF', url: 'https://www.htgf.de/en/portfolio/' },
 	{ slug: 'hvcapital', name: 'HV Capital', url: 'https://www.hvcapital.com/portfolio' },
+	{ slug: 'illuminate', name: 'Illuminate Financial', url: 'https://www.illuminatefinancial.com/portfolio' },
+	{ slug: 'imaginary', name: 'Imaginary Ventures', url: 'https://www.imaginary.co/companies' },
+	{ slug: 'impactamerica', name: 'Impact America Fund', url: 'https://impactamericafund.com/portfolio' },
+	{ slug: 'incisive', name: 'Incisive Ventures', url: 'https://incisive.vc/investments/' },
 	{ slug: 'indexventures', name: 'Index Ventures', url: 'https://www.indexventures.com/companies/backed/all/' },
 	{ slug: 'indiebio', name: 'Indie Bio', url: 'https://indiebio.co/' },
 	{ slug: 'industrifonden', name: 'Industrifonden', url: 'https://industrifonden.com/portfolio/' },
+	{ slug: 'industrious', name: 'Industrious Ventures', url: 'https://industrious.vc/portfolio/' },
+	{ slug: 'inertia', name: 'Inertia', url: 'https://inertia.vc/portfolio' },
+	{ slug: 'inflecthealth', name: 'Inflect Health', url: 'https://www.inflect.health/capital' },
 	{ slug: 'initialized', name: 'Initialized Capital', url: 'https://initialized.com/companies' },
 	{ slug: 'innospark', name: 'Innospark Ventures', url: 'https://innospark.vc/portfolio/' },
 	{ slug: 'innovatingcapital', name: 'Innovating Capital', url: 'https://innovating.capital/companies/' },
@@ -367,6 +374,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'salt', name: 'Salt VC', url: 'https://salt.vc/portfolio' },
 	{ slug: 'sante', name: 'Santé Ventures', url: 'https://sante.com/portfolio' },
 	{ slug: 'sapphire', name: 'Sapphire Ventures', url: 'https://sapphireventures.com/companies/' },
+	{ slug: 'satgana', name: 'Satgana', url: 'https://www.satgana.com/portfolio' },
 	{
 		slug: 'schematic',
 		name: 'Schematic Ventures',

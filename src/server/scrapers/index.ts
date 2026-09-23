@@ -77,9 +77,16 @@ import { scrape as grove } from './grove';
 import { scrape as headline } from './headline';
 import { scrape as htgf } from './htgf';
 import { scrape as hvcapital } from './hvcapital';
+import { scrape as illuminate } from './illuminate';
+import { scrape as imaginary } from './imaginary';
+import { scrape as impactamerica } from './impactamerica';
+import { scrape as incisive } from './incisive';
 import { scrape as indexventures } from './indexventures';
 import { scrape as indiebio } from './indiebio';
 import { scrape as industrifonden } from './industrifonden';
+import { scrape as industrious } from './industrious';
+import { scrape as inertia } from './inertia';
+import { scrape as inflecthealth } from './inflecthealth';
 import { scrape as initialized } from './initialized';
 import { scrape as innospark } from './innospark';
 import { scrape as innovatingcapital } from './innovatingcapital';
@@ -330,6 +337,7 @@ import { scrape as s3vc } from './s3vc';
 import { scrape as saasvc } from './saasvc';
 import { scrape as salt } from './salt';
 import { scrape as sante } from './sante';
+import { scrape as satgana } from './satgana';
 import { scrape as schematic } from './schematic';
 import { scrape as scifi } from './scifi';
 import { scrape as scifounders } from './scifounders';
@@ -578,9 +586,16 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	headline,
 	htgf,
 	hvcapital,
+	illuminate,
+	imaginary,
+	impactamerica,
+	incisive,
 	indexventures,
 	indiebio,
 	industrifonden,
+	industrious,
+	inertia,
+	inflecthealth,
 	initialized,
 	innospark,
 	innovatingcapital,
@@ -831,6 +846,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	saasvc,
 	salt,
 	sante,
+	satgana,
 	schematic,
 	scifi,
 	scifounders,
