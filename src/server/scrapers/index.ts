@@ -75,8 +75,17 @@ import { scrape as greycroft } from './greycroft';
 import { scrape as greylock } from './greylock';
 import { scrape as grove } from './grove';
 import { scrape as headline } from './headline';
+import { scrape as helium3 } from './helium3';
+import { scrape as hetz } from './hetz';
+import { scrape as hofcapital } from './hofcapital';
+import { scrape as homebrew } from './homebrew';
+import { scrape as horizons } from './horizons';
+import { scrape as howwomeninvest } from './howwomeninvest';
 import { scrape as htgf } from './htgf';
+import { scrape as humancapital } from './humancapital';
+import { scrape as hummingbird } from './hummingbird';
 import { scrape as hvcapital } from './hvcapital';
+import { scrape as hyperplane } from './hyperplane';
 import { scrape as illuminate } from './illuminate';
 import { scrape as imaginary } from './imaginary';
 import { scrape as impactamerica } from './impactamerica';
@@ -584,8 +593,17 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	greylock,
 	grove,
 	headline,
+	helium3,
+	hetz,
+	hofcapital,
+	homebrew,
+	horizons,
+	howwomeninvest,
 	htgf,
+	humancapital,
+	hummingbird,
 	hvcapital,
+	hyperplane,
 	illuminate,
 	imaginary,
 	impactamerica,

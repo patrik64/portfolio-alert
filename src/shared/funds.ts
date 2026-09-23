@@ -1,4 +1,4 @@
-// The 508 tracked funds, in case-insensitive alphabetical order by name — the
+// The 517 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -94,8 +94,17 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'greylock', name: 'Greylock', url: 'https://greylock.com/portfolio/' },
 	{ slug: 'grove', name: 'Grove Ventures', url: 'https://www.grovevc.com/grove-portfolio-companies/' },
 	{ slug: 'headline', name: 'Headline', url: 'https://headline.com/portfolio' },
+	{ slug: 'helium3', name: 'Helium-3 Ventures', url: 'https://www.helium-3ventures.com/#portfolio' },
+	{ slug: 'hetz', name: 'Hetz Ventures', url: 'https://www.hetz.vc/our-portfolio' },
+	{ slug: 'hofcapital', name: 'HOF Capital', url: 'https://hofcapital.com/portfolio' },
+	{ slug: 'homebrew', name: 'Homebrew', url: 'https://www.homebrew.co/#Portfolio' },
+	{ slug: 'horizons', name: 'Horizons Ventures', url: 'https://www.horizonsventures.com/portfolio' },
+	{ slug: 'howwomeninvest', name: 'How Women Invest', url: 'https://www.howwomeninvest.com/portfolio' },
 	{ slug: 'htgf', name: 'HTGF', url: 'https://www.htgf.de/en/portfolio/' },
+	{ slug: 'humancapital', name: 'Human Capital', url: 'https://human.capital/portfolio' },
+	{ slug: 'hummingbird', name: 'Hummingbird Ventures', url: 'https://www.hummingbird.vc/portfolio' },
 	{ slug: 'hvcapital', name: 'HV Capital', url: 'https://www.hvcapital.com/portfolio' },
+	{ slug: 'hyperplane', name: 'Hyperplane', url: 'https://www.hyperplane.vc/companies' },
 	{ slug: 'illuminate', name: 'Illuminate Financial', url: 'https://www.illuminatefinancial.com/portfolio' },
 	{ slug: 'imaginary', name: 'Imaginary Ventures', url: 'https://www.imaginary.co/companies' },
 	{ slug: 'impactamerica', name: 'Impact America Fund', url: 'https://impactamericafund.com/portfolio' },
