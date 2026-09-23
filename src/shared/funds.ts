@@ -1,4 +1,4 @@
-// The 557 tracked funds, in case-insensitive alphabetical order by name — the
+// The 576 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -75,6 +75,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'ef', name: 'Entrepreneurs First', url: 'https://www.joinef.com/portfolio/' },
 	{ slug: 'episode1', name: 'Episode 1', url: 'https://www.episode1.com/portfolio' },
 	{ slug: 'eqt', name: 'EQT Group', url: 'https://eqtgroup.com/about/current-portfolio' },
+	{ slug: 'fprime', name: 'F-Prime Capital', url: 'https://www.fprimecapital.com/portfolio/' },
 	{ slug: 'f2', name: 'F2 Venture Capital', url: 'https://www.f2vc.com/companies' },
 	{ slug: 'felicis', name: 'Felicis', url: 'https://www.felicis.com/companies' },
 	{ slug: 'filrouge', name: 'Fil Rouge Capital', url: 'https://www.filrougecapital.com/portfolio' },
@@ -82,7 +83,25 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'flagship', name: 'Flagship Pioneering', url: 'https://www.flagshippioneering.com/companies' },
 	{ slug: 'fly', name: 'Fly', url: 'https://fly.vc/portfolio' },
 	{ slug: 'flybridge', name: 'Flybridge', url: 'https://www.flybridge.com/portfolio' },
+	{ slug: 'founderfuel', name: 'FounderFuel', url: 'https://founderfuel.com/companies/' },
 	{ slug: 'foundersfund', name: 'Founders Fund', url: 'https://foundersfund.com/portfolio/' },
+	{ slug: 'fouracres', name: 'Four Acres Capital', url: 'https://www.fouracres.vc/portfolio' },
+	{ slug: 'fpv', name: 'FPV Ventures', url: 'https://fpvventures.com/all-companies/' },
+	{ slug: 'framework', name: 'Framework Ventures', url: 'https://framework.ventures/portfolio' },
+	{ slug: 'freestyle', name: 'Freestyle', url: 'https://freestyle.vc/companies' },
+	{ slug: 'fcventures', name: 'Frist Cressey Ventures', url: 'https://fcventures.com/partnerships/' },
+	{ slug: 'frst', name: 'Frst', url: 'https://www.frst.vc/' },
+	{ slug: 'ftw', name: 'FTW Ventures', url: 'https://www.ftw.vc/companies' },
+	{ slug: 'fuelcapital', name: 'Fuel Capital', url: 'https://www.fuelcapital.com/portfolio' },
+	{ slug: 'fuelvc', name: 'Fuel Venture Capital', url: 'https://fuelventurecapital.com/portfolio' },
+	{ slug: 'fuelventures', name: 'Fuel Ventures', url: 'https://www.fuel.ventures/portfolio' },
+	{ slug: 'further', name: 'Further Ventures', url: 'https://ventures.further.ae/companies' },
+	{ slug: 'fusionfund', name: 'Fusion Fund', url: 'https://www.fusionfund.com/portfolio' },
+	{ slug: 'futureafrica', name: 'Future Africa', url: 'https://www.future.africa/companies' },
+	{ slug: 'futurefood', name: 'Future Food Fund', url: 'https://futurefoodfund.nl/portfolio/' },
+	{ slug: 'futureperfect', name: 'Future Perfect Ventures', url: 'https://www.futureperfectventures.com/invest' },
+	{ slug: 'futurepositive', name: 'Future Positive Capital', url: 'https://www.futurepositivecapital.com/companies' },
+	{ slug: 'futureventures', name: 'Future Ventures', url: 'https://future.ventures/investments' },
 	{ slug: 'g2', name: 'G2', url: 'https://www.g2vp.com/portfolio' },
 	{ slug: 'gaingels', name: 'Gaingels', url: 'https://gaingels.com/#homePortfolio' },
 	{ slug: 'gway', name: 'Gateway Capital', url: 'https://gwaycapital.com/portfolio/' },

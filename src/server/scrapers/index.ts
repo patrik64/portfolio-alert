@@ -56,14 +56,33 @@ import { scrape as entree } from './entree';
 import { scrape as ef } from './ef';
 import { scrape as episode1 } from './episode1';
 import { scrape as eqt } from './eqt';
+import { scrape as fprime } from './fprime';
 import { scrape as f2 } from './f2';
 import { scrape as felicis } from './felicis';
 import { scrape as filrouge } from './filrouge';
 import { scrape as firstround } from './firstround';
 import { scrape as flagship } from './flagship';
+import { scrape as founderfuel } from './founderfuel';
 import { scrape as foundersfund } from './foundersfund';
 import { scrape as fly } from './fly';
 import { scrape as flybridge } from './flybridge';
+import { scrape as fouracres } from './fouracres';
+import { scrape as fpv } from './fpv';
+import { scrape as framework } from './framework';
+import { scrape as freestyle } from './freestyle';
+import { scrape as fcventures } from './fcventures';
+import { scrape as frst } from './frst';
+import { scrape as ftw } from './ftw';
+import { scrape as fuelcapital } from './fuelcapital';
+import { scrape as fuelvc } from './fuelvc';
+import { scrape as fuelventures } from './fuelventures';
+import { scrape as further } from './further';
+import { scrape as fusionfund } from './fusionfund';
+import { scrape as futureafrica } from './futureafrica';
+import { scrape as futurefood } from './futurefood';
+import { scrape as futureperfect } from './futureperfect';
+import { scrape as futurepositive } from './futurepositive';
+import { scrape as futureventures } from './futureventures';
 import { scrape as g2 } from './g2';
 import { scrape as goahead } from './goahead';
 import { scrape as gobi } from './gobi';
@@ -614,14 +633,33 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	ef,
 	episode1,
 	eqt,
+	fprime,
 	f2,
 	felicis,
 	filrouge,
 	firstround,
 	flagship,
+	founderfuel,
 	foundersfund,
 	fly,
 	flybridge,
+	fouracres,
+	fpv,
+	framework,
+	freestyle,
+	fcventures,
+	frst,
+	ftw,
+	fuelcapital,
+	fuelvc,
+	fuelventures,
+	further,
+	fusionfund,
+	futureafrica,
+	futurefood,
+	futureperfect,
+	futurepositive,
+	futureventures,
 	g2,
 	goahead,
 	gobi,
