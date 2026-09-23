@@ -1,4 +1,4 @@
-// The 545 tracked funds, in case-insensitive alphabetical order by name — the
+// The 557 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -84,17 +84,28 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'flybridge', name: 'Flybridge', url: 'https://www.flybridge.com/portfolio' },
 	{ slug: 'foundersfund', name: 'Founders Fund', url: 'https://foundersfund.com/portfolio/' },
 	{ slug: 'g2', name: 'G2', url: 'https://www.g2vp.com/portfolio' },
+	{ slug: 'gaingels', name: 'Gaingels', url: 'https://gaingels.com/#homePortfolio' },
+	{ slug: 'gway', name: 'Gateway Capital', url: 'https://gwaycapital.com/portfolio/' },
+	{ slug: 'geek', name: 'Geek Ventures', url: 'https://geek.vc/portfolio' },
 	{ slug: 'generalatlantic', name: 'General Atlantic', url: 'https://www.generalatlantic.com/investments/' },
 	{ slug: 'generalcatalyst', name: 'General Catalyst', url: 'https://www.generalcatalyst.com/portfolio' },
+	{ slug: 'genesia', name: 'Genesia Ventures', url: 'https://www.genesiaventures.com/en/partners/' },
+	{ slug: 'gfr', name: 'GFR Fund', url: 'https://gfrfund.com/portfolio' },
+	{ slug: 'giant', name: 'Giant Ventures', url: 'https://www.giant.vc/portfolio' },
 	{ slug: 'gigascale', name: 'Gigascale', url: 'https://gigascale.com/portfolio/' },
+	{ slug: 'gingerbread', name: 'Gingerbread Capital', url: 'https://gingerbreadcap.com/portfolio/' },
 	{ slug: 'glasswing', name: 'Glasswing Ventures', url: 'https://glasswing.vc/our-companies/' },
 	{ slug: 'glilot', name: 'Glilot Capital', url: 'https://glilotcapital.com/portfolio/' },
+	{ slug: 'goahead', name: 'GoAhead Ventures', url: 'https://www.goaheadvc.com/en/portfolio-all' },
+	{ slug: 'gobi', name: 'Gobi Partners', url: 'https://www.gobi.vc/portfolio' },
 	{ slug: 'goldhouse', name: 'Gold House Ventures', url: 'https://goldhouse.org/ghv-companies/' },
+	{ slug: 'goldengate', name: 'Golden Gate Ventures', url: 'https://www.goldengate.vc/portfolio' },
 	{ slug: 'goldenpalm', name: 'Golden Palm Investments', url: 'https://www.gpalminvestments.org/portfolio' },
 	{ slug: 'goldenseeds', name: 'Golden Seeds', url: 'https://www.goldenseeds.com/our-companies' },
 	{ slug: 'gv', name: 'Google Ventures', url: 'https://www.gv.com/portfolio' },
 	{ slug: 'gorilla', name: 'Gorilla Capital', url: 'https://gorillacapital.fi/portfolio/' },
 	{ slug: 'gradient', name: 'Gradient Ventures', url: 'https://www.gradient.com/portfolio/' },
+	{ slug: 'graniteasia', name: 'Granite Asia', url: 'https://www.graniteasia.com/portfolio' },
 	{ slug: 'graph', name: 'Graph Ventures', url: 'https://www.graphventures.com/#companies' },
 	{ slug: 'greatoaks', name: 'Great Oaks Venture Capital', url: 'https://www.greatoaksvc.com/portfolio' },
 	{ slug: 'greatpoint', name: 'GreatPoint Ventures', url: 'https://www.gpv.com/companies' },
@@ -278,6 +289,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'northstar', name: 'Northstar', url: 'https://www.northstar.vc/portfolio' },
 	{ slug: 'northzone', name: 'Northzone', url: 'https://northzone.com/portfolio' },
 	{ slug: 'norwest', name: 'Norwest', url: 'https://www.norwest.com/companies' },
+	{ slug: 'notable', name: 'Notable Capital', url: 'https://www.notablecap.com/companies' },
 	{ slug: 'notation', name: 'Notation Capital', url: 'https://notation.vc/companies/' },
 	{ slug: 'nphard', name: 'NP-Hard Ventures', url: 'https://nphard.vc/' },
 	{ slug: 'nucleus', name: 'Nucleus Capital', url: 'https://www.nucleus-capital.com/' },

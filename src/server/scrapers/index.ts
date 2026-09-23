@@ -65,17 +65,28 @@ import { scrape as foundersfund } from './foundersfund';
 import { scrape as fly } from './fly';
 import { scrape as flybridge } from './flybridge';
 import { scrape as g2 } from './g2';
+import { scrape as goahead } from './goahead';
+import { scrape as gobi } from './gobi';
 import { scrape as goldhouse } from './goldhouse';
+import { scrape as goldengate } from './goldengate';
 import { scrape as goldenpalm } from './goldenpalm';
 import { scrape as goldenseeds } from './goldenseeds';
 import { scrape as gv } from './gv';
+import { scrape as gaingels } from './gaingels';
+import { scrape as gway } from './gway';
+import { scrape as geek } from './geek';
 import { scrape as generalatlantic } from './generalatlantic';
 import { scrape as generalcatalyst } from './generalcatalyst';
+import { scrape as genesia } from './genesia';
+import { scrape as gfr } from './gfr';
+import { scrape as giant } from './giant';
 import { scrape as gigascale } from './gigascale';
+import { scrape as gingerbread } from './gingerbread';
 import { scrape as glasswing } from './glasswing';
 import { scrape as glilot } from './glilot';
 import { scrape as gorilla } from './gorilla';
 import { scrape as gradient } from './gradient';
+import { scrape as graniteasia } from './graniteasia';
 import { scrape as graph } from './graph';
 import { scrape as greatoaks } from './greatoaks';
 import { scrape as greatpoint } from './greatpoint';
@@ -251,6 +262,7 @@ import { scrape as northpond } from './northpond';
 import { scrape as northstar } from './northstar';
 import { scrape as northzone } from './northzone';
 import { scrape as norwest } from './norwest';
+import { scrape as notable } from './notable';
 import { scrape as notation } from './notation';
 import { scrape as nphard } from './nphard';
 import { scrape as nucleus } from './nucleus';
@@ -611,17 +623,28 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	fly,
 	flybridge,
 	g2,
+	goahead,
+	gobi,
 	goldhouse,
+	goldengate,
 	goldenpalm,
 	goldenseeds,
 	gv,
+	gaingels,
+	gway,
+	geek,
 	generalatlantic,
 	generalcatalyst,
+	genesia,
+	gfr,
+	giant,
 	gigascale,
+	gingerbread,
 	glasswing,
 	glilot,
 	gorilla,
 	gradient,
+	graniteasia,
 	graph,
 	greatoaks,
 	greatpoint,
@@ -797,6 +820,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	northstar,
 	northzone,
 	norwest,
+	notable,
 	notation,
 	nphard,
 	nucleus,
