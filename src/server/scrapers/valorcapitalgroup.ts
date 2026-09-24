@@ -16,10 +16,15 @@ const UA =
 // the host turns away an address it has heard too much from with a 429, and
 // production shares its addresses with strangers: some nights the one request
 // this scraper makes is one too many. the refusal is waited out — for as long
-// as the host asks, within reason — before the night is given up
-const RETRIES = 2;
-const RETRY_DELAY_MS = 30_000;
-const MAX_DELAY_MS = 60_000;
+// as the host asks, within reason — before the night is given up. a minute
+// between tries was too little for some nights, so three are allowed, well
+// inside the five minutes a fund gets; the tries alternate with the plain
+// companies address, which serves the same list, in case the limit is kept
+// per address rather than per caller
+const RETRIES = 3;
+const RETRY_DELAY_MS = 60_000;
+const MAX_DELAY_MS = 75_000;
+const ALTERNATE_URL = 'https://valorcapitalgroup.com/companies/';
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -29,7 +34,7 @@ async function fetchPage(): Promise<Response> {
 		// seconds when it is a number; a date, or nothing, gets the default
 		const asked = Number(resp.headers.get('retry-after')) * 1000;
 		await wait(Math.min(asked > 0 ? asked : RETRY_DELAY_MS, MAX_DELAY_MS));
-		resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+		resp = await fetch(retry % 2 === 0 ? ALTERNATE_URL : PAGE_URL, { headers: { 'User-Agent': UA } });
 	}
 	return resp;
 }
