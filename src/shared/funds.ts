@@ -1,4 +1,4 @@
-// The 579 tracked funds, in case-insensitive alphabetical order by name — the
+// The 589 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -80,9 +80,19 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'felicis', name: 'Felicis', url: 'https://www.felicis.com/companies' },
 	{ slug: 'filrouge', name: 'Fil Rouge Capital', url: 'https://www.filrougecapital.com/portfolio' },
 	{ slug: 'firstround', name: 'First Round', url: 'https://www.firstround.com/companies' },
+	{ slug: 'fjlabs', name: 'FJ Labs', url: 'https://www.fjlabs.com/portfolio' },
 	{ slug: 'flagship', name: 'Flagship Pioneering', url: 'https://www.flagshippioneering.com/companies' },
+	{ slug: 'flare', name: 'Flare Capital Partners', url: 'https://www.flarecapital.com/companies/' },
+	{ slug: 'flint', name: 'Flint Capital', url: 'https://flintcap.com/' },
+	{ slug: 'floodgate', name: 'Floodgate', url: 'https://www.floodgate.com/companies' },
+	{ slug: 'flourish', name: 'Flourish Ventures', url: 'https://flourishventures.com/portfolio/' },
+	{ slug: 'flucas', name: 'Flucas Ventures', url: 'https://www.flucasvc.com/portfolio' },
 	{ slug: 'fly', name: 'Fly', url: 'https://fly.vc/portfolio' },
 	{ slug: 'flybridge', name: 'Flybridge', url: 'https://www.flybridge.com/portfolio' },
+	{ slug: 'focal', name: 'focal', url: 'https://focal.vc/portfolio/' },
+	{ slug: 'foothill', name: 'Foothill Ventures', url: 'https://www.foothill.ventures/portfolio' },
+	{ slug: 'footprintcoalition', name: 'FootPrint Coalition', url: 'https://www.footprintcoalition.com/investments' },
+	{ slug: 'forerunner', name: 'Forerunner Ventures', url: 'https://www.forerunnerventures.com/investments/' },
 	{ slug: 'foundamental', name: 'Foundamental', url: 'https://www.foundamental.com/portfolio' },
 	{ slug: 'foundationcapital', name: 'Foundation Capital', url: 'https://foundationcapital.com/portfolio' },
 	{ slug: 'foundationventures', name: 'Foundation Ventures', url: 'https://www.foundationventures.com/portfolio' },

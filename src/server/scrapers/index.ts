@@ -61,13 +61,23 @@ import { scrape as f2 } from './f2';
 import { scrape as felicis } from './felicis';
 import { scrape as filrouge } from './filrouge';
 import { scrape as firstround } from './firstround';
+import { scrape as fjlabs } from './fjlabs';
 import { scrape as flagship } from './flagship';
+import { scrape as focal } from './focal';
+import { scrape as foothill } from './foothill';
+import { scrape as footprintcoalition } from './footprintcoalition';
+import { scrape as forerunner } from './forerunner';
 import { scrape as foundamental } from './foundamental';
 import { scrape as foundationcapital } from './foundationcapital';
 import { scrape as foundationventures } from './foundationventures';
 import { scrape as foundercollective } from './foundercollective';
 import { scrape as founderfuel } from './founderfuel';
 import { scrape as foundersfund } from './foundersfund';
+import { scrape as flare } from './flare';
+import { scrape as flint } from './flint';
+import { scrape as floodgate } from './floodgate';
+import { scrape as flourish } from './flourish';
+import { scrape as flucas } from './flucas';
 import { scrape as fly } from './fly';
 import { scrape as flybridge } from './flybridge';
 import { scrape as fouracres } from './fouracres';
@@ -641,13 +651,23 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	felicis,
 	filrouge,
 	firstround,
+	fjlabs,
 	flagship,
+	focal,
+	foothill,
+	footprintcoalition,
+	forerunner,
 	foundamental,
 	foundationcapital,
 	foundationventures,
 	foundercollective,
 	founderfuel,
 	foundersfund,
+	flare,
+	flint,
+	floodgate,
+	flourish,
+	flucas,
 	fly,
 	flybridge,
 	fouracres,
