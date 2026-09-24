@@ -62,6 +62,10 @@ import { scrape as felicis } from './felicis';
 import { scrape as filrouge } from './filrouge';
 import { scrape as firstround } from './firstround';
 import { scrape as flagship } from './flagship';
+import { scrape as foundamental } from './foundamental';
+import { scrape as foundationcapital } from './foundationcapital';
+import { scrape as foundationventures } from './foundationventures';
+import { scrape as foundercollective } from './foundercollective';
 import { scrape as founderfuel } from './founderfuel';
 import { scrape as foundersfund } from './foundersfund';
 import { scrape as fly } from './fly';
@@ -638,6 +642,10 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	filrouge,
 	firstround,
 	flagship,
+	foundamental,
+	foundationcapital,
+	foundationventures,
+	foundercollective,
 	founderfuel,
 	foundersfund,
 	fly,

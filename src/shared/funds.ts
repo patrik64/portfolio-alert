@@ -1,4 +1,4 @@
-// The 575 tracked funds, in case-insensitive alphabetical order by name — the
+// The 579 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -83,6 +83,10 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'flagship', name: 'Flagship Pioneering', url: 'https://www.flagshippioneering.com/companies' },
 	{ slug: 'fly', name: 'Fly', url: 'https://fly.vc/portfolio' },
 	{ slug: 'flybridge', name: 'Flybridge', url: 'https://www.flybridge.com/portfolio' },
+	{ slug: 'foundamental', name: 'Foundamental', url: 'https://www.foundamental.com/portfolio' },
+	{ slug: 'foundationcapital', name: 'Foundation Capital', url: 'https://foundationcapital.com/portfolio' },
+	{ slug: 'foundationventures', name: 'Foundation Ventures', url: 'https://www.foundationventures.com/portfolio' },
+	{ slug: 'foundercollective', name: 'Founder Collective', url: 'https://foundercollective.com/portfolio/' },
 	{ slug: 'founderfuel', name: 'FounderFuel', url: 'https://founderfuel.com/companies/' },
 	{ slug: 'foundersfund', name: 'Founders Fund', url: 'https://foundersfund.com/portfolio/' },
 	{ slug: 'fouracres', name: 'Four Acres Capital', url: 'https://www.fouracres.vc/portfolio' },
