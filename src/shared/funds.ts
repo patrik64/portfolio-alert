@@ -1,4 +1,4 @@
-// The 609 tracked funds, in case-insensitive alphabetical order by name — the
+// The 615 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -75,6 +75,12 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'ef', name: 'Entrepreneurs First', url: 'https://www.joinef.com/portfolio/' },
 	{ slug: 'episode1', name: 'Episode 1', url: 'https://www.episode1.com/portfolio' },
 	{ slug: 'eqt', name: 'EQT Group', url: 'https://eqtgroup.com/about/current-portfolio' },
+	{ slug: 'era', name: 'Era Ventures', url: 'https://eraventures.com/companies/' },
+	{ slug: 'essence', name: 'Essence Venture Capital', url: 'https://essencevc.fund/' },
+	{ slug: 'exceptional', name: 'Exceptional Capital', url: 'https://www.exceptionalcap.com/portfolio' },
+	{ slug: 'expa', name: 'Expa', url: 'https://www.expa.com/portfolio/' },
+	{ slug: 'expansion', name: 'Expansion', url: 'https://expansion-vc.eu/portfolio' },
+	{ slug: 'exponent', name: 'Exponent', url: 'https://www.exponentpe.com/our-portfolio' },
 	{ slug: 'fprime', name: 'F-Prime Capital', url: 'https://www.fprimecapital.com/portfolio/' },
 	{ slug: 'f2', name: 'F2 Venture Capital', url: 'https://www.f2vc.com/companies' },
 	{ slug: 'f7', name: 'f7 Ventures', url: 'https://www.f7ventures.com/portfolio/' },

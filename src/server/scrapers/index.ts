@@ -56,6 +56,12 @@ import { scrape as entree } from './entree';
 import { scrape as ef } from './ef';
 import { scrape as episode1 } from './episode1';
 import { scrape as eqt } from './eqt';
+import { scrape as era } from './era';
+import { scrape as essence } from './essence';
+import { scrape as exceptional } from './exceptional';
+import { scrape as expa } from './expa';
+import { scrape as expansion } from './expansion';
+import { scrape as exponent } from './exponent';
 import { scrape as fprime } from './fprime';
 import { scrape as f2 } from './f2';
 import { scrape as f7 } from './f7';
@@ -666,6 +672,12 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	ef,
 	episode1,
 	eqt,
+	era,
+	essence,
+	exceptional,
+	expa,
+	expansion,
+	exponent,
 	fprime,
 	f2,
 	f7,
