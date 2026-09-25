@@ -47,6 +47,51 @@ https://portfolio-alert.vercel.app/rss.xml
 
 Every company row shows when the company was first encountered ("first seen").
 
+## API
+
+`GET /api/v1/companies` — the companies the funds' portfolio pages list,
+filtered, one entry per company — a company several funds back comes once,
+naming them all — newest first. By default it answers the recent window: the
+companies that appeared on the pages in the last two weeks (not the ones a
+fund's baseline import brought in). With `scope=all` it answers from the whole
+catalogue, baseline portfolios included, for a fund, a name or a category.
+Public and read-only; each distinct query is cached for an hour. A misspelt or
+malformed parameter gets a 400 that names the problem and lists every
+parameter.
+
+| parameter | meaning |
+| --- | --- |
+| `scope` | `new` (default): the companies first seen in the window; `all`: every company the funds list — needs a `fund`, `name` or `category` to narrow it |
+| `days` | the window: companies first seen in the last n days, 1–90 (default 14) |
+| `since` | the window from an ISO date or time instead, at most 90 days back |
+| `name` | words in the company name, comma-separated, any of them — whole words in any case; a space or hyphen within a word also matches none (`open ai` finds OpenAI and Open-AI); a trailing `*` matches word beginnings (`neuro*`) |
+| `category` | words in the category a fund files the company under — its sectors, stage, country, year invested (`fintech`, `series a`, `2026`) — matched as in `name` |
+| `exclude` | words that rule a company out, in its name or category, matched as in `name` |
+| `fund` | fund slugs, any of them (the slug of each fund is in `/api/funds`) |
+| `exited` | `only`: companies a fund marks as exited (acquired, listed or otherwise out of); `none`: the ones still held; `any` (default) |
+| `limit`, `offset` | paging: up to 500 a page (default 100); the answer links the next page |
+| `format` | `json` (default) or `md`, a markdown list of links grouped by fund |
+
+Each entry in the JSON answer carries the company's name, `url` — its site as
+the first fund to list it gives it — and `funds`: every fund backing it, each
+with its slug and name, the `category` its page files the company under, the
+same split into `tags`, the fund's own link and when it first saw the company.
+`exited` says whether any fund marks it so, and `firstSeenAt` is the earliest
+sighting. The answer also echoes the query as understood, the total and the
+window.
+
+The fintech companies that turned up in the last month, as a list of links:
+
+```sh
+curl 'https://portfolio-alert.vercel.app/api/v1/companies?days=30&category=fintech&format=md'
+```
+
+USV's whole portfolio, the companies it is out of left aside:
+
+```sh
+curl 'https://portfolio-alert.vercel.app/api/v1/companies?scope=all&fund=usv&exited=none'
+```
+
 ## Setup
 
 ```sh

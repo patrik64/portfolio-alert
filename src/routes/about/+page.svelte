@@ -65,6 +65,21 @@
 			<a href="/rss.xml" target="_blank" class="font-semibold text-black transition duration-150 hover:text-white">rss feed</a>.
 		</p>
 		<p>
+			Programs — or an assistant — can ask for the companies directly: the
+			<a
+				href="/api/v1/companies?days=30&format=md"
+				target="_blank"
+				class="font-semibold text-black transition duration-150 hover:text-white">companies api</a
+			> answers the recent newcomers, or a fund's whole portfolio, narrowed by words in the name or
+			category and by exits, in json or as a markdown list of links. Its parameters are in the
+			<a
+				href="https://github.com/patrik64/portfolio-alert#api"
+				target="_blank"
+				rel="external noreferrer"
+				class="font-semibold text-black transition duration-150 hover:text-white">readme</a
+			>.
+		</p>
+		<p>
 			Built with SvelteKit, Svelte 5, remult and Tailwind CSS on a Supabase postgres database.
 			The source is on
 			<a
