@@ -50,7 +50,11 @@ import { scrape as cyberstarts } from './cyberstarts';
 import { scrape as dcvc } from './dcvc';
 import { scrape as draper } from './draper';
 import { scrape as e14 } from './e14';
+import { scrape as e2mc } from './e2mc';
+import { scrape as earlylight } from './earlylight';
 import { scrape as earlybird } from './earlybird';
+import { scrape as eastlink } from './eastlink';
+import { scrape as echovc } from './echovc';
 import { scrape as eclipse } from './eclipse';
 import { scrape as ecliptic } from './ecliptic';
 import { scrape as ecp } from './ecp';
@@ -684,7 +688,11 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	dcvc,
 	draper,
 	e14,
+	e2mc,
+	earlylight,
 	earlybird,
+	eastlink,
+	echovc,
 	eclipse,
 	ecliptic,
 	ecp,

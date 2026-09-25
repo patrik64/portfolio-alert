@@ -1,4 +1,4 @@
-// The 633 tracked funds, in case-insensitive alphabetical order by name — the
+// The 637 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -69,7 +69,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'dcvc', name: 'DCVC', url: 'https://www.dcvc.com/companies' },
 	{ slug: 'draper', name: 'Draper Associates', url: 'https://www.draper.vc/portfolio' },
 	{ slug: 'e14', name: 'E14', url: 'https://www.e14.vc/companies' },
+	{ slug: 'e2mc', name: 'E2MC', url: 'https://e2mc.space/portfolio' },
+	{ slug: 'earlylight', name: 'Early Light Ventures', url: 'https://www.earlylight.vc/portfolio' },
 	{ slug: 'earlybird', name: 'Earlybird', url: 'https://earlybird.com/companies' },
+	{ slug: 'eastlink', name: 'Eastlink Capital', url: 'https://www.eastlinkcap.com/portfolio/' },
+	{ slug: 'echovc', name: 'EchoVC Partners', url: 'https://www.echovc.com/ourportfolio' },
 	{ slug: 'eclipse', name: 'Eclipse Ventures', url: 'https://eclipse.capital/companies' },
 	{ slug: 'ecliptic', name: 'Ecliptic Capital', url: 'https://www.ecliptic.capital/portfolio' },
 	{ slug: 'ecp', name: 'ECP Growth', url: 'https://ecpgrowth.com/portfolio/' },
