@@ -1,4 +1,4 @@
-// The 629 tracked funds, in case-insensitive alphabetical order by name — the
+// The 633 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -70,8 +70,12 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'draper', name: 'Draper Associates', url: 'https://www.draper.vc/portfolio' },
 	{ slug: 'e14', name: 'E14', url: 'https://www.e14.vc/companies' },
 	{ slug: 'earlybird', name: 'Earlybird', url: 'https://earlybird.com/companies' },
-	{ slug: 'eclipse', name: 'Eclipse Ventures', url: 'https://eclipse.capital/portfolio/' },
+	{ slug: 'eclipse', name: 'Eclipse Ventures', url: 'https://eclipse.capital/companies' },
+	{ slug: 'ecliptic', name: 'Ecliptic Capital', url: 'https://www.ecliptic.capital/portfolio' },
+	{ slug: 'ecp', name: 'ECP Growth', url: 'https://ecpgrowth.com/portfolio/' },
+	{ slug: 'edovate', name: 'Edovate Capital', url: 'https://edovatecapital.com/portfolio/' },
 	{ slug: 'educapital', name: 'Educapital', url: 'https://www.educapitalvc.com/portfolio' },
+	{ slug: 'eif', name: 'Education Impact Fund', url: 'https://www.educationimpactfund.org/portfolio/' },
 	{ slug: 'elaia', name: 'Elaia', url: 'https://elaia.com/portfolio' },
 	{ slug: 'electric', name: 'Electric Capital', url: 'https://www.electriccapital.com/investments/' },
 	{ slug: 'elementum', name: 'Elementum Ventures', url: 'https://elementum.vc/companies' },

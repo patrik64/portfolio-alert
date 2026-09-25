@@ -52,7 +52,11 @@ import { scrape as draper } from './draper';
 import { scrape as e14 } from './e14';
 import { scrape as earlybird } from './earlybird';
 import { scrape as eclipse } from './eclipse';
+import { scrape as ecliptic } from './ecliptic';
+import { scrape as ecp } from './ecp';
+import { scrape as edovate } from './edovate';
 import { scrape as educapital } from './educapital';
+import { scrape as eif } from './eif';
 import { scrape as elaia } from './elaia';
 import { scrape as electric } from './electric';
 import { scrape as elementum } from './elementum';
@@ -682,7 +686,11 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	e14,
 	earlybird,
 	eclipse,
+	ecliptic,
+	ecp,
+	edovate,
 	educapital,
+	eif,
 	elaia,
 	electric,
 	elementum,
