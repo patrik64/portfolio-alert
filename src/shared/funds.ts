@@ -1,4 +1,4 @@
-// The 589 tracked funds, in case-insensitive alphabetical order by name — the
+// The 601 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -79,7 +79,19 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'f2', name: 'F2 Venture Capital', url: 'https://www.f2vc.com/companies' },
 	{ slug: 'felicis', name: 'Felicis', url: 'https://www.felicis.com/companies' },
 	{ slug: 'filrouge', name: 'Fil Rouge Capital', url: 'https://www.filrougecapital.com/portfolio' },
+	{ slug: 'fincapital', name: 'Fin Capital', url: 'https://fin.capital/portfolio' },
+	{ slug: 'fintechcollective', name: 'FinTech Collective', url: 'https://fintech.io/portfolio' },
+	{ slug: 'fintechv', name: 'Fintech Ventures Fund', url: 'https://www.fintechv.com/portfolio' },
+	{ slug: 'firebrand', name: 'Firebrand', url: 'https://www.firebrandvc.com/portfolio' },
+	{ slug: 'firstcheque', name: 'First Cheque', url: 'https://www.firstcheque.vc/portfolio' },
+	{ slug: 'firstcircle', name: 'First Circle Capital', url: 'https://www.firstcircle.capital/portfolio' },
+	{ slug: 'firstin', name: 'First In', url: 'https://wearefirstin.com/#portfolio' },
 	{ slug: 'firstround', name: 'First Round', url: 'https://www.firstround.com/companies' },
+	{ slug: 'firststar', name: 'First Star Ventures', url: 'https://firststar.vc/companies' },
+	{ slug: 'firstcheck', name: 'FirstCheck Africa', url: 'https://www.firstcheck.africa/portfolio' },
+	{ slug: 'firstmark', name: 'FirstMark', url: 'https://www.firstmark.com/portfolio' },
+	{ slug: 'firstminute', name: 'firstminute capital', url: 'https://www.firstminute.capital/portfolio' },
+	{ slug: 'fitch', name: 'Fitch Ventures', url: 'https://www.fitchventures.com/portfolio' },
 	{ slug: 'fjlabs', name: 'FJ Labs', url: 'https://www.fjlabs.com/portfolio' },
 	{ slug: 'flagship', name: 'Flagship Pioneering', url: 'https://www.flagshippioneering.com/companies' },
 	{ slug: 'flare', name: 'Flare Capital Partners', url: 'https://www.flarecapital.com/companies/' },

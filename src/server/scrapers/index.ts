@@ -60,7 +60,19 @@ import { scrape as fprime } from './fprime';
 import { scrape as f2 } from './f2';
 import { scrape as felicis } from './felicis';
 import { scrape as filrouge } from './filrouge';
+import { scrape as fincapital } from './fincapital';
+import { scrape as fintechcollective } from './fintechcollective';
+import { scrape as fintechv } from './fintechv';
+import { scrape as firebrand } from './firebrand';
+import { scrape as firstcheque } from './firstcheque';
+import { scrape as firstcircle } from './firstcircle';
+import { scrape as firstin } from './firstin';
 import { scrape as firstround } from './firstround';
+import { scrape as firststar } from './firststar';
+import { scrape as firstcheck } from './firstcheck';
+import { scrape as firstmark } from './firstmark';
+import { scrape as firstminute } from './firstminute';
+import { scrape as fitch } from './fitch';
 import { scrape as fjlabs } from './fjlabs';
 import { scrape as flagship } from './flagship';
 import { scrape as focal } from './focal';
@@ -650,7 +662,19 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	f2,
 	felicis,
 	filrouge,
+	fincapital,
+	fintechcollective,
+	fintechv,
+	firebrand,
+	firstcheque,
+	firstcircle,
+	firstin,
 	firstround,
+	firststar,
+	firstcheck,
+	firstmark,
+	firstminute,
+	fitch,
 	fjlabs,
 	flagship,
 	focal,
