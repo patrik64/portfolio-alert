@@ -52,10 +52,23 @@ import { scrape as draper } from './draper';
 import { scrape as e14 } from './e14';
 import { scrape as earlybird } from './earlybird';
 import { scrape as eclipse } from './eclipse';
+import { scrape as educapital } from './educapital';
+import { scrape as elaia } from './elaia';
+import { scrape as electric } from './electric';
+import { scrape as elementum } from './elementum';
+import { scrape as elevate } from './elevate';
+import { scrape as elizabethstreet } from './elizabethstreet';
+import { scrape as emerging } from './emerging';
+import { scrape as eip } from './eip';
+import { scrape as engine } from './engine';
+import { scrape as engineeringcapital } from './engineeringcapital';
+import { scrape as eniac } from './eniac';
 import { scrape as entree } from './entree';
 import { scrape as ef } from './ef';
+import { scrape as eoventures } from './eoventures';
 import { scrape as episode1 } from './episode1';
 import { scrape as eqt } from './eqt';
+import { scrape as equal } from './equal';
 import { scrape as era } from './era';
 import { scrape as essence } from './essence';
 import { scrape as exceptional } from './exceptional';
@@ -106,6 +119,7 @@ import { scrape as flourish } from './flourish';
 import { scrape as flucas } from './flucas';
 import { scrape as fly } from './fly';
 import { scrape as flybridge } from './flybridge';
+import { scrape as foundry } from './foundry';
 import { scrape as fouracres } from './fouracres';
 import { scrape as fpv } from './fpv';
 import { scrape as framework } from './framework';
@@ -668,10 +682,23 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	e14,
 	earlybird,
 	eclipse,
+	educapital,
+	elaia,
+	electric,
+	elementum,
+	elevate,
+	elizabethstreet,
+	emerging,
+	eip,
+	engine,
+	engineeringcapital,
+	eniac,
 	entree,
 	ef,
+	eoventures,
 	episode1,
 	eqt,
+	equal,
 	era,
 	essence,
 	exceptional,
@@ -722,6 +749,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	flucas,
 	fly,
 	flybridge,
+	foundry,
 	fouracres,
 	fpv,
 	framework,

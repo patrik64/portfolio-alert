@@ -1,4 +1,4 @@
-// The 615 tracked funds, in case-insensitive alphabetical order by name — the
+// The 629 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -71,10 +71,23 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'e14', name: 'E14', url: 'https://www.e14.vc/companies' },
 	{ slug: 'earlybird', name: 'Earlybird', url: 'https://earlybird.com/companies' },
 	{ slug: 'eclipse', name: 'Eclipse Ventures', url: 'https://eclipse.capital/portfolio/' },
+	{ slug: 'educapital', name: 'Educapital', url: 'https://www.educapitalvc.com/portfolio' },
+	{ slug: 'elaia', name: 'Elaia', url: 'https://elaia.com/portfolio' },
+	{ slug: 'electric', name: 'Electric Capital', url: 'https://www.electriccapital.com/investments/' },
+	{ slug: 'elementum', name: 'Elementum Ventures', url: 'https://elementum.vc/companies' },
+	{ slug: 'elevate', name: 'Elevate Ventures', url: 'https://elevateventures.com/portfolio/' },
+	{ slug: 'elizabethstreet', name: 'Elizabeth Street Ventures', url: 'https://elizabethstreet.vc/#portfolio-anchor' },
+	{ slug: 'emerging', name: 'Emerging Ventures', url: 'https://emerging.vc/portfolio' },
+	{ slug: 'eip', name: 'Energy Impact Partners', url: 'https://www.energyimpactpartners.com/_portfolio/' },
+	{ slug: 'engine', name: 'Engine Ventures', url: 'https://engineventures.com/companies' },
+	{ slug: 'engineeringcapital', name: 'Engineering Capital', url: 'https://www.engineeringcapital.com/#portfolio' },
+	{ slug: 'eniac', name: 'Eniac Ventures', url: 'https://www.eniac.vc/companies' },
 	{ slug: 'entree', name: 'Entrée Capital', url: 'https://entreecap.com/companies' },
 	{ slug: 'ef', name: 'Entrepreneurs First', url: 'https://www.joinef.com/portfolio/' },
+	{ slug: 'eoventures', name: 'EO Ventures', url: 'https://eoventures.com/portfolio-all' },
 	{ slug: 'episode1', name: 'Episode 1', url: 'https://www.episode1.com/portfolio' },
 	{ slug: 'eqt', name: 'EQT Group', url: 'https://eqtgroup.com/about/current-portfolio' },
+	{ slug: 'equal', name: 'Equal Ventures', url: 'https://www.equal.vc/portfolio' },
 	{ slug: 'era', name: 'Era Ventures', url: 'https://eraventures.com/companies/' },
 	{ slug: 'essence', name: 'Essence Venture Capital', url: 'https://essencevc.fund/' },
 	{ slug: 'exceptional', name: 'Exceptional Capital', url: 'https://www.exceptionalcap.com/portfolio' },
@@ -125,6 +138,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'foundercollective', name: 'Founder Collective', url: 'https://foundercollective.com/portfolio/' },
 	{ slug: 'founderfuel', name: 'FounderFuel', url: 'https://founderfuel.com/companies/' },
 	{ slug: 'foundersfund', name: 'Founders Fund', url: 'https://foundersfund.com/portfolio/' },
+	{ slug: 'foundry', name: 'Foundry', url: 'https://foundry.vc/portfolio/' },
 	{ slug: 'fouracres', name: 'Four Acres Capital', url: 'https://www.fouracres.vc/portfolio' },
 	{ slug: 'fpv', name: 'FPV Ventures', url: 'https://fpvventures.com/all-companies/' },
 	{ slug: 'framework', name: 'Framework Ventures', url: 'https://framework.ventures/portfolio' },
