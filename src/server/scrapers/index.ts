@@ -47,7 +47,12 @@ import { scrape as craft } from './craft';
 import { scrape as credo } from './credo';
 import { scrape as creandum } from './creandum';
 import { scrape as cyberstarts } from './cyberstarts';
+import { scrape as dayone } from './dayone';
 import { scrape as dcvc } from './dcvc';
+import { scrape as debut } from './debut';
+import { scrape as decibel } from './decibel';
+import { scrape as deciens } from './deciens';
+import { scrape as decisivepoint } from './decisivepoint';
 import { scrape as define } from './define';
 import { scrape as defy } from './defy';
 import { scrape as designerfund } from './designerfund';
@@ -699,7 +704,12 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	credo,
 	creandum,
 	cyberstarts,
+	dayone,
 	dcvc,
+	debut,
+	decibel,
+	deciens,
+	decisivepoint,
 	define,
 	defy,
 	designerfund,

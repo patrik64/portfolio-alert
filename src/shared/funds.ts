@@ -1,4 +1,4 @@
-// The 651 tracked funds, in case-insensitive alphabetical order by name — the
+// The 656 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -66,7 +66,12 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'creandum', name: 'Creandum', url: 'https://creandum.com/commitments/' },
 	{ slug: 'credo', name: 'Credo', url: 'https://www.credoventures.com/portfolio' },
 	{ slug: 'cyberstarts', name: 'Cyberstarts', url: 'https://www.cyberstarts.com/portfolio' },
+	{ slug: 'dayone', name: 'Day One Ventures', url: 'https://www.dayoneventures.com/#portfolio' },
 	{ slug: 'dcvc', name: 'DCVC', url: 'https://www.dcvc.com/companies' },
+	{ slug: 'debut', name: 'Debut Capital', url: 'https://debutcapital.com/portfolio' },
+	{ slug: 'decibel', name: 'Decibel', url: 'https://www.decibel.vc/companies' },
+	{ slug: 'deciens', name: 'Deciens Capital', url: 'https://deciens.com/companies' },
+	{ slug: 'decisivepoint', name: 'Decisive Point', url: 'https://www.decisivepoint.com/portfolio' },
 	{ slug: 'define', name: 'Define Ventures', url: 'https://www.definevc.com/partners' },
 	{ slug: 'defy', name: 'Defy', url: 'https://defy.vc/companies/' },
 	{ slug: 'designerfund', name: 'Designer Fund', url: 'https://designerfund.com/companies' },
