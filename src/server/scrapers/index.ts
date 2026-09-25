@@ -48,7 +48,21 @@ import { scrape as credo } from './credo';
 import { scrape as creandum } from './creandum';
 import { scrape as cyberstarts } from './cyberstarts';
 import { scrape as dcvc } from './dcvc';
+import { scrape as define } from './define';
+import { scrape as defy } from './defy';
+import { scrape as designerfund } from './designerfund';
+import { scrape as dfs } from './dfs';
+import { scrape as differential } from './differential';
+import { scrape as digitalis } from './digitalis';
+import { scrape as digitx } from './digitx';
+import { scrape as distributed } from './distributed';
+import { scrape as divergent } from './divergent';
+import { scrape as dragonfly } from './dragonfly';
 import { scrape as draper } from './draper';
+import { scrape as dreamers } from './dreamers';
+import { scrape as dreamit } from './dreamit';
+import { scrape as drive } from './drive';
+import { scrape as dynamo } from './dynamo';
 import { scrape as e14 } from './e14';
 import { scrape as e2mc } from './e2mc';
 import { scrape as earlylight } from './earlylight';
@@ -686,7 +700,21 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	creandum,
 	cyberstarts,
 	dcvc,
+	define,
+	defy,
+	designerfund,
+	dfs,
+	differential,
+	digitalis,
+	digitx,
+	distributed,
+	divergent,
+	dragonfly,
 	draper,
+	dreamers,
+	dreamit,
+	drive,
+	dynamo,
 	e14,
 	e2mc,
 	earlylight,

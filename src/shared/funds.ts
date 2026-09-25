@@ -1,4 +1,4 @@
-// The 637 tracked funds, in case-insensitive alphabetical order by name — the
+// The 651 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -67,7 +67,21 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'credo', name: 'Credo', url: 'https://www.credoventures.com/portfolio' },
 	{ slug: 'cyberstarts', name: 'Cyberstarts', url: 'https://www.cyberstarts.com/portfolio' },
 	{ slug: 'dcvc', name: 'DCVC', url: 'https://www.dcvc.com/companies' },
+	{ slug: 'define', name: 'Define Ventures', url: 'https://www.definevc.com/partners' },
+	{ slug: 'defy', name: 'Defy', url: 'https://defy.vc/companies/' },
+	{ slug: 'designerfund', name: 'Designer Fund', url: 'https://designerfund.com/companies' },
+	{ slug: 'dfs', name: 'DFS', url: 'https://www.dfs.vc/portfolio.html' },
+	{ slug: 'differential', name: 'Differential Ventures', url: 'https://www.differential.vc/portfolio' },
+	{ slug: 'digitalis', name: 'Digitalis Ventures', url: 'https://www.digitalisventures.com/human-health' },
+	{ slug: 'digitx', name: 'DigitX Partners', url: 'https://www.digitxpartners.com/portfolio' },
+	{ slug: 'distributed', name: 'Distributed Ventures', url: 'https://www.distributedvc.com/portfolio' },
+	{ slug: 'divergent', name: 'Divergent Capital', url: 'https://www.divergenthq.com/#portfolio' },
+	{ slug: 'dragonfly', name: 'Dragonfly', url: 'https://dragonfly.com/#portfolio' },
 	{ slug: 'draper', name: 'Draper Associates', url: 'https://www.draper.vc/portfolio' },
+	{ slug: 'dreamers', name: 'Dreamers VC', url: 'https://www.dreamers.vc/portolio' },
+	{ slug: 'dreamit', name: 'Dreamit Ventures', url: 'https://www.dreamit.com/portfolio-securetech' },
+	{ slug: 'drive', name: 'Drive Capital', url: 'https://drivecapital.com/portfolio' },
+	{ slug: 'dynamo', name: 'Dynamo Ventures', url: 'https://dynamo.vc/startup-investment-portfolio' },
 	{ slug: 'e14', name: 'E14', url: 'https://www.e14.vc/companies' },
 	{ slug: 'e2mc', name: 'E2MC', url: 'https://e2mc.space/portfolio' },
 	{ slug: 'earlylight', name: 'Early Light Ventures', url: 'https://www.earlylight.vc/portfolio' },
