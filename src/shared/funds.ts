@@ -1,4 +1,4 @@
-// The 601 tracked funds, in case-insensitive alphabetical order by name — the
+// The 609 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -77,7 +77,15 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'eqt', name: 'EQT Group', url: 'https://eqtgroup.com/about/current-portfolio' },
 	{ slug: 'fprime', name: 'F-Prime Capital', url: 'https://www.fprimecapital.com/portfolio/' },
 	{ slug: 'f2', name: 'F2 Venture Capital', url: 'https://www.f2vc.com/companies' },
+	{ slug: 'f7', name: 'f7 Ventures', url: 'https://www.f7ventures.com/portfolio/' },
+	{ slug: 'fcavp', name: 'FCA Venture Partners', url: 'https://www.fcavp.com/portfolio' },
 	{ slug: 'felicis', name: 'Felicis', url: 'https://www.felicis.com/companies' },
+	{ slug: 'femalefounders', name: 'Female Founders Fund', url: 'https://femalefoundersfund.com/portfolio/' },
+	{ slug: 'fernbrook', name: 'Fernbrook', url: 'https://www.fernbrookmgmt.com/investments/' },
+	{ slug: 'ffvc', name: 'ff Venture Capital', url: 'https://ffvc.com/portfolio/' },
+	{ slug: 'fifthwall', name: 'Fifth Wall', url: 'https://www.fifthwall.com/portfolio' },
+	{ slug: 'figure8', name: 'Figure 8', url: 'https://www.figure8.vc/#Portfolio' },
+	{ slug: 'fika', name: 'Fika Ventures', url: 'https://www.fika.vc/portfolio' },
 	{ slug: 'filrouge', name: 'Fil Rouge Capital', url: 'https://www.filrougecapital.com/portfolio' },
 	{ slug: 'fincapital', name: 'Fin Capital', url: 'https://fin.capital/portfolio' },
 	{ slug: 'fintechcollective', name: 'FinTech Collective', url: 'https://fintech.io/portfolio' },

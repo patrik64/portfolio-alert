@@ -58,7 +58,15 @@ import { scrape as episode1 } from './episode1';
 import { scrape as eqt } from './eqt';
 import { scrape as fprime } from './fprime';
 import { scrape as f2 } from './f2';
+import { scrape as f7 } from './f7';
+import { scrape as fcavp } from './fcavp';
 import { scrape as felicis } from './felicis';
+import { scrape as femalefounders } from './femalefounders';
+import { scrape as fernbrook } from './fernbrook';
+import { scrape as ffvc } from './ffvc';
+import { scrape as fifthwall } from './fifthwall';
+import { scrape as figure8 } from './figure8';
+import { scrape as fika } from './fika';
 import { scrape as filrouge } from './filrouge';
 import { scrape as fincapital } from './fincapital';
 import { scrape as fintechcollective } from './fintechcollective';
@@ -660,7 +668,15 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	eqt,
 	fprime,
 	f2,
+	f7,
+	fcavp,
 	felicis,
+	femalefounders,
+	fernbrook,
+	ffvc,
+	fifthwall,
+	figure8,
+	fika,
 	filrouge,
 	fincapital,
 	fintechcollective,
