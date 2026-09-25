@@ -80,16 +80,17 @@ same split into `tags`, the fund's own link and when it first saw the company.
 sighting. The answer also echoes the query as understood, the total and the
 window.
 
-The fintech companies that turned up in the last month, as a list of links:
+The health and healthcare companies that turned up in the last month, as a
+list of links (a whole word matches only itself, so both are named):
 
 ```sh
-curl 'https://portfolio-alert.vercel.app/api/v1/companies?days=30&category=fintech&format=md'
+curl 'https://portfolio-alert.vercel.app/api/v1/companies?days=30&category=health,healthcare&format=md'
 ```
 
-USV's whole portfolio, the companies it is out of left aside:
+Insight Partners' whole portfolio, the companies it is out of left aside:
 
 ```sh
-curl 'https://portfolio-alert.vercel.app/api/v1/companies?scope=all&fund=usv&exited=none'
+curl 'https://portfolio-alert.vercel.app/api/v1/companies?scope=all&fund=insight&exited=none'
 ```
 
 ## Setup
