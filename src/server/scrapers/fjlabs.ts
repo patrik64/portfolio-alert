@@ -4,6 +4,10 @@ const PAGE_URL = 'https://www.fjlabs.com/portfolio';
 const MAX_PAGES = 60;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+// cloudflare in front of the site turned the nightly run away with a 403 on
+// its first night; a refused page is asked for once more, saying plainly who
+// is asking, as for helios and stray dog
+const OWN_UA = 'portfolio-alert/1.0 (+https://portfolio-alert.vercel.app)';
 
 // webflow: the portfolio is a collection a hundred to a page, walked through
 // webflow's own "next" links. every row names the company and carries, as
@@ -44,7 +48,8 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 
 	let url = PAGE_URL;
 	for (let page = 0; page < MAX_PAGES && url; page++) {
-		const resp = await fetch(url, { headers: { 'User-Agent': UA } });
+		let resp = await fetch(url, { headers: { 'User-Agent': UA } });
+		if (resp.status === 403) resp = await fetch(url, { headers: { 'User-Agent': OWN_UA } });
 		if (!resp.ok) {
 			throw new Error(`Failed to fetch ${url}: ${resp.status}`);
 		}

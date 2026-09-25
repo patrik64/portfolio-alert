@@ -10,6 +10,22 @@ const UA =
 // page writes a company's name.
 //
 // a card that belongs to a company the fund has exited says so in its class.
+//
+// the host has dropped the nightly run's connection outright ("fetch failed")
+// on some nights, so a request that fails that way is tried once more after a
+// pause, with a time limit so that a hang is not waited on forever.
+const RETRY_DELAY_MS = 10_000;
+const TIMEOUT_MS = 30_000;
+
+async function fetchPage(): Promise<Response> {
+	const get = () => fetch(PAGE_URL, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(TIMEOUT_MS) });
+	try {
+		return await get();
+	} catch {
+		await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
+		return get();
+	}
+}
 
 const CARD = /(?=<div class="col-xs-10 col-lg-6 col-xl-5 portfolio-card)/;
 const CLASS = /^<div class="([^"]*)"/;
@@ -29,7 +45,7 @@ const unescape = (s: string) =>
 const clean = (s: string) => unescape(s).replace(/\s+/g, ' ').trim();
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	const resp = await fetchPage();
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}
