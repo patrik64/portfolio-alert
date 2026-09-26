@@ -1,4 +1,4 @@
-// The 656 tracked funds, in case-insensitive alphabetical order by name — the
+// The 661 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -65,6 +65,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'craft', name: 'Craft Ventures', url: 'https://www.craftventures.com/portfolio' },
 	{ slug: 'creandum', name: 'Creandum', url: 'https://creandum.com/commitments/' },
 	{ slug: 'credo', name: 'Credo', url: 'https://www.credoventures.com/portfolio' },
+	{ slug: 'crush', name: 'Crush Ventures', url: 'https://crush.ventures/#companies-anchor' },
+	{ slug: 'crv', name: 'CRV', url: 'https://www.crv.com/companies' },
+	{ slug: 'cti', name: 'CTI Life Sciences Fund', url: 'https://www.ctisciences.com/portfolio' },
+	{ slug: 'cultivian', name: 'Cultivian Sandbox Ventures', url: 'https://cultiviansbx.com/portfolio' },
+	{ slug: 'cybernetix', name: 'Cybernetix Ventures', url: 'https://cybernetix.vc/#portfolio' },
 	{ slug: 'cyberstarts', name: 'Cyberstarts', url: 'https://www.cyberstarts.com/portfolio' },
 	{ slug: 'dayone', name: 'Day One Ventures', url: 'https://www.dayoneventures.com/#portfolio' },
 	{ slug: 'dcvc', name: 'DCVC', url: 'https://www.dcvc.com/companies' },

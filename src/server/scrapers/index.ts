@@ -46,6 +46,11 @@ import { scrape as boxgroup } from './boxgroup';
 import { scrape as craft } from './craft';
 import { scrape as credo } from './credo';
 import { scrape as creandum } from './creandum';
+import { scrape as crush } from './crush';
+import { scrape as crv } from './crv';
+import { scrape as cti } from './cti';
+import { scrape as cultivian } from './cultivian';
+import { scrape as cybernetix } from './cybernetix';
 import { scrape as cyberstarts } from './cyberstarts';
 import { scrape as dayone } from './dayone';
 import { scrape as dcvc } from './dcvc';
@@ -703,6 +708,11 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	craft,
 	credo,
 	creandum,
+	crush,
+	crv,
+	cti,
+	cultivian,
+	cybernetix,
 	cyberstarts,
 	dayone,
 	dcvc,
