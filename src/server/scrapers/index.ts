@@ -414,6 +414,7 @@ import { scrape as pantera } from './pantera';
 import { scrape as pareto } from './pareto';
 import { scrape as parkwalk } from './parkwalk';
 import { scrape as partech } from './partech';
+import { scrape as passion } from './passion';
 import { scrape as pathbreaker } from './pathbreaker';
 import { scrape as patron } from './patron';
 import { scrape as peakbridge } from './peakbridge';
@@ -1080,6 +1081,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	pareto,
 	parkwalk,
 	partech,
+	passion,
 	pathbreaker,
 	patron,
 	peakbridge,

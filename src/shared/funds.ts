@@ -1,4 +1,4 @@
-// The 665 tracked funds, in case-insensitive alphabetical order by name — the
+// The 666 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -441,6 +441,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'pareto', name: 'Pareto Ventures', url: 'https://www.pareto.vc/portfolio' },
 	{ slug: 'parkwalk', name: 'Parkwalk', url: 'https://parkwalk.vc/portfolio/' },
 	{ slug: 'partech', name: 'Partech', url: 'https://partechpartners.com/companies' },
+	{ slug: 'passion', name: 'Passion Capital', url: 'https://passioncapital.com/fund-portfolio/' },
 	{ slug: 'pathbreaker', name: 'Pathbreaker Ventures', url: 'https://www.pathbreakervc.com/companies' },
 	{ slug: 'patron', name: 'Patron', url: 'https://patron.fund/portfolio' },
 	{ slug: 'peakbridge', name: 'PeakBridge', url: 'https://peakbridge.vc/portfolio/' },
