@@ -46,6 +46,9 @@ import { scrape as boxgroup } from './boxgroup';
 import { scrape as craft } from './craft';
 import { scrape as credo } from './credo';
 import { scrape as creandum } from './creandum';
+import { scrape as crew } from './crew';
+import { scrape as crosscut } from './crosscut';
+import { scrape as crosslink } from './crosslink';
 import { scrape as crush } from './crush';
 import { scrape as crv } from './crv';
 import { scrape as cti } from './cti';
@@ -67,6 +70,7 @@ import { scrape as digitalis } from './digitalis';
 import { scrape as digitx } from './digitx';
 import { scrape as distributed } from './distributed';
 import { scrape as divergent } from './divergent';
+import { scrape as dncapital } from './dncapital';
 import { scrape as dragonfly } from './dragonfly';
 import { scrape as draper } from './draper';
 import { scrape as dreamers } from './dreamers';
@@ -708,6 +712,9 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	craft,
 	credo,
 	creandum,
+	crew,
+	crosscut,
+	crosslink,
 	crush,
 	crv,
 	cti,
@@ -729,6 +736,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	digitx,
 	distributed,
 	divergent,
+	dncapital,
 	dragonfly,
 	draper,
 	dreamers,

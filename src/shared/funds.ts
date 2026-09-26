@@ -1,4 +1,4 @@
-// The 661 tracked funds, in case-insensitive alphabetical order by name — the
+// The 665 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -65,6 +65,9 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'craft', name: 'Craft Ventures', url: 'https://www.craftventures.com/portfolio' },
 	{ slug: 'creandum', name: 'Creandum', url: 'https://creandum.com/commitments/' },
 	{ slug: 'credo', name: 'Credo', url: 'https://www.credoventures.com/portfolio' },
+	{ slug: 'crew', name: 'Crew Capital', url: 'https://crew.vc/companies/' },
+	{ slug: 'crosscut', name: 'Crosscut Ventures', url: 'https://crosscut.vc/companies/' },
+	{ slug: 'crosslink', name: 'Crosslink Capital', url: 'https://www.crosslinkcapital.com/portfolio/' },
 	{ slug: 'crush', name: 'Crush Ventures', url: 'https://crush.ventures/#companies-anchor' },
 	{ slug: 'crv', name: 'CRV', url: 'https://www.crv.com/companies' },
 	{ slug: 'cti', name: 'CTI Life Sciences Fund', url: 'https://www.ctisciences.com/portfolio' },
@@ -86,6 +89,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'digitx', name: 'DigitX Partners', url: 'https://www.digitxpartners.com/portfolio' },
 	{ slug: 'distributed', name: 'Distributed Ventures', url: 'https://www.distributedvc.com/portfolio' },
 	{ slug: 'divergent', name: 'Divergent Capital', url: 'https://www.divergenthq.com/#portfolio' },
+	{ slug: 'dncapital', name: 'DN Capital', url: 'https://www.dncapital.com/portfolio_fulllist.html' },
 	{ slug: 'dragonfly', name: 'Dragonfly', url: 'https://dragonfly.com/#portfolio' },
 	{ slug: 'draper', name: 'Draper Associates', url: 'https://www.draper.vc/portfolio' },
 	{ slug: 'dreamers', name: 'Dreamers VC', url: 'https://www.dreamers.vc/portolio' },
