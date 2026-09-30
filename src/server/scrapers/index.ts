@@ -38,15 +38,27 @@ import { scrape as bip } from './bip';
 import { scrape as bluventures } from './bluventures';
 import { scrape as breakthrough } from './breakthrough';
 import { scrape as broocknell } from './broocknell';
+import { scrape as buildingventures } from './buildingventures';
+import { scrape as byld } from './byld';
 import { scrape as calmstorm } from './calmstorm';
 import { scrape as canapi } from './canapi';
 import { scrape as cherry } from './cherry';
 import { scrape as cisco } from './cisco';
+import { scrape as commonweal } from './commonweal';
+import { scrape as companyventures } from './companyventures';
+import { scrape as compound } from './compound';
 import { scrape as congruent } from './congruent';
 import { scrape as boxgroup } from './boxgroup';
+import { scrape as contour } from './contour';
+import { scrape as coral } from './coral';
+import { scrape as corevc } from './corevc';
+import { scrape as correlation } from './correlation';
+import { scrape as cortical } from './cortical';
+import { scrape as costanoa } from './costanoa';
 import { scrape as craft } from './craft';
 import { scrape as cdl } from './cdl';
 import { scrape as credo } from './credo';
+import { scrape as crane } from './crane';
 import { scrape as creandum } from './creandum';
 import { scrape as crew } from './crew';
 import { scrape as crosscut } from './crosscut';
@@ -708,15 +720,27 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	bluventures,
 	breakthrough,
 	broocknell,
+	buildingventures,
+	byld,
 	calmstorm,
 	canapi,
 	cherry,
 	cisco,
+	commonweal,
+	companyventures,
+	compound,
 	congruent,
 	boxgroup,
+	contour,
+	coral,
+	corevc,
+	correlation,
+	cortical,
+	costanoa,
 	craft,
 	cdl,
 	credo,
+	crane,
 	creandum,
 	crew,
 	crosscut,

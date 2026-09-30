@@ -1,4 +1,4 @@
-// The 669 tracked funds, in case-insensitive alphabetical order by name — the
+// The 681 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -58,12 +58,24 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'boxgroup', name: 'BoxGroup', url: 'https://www.boxgroup.com/portfolio' },
 	{ slug: 'breakthrough', name: 'Breakthrough Energy', url: 'https://www.breakthroughenergy.org/portfolio/index.html' },
 	{ slug: 'broocknell', name: 'Broocknell Ventures', url: 'https://broocknell.com/all-projects/' },
+	{ slug: 'buildingventures', name: 'Building Ventures', url: 'https://buildingventures.com/companies/' },
+	{ slug: 'byld', name: 'Byld', url: 'https://www.byld.vc/portfolio' },
 	{ slug: 'calmstorm', name: 'Calm/Storm', url: 'https://www.calmstorm.vc/portfolio' },
 	{ slug: 'canapi', name: 'Canapi', url: 'https://www.canapi.com/portfolio' },
 	{ slug: 'cherry', name: 'Cherry Ventures', url: 'https://www.cherry.vc/founders' },
 	{ slug: 'cisco', name: 'Cisco Investments', url: 'https://www.ciscoinvestments.com/portfolio' },
+	{ slug: 'commonweal', name: 'Commonweal Ventures', url: 'https://www.commonwealventures.com/portfolio' },
+	{ slug: 'companyventures', name: 'Company Ventures', url: 'https://www.companyventures.com/portfolio' },
+	{ slug: 'compound', name: 'Compound', url: 'https://www.compound.vc/portfolio' },
 	{ slug: 'congruent', name: 'Congruent Ventures', url: 'https://www.congruentvc.com/portfolio' },
+	{ slug: 'contour', name: 'Contour Venture Partners', url: 'https://www.contourventures.com/portfolio/' },
+	{ slug: 'coral', name: 'Coral Capital', url: 'https://www.coralcap.co/portfolio/?lang=en' },
+	{ slug: 'corevc', name: 'Core VC', url: 'https://www.corevc.com/portfolio' },
+	{ slug: 'correlation', name: 'Correlation Ventures', url: 'https://correlationvc.com/companies/' },
+	{ slug: 'cortical', name: 'Cortical Ventures', url: 'https://cortical.vc/portfolio/' },
+	{ slug: 'costanoa', name: 'Costanoa Ventures', url: 'https://www.costanoa.vc/portfolio' },
 	{ slug: 'craft', name: 'Craft Ventures', url: 'https://www.craftventures.com/portfolio' },
+	{ slug: 'crane', name: 'Crane Venture Partners', url: 'https://crane.vc/portfolio' },
 	{ slug: 'creandum', name: 'Creandum', url: 'https://creandum.com/commitments/' },
 	{ slug: 'cdl', name: 'Creative Destruction Lab', url: 'https://creativedestructionlab.com/companies/' },
 	{ slug: 'credo', name: 'Credo', url: 'https://www.credoventures.com/portfolio' },
