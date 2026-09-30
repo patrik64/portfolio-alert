@@ -42,8 +42,20 @@ import { scrape as buildingventures } from './buildingventures';
 import { scrape as byld } from './byld';
 import { scrape as calmstorm } from './calmstorm';
 import { scrape as canapi } from './canapi';
+import { scrape as cathexis } from './cathexis';
+import { scrape as cdp } from './cdp';
+import { scrape as celesta } from './celesta';
+import { scrape as centrestreet } from './centrestreet';
+import { scrape as cervin } from './cervin';
+import { scrape as championhill } from './championhill';
+import { scrape as chapterone } from './chapterone';
+import { scrape as charge } from './charge';
 import { scrape as cherry } from './cherry';
 import { scrape as cisco } from './cisco';
+import { scrape as citylight } from './citylight';
+import { scrape as civilization } from './civilization';
+import { scrape as cleanenergy } from './cleanenergy';
+import { scrape as cleo } from './cleo';
 import { scrape as clevelandavenue } from './clevelandavenue';
 import { scrape as climactic } from './climactic';
 import { scrape as climatecapital } from './climatecapital';
@@ -736,8 +748,20 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	byld,
 	calmstorm,
 	canapi,
+	cathexis,
+	cdp,
+	celesta,
+	centrestreet,
+	cervin,
+	championhill,
+	chapterone,
+	charge,
 	cherry,
 	cisco,
+	citylight,
+	civilization,
+	cleanenergy,
+	cleo,
 	clevelandavenue,
 	climactic,
 	climatecapital,

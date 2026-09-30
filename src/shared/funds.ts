@@ -1,4 +1,4 @@
-// The 693 tracked funds, in case-insensitive alphabetical order by name — the
+// The 705 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -62,8 +62,20 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'byld', name: 'Byld', url: 'https://www.byld.vc/portfolio' },
 	{ slug: 'calmstorm', name: 'Calm/Storm', url: 'https://www.calmstorm.vc/portfolio' },
 	{ slug: 'canapi', name: 'Canapi', url: 'https://www.canapi.com/portfolio' },
+	{ slug: 'cathexis', name: 'Cathexis Ventures', url: 'https://cathexis.ventures/portfolio' },
+	{ slug: 'cdp', name: 'CDP Venture Capital', url: 'https://www.cdpventurecapital.it/en/portfolio.page' },
+	{ slug: 'celesta', name: 'Celesta Capital', url: 'https://www.celesta.vc/portfolio' },
+	{ slug: 'centrestreet', name: 'Centre Street Partners', url: 'https://centrestreet.partners/portfolio' },
+	{ slug: 'cervin', name: 'Cervin Ventures', url: 'https://www.cervinventures.com/portfolio' },
+	{ slug: 'championhill', name: 'Champion Hill Ventures', url: 'https://www.championhillventures.com/investments' },
+	{ slug: 'chapterone', name: 'Chapter One', url: 'https://chapterone.com/investments' },
+	{ slug: 'charge', name: 'Charge Ventures', url: 'https://charge.vc/portfolio' },
 	{ slug: 'cherry', name: 'Cherry Ventures', url: 'https://www.cherry.vc/founders' },
 	{ slug: 'cisco', name: 'Cisco Investments', url: 'https://www.ciscoinvestments.com/portfolio' },
+	{ slug: 'citylight', name: 'CityLight', url: 'https://citylight.vc/portfolio/' },
+	{ slug: 'civilization', name: 'Civilization Ventures', url: 'https://www.civilizationventures.com/portfolio' },
+	{ slug: 'cleanenergy', name: 'Clean Energy Ventures', url: 'https://cleanenergyventures.com/portfolio' },
+	{ slug: 'cleo', name: 'Cleo Capital', url: 'https://www.cleocap.com/portfolio' },
 	{ slug: 'clevelandavenue', name: 'Cleveland Avenue', url: 'https://www.clevelandavenue.com/portfolio' },
 	{ slug: 'climactic', name: 'Climactic', url: 'https://www.climactic.vc/portfolio' },
 	{ slug: 'climatecapital', name: 'Climate Capital', url: 'https://www.climatecapital.co/portfolio' },
