@@ -32,9 +32,19 @@ import { scrape as balderton } from './balderton';
 import { scrape as bcapital } from './bcapital';
 import { scrape as b2venture } from './b2venture';
 import { scrape as base10 } from './base10';
+import { scrape as batshitcrazy } from './batshitcrazy';
 import { scrape as battery } from './battery';
+import { scrape as bbgventures } from './bbgventures';
+import { scrape as beco } from './beco';
+import { scrape as beepartners } from './beepartners';
+import { scrape as behindgenius } from './behindgenius';
 import { scrape as behold } from './behold';
 import { scrape as bessemer } from './bessemer';
+import { scrape as betaboom } from './betaboom';
+import { scrape as bettercapital } from './bettercapital';
+import { scrape as btv } from './btv';
+import { scrape as betterventures } from './betterventures';
+import { scrape as beyondearth } from './beyondearth';
 import { scrape as bigidea } from './bigidea';
 import { scrape as bigfoot } from './bigfoot';
 import { scrape as bip } from './bip';
@@ -155,6 +165,7 @@ import { scrape as e14 } from './e14';
 import { scrape as e2mc } from './e2mc';
 import { scrape as earlylight } from './earlylight';
 import { scrape as earlybird } from './earlybird';
+import { scrape as earthandbeyond } from './earthandbeyond';
 import { scrape as eastlink } from './eastlink';
 import { scrape as echovc } from './echovc';
 import { scrape as eclipse } from './eclipse';
@@ -774,9 +785,19 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	bcapital,
 	b2venture,
 	base10,
+	batshitcrazy,
 	battery,
+	bbgventures,
+	beco,
+	beepartners,
+	behindgenius,
 	behold,
 	bessemer,
+	betaboom,
+	bettercapital,
+	btv,
+	betterventures,
+	beyondearth,
 	bigidea,
 	bigfoot,
 	bip,
@@ -897,6 +918,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	e2mc,
 	earlylight,
 	earlybird,
+	earthandbeyond,
 	eastlink,
 	echovc,
 	eclipse,

@@ -1,4 +1,4 @@
-// The 741 tracked funds, in case-insensitive alphabetical order by name — the
+// The 752 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -51,9 +51,19 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'baincapital', name: 'Bain Capital Ventures', url: 'https://baincapitalventures.com/portfolio/' },
 	{ slug: 'balderton', name: 'Balderton', url: 'https://www.balderton.com/companies/' },
 	{ slug: 'base10', name: 'Base10', url: 'https://base10.vc/' },
+	{ slug: 'batshitcrazy', name: 'Batshit Crazy Ventures', url: 'https://www.batshitcrazy.is/portfolio' },
 	{ slug: 'battery', name: 'Battery Ventures', url: 'https://www.battery.com/company/' },
+	{ slug: 'bbgventures', name: 'BBG Ventures', url: 'https://www.bbgventures.com/companies' },
+	{ slug: 'beco', name: 'BECO Capital', url: 'https://www.becocapital.com/portfolio/' },
+	{ slug: 'beepartners', name: 'Bee Partners', url: 'https://beepartners.vc/portfolio' },
+	{ slug: 'behindgenius', name: 'Behind Genius Ventures', url: 'https://www.behindgeniusventures.com/portfolio' },
 	{ slug: 'behold', name: 'Behold Ventures', url: 'https://behold.vc/portfolio' },
 	{ slug: 'bessemer', name: 'Bessemer Venture Partners', url: 'https://www.bvp.com/companies' },
+	{ slug: 'betaboom', name: 'Beta Boom', url: 'https://www.betaboom.com/portfolio' },
+	{ slug: 'bettercapital', name: 'Better Capital', url: 'https://www.bettercapital.vc/portfolio/' },
+	{ slug: 'btv', name: 'Better Tomorrow Ventures', url: 'https://www.btv.vc/partnerships' },
+	{ slug: 'betterventures', name: 'better ventures', url: 'https://www.betterventures.io/portfolio' },
+	{ slug: 'beyondearth', name: 'Beyond Earth Ventures', url: 'https://beyondearth.vc/#rec1034299556' },
 	{ slug: 'bigidea', name: 'Big Idea Ventures', url: 'https://bigideaventures.com/portfolio/' },
 	{ slug: 'bigfoot', name: 'Bigfoot Capital', url: 'https://bigfootcap.com/portfolio' },
 	{ slug: 'bip', name: 'BIP Ventures', url: 'https://www.bipventures.vc/portfolio' },
@@ -174,6 +184,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'e2mc', name: 'E2MC', url: 'https://e2mc.space/portfolio' },
 	{ slug: 'earlylight', name: 'Early Light Ventures', url: 'https://www.earlylight.vc/portfolio' },
 	{ slug: 'earlybird', name: 'Earlybird', url: 'https://earlybird.com/companies' },
+	{ slug: 'earthandbeyond', name: 'Earth & Beyond Ventures', url: 'https://www.earthandbeyond.ventures/portfolio' },
 	{ slug: 'eastlink', name: 'Eastlink Capital', url: 'https://www.eastlinkcap.com/portfolio/' },
 	{ slug: 'echovc', name: 'EchoVC Partners', url: 'https://www.echovc.com/ourportfolio' },
 	{ slug: 'eclipse', name: 'Eclipse Ventures', url: 'https://eclipse.capital/companies' },
