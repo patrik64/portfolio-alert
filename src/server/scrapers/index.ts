@@ -27,11 +27,20 @@ import { scrape as atlas } from './atlas';
 import { scrape as av8 } from './av8';
 import { scrape as avp } from './avp';
 import { scrape as aws } from './aws';
+import { scrape as babel } from './babel';
+import { scrape as backstage } from './backstage';
 import { scrape as baincapital } from './baincapital';
 import { scrape as balderton } from './balderton';
 import { scrape as bcapital } from './bcapital';
 import { scrape as b2venture } from './b2venture';
+import { scrape as ballistic } from './ballistic';
+import { scrape as bam } from './bam';
+import { scrape as baroda } from './baroda';
+import { scrape as baruch } from './baruch';
+import { scrape as baseventures } from './baseventures';
 import { scrape as base10 } from './base10';
+import { scrape as baseline } from './baseline';
+import { scrape as basisset } from './basisset';
 import { scrape as batshitcrazy } from './batshitcrazy';
 import { scrape as battery } from './battery';
 import { scrape as bbgventures } from './bbgventures';
@@ -780,11 +789,20 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	av8,
 	avp,
 	aws,
+	babel,
+	backstage,
 	baincapital,
 	balderton,
 	bcapital,
 	b2venture,
+	ballistic,
+	bam,
+	baroda,
+	baruch,
+	baseventures,
 	base10,
+	baseline,
+	basisset,
 	batshitcrazy,
 	battery,
 	bbgventures,

@@ -1,4 +1,4 @@
-// The 752 tracked funds, in case-insensitive alphabetical order by name — the
+// The 761 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -48,9 +48,18 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'aws', name: 'aws', url: 'https://www.gruendungsfonds.at/portfolio' },
 	{ slug: 'bcapital', name: 'B Capital', url: 'https://b.capital/portfolio/' },
 	{ slug: 'b2venture', name: 'b2venture', url: 'https://www.b2venture.vc/portfolio' },
+	{ slug: 'babel', name: 'Babel Ventures', url: 'https://www.babel.ventures/portfolio' },
+	{ slug: 'backstage', name: 'Backstage Capital', url: 'https://backstagecapital.com/portfolio/' },
 	{ slug: 'baincapital', name: 'Bain Capital Ventures', url: 'https://baincapitalventures.com/portfolio/' },
 	{ slug: 'balderton', name: 'Balderton', url: 'https://www.balderton.com/companies/' },
+	{ slug: 'ballistic', name: 'Ballistic Ventures', url: 'https://ballisticventures.com/portfolio/' },
+	{ slug: 'bam', name: 'BAM Ventures', url: 'https://www.bam.vc/companies' },
+	{ slug: 'baroda', name: 'Baroda Ventures', url: 'https://www.barodaventures.com/companies' },
+	{ slug: 'baruch', name: 'Baruch Future Ventures', url: 'https://www.baruch.vc/portfolio/' },
+	{ slug: 'baseventures', name: 'Base Ventures', url: 'https://www.base.ventures/portfolio' },
 	{ slug: 'base10', name: 'Base10', url: 'https://base10.vc/' },
+	{ slug: 'baseline', name: 'Baseline Ventures', url: 'https://www.baselinev.com/investments/' },
+	{ slug: 'basisset', name: 'Basis Set Ventures', url: 'https://www.basisset.com/portfolio' },
 	{ slug: 'batshitcrazy', name: 'Batshit Crazy Ventures', url: 'https://www.batshitcrazy.is/portfolio' },
 	{ slug: 'battery', name: 'Battery Ventures', url: 'https://www.battery.com/company/' },
 	{ slug: 'bbgventures', name: 'BBG Ventures', url: 'https://www.bbgventures.com/companies' },
