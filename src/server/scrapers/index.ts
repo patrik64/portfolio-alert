@@ -29,6 +29,7 @@ import { scrape as avp } from './avp';
 import { scrape as aws } from './aws';
 import { scrape as baincapital } from './baincapital';
 import { scrape as balderton } from './balderton';
+import { scrape as bcapital } from './bcapital';
 import { scrape as b2venture } from './b2venture';
 import { scrape as base10 } from './base10';
 import { scrape as battery } from './battery';
@@ -88,6 +89,15 @@ import { scrape as commonweal } from './commonweal';
 import { scrape as companyventures } from './companyventures';
 import { scrape as compound } from './compound';
 import { scrape as congruent } from './congruent';
+import { scrape as bolt } from './bolt';
+import { scrape as bond } from './bond';
+import { scrape as bonfire } from './bonfire';
+import { scrape as boost } from './boost';
+import { scrape as borderless } from './borderless';
+import { scrape as boro } from './boro';
+import { scrape as bostonseed } from './bostonseed';
+import { scrape as boulder } from './boulder';
+import { scrape as bowery } from './bowery';
 import { scrape as boxgroup } from './boxgroup';
 import { scrape as contour } from './contour';
 import { scrape as coral } from './coral';
@@ -751,6 +761,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	aws,
 	baincapital,
 	balderton,
+	bcapital,
 	b2venture,
 	base10,
 	battery,
@@ -810,6 +821,15 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	companyventures,
 	compound,
 	congruent,
+	bolt,
+	bond,
+	bonfire,
+	boost,
+	borderless,
+	boro,
+	bostonseed,
+	boulder,
+	bowery,
 	boxgroup,
 	contour,
 	coral,

@@ -1,4 +1,4 @@
-// The 721 tracked funds, in case-insensitive alphabetical order by name — the
+// The 731 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -46,6 +46,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'av8', name: 'AV8', url: 'https://av8.vc/our-portfolio/' },
 	{ slug: 'avp', name: 'AVP', url: 'https://avpcap.com/companies/' },
 	{ slug: 'aws', name: 'aws', url: 'https://www.gruendungsfonds.at/portfolio' },
+	{ slug: 'bcapital', name: 'B Capital', url: 'https://b.capital/portfolio/' },
 	{ slug: 'b2venture', name: 'b2venture', url: 'https://www.b2venture.vc/portfolio' },
 	{ slug: 'baincapital', name: 'Bain Capital Ventures', url: 'https://baincapitalventures.com/portfolio/' },
 	{ slug: 'balderton', name: 'Balderton', url: 'https://www.balderton.com/companies/' },
@@ -55,6 +56,15 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'bessemer', name: 'Bessemer Venture Partners', url: 'https://www.bvp.com/companies' },
 	{ slug: 'bip', name: 'BIP Ventures', url: 'https://www.bipventures.vc/portfolio' },
 	{ slug: 'bluventures', name: 'Blu Ventures', url: 'https://www.bluventureinvestors.com/portfolio' },
+	{ slug: 'bolt', name: 'Bolt', url: 'https://portfolio.bolt.io/' },
+	{ slug: 'bond', name: 'BOND', url: 'https://www.bondcap.com/investments/' },
+	{ slug: 'bonfire', name: 'Bonfire Ventures', url: 'https://www.bonfirevc.com/companies' },
+	{ slug: 'boost', name: 'Boost VC', url: 'https://www.boost.vc/portfolio' },
+	{ slug: 'borderless', name: 'Borderless Capital', url: 'https://www.borderlesscapital.io/portfolio' },
+	{ slug: 'boro', name: 'Boro Capital', url: 'https://www.borocapital.com/portfolio' },
+	{ slug: 'bostonseed', name: 'Boston Seed Capital', url: 'https://bostonseed.com/portfolio/' },
+	{ slug: 'boulder', name: 'Boulder Ventures', url: 'https://www.boulderventures.com/whatwevedone' },
+	{ slug: 'bowery', name: 'Bowery Capital', url: 'https://bowerycap.com/portfolio' },
 	{ slug: 'boxgroup', name: 'BoxGroup', url: 'https://www.boxgroup.com/portfolio' },
 	{ slug: 'boxone', name: 'BoxOne Ventures', url: 'https://www.boxone.xyz/portfolio' },
 	{ slug: 'brandproject', name: 'BrandProject', url: 'https://brandproject.com/investments/' },
