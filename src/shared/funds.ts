@@ -1,4 +1,4 @@
-// The 666 tracked funds, in case-insensitive alphabetical order by name — the
+// The 669 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -61,9 +61,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'calmstorm', name: 'Calm/Storm', url: 'https://www.calmstorm.vc/portfolio' },
 	{ slug: 'canapi', name: 'Canapi', url: 'https://www.canapi.com/portfolio' },
 	{ slug: 'cherry', name: 'Cherry Ventures', url: 'https://www.cherry.vc/founders' },
+	{ slug: 'cisco', name: 'Cisco Investments', url: 'https://www.ciscoinvestments.com/portfolio' },
 	{ slug: 'congruent', name: 'Congruent Ventures', url: 'https://www.congruentvc.com/portfolio' },
 	{ slug: 'craft', name: 'Craft Ventures', url: 'https://www.craftventures.com/portfolio' },
 	{ slug: 'creandum', name: 'Creandum', url: 'https://creandum.com/commitments/' },
+	{ slug: 'cdl', name: 'Creative Destruction Lab', url: 'https://creativedestructionlab.com/companies/' },
 	{ slug: 'credo', name: 'Credo', url: 'https://www.credoventures.com/portfolio' },
 	{ slug: 'crew', name: 'Crew Capital', url: 'https://crew.vc/companies/' },
 	{ slug: 'crosscut', name: 'Crosscut Ventures', url: 'https://crosscut.vc/companies/' },
@@ -654,6 +656,7 @@ export const FUNDS: FundInfo[] = [
 		url: 'https://www.theartemisfund.com/portfolio/'
 	},
 	{ slug: 'council', name: 'The Council', url: 'https://www.thecouncil.co/fund-portfolio' },
+	{ slug: 'creatorfund', name: 'The Creator Fund', url: 'https://thecreatorfund.com/our-investments/' },
 	{
 		slug: 'footprint',
 		name: 'The Footprint Firm',

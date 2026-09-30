@@ -41,9 +41,11 @@ import { scrape as broocknell } from './broocknell';
 import { scrape as calmstorm } from './calmstorm';
 import { scrape as canapi } from './canapi';
 import { scrape as cherry } from './cherry';
+import { scrape as cisco } from './cisco';
 import { scrape as congruent } from './congruent';
 import { scrape as boxgroup } from './boxgroup';
 import { scrape as craft } from './craft';
+import { scrape as cdl } from './cdl';
 import { scrape as credo } from './credo';
 import { scrape as creandum } from './creandum';
 import { scrape as crew } from './crew';
@@ -559,6 +561,7 @@ import { scrape as team8 } from './team8';
 import { scrape as techstars } from './techstars';
 import { scrape as artemis } from './artemis';
 import { scrape as council } from './council';
+import { scrape as creatorfund } from './creatorfund';
 import { scrape as footprint } from './footprint';
 import { scrape as helm } from './helm';
 import { scrape as thelab } from './thelab';
@@ -708,9 +711,11 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	calmstorm,
 	canapi,
 	cherry,
+	cisco,
 	congruent,
 	boxgroup,
 	craft,
+	cdl,
 	credo,
 	creandum,
 	crew,
@@ -1226,6 +1231,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	techstars,
 	artemis,
 	council,
+	creatorfund,
 	footprint,
 	helm,
 	thelab,
