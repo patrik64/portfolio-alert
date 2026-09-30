@@ -40,8 +40,19 @@ import { scrape as breakthrough } from './breakthrough';
 import { scrape as broocknell } from './broocknell';
 import { scrape as buildingventures } from './buildingventures';
 import { scrape as byld } from './byld';
+import { scrape as c4v } from './c4v';
+import { scrape as cake } from './cake';
 import { scrape as calmstorm } from './calmstorm';
+import { scrape as cic } from './cic';
+import { scrape as canaan } from './canaan';
 import { scrape as canapi } from './canapi';
+import { scrape as cantos } from './cantos';
+import { scrape as canvas } from './canvas';
+import { scrape as capitalize } from './capitalize';
+import { scrape as carbonsilicon } from './carbonsilicon';
+import { scrape as caruso } from './caruso';
+import { scrape as castleisland } from './castleisland';
+import { scrape as cathay } from './cathay';
 import { scrape as cathexis } from './cathexis';
 import { scrape as cdp } from './cdp';
 import { scrape as celesta } from './celesta';
@@ -746,8 +757,19 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	broocknell,
 	buildingventures,
 	byld,
+	c4v,
+	cake,
 	calmstorm,
+	cic,
+	canaan,
 	canapi,
+	cantos,
+	canvas,
+	capitalize,
+	carbonsilicon,
+	caruso,
+	castleisland,
+	cathay,
 	cathexis,
 	cdp,
 	celesta,

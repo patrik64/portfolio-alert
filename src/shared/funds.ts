@@ -1,4 +1,4 @@
-// The 705 tracked funds, in case-insensitive alphabetical order by name — the
+// The 716 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -60,8 +60,19 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'broocknell', name: 'Broocknell Ventures', url: 'https://broocknell.com/all-projects/' },
 	{ slug: 'buildingventures', name: 'Building Ventures', url: 'https://buildingventures.com/companies/' },
 	{ slug: 'byld', name: 'Byld', url: 'https://www.byld.vc/portfolio' },
+	{ slug: 'c4v', name: 'C4 Ventures', url: 'https://c4v.com/companies/' },
+	{ slug: 'cake', name: 'Cake Ventures', url: 'https://www.cake.vc/companies' },
 	{ slug: 'calmstorm', name: 'Calm/Storm', url: 'https://www.calmstorm.vc/portfolio' },
+	{ slug: 'cic', name: 'Cambridge Innovation Capital', url: 'https://www.cic.vc/companies/' },
+	{ slug: 'canaan', name: 'Canaan', url: 'https://www.canaan.com/companies' },
 	{ slug: 'canapi', name: 'Canapi', url: 'https://www.canapi.com/portfolio' },
+	{ slug: 'cantos', name: 'Cantos', url: 'https://cantos.vc/#portfolio' },
+	{ slug: 'canvas', name: 'Canvas Ventures', url: 'https://canvas.vc/portfolio' },
+	{ slug: 'capitalize', name: 'Capitalize VC', url: 'https://www.capitalizevc.com/' },
+	{ slug: 'carbonsilicon', name: 'Carbon Silicon Ventures', url: 'https://carbonsilicon.vc/' },
+	{ slug: 'caruso', name: 'Caruso Ventures', url: 'https://carusoventures.com/investments' },
+	{ slug: 'castleisland', name: 'Castle Island Ventures', url: 'https://castleisland.vc/portfolio/' },
+	{ slug: 'cathay', name: 'Cathay Innovation', url: 'https://cathayinnovation.com/portfolio/' },
 	{ slug: 'cathexis', name: 'Cathexis Ventures', url: 'https://cathexis.ventures/portfolio' },
 	{ slug: 'cdp', name: 'CDP Venture Capital', url: 'https://www.cdpventurecapital.it/en/portfolio.page' },
 	{ slug: 'celesta', name: 'Celesta Capital', url: 'https://www.celesta.vc/portfolio' },
