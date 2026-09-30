@@ -1,4 +1,4 @@
-// The 761 tracked funds, in case-insensitive alphabetical order by name — the
+// The 769 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -17,9 +17,17 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'twentyvc', name: '20VC', url: 'https://20vc.fund/portfolio' },
 	{ slug: '2150', name: '2150', url: 'https://www.2150.vc/investments' },
 	{ slug: '3vc', name: '3VC', url: 'https://three.vc/portfolio/' },
+	{ slug: '4dx', name: '4DX Ventures', url: 'https://www.4dxventures.com/portfolio' },
 	{ slug: '500', name: '500 Global', url: 'https://500.co/portfolio' },
+	{ slug: '5am', name: '5AM Ventures', url: 'https://5amventures.com/portfolio/' },
+	{ slug: '645', name: '645 Ventures', url: 'https://645ventures.com/portfolio' },
+	{ slug: '75andsunny', name: '75 & Sunny Ventures', url: 'https://www.75andsunny.vc/portfolio' },
 	{ slug: '7percent', name: '7percent', url: 'https://www.7pc.vc/portfolio' },
+	{ slug: '7wire', name: '7wire Ventures', url: 'https://www.7wireventures.com/portfolio/' },
+	{ slug: '8bit', name: '8-Bit Capital', url: 'https://8bitcapital.com/portfolio/' },
 	{ slug: '83north', name: '83North', url: 'https://www.83north.com/companies/' },
+	{ slug: '8vc', name: '8VC', url: 'https://www.8vc.com/companies' },
+	{ slug: '97212', name: '97212 Ventures', url: 'https://www.97212.vc/portfolio' },
 	{ slug: 'acapital', name: 'A Capital', url: 'https://acapital.com/portfolio' },
 	{ slug: 'accel', name: 'Accel', url: 'https://www.accel.com/companies' },
 	{ slug: 'actions', name: 'Actions Capital', url: 'https://www.actions.capital/founders' },

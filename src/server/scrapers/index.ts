@@ -6,9 +6,17 @@ import { scrape as tend } from './10d';
 import { scrape as twentyvc } from './twentyvc';
 import { scrape as twentyonefifty } from './twentyonefifty';
 import { scrape as threevc } from './3vc';
+import { scrape as fourdx } from './fourdx';
 import { scrape as fivehundred } from './fivehundred';
+import { scrape as fiveam } from './fiveam';
+import { scrape as sixfortyfive } from './sixfortyfive';
+import { scrape as seventyfiveandsunny } from './seventyfiveandsunny';
 import { scrape as sevenpercent } from './sevenpercent';
+import { scrape as sevenwire } from './sevenwire';
+import { scrape as eightbit } from './eightbit';
 import { scrape as eightythreenorth } from './eightythreenorth';
+import { scrape as eightvc } from './eightvc';
+import { scrape as nineseventwoonetwo } from './nineseventwoonetwo';
 import { scrape as a16z } from './a16z';
 import { scrape as acapital } from './acapital';
 import { scrape as accel } from './accel';
@@ -768,9 +776,17 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	'10d': tend,
 	'2150': twentyonefifty,
 	'3vc': threevc,
+	'4dx': fourdx,
 	'500': fivehundred,
+	'5am': fiveam,
+	'645': sixfortyfive,
+	'75andsunny': seventyfiveandsunny,
 	'7percent': sevenpercent,
+	'7wire': sevenwire,
+	'8bit': eightbit,
 	'83north': eightythreenorth,
+	'8vc': eightvc,
+	'97212': nineseventwoonetwo,
 	a16z,
 	acapital,
 	accel,
