@@ -1,4 +1,4 @@
-// The 716 tracked funds, in case-insensitive alphabetical order by name — the
+// The 721 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -56,6 +56,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'bip', name: 'BIP Ventures', url: 'https://www.bipventures.vc/portfolio' },
 	{ slug: 'bluventures', name: 'Blu Ventures', url: 'https://www.bluventureinvestors.com/portfolio' },
 	{ slug: 'boxgroup', name: 'BoxGroup', url: 'https://www.boxgroup.com/portfolio' },
+	{ slug: 'boxone', name: 'BoxOne Ventures', url: 'https://www.boxone.xyz/portfolio' },
+	{ slug: 'brandproject', name: 'BrandProject', url: 'https://brandproject.com/investments/' },
+	{ slug: 'breadandbutter', name: 'Bread and Butter Ventures', url: 'https://www.breadandbutterventures.com/portfolio-companies' },
+	{ slug: 'breaktrail', name: 'Break Trail Ventures', url: 'https://www.breaktrailventures.com/#menu-section' },
+	{ slug: 'breakout', name: 'Breakout Ventures', url: 'https://breakout.vc/portfolio' },
 	{ slug: 'breakthrough', name: 'Breakthrough Energy', url: 'https://www.breakthroughenergy.org/portfolio/index.html' },
 	{ slug: 'broocknell', name: 'Broocknell Ventures', url: 'https://broocknell.com/all-projects/' },
 	{ slug: 'buildingventures', name: 'Building Ventures', url: 'https://buildingventures.com/companies/' },

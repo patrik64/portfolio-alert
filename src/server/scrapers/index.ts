@@ -36,6 +36,11 @@ import { scrape as behold } from './behold';
 import { scrape as bessemer } from './bessemer';
 import { scrape as bip } from './bip';
 import { scrape as bluventures } from './bluventures';
+import { scrape as boxone } from './boxone';
+import { scrape as brandproject } from './brandproject';
+import { scrape as breadandbutter } from './breadandbutter';
+import { scrape as breaktrail } from './breaktrail';
+import { scrape as breakout } from './breakout';
 import { scrape as breakthrough } from './breakthrough';
 import { scrape as broocknell } from './broocknell';
 import { scrape as buildingventures } from './buildingventures';
@@ -753,6 +758,11 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	bessemer,
 	bip,
 	bluventures,
+	boxone,
+	brandproject,
+	breadandbutter,
+	breaktrail,
+	breakout,
 	breakthrough,
 	broocknell,
 	buildingventures,
