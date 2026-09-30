@@ -32,13 +32,21 @@ import { scrape as antler } from './antler';
 import { scrape as apex } from './apex';
 import { scrape as archventure } from './archventure';
 import { scrape as atlas } from './atlas';
+import { scrape as au21 } from './au21';
+import { scrape as audacity } from './audacity';
 import { scrape as av8 } from './av8';
+import { scrape as avalanche } from './avalanche';
+import { scrape as avesta } from './avesta';
+import { scrape as avid } from './avid';
 import { scrape as avp } from './avp';
 import { scrape as aws } from './aws';
 import { scrape as babel } from './babel';
 import { scrape as backstage } from './backstage';
 import { scrape as baincapital } from './baincapital';
 import { scrape as balderton } from './balderton';
+import { scrape as axeleo } from './axeleo';
+import { scrape as axial } from './axial';
+import { scrape as azolla } from './azolla';
 import { scrape as bcapital } from './bcapital';
 import { scrape as b2venture } from './b2venture';
 import { scrape as ballistic } from './ballistic';
@@ -802,13 +810,21 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	apex,
 	archventure,
 	atlas,
+	au21,
+	audacity,
 	av8,
+	avalanche,
+	avesta,
+	avid,
 	avp,
 	aws,
 	babel,
 	backstage,
 	baincapital,
 	balderton,
+	axeleo,
+	axial,
+	azolla,
 	bcapital,
 	b2venture,
 	ballistic,

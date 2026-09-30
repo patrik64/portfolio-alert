@@ -1,4 +1,4 @@
-// The 769 tracked funds, in case-insensitive alphabetical order by name — the
+// The 777 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -51,9 +51,17 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'apex', name: 'Apex Ventures', url: 'https://www.apex.ventures/portfolio' },
 	{ slug: 'archventure', name: 'ARCH Venture Partners', url: 'https://archventure.com/portfolio/' },
 	{ slug: 'atlas', name: 'Atlas Venture', url: 'https://atlasventure.com/portfolio/' },
+	{ slug: 'au21', name: 'AU21 Capital', url: 'https://au21.capital/portfolio' },
+	{ slug: 'audacity', name: 'Audacity Venture Capital', url: 'https://audacityvc.com/portfolio' },
 	{ slug: 'av8', name: 'AV8', url: 'https://av8.vc/our-portfolio/' },
+	{ slug: 'avalanche', name: 'Avalanche VC', url: 'https://www.avalanche.vc/portfolio' },
+	{ slug: 'avesta', name: 'Avesta Fund', url: 'https://www.avesta.fund/portfolio' },
+	{ slug: 'avid', name: 'Avid Ventures', url: 'https://avidventures.com/#companies' },
 	{ slug: 'avp', name: 'AVP', url: 'https://avpcap.com/companies/' },
 	{ slug: 'aws', name: 'aws', url: 'https://www.gruendungsfonds.at/portfolio' },
+	{ slug: 'axeleo', name: 'Axeleo Capital', url: 'https://www.axeleo.com/portfolio/' },
+	{ slug: 'axial', name: 'Axial', url: 'https://axialvc.com/companies/' },
+	{ slug: 'azolla', name: 'Azolla Ventures', url: 'https://azollaventures.com/our-portfolio/' },
 	{ slug: 'bcapital', name: 'B Capital', url: 'https://b.capital/portfolio/' },
 	{ slug: 'b2venture', name: 'b2venture', url: 'https://www.b2venture.vc/portfolio' },
 	{ slug: 'babel', name: 'Babel Ventures', url: 'https://www.babel.ventures/portfolio' },
