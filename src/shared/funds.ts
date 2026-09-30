@@ -1,4 +1,4 @@
-// The 681 tracked funds, in case-insensitive alphabetical order by name — the
+// The 693 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -64,6 +64,18 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'canapi', name: 'Canapi', url: 'https://www.canapi.com/portfolio' },
 	{ slug: 'cherry', name: 'Cherry Ventures', url: 'https://www.cherry.vc/founders' },
 	{ slug: 'cisco', name: 'Cisco Investments', url: 'https://www.ciscoinvestments.com/portfolio' },
+	{ slug: 'clevelandavenue', name: 'Cleveland Avenue', url: 'https://www.clevelandavenue.com/portfolio' },
+	{ slug: 'climactic', name: 'Climactic', url: 'https://www.climactic.vc/portfolio' },
+	{ slug: 'climatecapital', name: 'Climate Capital', url: 'https://www.climatecapital.co/portfolio' },
+	{ slug: 'climentum', name: 'Climentum Capital', url: 'https://climentum.com/portfolio' },
+	{ slug: 'clocktower', name: 'Clocktower Ventures', url: 'https://www.clocktowerventures.com/#section-portfolio' },
+	{ slug: 'coalition', name: 'Coalition Operators', url: 'https://www.coalitionoperators.com/portfolio' },
+	{ slug: 'coatue', name: 'Coatue', url: 'https://www.coatue.com/portfolio' },
+	{ slug: 'collabcapital', name: 'Collab Capital', url: 'https://www.collab.capital/portfolio' },
+	{ slug: 'collabfund', name: 'Collaborative Fund', url: 'https://collabfund.com/portfolio/' },
+	{ slug: 'colle', name: 'Colle Capital', url: 'https://colle.vc/portfolio/' },
+	{ slug: 'collide', name: 'Collide Capital', url: 'https://collidecap.com/portfolio' },
+	{ slug: 'commerce', name: 'Commerce Ventures', url: 'https://commerce.vc/portfolio/' },
 	{ slug: 'commonweal', name: 'Commonweal Ventures', url: 'https://www.commonwealventures.com/portfolio' },
 	{ slug: 'companyventures', name: 'Company Ventures', url: 'https://www.companyventures.com/portfolio' },
 	{ slug: 'compound', name: 'Compound', url: 'https://www.compound.vc/portfolio' },

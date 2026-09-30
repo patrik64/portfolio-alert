@@ -44,6 +44,18 @@ import { scrape as calmstorm } from './calmstorm';
 import { scrape as canapi } from './canapi';
 import { scrape as cherry } from './cherry';
 import { scrape as cisco } from './cisco';
+import { scrape as clevelandavenue } from './clevelandavenue';
+import { scrape as climactic } from './climactic';
+import { scrape as climatecapital } from './climatecapital';
+import { scrape as climentum } from './climentum';
+import { scrape as clocktower } from './clocktower';
+import { scrape as coalition } from './coalition';
+import { scrape as coatue } from './coatue';
+import { scrape as collabcapital } from './collabcapital';
+import { scrape as collabfund } from './collabfund';
+import { scrape as colle } from './colle';
+import { scrape as collide } from './collide';
+import { scrape as commerce } from './commerce';
 import { scrape as commonweal } from './commonweal';
 import { scrape as companyventures } from './companyventures';
 import { scrape as compound } from './compound';
@@ -726,6 +738,18 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	canapi,
 	cherry,
 	cisco,
+	clevelandavenue,
+	climactic,
+	climatecapital,
+	climentum,
+	clocktower,
+	coalition,
+	coatue,
+	collabcapital,
+	collabfund,
+	colle,
+	collide,
+	commerce,
 	commonweal,
 	companyventures,
 	compound,
