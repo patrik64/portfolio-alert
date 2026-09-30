@@ -35,7 +35,13 @@ import { scrape as base10 } from './base10';
 import { scrape as battery } from './battery';
 import { scrape as behold } from './behold';
 import { scrape as bessemer } from './bessemer';
+import { scrape as bigidea } from './bigidea';
+import { scrape as bigfoot } from './bigfoot';
 import { scrape as bip } from './bip';
+import { scrape as blackops } from './blackops';
+import { scrape as blackhorn } from './blackhorn';
+import { scrape as blank } from './blank';
+import { scrape as bling } from './bling';
 import { scrape as bluventures } from './bluventures';
 import { scrape as boxone } from './boxone';
 import { scrape as brandproject } from './brandproject';
@@ -44,6 +50,7 @@ import { scrape as breaktrail } from './breaktrail';
 import { scrape as breakout } from './breakout';
 import { scrape as breakthrough } from './breakthrough';
 import { scrape as broocknell } from './broocknell';
+import { scrape as btn } from './btn';
 import { scrape as buildingventures } from './buildingventures';
 import { scrape as byld } from './byld';
 import { scrape as c4v } from './c4v';
@@ -89,6 +96,9 @@ import { scrape as commonweal } from './commonweal';
 import { scrape as companyventures } from './companyventures';
 import { scrape as compound } from './compound';
 import { scrape as congruent } from './congruent';
+import { scrape as bbv } from './bbv';
+import { scrape as bluepointe } from './bluepointe';
+import { scrape as boldstart } from './boldstart';
 import { scrape as bolt } from './bolt';
 import { scrape as bond } from './bond';
 import { scrape as bonfire } from './bonfire';
@@ -767,7 +777,13 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	battery,
 	behold,
 	bessemer,
+	bigidea,
+	bigfoot,
 	bip,
+	blackops,
+	blackhorn,
+	blank,
+	bling,
 	bluventures,
 	boxone,
 	brandproject,
@@ -776,6 +792,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	breakout,
 	breakthrough,
 	broocknell,
+	btn,
 	buildingventures,
 	byld,
 	c4v,
@@ -821,6 +838,9 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	companyventures,
 	compound,
 	congruent,
+	bbv,
+	bluepointe,
+	boldstart,
 	bolt,
 	bond,
 	bonfire,

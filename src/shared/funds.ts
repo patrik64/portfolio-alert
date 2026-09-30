@@ -1,4 +1,4 @@
-// The 731 tracked funds, in case-insensitive alphabetical order by name — the
+// The 741 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -54,8 +54,17 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'battery', name: 'Battery Ventures', url: 'https://www.battery.com/company/' },
 	{ slug: 'behold', name: 'Behold Ventures', url: 'https://behold.vc/portfolio' },
 	{ slug: 'bessemer', name: 'Bessemer Venture Partners', url: 'https://www.bvp.com/companies' },
+	{ slug: 'bigidea', name: 'Big Idea Ventures', url: 'https://bigideaventures.com/portfolio/' },
+	{ slug: 'bigfoot', name: 'Bigfoot Capital', url: 'https://bigfootcap.com/portfolio' },
 	{ slug: 'bip', name: 'BIP Ventures', url: 'https://www.bipventures.vc/portfolio' },
+	{ slug: 'blackops', name: 'Black Ops VC', url: 'https://www.blackopsvc.com/portfolio' },
+	{ slug: 'blackhorn', name: 'Blackhorn Ventures', url: 'https://www.blackhornvc.com/portfolio' },
+	{ slug: 'blank', name: 'Blank Ventures', url: 'https://blank.com/#portfolio' },
+	{ slug: 'bling', name: 'Bling Capital', url: 'https://www.blingcap.com/portfolio' },
 	{ slug: 'bluventures', name: 'Blu Ventures', url: 'https://www.bluventureinvestors.com/portfolio' },
+	{ slug: 'bbv', name: 'Blue Bear Ventures', url: 'https://bbv.io/#startups' },
+	{ slug: 'bluepointe', name: 'BluePointe Ventures', url: 'https://www.bluepointe.vc/portfolio' },
+	{ slug: 'boldstart', name: 'boldstart ventures', url: 'https://boldstart.vc/companies/' },
 	{ slug: 'bolt', name: 'Bolt', url: 'https://portfolio.bolt.io/' },
 	{ slug: 'bond', name: 'BOND', url: 'https://www.bondcap.com/investments/' },
 	{ slug: 'bonfire', name: 'Bonfire Ventures', url: 'https://www.bonfirevc.com/companies' },
@@ -73,6 +82,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'breakout', name: 'Breakout Ventures', url: 'https://breakout.vc/portfolio' },
 	{ slug: 'breakthrough', name: 'Breakthrough Energy', url: 'https://www.breakthroughenergy.org/portfolio/index.html' },
 	{ slug: 'broocknell', name: 'Broocknell Ventures', url: 'https://broocknell.com/all-projects/' },
+	{ slug: 'btn', name: 'BTN Ventures', url: 'https://www.btn.vc/portfolio' },
 	{ slug: 'buildingventures', name: 'Building Ventures', url: 'https://buildingventures.com/companies/' },
 	{ slug: 'byld', name: 'Byld', url: 'https://www.byld.vc/portfolio' },
 	{ slug: 'c4v', name: 'C4 Ventures', url: 'https://c4v.com/companies/' },
