@@ -17,7 +17,8 @@ const NAME = /fs-cmsfilter-field="name"[^>]*>([\s\S]*?)<\/div>/;
 const ALT = /<img\b[^>]*\bclass="company-logo_image"[^>]*\balt="([^"]*)"/;
 const STAGE = /fs-cmsfilter-field="stage"[^>]*>([\s\S]*?)<\/div>/;
 const LINK = /<a\b[^>]*\bhref="([^"]*)"[^>]*\bclass="card-link\b/g;
-const SOCIAL = /linkedin\.com|twitter\.com|x\.com|8vc\.com/i;
+// matched against a link's whole host, as a bare "x.com" would catch aviatrix.com
+const SOCIAL = /(?:^|\.)(?:linkedin\.com|twitter\.com|x\.com|8vc\.com)$/i;
 const STEALTH = /^stealth\b/i;
 
 const unescape = (s: string) =>
@@ -32,6 +33,14 @@ const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g
 
 // the category is comma-joined, so a label holding a comma would read as two
 const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
+
+const hostOf = (url: string) => {
+	try {
+		return new URL(url).hostname.toLowerCase();
+	} catch {
+		return '';
+	}
+};
 
 export async function scrape(): Promise<ScrapedCompany[]> {
 	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
@@ -49,7 +58,7 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		const stage = tag(card.match(STAGE)?.[1] ?? '');
 		const exited = /^exited$/i.test(stage);
 		const site =
-			[...card.matchAll(LINK)].map(([, href]) => unescape(href).trim()).find((href) => /^https?:\/\//i.test(href) && !SOCIAL.test(href)) ??
+			[...card.matchAll(LINK)].map(([, href]) => unescape(href).trim()).find((href) => /^https?:\/\//i.test(href) && !SOCIAL.test(hostOf(href))) ??
 			'';
 		companies.push({
 			name,

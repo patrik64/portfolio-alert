@@ -38,7 +38,8 @@ const NAMES: Record<string, string> = {
 const START = /WE DON[’']T JUST INVEST/;
 const END = /info@97212\.vc/;
 const LINK = /<a\b[^>]*\bhref="(https?:\/\/[^"]*)"/g;
-const NOT_A_SITE = /wixstatic|wix\.com|parastorage|97212\.vc|medium\.com|linkedin\.com|twitter\.com|x\.com/i;
+// matched against a link's whole host, as a bare "x.com" would catch netflix.com
+const NOT_A_SITE = /(?:^|\.)(?:wixstatic\.com|wix\.com|parastorage\.com|97212\.vc|medium\.com|linkedin\.com|twitter\.com|x\.com)$/i;
 const STEALTH = /^stealth\b/i;
 
 const DECORATION = ['goto', 'get', 'try', 'use', 'join', 'with', 'go', 'my'];
@@ -84,8 +85,8 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 	const seen = new Set<string>();
 	for (const [, href] of section.matchAll(LINK)) {
 		const site = href.replace(/&amp;/g, '&').trim();
-		if (NOT_A_SITE.test(site)) continue;
 		const host = hostOf(site);
+		if (NOT_A_SITE.test(host)) continue;
 		const name = host ? (NAMES[host] ?? domainName(host)) : '';
 		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 		seen.add(name.toLowerCase());

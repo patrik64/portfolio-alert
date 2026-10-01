@@ -51,7 +51,8 @@ const FILES: Record<string, string> = {
 const BLOCK = /(?=<div class="img-with-aniamtion-wrap)/;
 const LINK = /<a\b[^>]*\bhref="([^"]*)"/;
 const IMAGE = /<img\b[^>]*\bsrc="([^"]*)"/;
-const NOT_A_SITE = /8bitcapital\.com|linkedin\.com|twitter\.com|x\.com/i;
+// matched against a link's whole host, as a bare "x.com" would catch netflix.com
+const NOT_A_SITE = /(?:^|\.)(?:8bitcapital\.com|linkedin\.com|twitter\.com|x\.com)$/i;
 const STEALTH = /^stealth\b/i;
 
 // "…/uploads/2024/04/1up_ai_logo2.png?resize=…" -> "1up_ai_logo2"
@@ -100,7 +101,8 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		// a block ends at its image; the last runs on to the end of the page
 		const block = chunk.slice(0, chunk.indexOf('/>', chunk.search(IMAGE)) + 2 || undefined);
 		const link = (block.match(LINK)?.[1] ?? '').replace(/&amp;/g, '&').trim();
-		const host = /^https?:\/\//i.test(link) && !NOT_A_SITE.test(link) ? hostOf(link) : '';
+		const linked = /^https?:\/\//i.test(link) ? hostOf(link) : '';
+		const host = linked && !NOT_A_SITE.test(linked) ? linked : '';
 		const file = host ? '' : fileOf(block.match(IMAGE)?.[1] ?? '');
 		const name = host ? (NAMES[host] ?? domainName(host)) : (FILES[file] ?? '');
 		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
