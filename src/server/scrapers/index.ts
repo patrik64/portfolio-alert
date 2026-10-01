@@ -30,8 +30,19 @@ import { scrape as alumni } from './alumni';
 import { scrape as ambition } from './ambition';
 import { scrape as antler } from './antler';
 import { scrape as apex } from './apex';
+import { scrape as arcane } from './arcane';
 import { scrape as archventure } from './archventure';
+import { scrape as argon } from './argon';
+import { scrape as array } from './array';
+import { scrape as arrington } from './arrington';
+import { scrape as artis } from './artis';
+import { scrape as ascension } from './ascension';
+import { scrape as astanor } from './astanor';
+import { scrape as asymmetry } from './asymmetry';
+import { scrape as atone } from './atone';
+import { scrape as atento } from './atento';
 import { scrape as atlas } from './atlas';
+import { scrape as atomic } from './atomic';
 import { scrape as au21 } from './au21';
 import { scrape as audacity } from './audacity';
 import { scrape as av8 } from './av8';
@@ -808,8 +819,19 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	ambition,
 	antler,
 	apex,
+	arcane,
 	archventure,
+	argon,
+	array,
+	arrington,
+	artis,
+	ascension,
+	astanor,
+	asymmetry,
+	atone,
+	atento,
 	atlas,
+	atomic,
 	au21,
 	audacity,
 	av8,

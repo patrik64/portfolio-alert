@@ -1,4 +1,4 @@
-// The 777 tracked funds, in case-insensitive alphabetical order by name — the
+// The 788 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -49,8 +49,19 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'a16z', name: 'Andreessen Horowitz', url: 'https://a16z.com/portfolio/' },
 	{ slug: 'antler', name: 'Antler', url: 'https://www.antler.co/portfolio' },
 	{ slug: 'apex', name: 'Apex Ventures', url: 'https://www.apex.ventures/portfolio' },
+	{ slug: 'arcane', name: 'Arcane Ventures', url: 'https://arcane-ventures.net/#portfolio' },
 	{ slug: 'archventure', name: 'ARCH Venture Partners', url: 'https://archventure.com/portfolio/' },
+	{ slug: 'argon', name: 'Argon Ventures', url: 'https://www.argon.vc/companies' },
+	{ slug: 'array', name: 'Array Ventures', url: 'https://www.array.vc/#investments' },
+	{ slug: 'arrington', name: 'Arrington Capital', url: 'https://www.arringtoncapital.com/portfolio/' },
+	{ slug: 'artis', name: 'ARTIS', url: 'https://www.av.co/companies' },
+	{ slug: 'ascension', name: 'Ascension', url: 'https://www.ascension.vc/portfolio' },
+	{ slug: 'astanor', name: 'Astanor', url: 'https://astanor.com/portfolio/' },
+	{ slug: 'asymmetry', name: 'Asymmetry VC', url: 'https://asymmetry.vc/portfolio/' },
+	{ slug: 'atone', name: 'At One Ventures', url: 'https://www.atoneventures.com/portfolio' },
+	{ slug: 'atento', name: 'Atento Capital', url: 'https://www.atentocapital.com/portfolio' },
 	{ slug: 'atlas', name: 'Atlas Venture', url: 'https://atlasventure.com/portfolio/' },
+	{ slug: 'atomic', name: 'Atomic', url: 'https://www.atomic.vc/companies' },
 	{ slug: 'au21', name: 'AU21 Capital', url: 'https://au21.capital/portfolio' },
 	{ slug: 'audacity', name: 'Audacity Venture Capital', url: 'https://audacityvc.com/portfolio' },
 	{ slug: 'av8', name: 'AV8', url: 'https://av8.vc/our-portfolio/' },
