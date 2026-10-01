@@ -1,4 +1,4 @@
-// The 820 tracked funds, in case-insensitive alphabetical order by name — the
+// The 829 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -30,8 +30,17 @@ export const FUNDS: FundInfo[] = [
 	{ slug: '97212', name: '97212 Ventures', url: 'https://www.97212.vc/portfolio' },
 	{ slug: 'acapital', name: 'A Capital', url: 'https://acapital.com/portfolio' },
 	{ slug: 'accel', name: 'Accel', url: 'https://www.accel.com/companies' },
+	{ slug: 'acrew', name: 'Acrew Capital', url: 'https://www.acrewcapital.com/companies' },
+	{ slug: 'actone', name: 'Act One Ventures', url: 'https://www.actoneventures.com/portfolio' },
 	{ slug: 'actions', name: 'Actions Capital', url: 'https://www.actions.capital/founders' },
+	{ slug: 'activecapital', name: 'Active Capital Company', url: 'https://www.activecapitalcompany.com/?scroll-to=portfolio' },
+	{ slug: 'activeimpact', name: 'Active Impact Investments', url: 'https://www.activeimpactinvestments.com/portfolio#fundi' },
+	{ slug: 'activepartners', name: 'Active Partners', url: 'https://active.partners/companies/' },
+	{ slug: 'ada', name: 'Ada Ventures', url: 'https://www.adaventures.com/#our-portfolio' },
+	{ slug: 'adapt', name: 'Adapt Ventures', url: 'https://adaptvc.com/companies' },
 	{ slug: 'advent', name: 'Advent International', url: 'https://www.adventinternational.com/investments/' },
+	{ slug: 'aera', name: 'Aera VC', url: 'https://www.aera.vc/our-portfolio/' },
+	{ slug: 'axv', name: 'Aero X Ventures', url: 'https://www.axv.vc/' },
 	{ slug: 'afore', name: 'Afore Capital', url: 'https://www.afore.vc/portfolio' },
 	{ slug: 'agfunder', name: 'AgFunder', url: 'https://agfunder.com/portfolio/' },
 	{ slug: 'aifund', name: 'AI.FUND', url: 'https://ai-fund.vc/our-portfolio/' },

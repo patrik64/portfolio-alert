@@ -27,8 +27,17 @@ import { scrape as amplitude } from './amplitude';
 import { scrape as a16z } from './a16z';
 import { scrape as acapital } from './acapital';
 import { scrape as accel } from './accel';
+import { scrape as acrew } from './acrew';
+import { scrape as actone } from './actone';
 import { scrape as actions } from './actions';
+import { scrape as activecapital } from './activecapital';
+import { scrape as activeimpact } from './activeimpact';
+import { scrape as activepartners } from './activepartners';
+import { scrape as ada } from './ada';
+import { scrape as adapt } from './adapt';
 import { scrape as advent } from './advent';
+import { scrape as aera } from './aera';
+import { scrape as axv } from './axv';
 import { scrape as afore } from './afore';
 import { scrape as agfunder } from './agfunder';
 import { scrape as aifund } from './aifund';
@@ -848,8 +857,17 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	a16z,
 	acapital,
 	accel,
+	acrew,
+	actone,
 	actions,
+	activecapital,
+	activeimpact,
+	activepartners,
+	ada,
+	adapt,
 	advent,
+	aera,
+	axv,
 	afore,
 	agfunder,
 	aifund,
