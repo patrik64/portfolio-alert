@@ -1,4 +1,4 @@
-// The 804 tracked funds, in case-insensitive alphabetical order by name — the
+// The 810 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -32,6 +32,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'accel', name: 'Accel', url: 'https://www.accel.com/companies' },
 	{ slug: 'actions', name: 'Actions Capital', url: 'https://www.actions.capital/founders' },
 	{ slug: 'advent', name: 'Advent International', url: 'https://www.adventinternational.com/investments/' },
+	{ slug: 'aic', name: 'AIC', url: 'https://aicapital.ai/our-companies' },
 	{
 		slug: 'airbusventures',
 		name: 'Airbus Ventures',
@@ -44,6 +45,11 @@ export const FUNDS: FundInfo[] = [
 		url: 'https://www.alchemistaccelerator.com/portfolio'
 	},
 	{ slug: 'aleph', name: 'Aleph', url: 'https://www.aleph.vc/companies' },
+	{ slug: 'alleycorp', name: 'AlleyCorp', url: 'https://alleycorp.com/companies/' },
+	{ slug: 'alloyfund', name: 'Alloy Fund', url: 'https://www.alloyfund.com/portfolio' },
+	{ slug: 'alpaca', name: 'Alpaca VC', url: 'https://alpaca.vc/portfolio' },
+	{ slug: 'alphaedison', name: 'AlphaEdison', url: 'https://www.alphaedison.com/portfolio' },
+	{ slug: 'alsocapital', name: 'Also Capital', url: 'https://www.alsocapital.com/#investment' },
 	{ slug: 'alumni', name: 'Alumni Ventures', url: 'https://www.av.vc/portfolio' },
 	{ slug: 'alven', name: 'Alven', url: 'https://alven.co/portfolio' },
 	{ slug: 'amasia', name: 'Amasia', url: 'https://www.amasia.vc/portfolio' },

@@ -29,10 +29,16 @@ import { scrape as acapital } from './acapital';
 import { scrape as accel } from './accel';
 import { scrape as actions } from './actions';
 import { scrape as advent } from './advent';
+import { scrape as aic } from './aic';
 import { scrape as airbusventures } from './airbusventures';
 import { scrape as aisling } from './aisling';
 import { scrape as alchemist } from './alchemist';
 import { scrape as aleph } from './aleph';
+import { scrape as alleycorp } from './alleycorp';
+import { scrape as alloyfund } from './alloyfund';
+import { scrape as alpaca } from './alpaca';
+import { scrape as alphaedison } from './alphaedison';
+import { scrape as alsocapital } from './alsocapital';
 import { scrape as alumni } from './alumni';
 import { scrape as alven } from './alven';
 import { scrape as amasia } from './amasia';
@@ -834,10 +840,16 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	accel,
 	actions,
 	advent,
+	aic,
 	airbusventures,
 	aisling,
 	alchemist,
 	aleph,
+	alleycorp,
+	alloyfund,
+	alpaca,
+	alphaedison,
+	alsocapital,
 	alumni,
 	alven,
 	amasia,
