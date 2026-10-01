@@ -3,6 +3,11 @@ import type { ScrapedCompany } from './types';
 const PAGE_URL = 'https://www.amecloudventures.com/portfolio';
 // the portfolio page loads its companies from this widget, as jsonp
 const WIDGET_URL = 'https://ame.ivest.in/people/9/embeddable_portfolio?callback=portfolio';
+// the widget's server now and then answers a 500 and the page on the next
+// try, so a server error or a refusal is asked about again, twice, after
+// waits that double from two seconds
+const TRIES = 3;
+const RETRY_MS = 2_000;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
@@ -66,12 +71,23 @@ const spelled = (slug: string) =>
 		.map((word) => word[0].toUpperCase() + word.slice(1))
 		.join(' ');
 
-export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(WIDGET_URL, { headers: { 'User-Agent': UA, Referer: PAGE_URL } });
-	if (!resp.ok) {
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function widget(): Promise<string> {
+	for (let attempt = 1; ; attempt++) {
+		const resp = await fetch(WIDGET_URL, { headers: { 'User-Agent': UA, Referer: PAGE_URL } });
+		if (resp.ok) return resp.text();
+		if ((resp.status >= 500 || resp.status === 429) && attempt < TRIES) {
+			await resp.body?.cancel();
+			await wait(RETRY_MS * 2 ** (attempt - 1));
+			continue;
+		}
 		throw new Error(`Failed to fetch ${WIDGET_URL}: ${resp.status}`);
 	}
-	const jsonp = await resp.text();
+}
+
+export async function scrape(): Promise<ScrapedCompany[]> {
+	const jsonp = await widget();
 	const json = jsonp.slice(jsonp.indexOf('(') + 1, jsonp.lastIndexOf(')'));
 	const html = (JSON.parse(json) as { html?: string }).html ?? '';
 
