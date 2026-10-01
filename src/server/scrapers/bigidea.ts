@@ -42,20 +42,23 @@ const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// a page of the fund's site; a refusal is waited out once, and a page that
-// still will not load fails the run
+// a page of the fund's site; a refusal, or the captcha siteground's
+// firewall puts under a 2xx status in front of an address it distrusts,
+// vercel's among them some nights, is waited out once, and a page that
+// still will not load fails the run, saying what answered
 async function page(url: string): Promise<string> {
 	for (let attempt = 0; ; attempt++) {
 		const resp = await fetch(url, { headers: { 'User-Agent': UA } });
-		if (resp.status === 429 && attempt === 0) {
-			await resp.body?.cancel();
+		const body = await resp.text();
+		const captcha = /sgcaptcha/i.test(body);
+		if ((resp.status === 429 || captcha) && attempt === 0) {
 			await wait(REFUSED_MS);
 			continue;
 		}
-		if (!resp.ok) {
-			throw new Error(`bigidea: ${url} answered ${resp.status}`);
+		if (!resp.ok || captcha) {
+			throw new Error(`bigidea: ${url} answered ${resp.status}${captcha ? ", siteground's captcha" : ''}`);
 		}
-		return resp.text();
+		return body;
 	}
 }
 

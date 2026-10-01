@@ -146,16 +146,23 @@ function outcome(note: string): string {
 	return note;
 }
 
-// an answer that is the site's, or an error saying what the firewall said
+// an answer that is the site's, or an error saying what the firewall said;
+// the firewall's mind changes, so it is asked once more after a wait
 async function get(url: string): Promise<string> {
-	const resp = await fetch(url, { headers: { 'User-Agent': UA } });
-	const body = await resp.text();
-	if (resp.ok && resp.status !== 202 && !/sgcaptcha/i.test(body)) return body;
-	const title = clean(body.match(/<title[^>]*>([^<]*)</)?.[1] ?? '');
-	throw new Error(
-		`citylight: ${url} answered ${resp.status}${title ? ` "${title}"` : ''}` +
-			(/sgcaptcha/i.test(body) ? ", siteground's captcha" : '')
-	);
+	for (let attempt = 0; ; attempt++) {
+		const resp = await fetch(url, { headers: { 'User-Agent': UA } });
+		const body = await resp.text();
+		if (resp.ok && resp.status !== 202 && !/sgcaptcha/i.test(body)) return body;
+		if (attempt === 0) {
+			await new Promise((resolve) => setTimeout(resolve, 10_000));
+			continue;
+		}
+		const title = clean(body.match(/<title[^>]*>([^<]*)</)?.[1] ?? '');
+		throw new Error(
+			`citylight: ${url} answered ${resp.status}${title ? ` "${title}"` : ''}` +
+				(/sgcaptcha/i.test(body) ? ", siteground's captcha" : '')
+		);
+	}
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {

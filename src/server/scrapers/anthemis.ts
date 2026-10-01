@@ -6,6 +6,11 @@ const REFUSED_MS = 20_000;
 // the site turns the usual browser string away with a 403 and answers
 // this one, which says who is asking
 const UA = 'portfolio-alert/1.0 (+https://portfolio-alert.vercel.app)';
+// the site sits behind siteground's firewall, which puts its captcha in
+// front of an address it distrusts under a 2xx status, vercel's among them
+// some nights; the page is asked for again after a wait, and the error
+// says what the firewall answered
+const RETRY_DELAY_MS = 10_000;
 
 // wordpress with elementor: the portfolio page is a grid of companies, each
 // named and linking the company's page on the fund's site, and carrying as
@@ -80,12 +85,21 @@ async function siteOf(page: string): Promise<string> {
 	return '';
 }
 
-export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+// the portfolio page, or an error saying what answered instead
+async function portfolioPage(): Promise<string> {
+	let answer = '';
+	for (let attempt = 0; attempt < 2; attempt++) {
+		if (attempt > 0) await wait(RETRY_DELAY_MS);
+		const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+		const html = await resp.text();
+		if (resp.ok && html.includes(GRID)) return html;
+		answer = `${resp.status}` + (/sgcaptcha/i.test(html) ? ", siteground's captcha" : '');
 	}
-	const html = await resp.text();
+	throw new Error(`anthemis: ${PAGE_URL} answered ${answer}`);
+}
+
+export async function scrape(): Promise<ScrapedCompany[]> {
+	const html = await portfolioPage();
 
 	// "stage-acquired" -> "Acquired", from the filters' buttons
 	const labels = new Map<string, string>();

@@ -56,16 +56,23 @@ const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g
 // the category is comma-joined, so a label holding a comma would read as two
 const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
-// an answer that is the site's, or an error saying what the firewall said
+// an answer that is the site's, or an error saying what the firewall said;
+// the firewall's mind changes, so it is asked once more after a wait
 async function get(url: string): Promise<Response> {
-	const resp = await fetch(url, { headers: { 'User-Agent': UA } });
-	if (resp.ok && resp.status !== 202) return resp;
-	const body = await resp.text();
-	const title = clean(body.match(/<title[^>]*>([^<]*)</)?.[1] ?? '');
-	throw new Error(
-		`cortical: ${url} answered ${resp.status}${title ? ` "${title}"` : ''}` +
-			(/sgcaptcha/i.test(body) ? ", siteground's captcha" : '')
-	);
+	for (let attempt = 0; ; attempt++) {
+		const resp = await fetch(url, { headers: { 'User-Agent': UA } });
+		if (resp.ok && resp.status !== 202) return resp;
+		const body = await resp.text();
+		if (attempt === 0) {
+			await new Promise((resolve) => setTimeout(resolve, 10_000));
+			continue;
+		}
+		const title = clean(body.match(/<title[^>]*>([^<]*)</)?.[1] ?? '');
+		throw new Error(
+			`cortical: ${url} answered ${resp.status}${title ? ` "${title}"` : ''}` +
+				(/sgcaptcha/i.test(body) ? ", siteground's captcha" : '')
+		);
+	}
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {

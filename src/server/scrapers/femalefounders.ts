@@ -77,12 +77,25 @@ async function pageOf(page: string): Promise<{ name: string; site: string } | nu
 	}
 }
 
-export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await get(PAGE_URL);
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+// the portfolio page; the captcha siteground's firewall puts under a 2xx
+// status in front of an address it distrusts, vercel's among them some
+// nights, or a refusal, is waited out once, and the error says what
+// answered
+async function portfolioPage(): Promise<string> {
+	let answer = '';
+	for (let attempt = 0; attempt < 2; attempt++) {
+		if (attempt > 0) await wait(RETRY_DELAY_MS);
+		const resp = await get(PAGE_URL);
+		const html = await resp.text();
+		const captcha = /sgcaptcha/i.test(html);
+		if (resp.ok && !captcha) return html;
+		answer = `${resp.status}` + (captcha ? ", siteground's captcha" : '');
 	}
-	const html = await resp.text();
+	throw new Error(`femalefounders: ${PAGE_URL} answered ${answer}`);
+}
+
+export async function scrape(): Promise<ScrapedCompany[]> {
+	const html = await portfolioPage();
 
 	const cards: { page: string; sectors: string[]; badge: string }[] = [];
 	const pages = new Set<string>();

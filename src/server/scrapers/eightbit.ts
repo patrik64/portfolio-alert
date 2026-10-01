@@ -1,8 +1,16 @@
 import type { ScrapedCompany } from './types';
 
 const PAGE_URL = 'https://8bitcapital.com/portfolio/';
-const UA =
-	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+// the site sits behind siteground's firewall, which turns an address it
+// distrusts away with a 429 or its captcha under a 2xx status, vercel's
+// among them some nights; the second try waits and says plainly who is
+// asking, and the error says what the firewall answered
+const ATTEMPTS = [
+	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+	'portfolio-alert/1.0 (+https://portfolio-alert.vercel.app)'
+];
+const RETRY_DELAY_MS = 10_000;
+const GRID = 'img-with-aniamtion-wrap';
 
 // wordpress with wpbakery: the portfolio page is a grid of logos, most
 // linking the company's site and none captioned or given alt text, so the
@@ -88,12 +96,21 @@ function domainName(host: string): string {
 		.join(' ');
 }
 
-export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+// the portfolio page, or an error saying what answered instead
+async function portfolioPage(): Promise<string> {
+	let answer = '';
+	for (const [attempt, ua] of ATTEMPTS.entries()) {
+		if (attempt > 0) await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
+		const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': ua } });
+		const html = await resp.text();
+		if (resp.ok && html.includes(GRID)) return html;
+		answer = `${resp.status}` + (/sgcaptcha/i.test(html) ? ", siteground's captcha" : '');
 	}
-	const html = await resp.text();
+	throw new Error(`8bit: ${PAGE_URL} answered ${answer}`);
+}
+
+export async function scrape(): Promise<ScrapedCompany[]> {
+	const html = await portfolioPage();
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();

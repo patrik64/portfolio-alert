@@ -4,6 +4,10 @@ const PAGE_URL = 'https://fcventures.com/partnerships/';
 // the host's firewall answers 403 to a chrome user-agent string, as stray
 // dog's and helios capital's do, so the fetch says plainly who is asking
 const UA = 'portfolio-alert/1.0 (+https://portfolio-alert.vercel.app)';
+// it also puts its captcha in front of an address it distrusts, under a 2xx
+// status, vercel's among them some nights; the page is asked for again
+// after a wait, and the error says what the firewall answered
+const RETRY_DELAY_MS = 10_000;
 
 // wordpress, a theme of its own: every company is a card on the one page,
 // with its name on the "Learn more" link and in the heading of the panel that
@@ -37,12 +41,22 @@ const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g
 // the category is comma-joined, so a note holding a comma would read as two
 const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
-export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+// the partnerships page, or an error saying what answered instead
+async function partnershipsPage(): Promise<string> {
+	let answer = '';
+	for (let attempt = 0; attempt < 2; attempt++) {
+		if (attempt > 0) await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
+		const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+		const html = await resp.text();
+		const captcha = /sgcaptcha/i.test(html);
+		if (resp.ok && !captcha) return html;
+		answer = `${resp.status}` + (captcha ? ", siteground's captcha" : '');
 	}
-	const html = await resp.text();
+	throw new Error(`fcventures: ${PAGE_URL} answered ${answer}`);
+}
+
+export async function scrape(): Promise<ScrapedCompany[]> {
+	const html = await partnershipsPage();
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
