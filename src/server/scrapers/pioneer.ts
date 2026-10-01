@@ -5,6 +5,12 @@ const PAGE_URL = `${BASE_URL}/portfolio`;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 const PAGE_SIZE = 100;
+// the datasource route has failed a nightly run once, the log cutting its
+// status off; a refusal or a server error is asked about again, twice,
+// after waits that double from five seconds, and the error leads with the
+// status
+const TRIES = 3;
+const RETRY_MS = 5_000;
 
 // the site is softr over the fund's airtable base, so the page itself is an
 // empty shell: the companies are fetched afterwards from a datasource route
@@ -35,6 +41,35 @@ interface Row {
 	fields?: { Name?: string; Website?: string; 'YC Batch'?: string };
 }
 
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// a page of the table, from the offset the last one ended at
+async function ask(url: string, offset: string | null): Promise<Response> {
+	for (let attempt = 1; ; attempt++) {
+		const resp = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'User-Agent': UA,
+				'Content-Type': 'application/json',
+				'Accept-Language': 'en-US'
+			},
+			body: JSON.stringify({
+				options: { cellFormat: 'string', timeZone: 'UTC', userLocale: 'en-US' },
+				pageContext: null,
+				filterCriteria: {},
+				pagingOption: { offset, count: PAGE_SIZE }
+			})
+		});
+		if (resp.ok) return resp;
+		await resp.body?.cancel();
+		if ((resp.status >= 500 || resp.status === 429) && attempt < TRIES) {
+			await wait(RETRY_MS * 2 ** (attempt - 1));
+			continue;
+		}
+		throw new Error(`pioneer: the datasource answered ${resp.status} (${url})`);
+	}
+}
+
 export async function scrape(): Promise<ScrapedCompany[]> {
 	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
 	if (!resp.ok) {
@@ -58,24 +93,7 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 	const seen = new Set<string>();
 	let offset: string | null = null;
 	for (let request = 0; request < 40; request++) {
-		const dataResp: Response = await fetch(url, {
-			method: 'POST',
-			headers: {
-				'User-Agent': UA,
-				'Content-Type': 'application/json',
-				'Accept-Language': 'en-US'
-			},
-			body: JSON.stringify({
-				options: { cellFormat: 'string', timeZone: 'UTC', userLocale: 'en-US' },
-				pageContext: null,
-				filterCriteria: {},
-				pagingOption: { offset, count: PAGE_SIZE }
-			})
-		});
-		if (!dataResp.ok) {
-			throw new Error(`Failed to fetch ${url}: ${dataResp.status}`);
-		}
-		const body: { records?: Row[]; offset?: string } = await dataResp.json();
+		const body: { records?: Row[]; offset?: string } = await (await ask(url, offset)).json();
 
 		for (const row of body.records ?? []) {
 			const name = clean(row.fields?.Name ?? '');

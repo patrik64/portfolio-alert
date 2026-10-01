@@ -7,6 +7,12 @@ const PER_PAGE = 100;
 const MAX_PAGES = 20;
 // the share of the rest api's count the listing must reach to be believed
 const MIN_SHARE = 0.9;
+// the host has once answered a nightly run with a page of html where json
+// was due, and with the json on the next try; such an answer, a server
+// error or a refusal is asked about again, twice, after waits that double
+// from five seconds
+const TRIES = 3;
+const RETRY_MS = 5_000;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
@@ -62,28 +68,54 @@ function flatten(body: URLSearchParams, prefix: string, value: unknown) {
 	else body.set(prefix, value == null ? '' : String(value));
 }
 
-async function fetchJson<T>(url: string): Promise<{ data: T; resp: Response }> {
-	const resp = await fetch(url, { headers: { 'User-Agent': UA } });
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${url}: ${resp.status}`);
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// a request's answer, asked about again while the host stumbles; with json
+// set, an answer that will not parse as json is a stumble too
+async function request(url: string, init: RequestInit, what: string, json: boolean): Promise<{ text: string; resp: Response }> {
+	for (let attempt = 1; ; attempt++) {
+		const resp = await fetch(url, init);
+		let stumbled = resp.status >= 500 || resp.status === 429;
+		if (resp.ok) {
+			const text = await resp.text();
+			if (!json) return { text, resp };
+			try {
+				JSON.parse(text);
+				return { text, resp };
+			} catch {
+				stumbled = true;
+			}
+		} else {
+			await resp.body?.cancel();
+		}
+		if (!stumbled || attempt >= TRIES) {
+			throw new Error(resp.ok ? `${what} answered with something other than json` : `${what} answered ${resp.status}`);
+		}
+		await wait(RETRY_MS * 2 ** (attempt - 1));
 	}
-	return { data: (await resp.json()) as T, resp };
+}
+
+async function fetchJson<T>(url: string): Promise<{ data: T; resp: Response }> {
+	const { text, resp } = await request(url, { headers: { 'User-Agent': UA } }, `ffvc: ${url}`, true);
+	return { data: JSON.parse(text) as T, resp };
 }
 
 async function ask(url: string, body: URLSearchParams): Promise<string> {
-	const resp = await fetch(url, {
-		method: 'POST',
-		headers: {
-			'User-Agent': UA,
-			'Content-Type': 'application/x-www-form-urlencoded',
-			'X-Requested-With': 'XMLHttpRequest'
+	const { text } = await request(
+		url,
+		{
+			method: 'POST',
+			headers: {
+				'User-Agent': UA,
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'X-Requested-With': 'XMLHttpRequest'
+			},
+			body
 		},
-		body
-	});
-	if (!resp.ok) {
-		throw new Error(`ffvc: the listing answered ${resp.status}`);
-	}
-	const answer = (await resp.json()) as Answer;
+		'ffvc: the listing',
+		true
+	);
+	const answer = JSON.parse(text) as Answer;
 	if (!answer.success || typeof answer.data?.html !== 'string') {
 		throw new Error('ffvc: the listing gave no companies');
 	}
@@ -140,11 +172,7 @@ async function sites(html: string): Promise<Map<number, string>> {
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
-	}
-	const html = await resp.text();
+	const { text: html } = await request(PAGE_URL, { headers: { 'User-Agent': UA } }, `ffvc: ${PAGE_URL}`, false);
 
 	const posts: Post[] = [];
 	let total = 0;
