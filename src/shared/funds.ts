@@ -1,4 +1,4 @@
-// The 810 tracked funds, in case-insensitive alphabetical order by name — the
+// The 820 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -32,19 +32,29 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'accel', name: 'Accel', url: 'https://www.accel.com/companies' },
 	{ slug: 'actions', name: 'Actions Capital', url: 'https://www.actions.capital/founders' },
 	{ slug: 'advent', name: 'Advent International', url: 'https://www.adventinternational.com/investments/' },
+	{ slug: 'afore', name: 'Afore Capital', url: 'https://www.afore.vc/portfolio' },
+	{ slug: 'agfunder', name: 'AgFunder', url: 'https://agfunder.com/portfolio/' },
+	{ slug: 'aifund', name: 'AI.FUND', url: 'https://ai-fund.vc/our-portfolio/' },
 	{ slug: 'aic', name: 'AIC', url: 'https://aicapital.ai/our-companies' },
+	{ slug: 'ainventures', name: 'AIN Ventures', url: 'https://www.ainventures.com/portfolio' },
+	{ slug: 'airstreet', name: 'Air Street Capital', url: 'https://www.airstreet.com/portfolio' },
 	{
 		slug: 'airbusventures',
 		name: 'Airbus Ventures',
 		url: 'https://www.airbusventures.vc/portfolio'
 	},
+	{ slug: 'airtree', name: 'Airtree Ventures', url: 'https://www.airtree.vc/companies' },
 	{ slug: 'aisling', name: 'Aisling Capital', url: 'https://www.aislingcapital.com/portfolio' },
+	{ slug: 'aix', name: 'AIX Ventures', url: 'https://www.aixventures.com/portfolio' },
+	{ slug: 'alaya', name: 'Alaya Capital', url: 'https://alaya-capital.com/portfolio/' },
 	{
 		slug: 'alchemist',
 		name: 'Alchemist Accelerator',
 		url: 'https://www.alchemistaccelerator.com/portfolio'
 	},
 	{ slug: 'aleph', name: 'Aleph', url: 'https://www.aleph.vc/companies' },
+	{ slug: 'alix', name: 'Alix Ventures', url: 'https://www.alix.vc/portfolio-1' },
+	{ slug: 'allegis', name: 'Allegis Capital', url: 'https://www.allegiscyber.com/portfolio' },
 	{ slug: 'alleycorp', name: 'AlleyCorp', url: 'https://alleycorp.com/companies/' },
 	{ slug: 'alloyfund', name: 'Alloy Fund', url: 'https://www.alloyfund.com/portfolio' },
 	{ slug: 'alpaca', name: 'Alpaca VC', url: 'https://alpaca.vc/portfolio' },
