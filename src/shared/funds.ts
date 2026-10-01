@@ -1,4 +1,4 @@
-// The 829 tracked funds, in case-insensitive alphabetical order by name — the
+// The 837 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -29,7 +29,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: '8vc', name: '8VC', url: 'https://www.8vc.com/companies' },
 	{ slug: '97212', name: '97212 Ventures', url: 'https://www.97212.vc/portfolio' },
 	{ slug: 'acapital', name: 'A Capital', url: 'https://acapital.com/portfolio' },
+	{ slug: 'able', name: 'Able Partners', url: 'https://ablepartners.nyc/#portfolio' },
+	{ slug: 'abstract', name: 'Abstract', url: 'https://www.abstract.com/companies-list/' },
 	{ slug: 'accel', name: 'Accel', url: 'https://www.accel.com/companies' },
+	{ slug: 'acequia', name: 'Acequia Capital', url: 'https://www.acecap.com/portfolio' },
+	{ slug: 'acre', name: 'Acre Venture Partners', url: 'https://acre.vc/#partners' },
 	{ slug: 'acrew', name: 'Acrew Capital', url: 'https://www.acrewcapital.com/companies' },
 	{ slug: 'actone', name: 'Act One Ventures', url: 'https://www.actoneventures.com/portfolio' },
 	{ slug: 'actions', name: 'Actions Capital', url: 'https://www.actions.capital/founders' },
@@ -242,6 +246,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'deciens', name: 'Deciens Capital', url: 'https://deciens.com/companies' },
 	{ slug: 'decisivepoint', name: 'Decisive Point', url: 'https://www.decisivepoint.com/portfolio' },
 	{ slug: 'define', name: 'Define Ventures', url: 'https://www.definevc.com/partners' },
+	{ slug: 'defined', name: 'Defined', url: 'https://definedvc.com/companies' },
 	{ slug: 'defy', name: 'Defy', url: 'https://defy.vc/companies/' },
 	{ slug: 'designerfund', name: 'Designer Fund', url: 'https://designerfund.com/companies' },
 	{ slug: 'dfs', name: 'DFS', url: 'https://www.dfs.vc/portfolio.html' },
@@ -330,6 +335,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'foothill', name: 'Foothill Ventures', url: 'https://www.foothill.ventures/portfolio' },
 	{ slug: 'footprintcoalition', name: 'FootPrint Coalition', url: 'https://www.footprintcoalition.com/investments' },
 	{ slug: 'forerunner', name: 'Forerunner Ventures', url: 'https://www.forerunnerventures.com/investments/' },
+	{ slug: 'fortitude', name: 'Fortitude Ventures', url: 'https://fortitudevc.com/#investments' },
 	{ slug: 'foundamental', name: 'Foundamental', url: 'https://www.foundamental.com/portfolio' },
 	{ slug: 'foundationcapital', name: 'Foundation Capital', url: 'https://foundationcapital.com/portfolio' },
 	{ slug: 'foundationventures', name: 'Foundation Ventures', url: 'https://www.foundationventures.com/portfolio' },
@@ -508,8 +514,10 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'maverick', name: 'Maverick Ventures', url: 'https://www.maverickcapital.com/venturesportfolio' },
 	{ slug: 'maveron', name: 'Maveron', url: 'https://www.maveron.com/portfolio' },
 	{ slug: 'mayfield', name: 'Mayfield', url: 'https://www.mayfield.com/meet-our-founders/' },
+	{ slug: 'mbx', name: 'MBX Capital', url: 'https://mbxcapital.com/' },
 	{ slug: 'mcj', name: 'MCJ Collective', url: 'https://mcj.vc/capital#portfolio' },
 	{ slug: 'mmv', name: 'MedMountain Ventures', url: 'https://mmv.vc/' },
+	{ slug: 'medtechinnovator', name: 'MedTech Innovator', url: 'https://medtechinnovator.org/portfolio-2/' },
 	{ slug: 'mendoza', name: 'Mendoza Ventures', url: 'https://mendoza-ventures.com/portfolio/' },
 	{ slug: 'menlo', name: 'Menlo Ventures', url: 'https://menlovc.com/portfolio/' },
 	{ slug: 'mercuri', name: 'Mercuri', url: 'https://www.mercuri.vc/portfolio' },

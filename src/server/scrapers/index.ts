@@ -26,7 +26,11 @@ import { scrape as amplifyher } from './amplifyher';
 import { scrape as amplitude } from './amplitude';
 import { scrape as a16z } from './a16z';
 import { scrape as acapital } from './acapital';
+import { scrape as able } from './able';
+import { scrape as abstract } from './abstract';
 import { scrape as accel } from './accel';
+import { scrape as acequia } from './acequia';
+import { scrape as acre } from './acre';
 import { scrape as acrew } from './acrew';
 import { scrape as actone } from './actone';
 import { scrape as actions } from './actions';
@@ -223,6 +227,7 @@ import { scrape as decibel } from './decibel';
 import { scrape as deciens } from './deciens';
 import { scrape as decisivepoint } from './decisivepoint';
 import { scrape as define } from './define';
+import { scrape as defined } from './defined';
 import { scrape as defy } from './defy';
 import { scrape as designerfund } from './designerfund';
 import { scrape as dfs } from './dfs';
@@ -304,6 +309,7 @@ import { scrape as focal } from './focal';
 import { scrape as foothill } from './foothill';
 import { scrape as footprintcoalition } from './footprintcoalition';
 import { scrape as forerunner } from './forerunner';
+import { scrape as fortitude } from './fortitude';
 import { scrape as foundamental } from './foundamental';
 import { scrape as foundationcapital } from './foundationcapital';
 import { scrape as foundationventures } from './foundationventures';
@@ -481,8 +487,10 @@ import { scrape as matrix } from './matrix';
 import { scrape as maverick } from './maverick';
 import { scrape as maveron } from './maveron';
 import { scrape as mayfield } from './mayfield';
+import { scrape as mbx } from './mbx';
 import { scrape as mcj } from './mcj';
 import { scrape as mmv } from './mmv';
+import { scrape as medtechinnovator } from './medtechinnovator';
 import { scrape as mendoza } from './mendoza';
 import { scrape as menlo } from './menlo';
 import { scrape as mercuri } from './mercuri';
@@ -856,7 +864,11 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	amplitude,
 	a16z,
 	acapital,
+	able,
+	abstract,
 	accel,
+	acequia,
+	acre,
 	acrew,
 	actone,
 	actions,
@@ -1053,6 +1065,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	deciens,
 	decisivepoint,
 	define,
+	defined,
 	defy,
 	designerfund,
 	dfs,
@@ -1134,6 +1147,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	foothill,
 	footprintcoalition,
 	forerunner,
+	fortitude,
 	foundamental,
 	foundationcapital,
 	foundationventures,
@@ -1311,8 +1325,10 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	maverick,
 	maveron,
 	mayfield,
+	mbx,
 	mcj,
 	mmv,
+	medtechinnovator,
 	mendoza,
 	menlo,
 	mercuri,
