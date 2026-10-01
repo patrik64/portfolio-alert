@@ -17,6 +17,13 @@ import { scrape as eightbit } from './eightbit';
 import { scrape as eightythreenorth } from './eightythreenorth';
 import { scrape as eightvc } from './eightvc';
 import { scrape as nineseventwoonetwo } from './nineseventwoonetwo';
+import { scrape as amecloud } from './amecloud';
+import { scrape as amfam } from './amfam';
+import { scrape as amplifycapital } from './amplifycapital';
+import { scrape as amplifypartners } from './amplifypartners';
+import { scrape as amplifyla } from './amplifyla';
+import { scrape as amplifyher } from './amplifyher';
+import { scrape as amplitude } from './amplitude';
 import { scrape as a16z } from './a16z';
 import { scrape as acapital } from './acapital';
 import { scrape as accel } from './accel';
@@ -27,11 +34,20 @@ import { scrape as aisling } from './aisling';
 import { scrape as alchemist } from './alchemist';
 import { scrape as aleph } from './aleph';
 import { scrape as alumni } from './alumni';
+import { scrape as alven } from './alven';
+import { scrape as amasia } from './amasia';
 import { scrape as ambition } from './ambition';
+import { scrape as angular } from './angular';
+import { scrape as animo } from './animo';
+import { scrape as anorak } from './anorak';
+import { scrape as anthem } from './anthem';
+import { scrape as anthemis } from './anthemis';
 import { scrape as antler } from './antler';
+import { scrape as aperture } from './aperture';
 import { scrape as apex } from './apex';
 import { scrape as arcane } from './arcane';
 import { scrape as archventure } from './archventure';
+import { scrape as ardent } from './ardent';
 import { scrape as argon } from './argon';
 import { scrape as array } from './array';
 import { scrape as arrington } from './arrington';
@@ -806,6 +822,13 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	'83north': eightythreenorth,
 	'8vc': eightvc,
 	'97212': nineseventwoonetwo,
+	amecloud,
+	amfam,
+	amplifycapital,
+	amplifypartners,
+	amplifyla,
+	amplifyher,
+	amplitude,
 	a16z,
 	acapital,
 	accel,
@@ -816,11 +839,20 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	alchemist,
 	aleph,
 	alumni,
+	alven,
+	amasia,
 	ambition,
+	angular,
+	animo,
+	anorak,
+	anthem,
+	anthemis,
 	antler,
+	aperture,
 	apex,
 	arcane,
 	archventure,
+	ardent,
 	argon,
 	array,
 	arrington,

@@ -1,4 +1,4 @@
-// The 788 tracked funds, in case-insensitive alphabetical order by name — the
+// The 804 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -45,12 +45,28 @@ export const FUNDS: FundInfo[] = [
 	},
 	{ slug: 'aleph', name: 'Aleph', url: 'https://www.aleph.vc/companies' },
 	{ slug: 'alumni', name: 'Alumni Ventures', url: 'https://www.av.vc/portfolio' },
+	{ slug: 'alven', name: 'Alven', url: 'https://alven.co/portfolio' },
+	{ slug: 'amasia', name: 'Amasia', url: 'https://www.amasia.vc/portfolio' },
 	{ slug: 'ambition', name: 'Ambition Capital', url: 'https://www.ambition.capital/portfolio' },
+	{ slug: 'amecloud', name: 'AME Cloud Ventures', url: 'https://www.amecloudventures.com/portfolio' },
+	{ slug: 'amfam', name: 'American Family Ventures', url: 'https://www.amfamventures.com/portfolio/' },
+	{ slug: 'amplifycapital', name: 'Amplify Capital', url: 'https://amplifycapital.ca/#portfolio' },
+	{ slug: 'amplifypartners', name: 'Amplify Partners', url: 'https://www.amplifypartners.com/portfolio/company' },
+	{ slug: 'amplifyla', name: 'Amplify.LA', url: 'https://amplify.la/portfolio/' },
+	{ slug: 'amplifyher', name: 'AmplifyHer Ventures', url: 'https://www.amplifyherventures.com/#investments' },
+	{ slug: 'amplitude', name: 'Amplitude Ventures', url: 'https://amplitudevc.com/en/portfolio' },
 	{ slug: 'a16z', name: 'Andreessen Horowitz', url: 'https://a16z.com/portfolio/' },
+	{ slug: 'angular', name: 'Angular Ventures', url: 'https://angularventures.com/portfolio' },
+	{ slug: 'animo', name: 'ANIMO Ventures', url: 'https://animo.vc/#portfolio' },
+	{ slug: 'anorak', name: 'Anorak Ventures', url: 'https://www.anorak.vc/portfolio' },
+	{ slug: 'anthem', name: 'Anthem Venture Partners', url: 'https://anthemvp.com/?page_id=15' },
+	{ slug: 'anthemis', name: 'Anthemis', url: 'https://www.anthemis.com/portfolio/' },
 	{ slug: 'antler', name: 'Antler', url: 'https://www.antler.co/portfolio' },
+	{ slug: 'aperture', name: 'APERTURE Venture Partners', url: 'http://www.aperturevp.com/portfolio' },
 	{ slug: 'apex', name: 'Apex Ventures', url: 'https://www.apex.ventures/portfolio' },
 	{ slug: 'arcane', name: 'Arcane Ventures', url: 'https://arcane-ventures.net/#portfolio' },
 	{ slug: 'archventure', name: 'ARCH Venture Partners', url: 'https://archventure.com/portfolio/' },
+	{ slug: 'ardent', name: 'Ardent Venture Partners', url: 'https://ardent.vc/portfolio' },
 	{ slug: 'argon', name: 'Argon Ventures', url: 'https://www.argon.vc/companies' },
 	{ slug: 'array', name: 'Array Ventures', url: 'https://www.array.vc/#investments' },
 	{ slug: 'arrington', name: 'Arrington Capital', url: 'https://www.arringtoncapital.com/portfolio/' },
