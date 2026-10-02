@@ -1,4 +1,4 @@
-import { BackendMethod, repo, SqlDatabase } from 'remult';
+import { BackendMethod, remult, repo, SqlDatabase } from 'remult';
 import type { ScrapedCompany } from '../server/scrapers/types';
 import { Company } from './Company';
 import { Fund } from './Fund';
@@ -132,7 +132,10 @@ function sqlDb(): SqlDatabase | undefined {
 }
 
 export class ScrapeController {
-	@BackendMethod({ allowed: true })
+	// remult runs a backend method as one transaction unless told otherwise,
+	// and a failed fetch's error, recorded on its way out, was rolled back
+	// with the rest; the fetch's writes get a transaction of their own instead
+	@BackendMethod({ allowed: true, transactional: false })
 	static async fetchFund(slug: string, accept?: Accept): Promise<FetchResult> {
 		// This class is client-bundled (it's how @BackendMethod builds its HTTP
 		// proxy), but the method body only ever runs on the server. The statically
@@ -169,65 +172,73 @@ export class ScrapeController {
 				if (key && !byKey.has(key)) byKey.set(key, { ...c, name });
 			}
 
-			const companies = repo(Company);
-			const existing = await companies.find({ where: { fundSlug: slug }, limit: 100_000 });
-			const existingKeys = new Set(existing.map((c) => nameKey(c.name)));
-			const newcomers = [...byKey].filter(([key]) => !existingKeys.has(key));
-			const baseline = existing.length === 0;
-			// thrown before anything is written, so the fund's last newcomers
-			// stay flagged and the next night asks again
-			if (!baseline && !accept && newcomers.length > MAX_NEW) {
-				throw new Error(
-					`${entry.name}: ${newcomers.length} new companies at once, over the limit of ${MAX_NEW} — ` +
-						'nothing stored until a local fetch-all --accept takes them in'
-				);
-			}
-			const asBaseline = baseline || accept === 'baseline';
-
-			// the previous batch is no longer "new" — cleared only now that the
-			// scrape succeeded, so a failed fetch keeps the last newcomer set intact
-			await companies.updateMany({
-				where: { fundSlug: slug, isNewcomer: true },
-				set: { isNewcomer: false }
-			});
-
-			// chunked concurrent inserts; the pg pool bounds real concurrency
-			for (let i = 0; i < newcomers.length; i += 50) {
-				await Promise.all(
-					newcomers.slice(i, i + 50).map(([key, c]) =>
-						companies.insert({
-							id: `${slug}:${key}`,
-							fundSlug: slug,
-							name: c.name.trim(),
-							category: decodeEntities(c.category ?? ''),
-							url: (c.url ?? '').replace(/&amp;/g, '&'),
-							isNewcomer: !asBaseline,
-							isBaseline: asBaseline
-						})
-					)
-				);
-			}
-
-			const added = asBaseline ? 0 : newcomers.length;
-			await repo(Fund).upsert({
-				where: { slug },
-				set: {
-					name: entry.name,
-					companyCount: existing.length + newcomers.length,
-					newCount: added,
-					lastFetchedAt: new Date(),
-					lastError: ''
+			// the database half of the fetch, all or nothing — and only that
+			// half, so no connection sits idle in a transaction through the scrape
+			let result!: FetchResult;
+			await remult.dataProvider.transaction(async (db) => {
+				const companies = repo(Company, db);
+				const existing = await companies.find({ where: { fundSlug: slug }, limit: 100_000 });
+				const existingKeys = new Set(existing.map((c) => nameKey(c.name)));
+				const newcomers = [...byKey].filter(([key]) => !existingKeys.has(key));
+				const baseline = existing.length === 0;
+				// thrown before anything is written, so the fund's last newcomers
+				// stay flagged and the next night asks again
+				if (!baseline && !accept && newcomers.length > MAX_NEW) {
+					throw new Error(
+						`${entry.name}: ${newcomers.length} new companies at once, over the limit of ${MAX_NEW} — ` +
+							'nothing stored until a local fetch-all --accept takes them in'
+					);
 				}
+				const asBaseline = baseline || accept === 'baseline';
+
+				// the previous batch is no longer "new" — cleared only now that the
+				// scrape succeeded, so a failed fetch keeps the last newcomer set intact
+				await companies.updateMany({
+					where: { fundSlug: slug, isNewcomer: true },
+					set: { isNewcomer: false }
+				});
+
+				// chunked inserts, queued on the transaction's one connection
+				for (let i = 0; i < newcomers.length; i += 50) {
+					await Promise.all(
+						newcomers.slice(i, i + 50).map(([key, c]) =>
+							companies.insert({
+								id: `${slug}:${key}`,
+								fundSlug: slug,
+								name: c.name.trim(),
+								category: decodeEntities(c.category ?? ''),
+								url: (c.url ?? '').replace(/&amp;/g, '&'),
+								isNewcomer: !asBaseline,
+								isBaseline: asBaseline
+							})
+						)
+					);
+				}
+
+				const added = asBaseline ? 0 : newcomers.length;
+				await repo(Fund, db).upsert({
+					where: { slug },
+					set: {
+						name: entry.name,
+						companyCount: existing.length + newcomers.length,
+						newCount: added,
+						lastFetchedAt: new Date(),
+						lastError: ''
+					}
+				});
+				result = {
+					slug,
+					total: existing.length + newcomers.length,
+					added,
+					baseline,
+					absorbed: asBaseline && !baseline ? newcomers.length : 0
+				};
 			});
-			return {
-				slug,
-				total: existing.length + newcomers.length,
-				added,
-				baseline,
-				absorbed: asBaseline && !baseline ? newcomers.length : 0
-			};
+			return result;
 		} catch (err) {
 			const message = err instanceof Error ? err.message : String(err);
+			// outside the transaction, so the error outlives its rollback and
+			// shows on the fund's dashboard card
 			await repo(Fund)
 				.upsert({ where: { slug }, set: { lastError: message } })
 				.catch(() => {});
