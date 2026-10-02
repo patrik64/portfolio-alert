@@ -71,7 +71,9 @@ const NAMES: Record<string, string> = {
 	'ursamajor.com': 'Ursa Major'
 };
 
-const BLOCK = /(?=<div\b[^>]*\bclass="sqs-block image-block\b)/;
+// an image block, "sqs-block image-block …" in squarespace's older markup and
+// "sqs-block website-component-block … image-block" in its newer
+const BLOCK = /(?=<div\b[^>]*\bclass="(?:[^"]*\s)?image-block[\s"])/;
 const LINK = /<a\b[^>]*\bhref="([^"]*)"/;
 const STEALTH = /^stealth\b/i;
 

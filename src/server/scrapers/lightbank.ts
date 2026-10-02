@@ -11,7 +11,10 @@ const UA =
 // us...?"), which is told apart by being a question; the "View open roles"
 // line under it holds a link, which the name pattern already refuses.
 
-const NAME = /<p style="text-align:center;white-space:pre-wrap;" class="">([^<]+)<\/p>/g;
+// squarespace's editor writes the paragraph's attributes in either order and
+// spacing, "text-align:center;white-space:pre-wrap;" or "text-align: center;
+// white-space: pre-wrap", depending on when the block was last saved
+const NAME = /<p\b[^>]*\bstyle="text-align:\s*center;\s*white-space:\s*pre-wrap;?"[^>]*>([^<]+)<\/p>/g;
 
 const unescape = (s: string) =>
 	s
