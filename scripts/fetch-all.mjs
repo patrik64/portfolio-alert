@@ -6,6 +6,17 @@
 //   node scripts/fetch-all.mjs --only a16z,gv   refresh a subset (smoke test)
 //   node scripts/fetch-all.mjs --force          ...even if one just ran
 //
+// A fund turning up more than 30 new companies at once is held back, nothing
+// stored — usually a redesigned page listing its back catalog. From a local
+// dev server (BASE_URL=http://localhost:5173), a held fund is let through:
+//
+//   node scripts/fetch-all.mjs --only=techstars --accept=newcomers
+//                                               a real flood, as newcomers
+//   node scripts/fetch-all.mjs --only=collabfund --accept=baseline
+//                                               a back catalog, taken in
+//                                               quietly the way a first
+//                                               fetch is
+//
 // A full run stands down when most of the list was refreshed in the last
 // MIN_GAP_HOURS (12): a second run of the day finds nothing and clears the
 // newcomers the first one marked.
@@ -28,6 +39,18 @@ const arg = (name) => {
 const only = arg('--only')?.split(',').filter(Boolean);
 const RESULTS_FILE = arg('--results') ?? 'fetch-results.json';
 const FORCE = process.argv.includes('--force');
+// lets a held flood through; naming the funds keeps it from waving every
+// other fund's through with them, and a bare --accept is refused rather than
+// ignored
+const ACCEPT = arg('--accept') ?? (process.argv.includes('--accept') ? '' : undefined);
+if (ACCEPT !== undefined && !['newcomers', 'baseline'].includes(ACCEPT)) {
+	console.error(`--accept is newcomers or baseline, not ${ACCEPT || 'empty'}`);
+	process.exit(1);
+}
+if (ACCEPT && !only) {
+	console.error('--accept takes --only, naming the funds whose flood it lets through');
+	process.exit(1);
+}
 // how recently a full refresh must have run for this one to stand down; 0
 // turns the check off
 const MIN_GAP_HOURS = Number(process.env.MIN_GAP_HOURS ?? 12);
@@ -110,7 +133,7 @@ async function worker() {
 			const resp = await fetch(`${BASE_URL}/api/fetchFund`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ args: [fund.slug] }),
+				body: JSON.stringify({ args: ACCEPT ? [fund.slug, ACCEPT] : [fund.slug] }),
 				signal: AbortSignal.timeout(REQUEST_TIMEOUT)
 			});
 			const seconds = Math.round((Date.now() - started) / 1000);
@@ -132,7 +155,10 @@ async function worker() {
 			} else {
 				const { data } = await resp.json();
 				results.push({ slug: fund.slug, name: fund.name, ...data });
-				console.log(`ok   ${fund.slug.padEnd(20)} ${seconds}s  ${data.total} companies, ${data.added} new`);
+				const absorbed = data.absorbed ? `, ${data.absorbed} taken in as baseline` : '';
+				console.log(
+					`ok   ${fund.slug.padEnd(20)} ${seconds}s  ${data.total} companies, ${data.added} new${absorbed}`
+				);
 			}
 		} catch (err) {
 			const seconds = Math.round((Date.now() - started) / 1000);

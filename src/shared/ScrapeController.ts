@@ -9,7 +9,21 @@ export interface FetchResult {
 	added: number;
 	// the first fetch of a fund imports a baseline: nothing is marked as new
 	baseline: boolean;
+	// what a fetch accepting a flood as 'baseline' took in quietly
+	absorbed: number;
 }
+
+// a fetch turning up more than this many companies at once is held back,
+// nothing stored: that is what a redesigned page suddenly listing its whole
+// back catalog looks like (Collaborative Fund's 521 on 2 October 2026), and
+// announcing it would be wrong. a fund's genuine finds rarely come near it
+export const MAX_NEW = 30;
+
+// how a held flood is let through, by hand: as newcomers when it is real (an
+// accelerator's new cohort, say), or as baseline when it is a back catalog —
+// taken in the way a first fetch is, kept out of the newcomers, the timeline
+// and the feed
+export type Accept = 'newcomers' | 'baseline';
 
 // a search result row; firstSeenAt travels as an ISO string over the wire
 export interface SearchHit {
@@ -119,7 +133,7 @@ function sqlDb(): SqlDatabase | undefined {
 
 export class ScrapeController {
 	@BackendMethod({ allowed: true })
-	static async fetchFund(slug: string): Promise<FetchResult> {
+	static async fetchFund(slug: string, accept?: Accept): Promise<FetchResult> {
 		// This class is client-bundled (it's how @BackendMethod builds its HTTP
 		// proxy), but the method body only ever runs on the server. The statically
 		// dead !SSR branch lets Vite drop the scrapers from the client build.
@@ -127,6 +141,14 @@ export class ScrapeController {
 		const { scraperBySlug } = await import('../server/scrapers/index');
 		const entry = scraperBySlug.get(slug);
 		if (!entry) throw new Error(`unknown fund: ${slug}`);
+		if (accept) {
+			if (accept !== 'newcomers' && accept !== 'baseline') {
+				throw new Error(`accept is 'newcomers' or 'baseline', not '${accept}'`);
+			}
+			// the endpoint is public, so letting a flood through is left to a
+			// local dev server, run by whoever holds the database credentials
+			if (!import.meta.env.DEV) throw new Error('accept only works from a local dev server');
+		}
 		if (inFlight.has(slug)) throw new Error(`${entry.name}: fetch already running`);
 		inFlight.add(slug);
 		try {
@@ -152,6 +174,15 @@ export class ScrapeController {
 			const existingKeys = new Set(existing.map((c) => nameKey(c.name)));
 			const newcomers = [...byKey].filter(([key]) => !existingKeys.has(key));
 			const baseline = existing.length === 0;
+			// thrown before anything is written, so the fund's last newcomers
+			// stay flagged and the next night asks again
+			if (!baseline && !accept && newcomers.length > MAX_NEW) {
+				throw new Error(
+					`${entry.name}: ${newcomers.length} new companies at once, over the limit of ${MAX_NEW} — ` +
+						'nothing stored until a local fetch-all --accept takes them in'
+				);
+			}
+			const asBaseline = baseline || accept === 'baseline';
 
 			// the previous batch is no longer "new" — cleared only now that the
 			// scrape succeeded, so a failed fetch keeps the last newcomer set intact
@@ -170,14 +201,14 @@ export class ScrapeController {
 							name: c.name.trim(),
 							category: decodeEntities(c.category ?? ''),
 							url: (c.url ?? '').replace(/&amp;/g, '&'),
-							isNewcomer: !baseline,
-							isBaseline: baseline
+							isNewcomer: !asBaseline,
+							isBaseline: asBaseline
 						})
 					)
 				);
 			}
 
-			const added = baseline ? 0 : newcomers.length;
+			const added = asBaseline ? 0 : newcomers.length;
 			await repo(Fund).upsert({
 				where: { slug },
 				set: {
@@ -188,7 +219,13 @@ export class ScrapeController {
 					lastError: ''
 				}
 			});
-			return { slug, total: existing.length + newcomers.length, added, baseline };
+			return {
+				slug,
+				total: existing.length + newcomers.length,
+				added,
+				baseline,
+				absorbed: asBaseline && !baseline ? newcomers.length : 0
+			};
 		} catch (err) {
 			const message = err instanceof Error ? err.message : String(err);
 			await repo(Fund)

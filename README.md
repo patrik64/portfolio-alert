@@ -173,6 +173,25 @@ that found newcomers, with the companies named under their funds and linked to
 their sites. A night still being written is
 held back until it has settled, so readers never cache a half-announced one.
 
+A fund that turns up more than 30 new companies at once is held back: the
+fetch fails with a note saying so, nothing is stored, and its earlier
+newcomers stay flagged. That is what a redesigned page suddenly listing its
+whole back catalog looks like, and it would otherwise be announced as news. A
+held fund is let through from a local dev server, either as newcomers when the
+flood is real (an accelerator's new cohort, say) or as baseline when it is a
+back catalog, which takes the companies in the way a first fetch does, out of
+the newcomers, the timeline and the feed:
+
+```sh
+BASE_URL=http://localhost:5173 pnpm fetch-all --only=techstars --accept=newcomers
+BASE_URL=http://localhost:5173 pnpm fetch-all --only=collabfund --accept=baseline
+```
+
+Newcomers let through this way are in no night's results, so the nightly post
+never names them: they are announced by running the workflow by hand with the
+announce switch above and the fund named, before the next night clears their
+flags.
+
 ## Scrapers
 
 The registry in `src/server/scrapers/index.ts` maps fund slugs (see `src/shared/funds.ts`) to
