@@ -53,8 +53,29 @@ const cased = (label: string) =>
 // the category is comma-joined, so a label holding a comma would read as two
 const tag = (s: string) => s.replace(/\s*,\s*/g, ' / ');
 
+// wp engine answered the nightly run with a 503 on 3 October 2026 where a
+// laptop got the page, so a request that fails with a server error, or
+// whose connection fails outright, is asked once more after a pause, with a
+// time limit so that a hang is not waited on forever.
+const RETRY_DELAY_MS = 10_000;
+const TIMEOUT_MS = 30_000;
+
+async function fetchPage(): Promise<Response> {
+	const get = () =>
+		fetch(PAGE_URL, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(TIMEOUT_MS) });
+	try {
+		const resp = await get();
+		if (resp.status < 500) return resp;
+		await resp.body?.cancel();
+	} catch {
+		// the connection itself failed; asked again below
+	}
+	await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
+	return get();
+}
+
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	const resp = await fetchPage();
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}

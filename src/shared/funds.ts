@@ -311,7 +311,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'filrouge', name: 'Fil Rouge Capital', url: 'https://www.filrougecapital.com/portfolio' },
 	{ slug: 'fincapital', name: 'Fin Capital', url: 'https://fin.capital/portfolio' },
 	{ slug: 'fintechcollective', name: 'FinTech Collective', url: 'https://fintech.io/portfolio' },
-	{ slug: 'fintechv', name: 'Fintech Ventures Fund', url: 'https://www.fintechv.com/portfolio' },
+	{ slug: 'fintechv', name: 'Fintech Ventures Fund', url: 'https://fintechv.com/portfolio' },
 	{ slug: 'firebrand', name: 'Firebrand', url: 'https://www.firebrandvc.com/portfolio' },
 	{ slug: 'firstcheque', name: 'First Cheque', url: 'https://www.firstcheque.vc/portfolio' },
 	{ slug: 'firstcircle', name: 'First Circle Capital', url: 'https://www.firstcircle.capital/portfolio' },

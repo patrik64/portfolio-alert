@@ -1,6 +1,9 @@
 import type { ScrapedCompany } from './types';
 
 const PAGE_URL = 'https://www.btv.vc/partnerships';
+// webflow's own address for the same site, which stayed up when the fund's
+// domain stopped answering in october 2026 (no certificate served for it)
+const WEBFLOW_URL = 'https://better-tomorrow-ventures.webflow.io/partnerships';
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
@@ -26,12 +29,23 @@ const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g
 // the category is comma-joined, so a label holding a comma would read as two
 const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
-export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+// the fund's domain first; webflow's address only when the domain cannot be
+// reached at all, never in place of a page the domain did answer with
+async function fetchPage(): Promise<string> {
+	let resp: Response;
+	try {
+		resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	} catch {
+		resp = await fetch(WEBFLOW_URL, { headers: { 'User-Agent': UA } });
 	}
-	const html = await resp.text();
+	if (!resp.ok) {
+		throw new Error(`Failed to fetch ${resp.url}: ${resp.status}`);
+	}
+	return resp.text();
+}
+
+export async function scrape(): Promise<ScrapedCompany[]> {
+	const html = await fetchPage();
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();

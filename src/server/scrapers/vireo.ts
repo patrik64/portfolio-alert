@@ -62,11 +62,15 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		// the name cell, up to the tagline cell that follows it
 		const cell = row.match(/<span class="text-display[^"]*">([\s\S]*?)<\/span><span class="col-span-2/)?.[1];
 		if (!cell) continue;
-		const name = decode(cell.split('<')[0]);
+		// the name is bare text with the badge in a span after it, or, since
+		// the october 2026 restyle, a span of its own ahead of the badge's
+		const spans = [...cell.matchAll(/<span\b[^>]*>([\s\S]*?)<\/span>/g)].map((m) => decode(m[1]));
+		const bare = decode(cell.split('<')[0]);
+		const name = bare || (spans.shift() ?? '');
 		// a company the fund has not named yet
 		if (!name || /^undisclosed$/i.test(name) || seen.has(name)) continue;
 		seen.add(name);
-		const badge = decode(cell.match(/<span[^>]*>([\s\S]*?)<\/span>/)?.[1] ?? '');
+		const badge = spans[0] ?? '';
 		const tags = [decode(row.match(/<span class="hidden text-kicker[^"]*">([^<]*)<\/span>/)?.[1] ?? '')];
 		if (badge) {
 			tags.push(/^exit/i.test(badge) ? 'Exited' : /acqui/i.test(badge) ? 'Acquired' : badge);
