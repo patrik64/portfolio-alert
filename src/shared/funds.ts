@@ -527,7 +527,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'metaplanet', name: 'Metaplanet', url: 'https://metaplanet.com/portfolio' },
 	{ slug: 'metaprop', name: 'MetaProp', url: 'https://www.metaprop.com/portfolio' },
 	{ slug: 'mfv', name: 'MFV Partners', url: 'https://www.mfvpartners.com/portfolio/' },
-	{ slug: 'mhs', name: 'MHS Capital', url: 'http://www.mhscapital.com/portfolio/' },
+	{ slug: 'mhs', name: 'MHS Capital', url: 'https://www.mhscapital.com/' },
 	{ slug: 'mig', name: 'MIG Capital', url: 'https://www.mig.ag/en/portfolio/' },
 	{ slug: 'mizmaa', name: 'Mizmaa Ventures', url: 'https://www.mizmaa.com/portfolio' },
 	{ slug: 'mmc', name: 'MMC Ventures', url: 'https://mmc.vc/portfolio/' },
