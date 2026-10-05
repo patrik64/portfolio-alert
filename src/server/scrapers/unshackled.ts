@@ -13,23 +13,26 @@ const UA =
 // the company has left the portfolio; "(formerly On Deck)" says no such thing.
 
 const BUNDLE = /<script[^>]*type="module"[^>]*src="([^"]+\.js)"/;
-// the array the portfolio page filters; each entry names a company, links it
-// and files it under one category
-const ARRAY = /\bwx=\[/;
+// the array the portfolio page filters by category; each entry names a
+// company, links it and files it under one category. its minified name
+// changes with every build ("wx", then "_x"), so it is found by that use and
+// then by where it is declared
+const FILTERED = /\b([\w$]+)\.filter\(\(?([\w$]+)\)?=>\2\.category===/;
+const declaration = (name: string) => new RegExp(`(?:^|[,;{\\s])${name.replace(/\$/g, '\\$')}=\\[`);
 
-// slice out the array starting at `from`, tracking strings so brackets inside
-// a description can't end it early
+// slice out the array starting at `from`, tracking strings — written in any
+// of the three quotes — so brackets inside a description can't end it early
 function sliceArray(js: string, from: number): string {
 	let depth = 0;
-	let inString = false;
+	let quote = '';
 	let escaped = false;
 	for (let i = from; i < js.length; i++) {
 		const ch = js[i];
-		if (inString) {
+		if (quote) {
 			if (escaped) escaped = false;
 			else if (ch === '\\') escaped = true;
-			else if (ch === '"') inString = false;
-		} else if (ch === '"') inString = true;
+			else if (ch === quote) quote = '';
+		} else if (ch === '"' || ch === "'" || ch === '`') quote = ch;
 		else if (ch === '[') depth++;
 		else if (ch === ']' && --depth === 0) return js.slice(from, i + 1);
 	}
@@ -52,7 +55,8 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 	}
 	const js = await fetchText(new URL(bundlePath, PAGE_URL).href);
 
-	const at = js.match(ARRAY);
+	const filtered = js.match(FILTERED)?.[1];
+	const at = filtered ? js.match(declaration(filtered)) : null;
 	if (at?.index === undefined) {
 		throw new Error('unshackled: no portfolio array in the bundle');
 	}
