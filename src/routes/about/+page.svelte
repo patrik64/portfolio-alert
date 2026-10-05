@@ -48,9 +48,12 @@
 		</p>
 		<p>
 			<a href="/search" class="font-semibold text-black transition duration-150 hover:text-white">search</a> finds companies
-			across every fund by name or category, and
+			across every fund by name or category,
 			<a href="/timeline" class="font-semibold text-black transition duration-150 hover:text-white">timeline</a> groups them by
-			the day they first appeared.
+			the day they first appeared, and
+			<a href="/statistics" class="font-semibold text-black transition duration-150 hover:text-white">statistics</a> counts
+			each month's newcomers: the funds that added the most, the categories they fall under, and the
+			companies more than one fund backed.
 		</p>
 		<p>
 			Every night the funds are refreshed automatically, and whatever newcomers turn up are

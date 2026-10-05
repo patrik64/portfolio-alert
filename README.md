@@ -39,6 +39,12 @@ https://portfolio-alert.vercel.app/rss.xml
   refresh went live (20 Aug 2026), grouped by the day it appeared and then by
   fund, newest day first, in collapsible sections. The start date lives in
   `src/shared/timeline.ts`.
+- **statistics** (`/statistics`) — a month's newcomers in bar charts: the ten
+  funds that added the most companies, the ten categories most of them are
+  filed under, the companies found each day, the stages the funds came in at
+  and what the companies' addresses end in, with the companies more than one
+  fund added and every month side by side. A picker, or `?month=2026-09`,
+  chooses the month; each chart has its numbers as a table under it.
 - **download** (`/download`) — downloads a JSON file with all companies grouped
   by fund (name, category, url and first-seen date per company).
 - **about** (`/about`) — what the app does and how the pages fit together.
@@ -191,6 +197,30 @@ Newcomers let through this way are in no night's results, so the nightly post
 never names them: they are announced by running the workflow by hand with the
 announce switch above and the fund named, before the next night clears their
 flags.
+
+## Statistics
+
+The statistics page draws what `/statistics.json` serves: every month since
+the timeline began, its newcomers counted on the server (`src/server/statistics.ts`)
+so that the browser gets a few kilobytes of totals rather than every row. The
+newcomers are the feed's — nothing a baseline import brought in, nothing from
+before 20 Aug 2026 — and a month is a month of the nightly job's calendar
+(Europe/Vienna), so a night's finds stay together. The first month is counted
+from the 20th and the latest is still running; the page says so.
+
+A fund's category is a comma-joined list of whatever its page says about a
+company: sectors, but also the stage, the cohort or the year it came in, where
+it is based and whether it is still held. `src/server/tags.ts` tells them
+apart, so that the top categories are sectors rather than "Fall 2026" and
+"Seed": years, cohorts, places, exits and the funds' own vehicles are left
+out, the stages are counted on their own, and a category's spellings ("FinTech",
+"Fintech"; "AI/ML", "Artificial Intelligence") count together. The patterns
+know the labels common across the funds; one fund's own word for a programme
+can still pass for a category.
+
+The charts are [Chart.js](https://www.chartjs.org) bar charts behind a small
+wrapper (`src/lib/charts`): one colour, the count written on each bar, and the
+same numbers as a table under every chart.
 
 ## Scrapers
 

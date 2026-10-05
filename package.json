@@ -28,6 +28,7 @@
 		"vite": "^8.0.16"
 	},
 	"dependencies": {
+		"chart.js": "^4.5.1",
 		"cheerio": "^1.2.0",
 		"pg": "^8.22.0",
 		"remult": "^3.3.16"

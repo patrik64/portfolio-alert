@@ -69,6 +69,13 @@
 					>
 						timeline
 					</a>
+					<a
+						href="/statistics"
+						onclick={() => (menuOpen = false)}
+						class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+					>
+						statistics
+					</a>
 					{#if dev}
 						<a
 							href="/download"
@@ -139,8 +146,14 @@
 				timeline
 			</a>
 			<a
+				href="/statistics"
+				class="hidden min-[540px]:block text-black transition duration-150 hover:text-white"
+			>
+				statistics
+			</a>
+			<a
 				href="/about"
-				class="hidden min-[515px]:block text-black transition duration-150 hover:text-white"
+				class="hidden min-[590px]:block text-black transition duration-150 hover:text-white"
 			>
 				about
 			</a>
