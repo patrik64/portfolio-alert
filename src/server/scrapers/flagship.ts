@@ -3,7 +3,15 @@ import type { ScrapedCompany } from './types';
 const BASE_URL = "https://www.flagshippioneering.com";
 const UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
-const BATCH_SIZE = 20;
+// the site answers a company's page in a few seconds, and ten asked at once
+// in ten to fifteen each — more at once only makes each slower — so the
+// hundred take a minute and a half or more, and on a slow night ran past
+// the four minutes the fetch allows. ten are asked at a time, each given
+// most of a minute, and none is begun past the deadline: a company whose
+// page was not reached links its page on the fund's site instead
+const IN_FLIGHT = 10;
+const PAGE_TIMEOUT_MS = 45_000;
+const DEADLINE_MS = 150_000;
 
 const STATUSES = ["current", "former"] as const;
 const DOMAINS: [string, string][] = [
@@ -31,7 +39,10 @@ async function fetchList(params: string): Promise<{ name: string; path: string }
 // each company's detail page links the company website from its logo
 async function fetchWebsite(path: string): Promise<string> {
   try {
-    const resp = await fetch(path, { headers: { "User-Agent": UA } });
+    const resp = await fetch(path, {
+      headers: { "User-Agent": UA },
+      signal: AbortSignal.timeout(PAGE_TIMEOUT_MS),
+    });
     if (!resp.ok) return "";
     const html = await resp.text();
     return html.match(/<a href="(https?:\/\/[^"]+)"[^>]*class="company__logo-link"/)?.[1] ?? "";
@@ -41,6 +52,7 @@ async function fetchWebsite(path: string): Promise<string> {
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
+  const started = Date.now();
   interface Entry {
     name: string;
     path: string;
@@ -65,16 +77,17 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 
   const entries = [...byPath.values()];
 
+  // the pages are asked for as fast as they answer, a new one begun as each
+  // comes back, rather than in batches that wait for their slowest
   const websiteByPath = new Map<string, string>();
-  for (let i = 0; i < entries.length; i += BATCH_SIZE) {
-    const batch = entries.slice(i, i + BATCH_SIZE);
-    const results = await Promise.all(
-      batch.map(async (e) => ({ path: e.path, website: await fetchWebsite(e.path) })),
-    );
-    for (const r of results) {
-      websiteByPath.set(r.path, r.website);
+  let next = 0;
+  const ask = async () => {
+    while (next < entries.length && Date.now() - started < DEADLINE_MS) {
+      const e = entries[next++];
+      websiteByPath.set(e.path, await fetchWebsite(e.path));
     }
-  }
+  };
+  await Promise.all(Array.from({ length: IN_FLIGHT }, ask));
 
   const companies: ScrapedCompany[] = entries.map((e) => ({
     name: e.name,

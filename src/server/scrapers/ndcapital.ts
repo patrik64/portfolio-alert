@@ -11,7 +11,9 @@ const UA =
 // a logo, a link, and which of the two sciences the fund files it under.
 //
 // the grid is laid out twice, once for a wide screen and once for a narrow
-// one. only the wide one carries the science, so it is the one read.
+// one. only the wide one carries the science, so it is the one read. since
+// october 2026 the page comes with a line break after each tag's name
+// ("<div\nclass="), so a tag is matched with any space inside it.
 //
 // the address therefore names the company, as for p1 and vu venture partners,
 // and the logo file may respell it where the two spell the same letters —
@@ -37,7 +39,7 @@ const UA =
 
 const DESKTOP = /portfolio_desktop([\s\S]*?)portfolio_mobile/;
 const FILTER = /data-filter="\.([a-z]+)"[^>]*>([^<]+)</g;
-const ITEM = /<div class="page_col_5 element-item portfolio_items([^"]*)">([\s\S]*?)(?=<div class="page_col_5 element-item portfolio_items|$)/g;
+const ITEM = /<div\s+class="page_col_5 element-item portfolio_items([^"]*)">([\s\S]*?)(?=<div\s+class="page_col_5 element-item portfolio_items|$)/g;
 const LINK = /<a\b[^>]*?\bhref="(https?:\/\/[^"]+)"/;
 const LOGO = /portfolio_front_img"\s+src="([^"]+)"/;
 const ALUMNI = /class="portfolio_alumni">([^<]*)</;
