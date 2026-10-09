@@ -27,6 +27,12 @@ const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g
 
 export async function scrape(): Promise<ScrapedCompany[]> {
 	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	// since october 2026 the portfolio page sends its visitors on to a page
+	// webflow keeps behind a password, and the site's own menu no longer
+	// leads to a portfolio at all
+	if (resp.status === 401) {
+		throw new Error('haun: the portfolio page is behind a password now — the fund no longer publishes it');
+	}
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}

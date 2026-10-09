@@ -4,47 +4,57 @@ const PAGE_URL = 'https://halogenvc.com/portfolio';
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-// showit, served from wp engine: the page is loose elements placed by the
-// pixel, in no order that says which belong together. a company is a square —
-// a coloured tile under its logo, the logo linking its site and fading on
-// hover to show a line about the company, which opens with its name ("Zette
-// allows you to…", "Vurbl Media is…") — so what sits on a tile, an "Acquired
-// by Mattel" among it, is read from where the stylesheet puts it. a line that
-// doesn't open with the name is named from a list, keyed by how it opens.
+// showit, served from wp engine: the page is elements placed by the pixel.
+// a company is its logo linking its site, a line about the company that
+// opens with its name ("Zette allows you to…", "Vurbl Media is…") and, on
+// one the fund is out of, how it went ("Acquired by Mattel"). since october
+// 2026 most companies' elements are grouped, as the page hovers them
+// together, and are read by their group; the rest still lie loose in their
+// block, and are read by their column — the line beside the link it shares
+// one with, the outcome under them. a line that doesn't open with the name
+// is named from a list, keyed by how it opens. a few loose lines lie far
+// below the bottom of their block, where the page no longer shows them, and
+// are left alone.
 //
-// the ALL filter's block holds every company, those under its "Past
-// Portfolio" heading kept with those words; each other filter has a block of
-// its own, hidden until it is chosen, whose companies take the filter's
-// label, and a company in no block but a filter's (steereo, under media) is
-// kept all the same. the links are the page's, with its slips put right: a
+// the ALL filter's blocks hold every current company; the past portfolio
+// has blocks of its own, headed "Past Portfolio", whose companies are kept
+// with those words; each other filter has blocks of its own, hidden until it
+// is chosen, whose companies take the filter's label, and a company in no
+// block but a filter's is kept all the same. the page cuts a long block into
+// numbered ones ("all-1" to "all-13") and names a filter's after the
+// filter's last words ("media" for "Future of Media"), so a name's blocks
+// are read together. the links are the page's, with its slips put right: a
 // link it gives to more than one company stays only with the one it names
-// (nyad's is on yard, doctours and krillpay too), and one with a second
-// address run into it ("ysebeauty.com/://yingme.co/") is cut back to the first.
+// (toucan's is on this is l too), and one with a second address run into it
+// ("ysebeauty.com/://yingme.co/") is cut back to the first.
 const LINES: [string, string][] = [
 	['a creative play toy company', 'Seedling'],
 	['child care, covered', 'Brella'],
 	['data driven products for modern moms', 'Naya'],
 	['priceline meets broadway', 'Broadway Roulette'],
 	['the go-to destination for flexible', 'Werk'],
-	['the infrastructure fabric for blockchain', 'BlockCypher']
+	['the infrastructure fabric for blockchain', 'BlockCypher'],
+	// "This is L is a popular personal care brand…"
+	['this is l is', 'This is L']
 ];
 
 const BLOCK = /<div id="([^"]+)" data-bid="[^"]*" class="sb\b/g;
+// a group, by its id and its key; the elements in it carry the key in theirs
+// ("all-1_0" holds "all-1_oJ4u8kmYE_0", "all-1_oJ4u8kmYE_1"...)
+const GROUP = /<div data-sid="([\w-]+)" class="sie-\1 si-group ([\w-]+)\b/g;
 const ELEMENT = /<(?:a|div)\b[^>]*\bclass="sie-([\w-]+) se\b[^"]*"[^>]*>/g;
+// where the wide layout puts an element, and how tall it makes a block
 const PLACE = /\.d \.sie-([\w-]+) \{([^}]*)\}/g;
+const HEIGHT = /\.d \.sib-([\w-]+) \{[^}]*\bheight:([\d.]+)px/g;
 const TEXT = /<(h\d|p|div|span)\b[^>]*class="se-t\b[^"]*"[^>]*>([\s\S]*?)<\/\1>/;
 const HREF = /\bhref="(https?:\/\/[^"]+)"/;
-const SIMPLE = /^[\s\S]{0,300}?class="se-simple"/;
 // the name, up to the verb the line goes on with
 const OPENING =
 	/^(.{1,40}?)\s+(?:is|are|was|allows|enables|helps|makes|builds|offers|creates|delivers|lets|harnesses|transforms|provides|connects|powers|brings|uses|gives|combines|develops|designs|empowers)\b/;
 // a filter: a link that changes the page's state, its label the text in it
 const FILTER = /<a\b[^>]*\bdata-state="[^"]*"[^>]*>\s*<h\d\b[^>]*class="se-t\b[^"]*"[^>]*>([^<]{2,60})</g;
 const OUTCOME = /^(acquired|merged|ipo)\b/i;
-const PAST = /^past portfolio$/i;
 const STEALTH = /^stealth\b/i;
-// a tile is a square of at least this many pixels a side
-const TILE = 150;
 
 const unescape = (s: string) =>
 	s
@@ -87,43 +97,35 @@ interface Box {
 	y: number;
 	w: number;
 	h: number;
-	hidden: boolean;
 }
 
-interface Element extends Box {
-	simple: boolean;
-	text: string;
+interface Element {
+	sid: string;
 	href: string;
-}
-
-interface Tile {
-	box: Box;
-	items: Element[];
+	text: string;
 }
 
 interface Card {
 	name: string;
 	note: string;
 	url: string;
-	y: number;
-	x: number;
 }
 
-// where the desktop layout puts each element
-function places(html: string): Map<string, Box> {
+interface Layout {
+	boxes: Map<string, Box>;
+	heights: Map<string, number>;
+}
+
+// where the wide layout puts each element, and how tall it makes each block
+function layout(html: string): Layout {
 	const boxes = new Map<string, Box>();
-	const hidden = new Set<string>();
 	for (const [, sid, rule] of html.matchAll(PLACE)) {
-		if (/display:none/.test(rule)) hidden.add(sid);
 		const px = (key: string) => Number(rule.match(new RegExp(`(?:^|;)${key}:(-?[\\d.]+)px`))?.[1]);
-		const box = { x: px('left'), y: px('top'), w: px('width'), h: px('height'), hidden: false };
+		const box = { x: px('left'), y: px('top'), w: px('width'), h: px('height') };
 		if ([box.x, box.y, box.w, box.h].every(Number.isFinite)) boxes.set(sid, box);
 	}
-	for (const sid of hidden) {
-		const box = boxes.get(sid);
-		if (box) box.hidden = true;
-	}
-	return boxes;
+	const heights = new Map([...html.matchAll(HEIGHT)].map(([, id, height]) => [id, Number(height)]));
+	return { boxes, heights };
 }
 
 function blocks(html: string): Map<string, string> {
@@ -131,39 +133,21 @@ function blocks(html: string): Map<string, string> {
 	return new Map(starts.map((b, i) => [b.id, html.slice(b.at, starts[i + 1]?.at ?? html.length)]));
 }
 
-function elements(block: string, boxes: Map<string, Box>): Element[] {
-	const starts = [...block.matchAll(ELEMENT)].map((m) => ({ sid: m[1], tag: m[0], at: m.index ?? 0 }));
-	return starts.flatMap((e, i) => {
-		const box = boxes.get(e.sid);
-		if (!box || box.hidden) return [];
-		const body = block.slice(e.at, starts[i + 1]?.at ?? block.length);
-		return [
-			{
-				...box,
-				simple: SIMPLE.test(body),
-				text: clean(body.match(TEXT)?.[2] ?? ''),
-				href: repaired(e.tag.match(HREF)?.[1] ?? '')
-			}
-		];
-	});
+// every block of a name, numbered or not, in the order the page keeps them
+function named(byId: Map<string, string>, base: string): [string, string][] {
+	return [...byId].filter(
+		([id]) => id === base || (id.startsWith(`${base}-`) && /^\d+$/.test(id.slice(base.length + 1)))
+	);
 }
 
-// every element goes to the tile its middle falls on
-function tiles(list: Element[]): { tiles: Tile[]; loose: Element[] } {
-	const found: Tile[] = list
-		.filter((e) => e.simple && e.w >= TILE && e.h >= TILE)
-		.map((box) => ({ box, items: [] }));
-	const loose: Element[] = [];
-	for (const e of list) {
-		if (e.simple) continue;
-		const [cx, cy] = [e.x + e.w / 2, e.y + e.h / 2];
-		const tile = found.find(
-			({ box }) => cx >= box.x && cx <= box.x + box.w && cy >= box.y && cy <= box.y + box.h
-		);
-		if (tile) tile.items.push(e);
-		else loose.push(e);
-	}
-	return { tiles: found.filter((t) => t.items.length > 0), loose };
+// the elements of a block, each with its link and its text
+function elements(body: string): Element[] {
+	const starts = [...body.matchAll(ELEMENT)].map((m) => ({ sid: m[1], tag: m[0], at: m.index ?? 0 }));
+	return starts.map((e, i) => ({
+		sid: e.sid,
+		href: repaired(e.tag.match(HREF)?.[1] ?? ''),
+		text: clean(body.slice(e.at, starts[i + 1]?.at ?? body.length).match(TEXT)?.[2] ?? '')
+	}));
 }
 
 function nameOf(line: string): string {
@@ -174,25 +158,57 @@ function nameOf(line: string): string {
 	return name && !/[,;:]\s|\.\s|[!?]/.test(name) && name.split(' ').length <= 5 ? name : '';
 }
 
-function cards(list: Element[]): { cards: Card[]; loose: Element[] } {
-	const { tiles: found, loose } = tiles(list);
+// a line that names no one leaves the address to go by, until it is listed
+const nameFor = (line: string, url: string) => nameOf(line) || titled(hostOf(url).split('.')[0] ?? '');
+
+// whether a box's middle falls within another's width
+const under = (box: Box, column: Box) => {
+	const middle = box.x + box.w / 2;
+	return middle >= column.x && middle <= column.x + column.w;
+};
+
+// the companies in one block: those in groups, then those lying loose
+function cards(id: string, body: string, { boxes, heights }: Layout): Card[] {
+	const all = elements(body);
 	const read: Card[] = [];
-	for (const { box, items } of found) {
+	const grouped = new Set<string>();
+	// an outcome standing on its own, under a loose company's column
+	const badges: { box: Box; note: string }[] = [];
+	for (const [, sid, key] of body.matchAll(GROUP)) {
+		const prefix = `${sid.slice(0, sid.lastIndexOf('_'))}_${key}_`;
+		const items = all.filter((e) => e.sid.startsWith(prefix));
+		for (const e of items) grouped.add(e.sid);
 		const texts = items.map((e) => e.text).filter(Boolean);
+		const line = texts.find((t) => !OUTCOME.test(t)) ?? '';
+		const note = texts.find((t) => OUTCOME.test(t)) ?? '';
 		const url = items.find((e) => e.href)?.href ?? '';
-		// a line that names no one leaves the address to go by, until it is listed
-		const name =
-			nameOf(texts.find((t) => !OUTCOME.test(t)) ?? '') || titled(hostOf(url).split('.')[0] ?? '');
-		if (!name) continue;
-		read.push({
-			name,
-			note: texts.find((t) => OUTCOME.test(t)) ?? '',
-			url,
-			y: box.y,
-			x: box.x
-		});
+		const box = boxes.get(sid);
+		if (!line && !url && note && box) {
+			badges.push({ box, note });
+			continue;
+		}
+		const name = nameFor(line, url);
+		if (name) read.push({ name, note, url });
 	}
-	return { cards: read.sort((a, b) => a.y - b.y || a.x - b.x), loose };
+
+	const bottom = heights.get(id) ?? Infinity;
+	const loose = all.flatMap((e) => {
+		const box = boxes.get(e.sid);
+		return grouped.has(e.sid) || !box || box.y >= bottom ? [] : [{ ...e, box }];
+	});
+	for (const e of loose) if (!e.href && OUTCOME.test(e.text)) badges.push({ box: e.box, note: e.text });
+	const links = loose.filter((e) => e.href);
+	for (const line of loose) {
+		if (!line.text || OUTCOME.test(line.text)) continue;
+		const link = links.find((l) => under(line.box, l.box));
+		const url = link?.href ?? '';
+		const name = nameFor(line.text, url);
+		if (!name) continue;
+		const column = link?.box ?? line.box;
+		const badge = badges.find((b) => under(b.box, column) && b.box.y >= column.y);
+		read.push({ name, note: badge?.note ?? '', url });
+	}
+	return read;
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
@@ -201,29 +217,37 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}
 	const html = await resp.text();
-	const boxes = places(html);
+	const placed = layout(html);
 	const byId = blocks(html);
-	const everything = byId.get('all');
-	if (!everything) {
+	const cardsIn = (base: string) => named(byId, base).flatMap(([id, body]) => cards(id, body, placed));
+	if (named(byId, 'all').length === 0) {
 		throw new Error('halogen: the portfolio page has no ALL block — the layout moved');
 	}
 
-	// the ALL block's companies, and where its past portfolio begins
-	const all = cards(elements(everything, boxes));
-	const pastFrom = all.loose.find((e) => PAST.test(e.text))?.y ?? Infinity;
+	// the ALL blocks' companies, and the past portfolio's
+	const all = cardsIn('all');
+	const past = cardsIn('past-portfolio');
 
-	// each filter's label, found by the block named after it
+	// each filter's label, found by the blocks named after its last words
 	const labels = new Map<string, string>();
 	for (const [, text] of html.matchAll(FILTER)) {
 		const label = clean(text);
-		const id = slug(label);
-		if (id && id !== 'all' && byId.has(id) && !labels.has(id)) labels.set(id, label);
+		const id = slug(label.replace(/^future of\s+/i, '').replace(/&/g, ' and '));
+		if (id && id !== 'all' && named(byId, id).length && !labels.has(id)) labels.set(id, label);
 	}
 	const filed = new Map<string, string[]>();
 	const extra: Card[] = [];
-	const known = new Set(all.cards.map((c) => c.name.toLowerCase()));
+	const known = new Set(all.map((c) => c.name.toLowerCase()));
+	const gone = new Set<string>();
+	for (const card of past) {
+		const key = card.name.toLowerCase();
+		if (known.has(key)) continue;
+		known.add(key);
+		gone.add(key);
+		extra.push(card);
+	}
 	for (const [id, label] of labels) {
-		for (const card of cards(elements(byId.get(id) ?? '', boxes)).cards) {
+		for (const card of cardsIn(id)) {
 			const key = card.name.toLowerCase();
 			filed.set(key, [...(filed.get(key) ?? []), tag(label)]);
 			if (!known.has(key)) {
@@ -234,7 +258,7 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 	}
 
 	// a link on more than one company stays with the one it names
-	const everyCard = [...all.cards, ...extra];
+	const everyCard = [...all, ...extra];
 	const holders = new Map<string, Card[]>();
 	for (const card of everyCard) {
 		const link = card.url.replace(/[?#].*$/, '').replace(/\/$/, '').toLowerCase();
@@ -254,12 +278,11 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		const key = card.name.toLowerCase();
 		if (STEALTH.test(card.name) || seen.has(key)) continue;
 		seen.add(key);
-		const past = card.y > pastFrom && all.cards.includes(card);
 		companies.push({
 			name: card.name,
 			category: [
 				...(filed.get(key) ?? []),
-				card.note ? tag(card.note) : past ? 'Past portfolio' : '',
+				card.note ? titled(tag(card.note)) : gone.has(key) ? 'Past portfolio' : '',
 				card.note ? 'Exited' : ''
 			]
 				.filter((t, i, list) => t && list.indexOf(t) === i)

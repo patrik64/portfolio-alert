@@ -1,6 +1,12 @@
 import type { ScrapedCompany } from './types';
 
-const PAGE_URL = "https://initialized.com/companies";
+const PAGE_URL = "https://initialized.com/portfolio";
+
+// next.js, moved in october 2026 from /companies to /portfolio and from a
+// page with its data in a json script to one whose payload is pushed to the
+// page's script in pieces: the list of companies is what the page hands its
+// grid, each with its name, its site, its tags and the fund's unicorn mark
+const LIST = '"companies":[';
 const UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
@@ -21,12 +27,41 @@ const text = (s: string) =>
     .trim();
 
 interface Startup {
-  attributes?: {
-    name?: string;
-    websiteUrl?: string;
-    isUnicorn?: boolean;
-    tags?: { data?: { attributes?: { name?: string } }[] };
-  };
+  name?: string;
+  websiteUrl?: string;
+  isUnicorn?: boolean;
+  tags?: unknown[];
+}
+
+// the page's payload, pushed to the page's script in pieces
+function flightPayload(html: string): string {
+  const chunks: string[] = [];
+  for (const push of html.matchAll(/self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)/g)) {
+    try {
+      chunks.push(JSON.parse(push[1]));
+    } catch {
+      // a chunk that will not parse is one the page never used either
+    }
+  }
+  return chunks.join("");
+}
+
+// the json array that opens at start, up to its closing bracket
+function arrayAt(payload: string, start: number): string {
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  for (let i = start; i < payload.length; i++) {
+    const c = payload[i];
+    if (escaped) escaped = false;
+    else if (c === "\\") escaped = true;
+    else if (c === '"') inString = !inString;
+    else if (!inString) {
+      if (c === "[") depth++;
+      else if (c === "]" && --depth === 0) return payload.slice(start, i + 1);
+    }
+  }
+  return "";
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
@@ -34,25 +69,23 @@ export async function scrape(): Promise<ScrapedCompany[]> {
   if (!resp.ok) {
     throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
   }
-  const html = await resp.text();
-
-  const raw = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/)?.[1];
-  if (!raw) {
-    throw new Error("initialized: the next payload is gone — the page moved");
+  const payload = flightPayload(await resp.text());
+  const at = payload.indexOf(LIST);
+  const list = at < 0 ? "" : arrayAt(payload, at + LIST.length - 1);
+  if (!list) {
+    throw new Error("initialized: no list of companies in the page's payload — the page moved");
   }
-  const startups: Startup[] =
-    JSON.parse(raw)?.props?.pageProps?.startups?.data ?? [];
+  const startups = JSON.parse(list) as Startup[];
 
   const companies: ScrapedCompany[] = [];
   const seen = new Set<string>();
-  for (const startup of startups) {
-    const a = startup.attributes ?? {};
+  for (const a of startups) {
     const name = text(a.name ?? "");
     if (!name || seen.has(name)) continue;
     seen.add(name);
 
-    const tags = (a.tags?.data ?? [])
-      .map((tag) => text(tag.attributes?.name ?? ""))
+    const tags = (a.tags ?? [])
+      .map((tag) => (typeof tag === "string" ? text(tag) : ""))
       .filter(Boolean);
     // "Exit" is one of the site's own tags; it reads best last, and a
     // billion-dollar company carries the fund's unicorn mark

@@ -431,7 +431,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'industrious', name: 'Industrious Ventures', url: 'https://industrious.vc/portfolio/' },
 	{ slug: 'inertia', name: 'Inertia', url: 'https://inertia.vc/portfolio' },
 	{ slug: 'inflecthealth', name: 'Inflect Health', url: 'https://www.inflect.health/capital' },
-	{ slug: 'initialized', name: 'Initialized Capital', url: 'https://initialized.com/companies' },
+	{ slug: 'initialized', name: 'Initialized Capital', url: 'https://initialized.com/portfolio' },
 	{ slug: 'innospark', name: 'Innospark Ventures', url: 'https://innospark.vc/portfolio/' },
 	{ slug: 'innovatingcapital', name: 'Innovating Capital', url: 'https://innovating.capital/companies/' },
 	{
