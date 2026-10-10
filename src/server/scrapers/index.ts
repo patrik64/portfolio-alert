@@ -694,7 +694,6 @@ import { scrape as sosv } from './sosv';
 import { scrape as southparkcommons } from './southparkcommons';
 import { scrape as spacecadet } from './spacecadet';
 import { scrape as spark } from './spark';
-import { scrape as speedinvest } from './speedinvest';
 import { scrape as stageone } from './stageone';
 import { scrape as standardindustries } from './standardindustries';
 import { scrape as stripes } from './stripes';
@@ -1532,7 +1531,6 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	southparkcommons,
 	spacecadet,
 	spark,
-	speedinvest,
 	stageone,
 	standardindustries,
 	stripes,

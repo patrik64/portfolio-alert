@@ -1,4 +1,4 @@
-// The 837 tracked funds, in case-insensitive alphabetical order by name — the
+// The 836 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -745,7 +745,6 @@ export const FUNDS: FundInfo[] = [
 	},
 	{ slug: 'spacecadet', name: 'Space Cadet', url: 'https://spacecadet.ventures/portfolio' },
 	{ slug: 'spark', name: 'Spark Capital', url: 'https://www.sparkcapital.com/companies' },
-	{ slug: 'speedinvest', name: 'Speedinvest', url: 'https://www.speedinvest.com/portfolio' },
 	{ slug: 'spice', name: 'Spice Capital', url: 'https://www.spicecapital.xyz/portfolio' },
 	{
 		slug: 'springtime',
