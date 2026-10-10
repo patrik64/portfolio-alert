@@ -1,32 +1,29 @@
 import type { ScrapedCompany } from './types';
 
-const PAGE_URL = 'https://fin.capital/portfolio';
+const PAGE_URL = 'https://www.fin.capital/portfolio';
+const PACE_MS = 150;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
-// the share of the page's logo cards the payload's records must reach
-const MIN_SHARE = 0.9;
 
-// next.js, rendered on the server: the page draws a logo card per company,
-// naming it only in the logo's alt text, with a panel behind it. the
-// companies themselves arrive as records in the flight payload the page
-// ships for the browser — the name, the site, the thesis the fund files the
-// company under ("Payments", "DeepTech"), the funds that hold it ("Flagship
-// I, Horizons II") and whether it is active or exited — and those are read.
-// the cards are counted against them, so a payload that stops carrying the
-// list fails the fetch rather than emptying the fund.
+// webflow, since october 2026 (the site was next.js before): the portfolio
+// is a list of logo cards, a hundred to a page with a link to the next,
+// each opening a panel that names the company over a line about it. the
+// card carries the sub-sector the fund files the company under
+// ("DeepTech", "Payments"), the stage ("Early", "Growth") and whether it is
+// active or exited, kept as tags, with "Exited" the way out. the new page
+// links no company's site, so a company links the page. the pages are
+// fetched one at a time, and one that will not load fails the run, as the
+// list would be short.
 
-const FLIGHT = /self\.__next_f\.push\(\[1,"((?:[^"\\]|\\.)*)"\]\)/g;
-const LIST = '"companies":[';
-const CARD = /alt="[^"]* logo"/g;
+// a company stored under the name the old site gave it, which the new one
+// spells without its accent: a moved name would read as a newcomer
+const STORED_AS: Record<string, string> = { 'Portao 3': 'Portão 3' };
+
+const NEXT = /<a\b[^>]*\bhref="\?(\w+_page=\d+)"[^>]*\bclass="[^"]*\bw-pagination-next\b/;
+const ITEM = /(?=<div data-popup="open" role="listitem" class="insight-item w-dyn-item">)/;
+const NAME = /<h2 class="h2-small[^"]*">([\s\S]*?)<\/h2>/;
+const FIELD = (name: string) => new RegExp(`fs-list-field="${name}"[^>]*>([\\s\\S]*?)<\\/p>`);
 const STEALTH = /^stealth\b/i;
-
-interface Record {
-	name?: string;
-	website?: string;
-	thesis?: string;
-	status?: string;
-	fund?: string;
-}
 
 const unescape = (s: string) =>
 	s
@@ -41,69 +38,50 @@ const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g
 // the category is comma-joined, so a label holding a comma would read as two
 const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
-// the json array that follows a key in the payload's text, found by walking
-// its brackets, since the text around it is not json as a whole
-function arrayAfter(text: string, key: string): unknown[] {
-	const start = text.indexOf(key);
-	if (start < 0) return [];
-	let depth = 0;
-	let inString = false;
-	let escaped = false;
-	for (let i = start + key.length - 1; i < text.length; i++) {
-		const ch = text[i];
-		if (inString) {
-			if (escaped) escaped = false;
-			else if (ch === '\\') escaped = true;
-			else if (ch === '"') inString = false;
-			continue;
-		}
-		if (ch === '"') inString = true;
-		else if (ch === '[' || ch === '{') depth++;
-		else if (ch === ']' || ch === '}') {
-			depth--;
-			if (depth === 0) return JSON.parse(text.slice(start + key.length - 1, i + 1)) as unknown[];
-		}
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function fetchText(url: string): Promise<string> {
+	const resp = await fetch(url, { headers: { 'User-Agent': UA } });
+	if (!resp.ok) {
+		throw new Error(`Failed to fetch ${url}: ${resp.status}`);
 	}
-	return [];
+	return resp.text();
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
-	}
-	const html = await resp.text();
-
-	// the payload comes in pieces, each a javascript string literal
-	const text = [...html.matchAll(FLIGHT)].map((m) => JSON.parse(`"${m[1]}"`) as string).join('');
-	const records = arrayAfter(text, LIST) as Record[];
-	const cards = (html.match(CARD) ?? []).length;
-	if (records.length < cards * MIN_SHARE) {
-		throw new Error(`fincapital: the payload carries ${records.length} companies for ${cards} cards on the page`);
-	}
-
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-	for (const record of records) {
-		const name = clean(record.name ?? '');
-		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
-		seen.add(name.toLowerCase());
-		const status = clean(record.status ?? '');
-		const exited = /^exit/i.test(status);
-		companies.push({
-			name,
-			category: [
-				tag(record.thesis ?? ''),
-				...clean(record.fund ?? '')
-					.split(/\s*,\s*/)
-					.filter(Boolean),
-				exited || /^active$/i.test(status) ? '' : status,
-				exited ? 'Exited' : ''
-			]
-				.filter((t, i, all) => t && all.indexOf(t) === i)
-				.join(', '),
-			url: clean(record.website ?? '')
-		});
+	let url = PAGE_URL;
+	for (let page = 1; page <= 50; page++) {
+		const html = await fetchText(url);
+		const items = html.split(ITEM).slice(1);
+		if (items.length === 0) {
+			throw new Error(`fincapital: no companies on ${url}`);
+		}
+		for (const item of items) {
+			const written = clean(item.match(NAME)?.[1] ?? '');
+			const name = STORED_AS[written] ?? written;
+			if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
+			seen.add(name.toLowerCase());
+			const status = clean(item.match(FIELD('status'))?.[1] ?? '');
+			const exited = /^exit/i.test(status);
+			companies.push({
+				name,
+				category: [
+					tag(item.match(FIELD('category'))?.[1] ?? ''),
+					tag(item.match(FIELD('stage'))?.[1] ?? ''),
+					exited || /^active$/i.test(status) ? '' : tag(status),
+					exited ? 'Exited' : ''
+				]
+					.filter((t, i, all) => t && all.indexOf(t) === i)
+					.join(', '),
+				url: PAGE_URL
+			});
+		}
+		const next = html.match(NEXT)?.[1];
+		if (!next) break;
+		url = `${PAGE_URL}?${next}`;
+		await wait(PACE_MS);
 	}
 
 	if (companies.length === 0) {

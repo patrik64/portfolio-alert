@@ -21,7 +21,8 @@ const VERTICAL = 'securetech';
 const LIST = 'All Investments';
 const NEXT = /<a\b[^>]*\bhref="\?(\w+_page=\d+)"[^>]*\bclass="w-pagination-next\b/;
 const ITEM = /(?=<div class="portoflio-itemfull">)/;
-const VISIT = /<a\b[^>]*\bhref="([^"]*)"[^>]*\bclass="link-4"[^>]*>([\s\S]*?)<\/a>/;
+// the "Visit" link, by the class the page gave it in october 2026
+const VISIT = /<a\b[^>]*\bhref="([^"]*)"[^>]*\bclass="portfolio-website-link"[^>]*>([\s\S]*?)<\/a>/;
 const FIELD = (name: string) => new RegExp(`fs-cmsfilter-field="${name}"[^>]*>([\\s\\S]*?)<\\/div>`);
 const LINE = /<p class="paragraph-3">([\s\S]*?)<\/p>/;
 const BUYER = /\bacquired\b(?:\s+in\s+(?:\w+\s+)?\d{4})?\s+by\s+([A-Z][^.,;()]*?)(?=\s+in\b|[.,;()]|$)/;

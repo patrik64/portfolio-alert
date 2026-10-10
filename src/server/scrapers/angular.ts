@@ -54,8 +54,11 @@ async function fetchPage(): Promise<Response> {
 			failure = err;
 		}
 	}
+	// the way it failed to answer is worth a word, a dropped connection being
+	// one thing and a timed-out one another
+	const why = failure instanceof Error ? ((failure.cause as { code?: string })?.code ?? failure.message) : '';
 	throw new Error(
-		`angular: the fund's server did not answer, ${RETRY_DELAYS_MS.length + 1} tries over two minutes`,
+		`angular: the fund's server did not answer, ${RETRY_DELAYS_MS.length + 1} tries over two minutes${why ? ` (${why})` : ''}`,
 		{ cause: failure }
 	);
 }

@@ -309,7 +309,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'figure8', name: 'Figure 8', url: 'https://www.figure8.vc/#Portfolio' },
 	{ slug: 'fika', name: 'Fika Ventures', url: 'https://www.fika.vc/portfolio' },
 	{ slug: 'filrouge', name: 'Fil Rouge Capital', url: 'https://www.filrougecapital.com/portfolio' },
-	{ slug: 'fincapital', name: 'Fin Capital', url: 'https://fin.capital/portfolio' },
+	{ slug: 'fincapital', name: 'Fin Capital', url: 'https://www.fin.capital/portfolio' },
 	{ slug: 'fintechcollective', name: 'FinTech Collective', url: 'https://fintech.io/portfolio' },
 	{ slug: 'fintechv', name: 'Fintech Ventures Fund', url: 'https://fintechv.com/portfolio' },
 	{ slug: 'firebrand', name: 'Firebrand', url: 'https://www.firebrandvc.com/portfolio' },

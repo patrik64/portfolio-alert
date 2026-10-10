@@ -45,15 +45,23 @@ interface Box {
 	page: string;
 }
 
-// the wall, whole or through one tab
+// the wall, whole or through one tab; a refusal is waited out once, as the
+// site turned the nightly run's first request away with a 429 on 10 October 2026
 async function wall(tier?: 'first_tier' | 'second_tier', slug?: string): Promise<Box[]> {
 	const form = new URLSearchParams({ action: 'load_filtered_portfolio', posts_per_page: '-1', orderby: 'name', order: 'asc' });
 	if (tier && slug) form.append(`${tier}[]`, slug);
-	const resp = await fetch(AJAX_URL, {
-		method: 'POST',
-		headers: { 'User-Agent': UA, 'Content-Type': 'application/x-www-form-urlencoded' },
-		body: form
-	});
+	const ask = () =>
+		fetch(AJAX_URL, {
+			method: 'POST',
+			headers: { 'User-Agent': UA, 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: form
+		});
+	let resp = await ask();
+	if (resp.status === 429) {
+		await resp.body?.cancel();
+		await wait(REFUSED_MS);
+		resp = await ask();
+	}
 	if (!resp.ok) {
 		throw new Error(`beco: the portfolio would not load (${resp.status}${slug ? ` on ${slug}` : ''})`);
 	}
