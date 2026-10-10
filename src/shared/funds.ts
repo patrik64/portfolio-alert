@@ -1,4 +1,4 @@
-// The 841 tracked funds, in case-insensitive alphabetical order by name — the
+// The 844 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -241,6 +241,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'cultivian', name: 'Cultivian Sandbox Ventures', url: 'https://cultiviansbx.com/portfolio' },
 	{ slug: 'cybernetix', name: 'Cybernetix Ventures', url: 'https://cybernetix.vc/#portfolio' },
 	{ slug: 'cyberstarts', name: 'Cyberstarts', url: 'https://www.cyberstarts.com/portfolio' },
+	{ slug: 'dawn', name: 'Dawn Capital', url: 'https://www.dawncapital.com/companies' },
 	{ slug: 'dayone', name: 'Day One Ventures', url: 'https://www.dayoneventures.com/#portfolio' },
 	{ slug: 'dcvc', name: 'DCVC', url: 'https://www.dcvc.com/companies' },
 	{ slug: 'debut', name: 'Debut Capital', url: 'https://debutcapital.com/portfolio' },
@@ -414,10 +415,12 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'helios', name: 'Helios Capital', url: 'https://www.helioscapital.us/portfolio-2/' },
 	{ slug: 'helium3', name: 'Helium-3 Ventures', url: 'https://www.helium-3ventures.com/#portfolio' },
 	{ slug: 'hetz', name: 'Hetz Ventures', url: 'https://www.hetz.vc/our-portfolio' },
+	{ slug: 'highland', name: 'Highland Europe', url: 'https://www.highlandeurope.com/companies/' },
 	{ slug: 'hofcapital', name: 'HOF Capital', url: 'https://hofcapital.com/portfolio' },
 	{ slug: 'homebrew', name: 'Homebrew', url: 'https://www.homebrew.co/#Portfolio' },
 	{ slug: 'horizons', name: 'Horizons Ventures', url: 'https://www.horizonsventures.com/portfolio' },
 	{ slug: 'howwomeninvest', name: 'How Women Invest', url: 'https://www.howwomeninvest.com/portfolio' },
+	{ slug: 'hoxton', name: 'Hoxton Ventures', url: 'https://hoxtonventures.com/portfolio/' },
 	{ slug: 'htgf', name: 'HTGF', url: 'https://www.htgf.de/en/portfolio/' },
 	{ slug: 'humancapital', name: 'Human Capital', url: 'https://human.capital/portfolio' },
 	{ slug: 'hummingbird', name: 'Hummingbird Ventures', url: 'https://www.hummingbird.vc/portfolio' },

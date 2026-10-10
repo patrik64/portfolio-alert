@@ -222,6 +222,7 @@ import { scrape as cti } from './cti';
 import { scrape as cultivian } from './cultivian';
 import { scrape as cybernetix } from './cybernetix';
 import { scrape as cyberstarts } from './cyberstarts';
+import { scrape as dawn } from './dawn';
 import { scrape as dayone } from './dayone';
 import { scrape as dcvc } from './dcvc';
 import { scrape as debut } from './debut';
@@ -395,10 +396,12 @@ import { scrape as heavybit } from './heavybit';
 import { scrape as helios } from './helios';
 import { scrape as helium3 } from './helium3';
 import { scrape as hetz } from './hetz';
+import { scrape as highland } from './highland';
 import { scrape as hofcapital } from './hofcapital';
 import { scrape as homebrew } from './homebrew';
 import { scrape as horizons } from './horizons';
 import { scrape as howwomeninvest } from './howwomeninvest';
+import { scrape as hoxton } from './hoxton';
 import { scrape as htgf } from './htgf';
 import { scrape as humancapital } from './humancapital';
 import { scrape as hummingbird } from './hummingbird';
@@ -1064,6 +1067,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	cultivian,
 	cybernetix,
 	cyberstarts,
+	dawn,
 	dayone,
 	dcvc,
 	debut,
@@ -1237,10 +1241,12 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	helios,
 	helium3,
 	hetz,
+	highland,
 	hofcapital,
 	homebrew,
 	horizons,
 	howwomeninvest,
+	hoxton,
 	htgf,
 	humancapital,
 	hummingbird,
