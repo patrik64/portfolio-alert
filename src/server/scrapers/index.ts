@@ -89,6 +89,7 @@ import { scrape as atone } from './atone';
 import { scrape as atento } from './atento';
 import { scrape as atlas } from './atlas';
 import { scrape as atomic } from './atomic';
+import { scrape as atomico } from './atomico';
 import { scrape as au21 } from './au21';
 import { scrape as audacity } from './audacity';
 import { scrape as av8 } from './av8';
@@ -134,6 +135,7 @@ import { scrape as blackops } from './blackops';
 import { scrape as blackhorn } from './blackhorn';
 import { scrape as blank } from './blank';
 import { scrape as bling } from './bling';
+import { scrape as blossom } from './blossom';
 import { scrape as bluventures } from './bluventures';
 import { scrape as boxone } from './boxone';
 import { scrape as brandproject } from './brandproject';
@@ -202,6 +204,7 @@ import { scrape as bostonseed } from './bostonseed';
 import { scrape as boulder } from './boulder';
 import { scrape as bowery } from './bowery';
 import { scrape as boxgroup } from './boxgroup';
+import { scrape as connect } from './connect';
 import { scrape as contour } from './contour';
 import { scrape as coral } from './coral';
 import { scrape as corevc } from './corevc';
@@ -259,6 +262,7 @@ import { scrape as ecp } from './ecp';
 import { scrape as edovate } from './edovate';
 import { scrape as educapital } from './educapital';
 import { scrape as eif } from './eif';
+import { scrape as eightroads } from './eightroads';
 import { scrape as elaia } from './elaia';
 import { scrape as electric } from './electric';
 import { scrape as elementum } from './elementum';
@@ -287,6 +291,7 @@ import { scrape as f2 } from './f2';
 import { scrape as f7 } from './f7';
 import { scrape as fcavp } from './fcavp';
 import { scrape as felicis } from './felicis';
+import { scrape as felix } from './felix';
 import { scrape as femalefounders } from './femalefounders';
 import { scrape as fernbrook } from './fernbrook';
 import { scrape as ffvc } from './ffvc';
@@ -333,6 +338,7 @@ import { scrape as fpv } from './fpv';
 import { scrape as framework } from './framework';
 import { scrape as freestyle } from './freestyle';
 import { scrape as fcventures } from './fcventures';
+import { scrape as frontline } from './frontline';
 import { scrape as frst } from './frst';
 import { scrape as ftw } from './ftw';
 import { scrape as fuelcapital } from './fuelcapital';
@@ -428,6 +434,7 @@ import { scrape as inspired } from './inspired';
 import { scrape as intelcapital } from './intelcapital';
 import { scrape as interlace } from './interlace';
 import { scrape as invus } from './invus';
+import { scrape as iqcapital } from './iqcapital';
 import { scrape as ironspring } from './ironspring';
 import { scrape as isai } from './isai';
 import { scrape as ivp } from './ivp';
@@ -510,6 +517,7 @@ import { scrape as mig } from './mig';
 import { scrape as mmc } from './mmc';
 import { scrape as mizmaa } from './mizmaa';
 import { scrape as moderne } from './moderne';
+import { scrape as molten } from './molten';
 import { scrape as monashees } from './monashees';
 import { scrape as moneta } from './moneta';
 import { scrape as moonshots } from './moonshots';
@@ -934,6 +942,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	atento,
 	atlas,
 	atomic,
+	atomico,
 	au21,
 	audacity,
 	av8,
@@ -979,6 +988,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	blackhorn,
 	blank,
 	bling,
+	blossom,
 	bluventures,
 	boxone,
 	brandproject,
@@ -1047,6 +1057,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	boulder,
 	bowery,
 	boxgroup,
+	connect,
 	contour,
 	coral,
 	corevc,
@@ -1104,6 +1115,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	edovate,
 	educapital,
 	eif,
+	eightroads,
 	elaia,
 	electric,
 	elementum,
@@ -1132,6 +1144,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	f7,
 	fcavp,
 	felicis,
+	felix,
 	femalefounders,
 	fernbrook,
 	ffvc,
@@ -1178,6 +1191,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	framework,
 	freestyle,
 	fcventures,
+	frontline,
 	frst,
 	ftw,
 	fuelcapital,
@@ -1273,6 +1287,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	intelcapital,
 	interlace,
 	invus,
+	iqcapital,
 	ironspring,
 	isai,
 	ivp,
@@ -1355,6 +1370,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	mmc,
 	mizmaa,
 	moderne,
+	molten,
 	monashees,
 	moneta,
 	moonshots,
