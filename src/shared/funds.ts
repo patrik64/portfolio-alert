@@ -1,4 +1,4 @@
-// The 837 tracked funds, in case-insensitive alphabetical order by name — the
+// The 841 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -75,6 +75,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'alsocapital', name: 'Also Capital', url: 'https://www.alsocapital.com/#investment' },
 	{ slug: 'alumni', name: 'Alumni Ventures', url: 'https://www.av.vc/portfolio' },
 	{ slug: 'alven', name: 'Alven', url: 'https://alven.co/portfolio' },
+	{ slug: 'amadeus', name: 'Amadeus Capital', url: 'https://www.amadeuscapital.com/our-companies/' },
 	{ slug: 'amasia', name: 'Amasia', url: 'https://www.amasia.vc/portfolio' },
 	{ slug: 'ambition', name: 'Ambition Capital', url: 'https://www.ambition.capital/portfolio' },
 	{ slug: 'amecloud', name: 'AME Cloud Ventures', url: 'https://www.amecloudventures.com/portfolio' },
@@ -185,6 +186,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'cantos', name: 'Cantos', url: 'https://cantos.vc/#portfolio' },
 	{ slug: 'canvas', name: 'Canvas Ventures', url: 'https://canvas.vc/portfolio' },
 	{ slug: 'capitalize', name: 'Capitalize VC', url: 'https://www.capitalizevc.com/' },
+	{ slug: 'capnamic', name: 'Capnamic Ventures', url: 'https://capnamic.com/portfolio' },
 	{ slug: 'carbonsilicon', name: 'Carbon Silicon Ventures', url: 'https://carbonsilicon.vc/' },
 	{ slug: 'caruso', name: 'Caruso Ventures', url: 'https://carusoventures.com/investments' },
 	{ slug: 'castleisland', name: 'Castle Island Ventures', url: 'https://castleisland.vc/portfolio/' },
@@ -293,6 +295,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'equal', name: 'Equal Ventures', url: 'https://www.equal.vc/portfolio' },
 	{ slug: 'era', name: 'Era Ventures', url: 'https://eraventures.com/companies/' },
 	{ slug: 'essence', name: 'Essence Venture Capital', url: 'https://essencevc.fund/' },
+	{ slug: 'eurazeo', name: 'Eurazeo', url: 'https://www.eurazeo.com/en/investments' },
 	{ slug: 'exceptional', name: 'Exceptional Capital', url: 'https://www.exceptionalcap.com/portfolio' },
 	{ slug: 'expa', name: 'Expa', url: 'https://www.expa.com/portfolio/' },
 	{ slug: 'expansion', name: 'Expansion', url: 'https://expansion-vc.eu/portfolio' },
@@ -638,6 +641,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'primeimpact', name: 'Prime Impact Fund', url: 'https://www.primeimpactfund.com/portfolio' },
 	{ slug: 'primemovers', name: 'Prime Movers Lab', url: 'https://www.primemoverslab.com/portfolio/' },
 	{ slug: 'primetime', name: 'Prime Time Partners', url: 'https://www.primetimepartners.com/portfolio' },
+	{ slug: 'projecta', name: 'Project A', url: 'https://www.project-a.vc/companies' },
 	{ slug: 'propeller', name: 'Propeller', url: 'https://propellervc.com/portfolio' },
 	{ slug: 'psv', name: 'PSV', url: 'https://www.psv.xyz/portfolio' },
 	{ slug: 'push', name: 'PUSH VC', url: 'https://push.vc/portfolio' },

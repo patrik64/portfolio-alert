@@ -64,6 +64,7 @@ import { scrape as alphaedison } from './alphaedison';
 import { scrape as alsocapital } from './alsocapital';
 import { scrape as alumni } from './alumni';
 import { scrape as alven } from './alven';
+import { scrape as amadeus } from './amadeus';
 import { scrape as amasia } from './amasia';
 import { scrape as ambition } from './ambition';
 import { scrape as angular } from './angular';
@@ -153,6 +154,7 @@ import { scrape as canapi } from './canapi';
 import { scrape as cantos } from './cantos';
 import { scrape as canvas } from './canvas';
 import { scrape as capitalize } from './capitalize';
+import { scrape as capnamic } from './capnamic';
 import { scrape as carbonsilicon } from './carbonsilicon';
 import { scrape as caruso } from './caruso';
 import { scrape as castleisland } from './castleisland';
@@ -274,6 +276,7 @@ import { scrape as eqt } from './eqt';
 import { scrape as equal } from './equal';
 import { scrape as era } from './era';
 import { scrape as essence } from './essence';
+import { scrape as eurazeo } from './eurazeo';
 import { scrape as exceptional } from './exceptional';
 import { scrape as expa } from './expa';
 import { scrape as expansion } from './expansion';
@@ -611,6 +614,7 @@ import { scrape as primary } from './primary';
 import { scrape as primeimpact } from './primeimpact';
 import { scrape as primemovers } from './primemovers';
 import { scrape as primetime } from './primetime';
+import { scrape as projecta } from './projecta';
 import { scrape as propeller } from './propeller';
 import { scrape as psv } from './psv';
 import { scrape as push } from './push';
@@ -902,6 +906,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	alsocapital,
 	alumni,
 	alven,
+	amadeus,
 	amasia,
 	ambition,
 	angular,
@@ -991,6 +996,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	cantos,
 	canvas,
 	capitalize,
+	capnamic,
 	carbonsilicon,
 	caruso,
 	castleisland,
@@ -1112,6 +1118,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	equal,
 	era,
 	essence,
+	eurazeo,
 	exceptional,
 	expa,
 	expansion,
@@ -1449,6 +1456,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	primeimpact,
 	primemovers,
 	primetime,
+	projecta,
 	propeller,
 	psv,
 	push,
