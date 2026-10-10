@@ -1,4 +1,4 @@
-// The 836 tracked funds, in case-insensitive alphabetical order by name — the
+// The 837 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -568,6 +568,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'norwest', name: 'Norwest', url: 'https://www.norwest.com/companies' },
 	{ slug: 'notable', name: 'Notable Capital', url: 'https://www.notablecap.com/companies' },
 	{ slug: 'notation', name: 'Notation Capital', url: 'https://notation.vc/companies/' },
+	{ slug: 'notion', name: 'Notion Capital', url: 'https://www.notioncapital.com/portfolio' },
 	{ slug: 'nphard', name: 'NP-Hard Ventures', url: 'https://nphard.vc/' },
 	{ slug: 'nucleus', name: 'Nucleus Capital', url: 'https://www.nucleus-capital.com/' },
 	{ slug: 'nuwa', name: 'Nuwa Capital', url: 'https://www.nuwacapital.io/portfolio' },

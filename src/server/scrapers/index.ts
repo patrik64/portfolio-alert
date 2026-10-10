@@ -541,6 +541,7 @@ import { scrape as northzone } from './northzone';
 import { scrape as norwest } from './norwest';
 import { scrape as notable } from './notable';
 import { scrape as notation } from './notation';
+import { scrape as notion } from './notion';
 import { scrape as nphard } from './nphard';
 import { scrape as nucleus } from './nucleus';
 import { scrape as nuwa } from './nuwa';
@@ -1378,6 +1379,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	norwest,
 	notable,
 	notation,
+	notion,
 	nphard,
 	nucleus,
 	nuwa,
