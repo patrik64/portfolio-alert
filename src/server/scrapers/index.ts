@@ -37,6 +37,7 @@ import { scrape as actions } from './actions';
 import { scrape as activecapital } from './activecapital';
 import { scrape as activeimpact } from './activeimpact';
 import { scrape as activepartners } from './activepartners';
+import { scrape as acton } from './acton';
 import { scrape as ada } from './ada';
 import { scrape as adapt } from './adapt';
 import { scrape as advent } from './advent';
@@ -442,6 +443,7 @@ import { scrape as jamfund } from './jamfund';
 import { scrape as javelin } from './javelin';
 import { scrape as jazz } from './jazz';
 import { scrape as jllspark } from './jllspark';
+import { scrape as join } from './join';
 import { scrape as joule } from './joule';
 import { scrape as jovono } from './jovono';
 import { scrape as juniper } from './juniper';
@@ -530,6 +532,7 @@ import { scrape as mucker } from './mucker';
 import { scrape as munichre } from './munichre';
 import { scrape as muse } from './muse';
 import { scrape as musha } from './musha';
+import { scrape as nap } from './nap';
 import { scrape as ngpartners } from './ngpartners';
 import { scrape as ndcapital } from './ndcapital';
 import { scrape as nea } from './nea';
@@ -588,6 +591,7 @@ import { scrape as overture } from './overture';
 import { scrape as overwater } from './overwater';
 import { scrape as ovni } from './ovni';
 import { scrape as owl } from './owl';
+import { scrape as oxfordscience } from './oxfordscience';
 import { scrape as p1 } from './p1';
 import { scrape as paladin } from './paladin';
 import { scrape as palladium } from './palladium';
@@ -609,6 +613,7 @@ import { scrape as picus } from './picus';
 import { scrape as pillar } from './pillar';
 import { scrape as pioneer } from './pioneer';
 import { scrape as pitango } from './pitango';
+import { scrape as planeta } from './planeta';
 import { scrape as playground } from './playground';
 import { scrape as plg } from './plg';
 import { scrape as plugandplay } from './plugandplay';
@@ -651,6 +656,7 @@ import { scrape as redpoint } from './redpoint';
 import { scrape as recvc } from './recvc';
 import { scrape as recursive } from './recursive';
 import { scrape as redbear } from './redbear';
+import { scrape as redalpine } from './redalpine';
 import { scrape as redbud } from './redbud';
 import { scrape as redsea } from './redsea';
 import { scrape as redswan } from './redswan';
@@ -793,6 +799,7 @@ import { scrape as uppartners } from './uppartners';
 import { scrape as upper90 } from './upper90';
 import { scrape as upslope } from './upslope';
 import { scrape as urban } from './urban';
+import { scrape as uvc } from './uvc';
 import { scrape as usv } from './usv';
 import { scrape as v1vc } from './v1vc';
 import { scrape as valar } from './valar';
@@ -809,6 +816,7 @@ import { scrape as venturefriends } from './venturefriends';
 import { scrape as venturesplatform } from './venturesplatform';
 import { scrape as venturesouq } from './venturesouq';
 import { scrape as vertex } from './vertex';
+import { scrape as verve } from './verve';
 import { scrape as vestigo } from './vestigo';
 import { scrape as vibevc } from './vibevc';
 import { scrape as viking } from './viking';
@@ -890,6 +898,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	activecapital,
 	activeimpact,
 	activepartners,
+	acton,
 	ada,
 	adapt,
 	advent,
@@ -1295,6 +1304,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	javelin,
 	jazz,
 	jllspark,
+	join,
 	joule,
 	jovono,
 	juniper,
@@ -1383,6 +1393,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	munichre,
 	muse,
 	musha,
+	nap,
 	ngpartners,
 	ndcapital,
 	nea,
@@ -1441,6 +1452,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	overwater,
 	ovni,
 	owl,
+	oxfordscience,
 	p1,
 	paladin,
 	palladium,
@@ -1462,6 +1474,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	pillar,
 	pioneer,
 	pitango,
+	planeta,
 	playground,
 	plg,
 	plugandplay,
@@ -1504,6 +1517,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	recvc,
 	recursive,
 	redbear,
+	redalpine,
 	redbud,
 	redsea,
 	redswan,
@@ -1647,6 +1661,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	upper90,
 	upslope,
 	urban,
+	uvc,
 	usv,
 	v1vc,
 	valar,
@@ -1663,6 +1678,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	venturesplatform,
 	venturesouq,
 	vertex,
+	verve,
 	vestigo,
 	vibevc,
 	viking,
