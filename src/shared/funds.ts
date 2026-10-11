@@ -1,4 +1,4 @@
-// The 866 tracked funds, in case-insensitive alphabetical order by name — the
+// The 870 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -348,6 +348,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'foothill', name: 'Foothill Ventures', url: 'https://www.foothill.ventures/portfolio' },
 	{ slug: 'footprintcoalition', name: 'FootPrint Coalition', url: 'https://www.footprintcoalition.com/investments' },
 	{ slug: 'forerunner', name: 'Forerunner Ventures', url: 'https://www.forerunnerventures.com/investments/' },
+	{ slug: 'fortino', name: 'Fortino Ventures', url: 'https://www.fortino.vc/our-portfolio' },
 	{ slug: 'fortitude', name: 'Fortitude Ventures', url: 'https://fortitudevc.com/#investments' },
 	{ slug: 'foundamental', name: 'Foundamental', url: 'https://www.foundamental.com/portfolio' },
 	{ slug: 'foundationcapital', name: 'Foundation Capital', url: 'https://foundationcapital.com/portfolio' },
@@ -464,6 +465,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'inspired', name: 'Inspired Capital', url: 'https://www.inspiredcapital.com/portfolio' },
 	{ slug: 'intelcapital', name: 'Intel Capital', url: 'https://www.intelcapital.com/portfolio/' },
 	{ slug: 'interlace', name: 'Interlace Ventures', url: 'https://www.interlacevc.com/portfolio' },
+	{ slug: 'inventure', name: 'Inventure', url: 'https://www.inventure.vc/portfolio' },
 	{ slug: 'invus', name: 'Invus', url: 'https://www.invus.com/invus-opportunities/#portfolio' },
 	{ slug: 'iqcapital', name: 'IQ Capital', url: 'https://www.iqcapital.vc/companies' },
 	{ slug: 'ironspring', name: 'Ironspring Ventures', url: 'https://ironspring.com/portfolio-companies/' },
@@ -521,6 +523,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'magic', name: 'MAGIC Fund', url: 'https://www.magic.fund/' },
 	{ slug: 'mainsequence', name: 'Main Sequence', url: 'https://www.mseq.vc/all-companies' },
 	{ slug: 'makers', name: 'Makers Fund', url: 'https://www.makersfund.com/portfolio' },
+	{ slug: 'maki', name: 'Maki.vc', url: 'https://maki.vc/portfolio/' },
 	{ slug: 'mana', name: 'Mana Ventures', url: 'https://www.manaventures.vc/portfolio' },
 	{ slug: 'mango', name: 'Mango Capital', url: 'https://www.mangocapitalinc.com/' },
 	{ slug: 'mantis', name: 'Mantis VC', url: 'https://www.mantisvc.com/portfolio' },
@@ -640,6 +643,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'passion', name: 'Passion Capital', url: 'https://passioncapital.com/fund-portfolio/' },
 	{ slug: 'pathbreaker', name: 'Pathbreaker Ventures', url: 'https://www.pathbreakervc.com/companies' },
 	{ slug: 'patron', name: 'Patron', url: 'https://patron.fund/portfolio' },
+	{ slug: 'peak', name: 'Peak', url: 'https://jobs.peak.capital/companies' },
 	{ slug: 'peakbridge', name: 'PeakBridge', url: 'https://peakbridge.vc/portfolio/' },
 	{ slug: 'pear', name: 'Pear VC', url: 'https://pear.vc/companies/' },
 	{ slug: 'pebblebed', name: 'Pebblebed', url: 'https://pebblebed.com/portfolio' },

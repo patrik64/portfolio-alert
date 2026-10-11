@@ -322,6 +322,7 @@ import { scrape as focal } from './focal';
 import { scrape as foothill } from './foothill';
 import { scrape as footprintcoalition } from './footprintcoalition';
 import { scrape as forerunner } from './forerunner';
+import { scrape as fortino } from './fortino';
 import { scrape as fortitude } from './fortitude';
 import { scrape as foundamental } from './foundamental';
 import { scrape as foundationcapital } from './foundationcapital';
@@ -437,6 +438,7 @@ import { scrape as insight } from './insight';
 import { scrape as inspired } from './inspired';
 import { scrape as intelcapital } from './intelcapital';
 import { scrape as interlace } from './interlace';
+import { scrape as inventure } from './inventure';
 import { scrape as invus } from './invus';
 import { scrape as iqcapital } from './iqcapital';
 import { scrape as ironspring } from './ironspring';
@@ -494,6 +496,7 @@ import { scrape as mac } from './mac';
 import { scrape as magic } from './magic';
 import { scrape as mainsequence } from './mainsequence';
 import { scrape as makers } from './makers';
+import { scrape as maki } from './maki';
 import { scrape as mana } from './mana';
 import { scrape as mango } from './mango';
 import { scrape as mantis } from './mantis';
@@ -609,6 +612,7 @@ import { scrape as partech } from './partech';
 import { scrape as passion } from './passion';
 import { scrape as pathbreaker } from './pathbreaker';
 import { scrape as patron } from './patron';
+import { scrape as peak } from './peak';
 import { scrape as peakbridge } from './peakbridge';
 import { scrape as pear } from './pear';
 import { scrape as pebblebed } from './pebblebed';
@@ -1189,6 +1193,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	foothill,
 	footprintcoalition,
 	forerunner,
+	fortino,
 	fortitude,
 	foundamental,
 	foundationcapital,
@@ -1304,6 +1309,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	inspired,
 	intelcapital,
 	interlace,
+	inventure,
 	invus,
 	iqcapital,
 	ironspring,
@@ -1361,6 +1367,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	magic,
 	mainsequence,
 	makers,
+	maki,
 	mana,
 	mango,
 	mantis,
@@ -1476,6 +1483,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	passion,
 	pathbreaker,
 	patron,
+	peak,
 	peakbridge,
 	pear,
 	pebblebed,
