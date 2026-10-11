@@ -68,7 +68,6 @@ import { scrape as alven } from './alven';
 import { scrape as amadeus } from './amadeus';
 import { scrape as amasia } from './amasia';
 import { scrape as ambition } from './ambition';
-import { scrape as angular } from './angular';
 import { scrape as animo } from './animo';
 import { scrape as anorak } from './anorak';
 import { scrape as anthem } from './anthem';
@@ -939,7 +938,6 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	amadeus,
 	amasia,
 	ambition,
-	angular,
 	animo,
 	anorak,
 	anthem,
