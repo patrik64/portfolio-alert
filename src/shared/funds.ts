@@ -1,4 +1,4 @@
-// The 878 tracked funds, in case-insensitive alphabetical order by name — the
+// The 881 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -461,6 +461,7 @@ export const FUNDS: FundInfo[] = [
 		url: 'https://www.innovationindustries.com/portfolio'
 	},
 	{ slug: 'innovestor', name: 'Innovestor', url: 'https://innovestorgroup.com/venture-capital/portfolio-companies/' },
+	{ slug: 'inovo', name: 'Inovo.vc', url: 'https://inovo.vc/portfolio' },
 	{ slug: 'insight', name: 'Insight Partners', url: 'https://www.insightpartners.com/portfolio/' },
 	{ slug: 'inspired', name: 'Inspired Capital', url: 'https://www.inspiredcapital.com/portfolio' },
 	{ slug: 'intelcapital', name: 'Intel Capital', url: 'https://www.intelcapital.com/portfolio/' },
@@ -938,6 +939,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'ulu', name: 'Ulu Ventures', url: 'https://uluventures.com/companies/' },
 	{ slug: 'uncork', name: 'Uncork Capital', url: 'https://uncorkcapital.com/companies/' },
 	{ slug: 'underline', name: 'Underline Ventures', url: 'https://underline.vc/portfolio' },
+	{ slug: 'underscore', name: 'Underscore VC', url: 'https://underscore.vc/portfolio/' },
 	{
 		slug: 'undeterred',
 		name: 'Undeterred Capital',
@@ -950,6 +952,7 @@ export const FUNDS: FundInfo[] = [
 	},
 	{ slug: 'usv', name: 'Union Square Ventures', url: 'https://www.usv.com/companies/' },
 	{ slug: 'uniseed', name: 'Uniseed', url: 'https://www.uniseed.com/portfolio' },
+	{ slug: 'unitedventures', name: 'United Ventures', url: 'https://unitedventures.com/portfolio/' },
 	{
 		slug: 'unshackled',
 		name: 'Unshackled Ventures',

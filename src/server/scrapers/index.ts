@@ -434,6 +434,7 @@ import { scrape as innovatingcapital } from './innovatingcapital';
 import { scrape as innovationendeavors } from './innovationendeavors';
 import { scrape as innovationindustries } from './innovationindustries';
 import { scrape as innovestor } from './innovestor';
+import { scrape as inovo } from './inovo';
 import { scrape as insight } from './insight';
 import { scrape as inspired } from './inspired';
 import { scrape as intelcapital } from './intelcapital';
@@ -803,9 +804,11 @@ import { scrape as twine } from './twine';
 import { scrape as typeone } from './typeone';
 import { scrape as ulu } from './ulu';
 import { scrape as underline } from './underline';
+import { scrape as underscore } from './underscore';
 import { scrape as undeterred } from './undeterred';
 import { scrape as unicornindia } from './unicornindia';
 import { scrape as uniseed } from './uniseed';
+import { scrape as unitedventures } from './unitedventures';
 import { scrape as unshackled } from './unshackled';
 import { scrape as untapped } from './untapped';
 import { scrape as unusual } from './unusual';
@@ -1313,6 +1316,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	innovationendeavors,
 	innovationindustries,
 	innovestor,
+	inovo,
 	insight,
 	inspired,
 	intelcapital,
@@ -1683,9 +1687,11 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	typeone,
 	ulu,
 	underline,
+	underscore,
 	undeterred,
 	unicornindia,
 	uniseed,
+	unitedventures,
 	unshackled,
 	untapped,
 	unusual,
