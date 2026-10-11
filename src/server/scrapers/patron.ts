@@ -20,6 +20,9 @@ const CHUNK = /self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)/g;
 const COMPANIES = '"companies":';
 // the link the fund files as the company's own
 const WEBSITE = /^website$/i;
+// godaddy's parking page, which patron.fund became on 11 October 2026: a
+// script sending the visitor to "/lander" and nothing else
+const PARKED = /window\.location\.href\s*=\s*["']\/lander["']/;
 
 const clean = (s: string) => s.replace(/\s+/g, ' ').trim();
 
@@ -61,6 +64,9 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}
 	const html = await resp.text();
+	if (PARKED.test(html)) {
+		throw new Error("patron: patron.fund is a domain-parking page now, not the fund's site");
+	}
 
 	const payload = [...html.matchAll(CHUNK)].map((m) => JSON.parse(m[1]) as string).join('');
 	const at = payload.indexOf(COMPANIES);

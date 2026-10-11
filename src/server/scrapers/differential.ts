@@ -13,7 +13,9 @@ const UA =
 // blog to grow one, is asked for by the offset the answer names.
 
 const LINK = /<a\b[^>]*\bhref="(https?:\/\/[^"]+)"/g;
-const NOISE = /differential\.vc|squarespace|linkedin\.com|twitter\.com|x\.com|crunchbase\.com/i;
+// links that are not the company's site, told by their whole host
+const NOISE =
+	/^(?:[\w-]+\.)*(?:differential\.vc|squarespace\.com|squarespace-cdn\.com|linkedin\.com|twitter\.com|x\.com|crunchbase\.com)$/i;
 const STEALTH = /^stealth\b/i;
 
 interface Post {
@@ -41,12 +43,33 @@ const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g
 // the category is comma-joined, so a label holding a comma would read as two
 const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
+const hostOf = (href: string) => {
+	try {
+		return new URL(href).hostname;
+	} catch {
+		return '';
+	}
+};
+
+// a page of the blog; a site that will not answer says how, since node's
+// own word for it is only "fetch failed" — as from 11 October 2026, when
+// differential.vc had lapsed and a parking host was cutting the
+// connection
+async function listingAt(url: string): Promise<Response> {
+	try {
+		return await fetch(url, { headers: { 'User-Agent': UA, Accept: 'application/json' } });
+	} catch (err) {
+		const why = err instanceof Error ? ((err.cause as { code?: string })?.code ?? err.message) : '';
+		throw new Error(`differential: the site would not answer${why ? ` (${why})` : ''}`, { cause: err });
+	}
+}
+
 export async function scrape(): Promise<ScrapedCompany[]> {
 	const posts: Post[] = [];
 	let offset: number | undefined;
 	for (let page = 0; page < 20; page++) {
 		const url = `${PAGE_URL}?format=json${offset ? `&offset=${offset}` : ''}`;
-		const resp = await fetch(url, { headers: { 'User-Agent': UA, Accept: 'application/json' } });
+		const resp = await listingAt(url);
 		if (!resp.ok) {
 			throw new Error(`Failed to fetch ${url}: ${resp.status}`);
 		}
@@ -64,7 +87,9 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		seen.add(name.toLowerCase());
 		const categories = (post.categories ?? []).map(tag).filter((c) => c && !/^(all|active)$/i.test(c));
 		const exited = categories.some((c) => /^(acquired|exited|ipo)$/i.test(c));
-		const site = [...(post.body ?? '').matchAll(LINK)].map((m) => unescape(m[1])).find((u) => !NOISE.test(u));
+		const site = [...(post.body ?? '').matchAll(LINK)]
+			.map((m) => unescape(m[1]))
+			.find((u) => hostOf(u) && !NOISE.test(hostOf(u)));
 		companies.push({
 			name,
 			category: [...categories, exited ? 'Exited' : ''].filter((t, i, all) => t && all.indexOf(t) === i).join(', '),
