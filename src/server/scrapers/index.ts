@@ -405,6 +405,7 @@ import { scrape as heartcore } from './heartcore';
 import { scrape as heavybit } from './heavybit';
 import { scrape as helios } from './helios';
 import { scrape as helium3 } from './helium3';
+import { scrape as henq } from './henq';
 import { scrape as hetz } from './hetz';
 import { scrape as highland } from './highland';
 import { scrape as hofcapital } from './hofcapital';
@@ -452,11 +453,14 @@ import { scrape as joule } from './joule';
 import { scrape as jovono } from './jovono';
 import { scrape as juniper } from './juniper';
 import { scrape as juvo } from './juvo';
+import { scrape as kfund } from './kfund';
 import { scrape as k5 } from './k5';
 import { scrape as k9 } from './k9';
 import { scrape as kapor } from './kapor';
 import { scrape as kdt } from './kdt';
+import { scrape as keen } from './keen';
 import { scrape as khosla } from './khosla';
+import { scrape as kibo } from './kibo';
 import { scrape as kickstart } from './kickstart';
 import { scrape as kima } from './kima';
 import { scrape as kittyhawk } from './kittyhawk';
@@ -498,6 +502,7 @@ import { scrape as makers } from './makers';
 import { scrape as maki } from './maki';
 import { scrape as mana } from './mana';
 import { scrape as mango } from './mango';
+import { scrape as mangrove } from './mangrove';
 import { scrape as mantis } from './mantis';
 import { scrape as maple } from './maple';
 import { scrape as massive } from './massive';
@@ -540,6 +545,7 @@ import { scrape as muse } from './muse';
 import { scrape as musha } from './musha';
 import { scrape as nap } from './nap';
 import { scrape as ngpartners } from './ngpartners';
+import { scrape as nauta } from './nauta';
 import { scrape as ndcapital } from './ndcapital';
 import { scrape as nea } from './nea';
 import { scrape as necessary } from './necessary';
@@ -599,6 +605,7 @@ import { scrape as ovni } from './ovni';
 import { scrape as owl } from './owl';
 import { scrape as oxfordscience } from './oxfordscience';
 import { scrape as p1 } from './p1';
+import { scrape as p101 } from './p101';
 import { scrape as paladin } from './paladin';
 import { scrape as palladium } from './palladium';
 import { scrape as palmdrive } from './palmdrive';
@@ -637,6 +644,7 @@ import { scrape as primary } from './primary';
 import { scrape as primeimpact } from './primeimpact';
 import { scrape as primemovers } from './primemovers';
 import { scrape as primetime } from './primetime';
+import { scrape as prime } from './prime';
 import { scrape as projecta } from './projecta';
 import { scrape as propeller } from './propeller';
 import { scrape as psv } from './psv';
@@ -838,6 +846,7 @@ import { scrape as visibleventures } from './visibleventures';
 import { scrape as visionaries } from './visionaries';
 import { scrape as voimaventures } from './voimaventures';
 import { scrape as voloearth } from './voloearth';
+import { scrape as volta } from './volta';
 import { scrape as voyagervc } from './voyagervc';
 import { scrape as vtfcapital } from './vtfcapital';
 import { scrape as vuventurepartners } from './vuventurepartners';
@@ -1275,6 +1284,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	heavybit,
 	helios,
 	helium3,
+	henq,
 	hetz,
 	highland,
 	hofcapital,
@@ -1322,11 +1332,14 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	jovono,
 	juniper,
 	juvo,
+	kfund,
 	k5,
 	k9,
 	kapor,
 	kdt,
+	keen,
 	khosla,
+	kibo,
 	kickstart,
 	kima,
 	kittyhawk,
@@ -1368,6 +1381,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	maki,
 	mana,
 	mango,
+	mangrove,
 	mantis,
 	maple,
 	massive,
@@ -1410,6 +1424,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	musha,
 	nap,
 	ngpartners,
+	nauta,
 	ndcapital,
 	nea,
 	necessary,
@@ -1469,6 +1484,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	owl,
 	oxfordscience,
 	p1,
+	p101,
 	paladin,
 	palladium,
 	palmdrive,
@@ -1507,6 +1523,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	primeimpact,
 	primemovers,
 	primetime,
+	prime,
 	projecta,
 	propeller,
 	psv,
@@ -1709,6 +1726,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	visionaries,
 	voimaventures,
 	voloearth,
+	volta,
 	voyagervc,
 	vtfcapital,
 	vuventurepartners,

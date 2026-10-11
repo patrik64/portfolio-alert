@@ -1,4 +1,4 @@
-// The 869 tracked funds, in case-insensitive alphabetical order by name — the
+// The 878 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -424,6 +424,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'heavybit', name: 'Heavybit', url: 'https://www.heavybit.com/portfolio' },
 	{ slug: 'helios', name: 'Helios Capital', url: 'https://www.helioscapital.us/portfolio-2/' },
 	{ slug: 'helium3', name: 'Helium-3 Ventures', url: 'https://www.helium-3ventures.com/#portfolio' },
+	{ slug: 'henq', name: 'henQ', url: 'https://www.henq.vc/#portfolio' },
 	{ slug: 'hetz', name: 'Hetz Ventures', url: 'https://www.hetz.vc/our-portfolio' },
 	{ slug: 'highland', name: 'Highland Europe', url: 'https://www.highlandeurope.com/companies/' },
 	{ slug: 'hofcapital', name: 'HOF Capital', url: 'https://hofcapital.com/portfolio' },
@@ -479,11 +480,18 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'jovono', name: 'Jovono', url: 'https://www.jovono.com/portfolio' },
 	{ slug: 'juniper', name: 'Juniper VC', url: 'https://www.junipervc.com/portfolio' },
 	{ slug: 'juvo', name: 'Juvo Ventures', url: 'https://juvovc.org/portfolio/' },
+	{ slug: 'kfund', name: 'K Fund', url: 'https://www.kfund.vc/' },
 	{ slug: 'k5', name: 'K5 Global', url: 'https://www.k5global.com/companies' },
 	{ slug: 'k9', name: 'K9 Ventures', url: 'https://www.k9ventures.com/startups/' },
 	{ slug: 'kapor', name: 'Kapor Capital', url: 'https://www.kaporcapital.com/portfolio/' },
 	{ slug: 'kdt', name: 'KdT Ventures', url: 'https://www.kdtvc.com/portfolio' },
+	{
+		slug: 'keen',
+		name: 'Keen Venture Partners',
+		url: 'https://www.keenventurepartners.com/portfolio'
+	},
 	{ slug: 'khosla', name: 'Khosla Ventures', url: 'https://www.khoslaventures.com/portfolio/' },
+	{ slug: 'kibo', name: 'Kibo Ventures', url: 'https://www.kiboventures.com/portfolio' },
 	{ slug: 'kickstart', name: 'Kickstart Fund', url: 'https://kickstart.com/portfolio' },
 	{ slug: 'kima', name: 'Kima Ventures', url: 'https://www.kimaventures.com/portfolio' },
 	{ slug: 'kindred', name: 'Kindred Ventures', url: 'https://kindredventures.com/portfolio/' },
@@ -525,6 +533,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'maki', name: 'Maki.vc', url: 'https://maki.vc/portfolio/' },
 	{ slug: 'mana', name: 'Mana Ventures', url: 'https://www.manaventures.vc/portfolio' },
 	{ slug: 'mango', name: 'Mango Capital', url: 'https://www.mangocapitalinc.com/' },
+	{
+		slug: 'mangrove',
+		name: 'Mangrove Capital Partners',
+		url: 'https://www.mangrove.vc/our-portfolio'
+	},
 	{ slug: 'mantis', name: 'Mantis VC', url: 'https://www.mantisvc.com/portfolio' },
 	{ slug: 'maple', name: 'Maple VC', url: 'https://maplevc.com/portfolio' },
 	{ slug: 'massive', name: 'Massive', url: 'https://massive.vc/' },
@@ -567,6 +580,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'musha', name: 'Musha Ventures', url: 'https://www.mushaventures.com/' },
 	{ slug: 'nap', name: 'NAP', url: 'https://nap.vc/build/companies' },
 	{ slug: 'ngpartners', name: 'National Grid Partners', url: 'https://www.ngpartners.com/portfolio' },
+	{ slug: 'nauta', name: 'Nauta', url: 'https://www.nautacapital.com/portfolio' },
 	{ slug: 'ndcapital', name: 'ND Capital', url: 'https://nd.capital/#portfolio' },
 	{ slug: 'nea', name: 'NEA', url: 'https://www.nea.com/portfolio?category=all' },
 	{ slug: 'necessary', name: 'Necessary Ventures', url: 'https://www.necessary.vc/portfolio' },
@@ -630,6 +644,7 @@ export const FUNDS: FundInfo[] = [
 		url: 'https://www.oxfordscienceenterprises.com/portfolio'
 	},
 	{ slug: 'p1', name: 'P1 Ventures', url: 'https://www.p1.ventures/portfolio' },
+	{ slug: 'p101', name: 'P101', url: 'https://p101.it/portfolio/' },
 	{ slug: 'paladin', name: 'Paladin Capital Group', url: 'https://www.paladincapgroup.com/portfolio/' },
 	{ slug: 'palladium', name: 'Palladium', url: 'https://www.palladiumequity.com/investments' },
 	{ slug: 'palmdrive', name: 'Palm Drive Capital', url: 'https://palmdrive.vc/portfolio/' },
@@ -668,6 +683,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'primeimpact', name: 'Prime Impact Fund', url: 'https://www.primeimpactfund.com/portfolio' },
 	{ slug: 'primemovers', name: 'Prime Movers Lab', url: 'https://www.primemoverslab.com/portfolio/' },
 	{ slug: 'primetime', name: 'Prime Time Partners', url: 'https://www.primetimepartners.com/portfolio' },
+	{ slug: 'prime', name: 'Prime Ventures', url: 'https://www.primeventures.com/relationships/' },
 	{ slug: 'projecta', name: 'Project A', url: 'https://www.project-a.vc/companies' },
 	{ slug: 'propeller', name: 'Propeller', url: 'https://propellervc.com/portfolio' },
 	{ slug: 'psv', name: 'PSV', url: 'https://www.psv.xyz/portfolio' },
@@ -1001,6 +1017,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'visionaries', name: 'Visionaries', url: 'https://visionaries.vc/#portfolio' },
 	{ slug: 'voimaventures', name: 'Voima Ventures', url: 'https://voimaventures.com/portfolio/' },
 	{ slug: 'voloearth', name: 'VoLo Earth', url: 'https://www.voloearth.com/portfolio' },
+	{ slug: 'volta', name: 'Volta Ventures', url: 'https://volta.ventures/#portfolio' },
 	{ slug: 'voyagervc', name: 'Voyager Ventures', url: 'https://www.voyagervc.com/portfolio' },
 	{ slug: 'vtfcapital', name: 'VTF Capital', url: 'https://vtfcapital.com/portfolio/' },
 	{
