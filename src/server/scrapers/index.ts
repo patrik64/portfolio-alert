@@ -144,9 +144,11 @@ import { scrape as breadandbutter } from './breadandbutter';
 import { scrape as breaktrail } from './breaktrail';
 import { scrape as breakout } from './breakout';
 import { scrape as breakthrough } from './breakthrough';
+import { scrape as breega } from './breega';
 import { scrape as broocknell } from './broocknell';
 import { scrape as btn } from './btn';
 import { scrape as buildingventures } from './buildingventures';
+import { scrape as byfounders } from './byfounders';
 import { scrape as byld } from './byld';
 import { scrape as c4v } from './c4v';
 import { scrape as cake } from './cake';
@@ -226,6 +228,7 @@ import { scrape as cti } from './cti';
 import { scrape as cultivian } from './cultivian';
 import { scrape as cybernetix } from './cybernetix';
 import { scrape as cyberstarts } from './cyberstarts';
+import { scrape as daphni } from './daphni';
 import { scrape as dawn } from './dawn';
 import { scrape as dayone } from './dayone';
 import { scrape as dcvc } from './dcvc';
@@ -460,6 +463,7 @@ import { scrape as kleiner } from './kleiner';
 import { scrape as kindred } from './kindred';
 import { scrape as kinnevik } from './kinnevik';
 import { scrape as konvoy } from './konvoy';
+import { scrape as korelya } from './korelya';
 import { scrape as kurma } from './kurma';
 import { scrape as laconia } from './laconia';
 import { scrape as lakehouse } from './lakehouse';
@@ -705,6 +709,7 @@ import { scrape as sigmaprime } from './sigmaprime';
 import { scrape as signalfire } from './signalfire';
 import { scrape as silentvc } from './silentvc';
 import { scrape as silversmith } from './silversmith';
+import { scrape as singular } from './singular';
 import { scrape as sixthirty } from './sixthirty';
 import { scrape as sixty8 } from './sixty8';
 import { scrape as slow } from './slow';
@@ -827,6 +832,7 @@ import { scrape as vireo } from './vireo';
 import { scrape as virtuevc } from './virtuevc';
 import { scrape as visiblehands } from './visiblehands';
 import { scrape as visibleventures } from './visibleventures';
+import { scrape as visionaries } from './visionaries';
 import { scrape as voimaventures } from './voimaventures';
 import { scrape as voloearth } from './voloearth';
 import { scrape as voyagervc } from './voyagervc';
@@ -1005,9 +1011,11 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	breaktrail,
 	breakout,
 	breakthrough,
+	breega,
 	broocknell,
 	btn,
 	buildingventures,
+	byfounders,
 	byld,
 	c4v,
 	cake,
@@ -1087,6 +1095,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	cultivian,
 	cybernetix,
 	cyberstarts,
+	daphni,
 	dawn,
 	dayone,
 	dcvc,
@@ -1321,6 +1330,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	kindred,
 	kinnevik,
 	konvoy,
+	korelya,
 	kurma,
 	laconia,
 	lakehouse,
@@ -1566,6 +1576,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	signalfire,
 	silentvc,
 	silversmith,
+	singular,
 	sixthirty,
 	sixty8,
 	slow,
@@ -1689,6 +1700,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	virtuevc,
 	visiblehands,
 	visibleventures,
+	visionaries,
 	voimaventures,
 	voloearth,
 	voyagervc,

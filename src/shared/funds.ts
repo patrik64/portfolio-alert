@@ -1,4 +1,4 @@
-// The 860 tracked funds, in case-insensitive alphabetical order by name — the
+// The 866 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -176,9 +176,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'breaktrail', name: 'Break Trail Ventures', url: 'https://www.breaktrailventures.com/#menu-section' },
 	{ slug: 'breakout', name: 'Breakout Ventures', url: 'https://breakout.vc/portfolio' },
 	{ slug: 'breakthrough', name: 'Breakthrough Energy', url: 'https://www.breakthroughenergy.org/portfolio/index.html' },
+	{ slug: 'breega', name: 'Breega', url: 'https://portfolio.breega.com/' },
 	{ slug: 'broocknell', name: 'Broocknell Ventures', url: 'https://broocknell.com/all-projects/' },
 	{ slug: 'btn', name: 'BTN Ventures', url: 'https://www.btn.vc/portfolio' },
 	{ slug: 'buildingventures', name: 'Building Ventures', url: 'https://buildingventures.com/companies/' },
+	{ slug: 'byfounders', name: 'byFounders', url: 'https://byfounders.vc/portfolio' },
 	{ slug: 'byld', name: 'Byld', url: 'https://www.byld.vc/portfolio' },
 	{ slug: 'c4v', name: 'C4 Ventures', url: 'https://c4v.com/companies/' },
 	{ slug: 'cake', name: 'Cake Ventures', url: 'https://www.cake.vc/companies' },
@@ -245,6 +247,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'cultivian', name: 'Cultivian Sandbox Ventures', url: 'https://cultiviansbx.com/portfolio' },
 	{ slug: 'cybernetix', name: 'Cybernetix Ventures', url: 'https://cybernetix.vc/#portfolio' },
 	{ slug: 'cyberstarts', name: 'Cyberstarts', url: 'https://www.cyberstarts.com/portfolio' },
+	{ slug: 'daphni', name: 'Daphni', url: 'https://www.daphni.com/portfolio' },
 	{ slug: 'dawn', name: 'Dawn Capital', url: 'https://www.dawncapital.com/companies' },
 	{ slug: 'dayone', name: 'Day One Ventures', url: 'https://www.dayoneventures.com/#portfolio' },
 	{ slug: 'dcvc', name: 'DCVC', url: 'https://www.dcvc.com/companies' },
@@ -487,6 +490,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'kittyhawk', name: 'KittyHawk Ventures', url: 'https://www.kittyhawkvc.com/investments-portfolio' },
 	{ slug: 'kleiner', name: 'Kleiner Perkins', url: 'https://jobs.kleinerperkins.com/companies' },
 	{ slug: 'konvoy', name: 'Konvoy', url: 'https://www.konvoy.vc/portfolio' },
+	{ slug: 'korelya', name: 'Korelya Capital', url: 'https://www.korelyacapital.com/portfolio/' },
 	{ slug: 'kurma', name: 'Kurma Partners', url: 'https://www.kurmapartners.com/en/portfolio' },
 	{ slug: 'laconia', name: 'Laconia', url: 'https://www.laconiacapitalgroup.com/portfolio' },
 	{ slug: 'lakehouse', name: 'Lakehouse Ventures', url: 'https://lakehouse.vc/portfolio/' },
@@ -752,6 +756,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'signalfire', name: 'SignalFire', url: 'https://www.signalfire.com/portfolio' },
 	{ slug: 'silentvc', name: 'Silent Ventures', url: 'https://silentvc.com/#portfolio' },
 	{ slug: 'silversmith', name: 'Silversmith', url: 'https://www.silversmith.com/portfolio' },
+	{ slug: 'singular', name: 'Singular', url: 'https://www.singular.vc/' },
 	{ slug: 'sixthirty', name: 'SixThirty', url: 'https://sixthirty.co/startup-portfolio/' },
 	{ slug: 'sixty8', name: 'Sixty8 Capital', url: 'https://www.sixty8.capital/companies' },
 	{ slug: 'slow', name: 'Slow Ventures', url: 'https://slow.co/about/' },
@@ -990,6 +995,7 @@ export const FUNDS: FundInfo[] = [
 		name: 'Visible Ventures',
 		url: 'https://visibleventures.com/portfolio/'
 	},
+	{ slug: 'visionaries', name: 'Visionaries', url: 'https://visionaries.vc/#portfolio' },
 	{ slug: 'voimaventures', name: 'Voima Ventures', url: 'https://voimaventures.com/portfolio/' },
 	{ slug: 'voloearth', name: 'VoLo Earth', url: 'https://www.voloearth.com/portfolio' },
 	{ slug: 'voyagervc', name: 'Voyager Ventures', url: 'https://www.voyagervc.com/portfolio' },
