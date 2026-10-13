@@ -1,100 +1,102 @@
 import type { ScrapedCompany } from './types';
 
-const BASE_URL = 'https://www.sierraventures.com';
-const ALL_PATH = '/portfolio-all-items';
+const PAGE_URL = 'https://www.sierraventures.com/portfolio';
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-// hubspot. /portfolio shows only the sixteen companies the fund is featuring;
-// its sector dropdown points at the pages that hold the rest, and
-// /portfolio-all-items has all hundred and sixty-four.
-//
-// a tile carries the company's name as its logo's alt text, "Astronomer logo",
-// and a class saying whether the company is still held. the modal behind it
-// repeats the status and adds the address, under a button marked Website —
-// there is a Careers button beside it, which is not the same thing.
-//
-// the sectors are not on the tiles, so the six sector pages are read as well
-// and a company takes the sectors of the pages it appears on.
+// hubspot. /portfolio holds every company now (the old /portfolio-all-items
+// and the sector pages send you there): its table is drawn in the browser
+// from a list written into the page's script, one entry a company, giving
+// its name, its sectors ("Vertical AI", "AI Infrastructure"), the stage the
+// fund came in at, its status ("Current", "Exited"), the way out ("Exited",
+// "IPO"), its site and a description that, for a sale, mostly opens on
+// "Acquired by Oracle Corporation (NASDAQ: ORCL)". the sectors, the stage
+// and the way out are kept as tags, an opening buyer as "Acquired by …"
+// with the ticker dropped, an exit or a listing with the Exited tag.
 
-const SECTORS: Record<string, string> = {
-	'/portfolio-ai-data': 'AI / Data',
-	'/portfolio-saas': 'SaaS',
-	'/portfolio-digital-health': 'Digital Health',
-	'/portfolio-deeptech-robotics': 'DeepTech / Robotics',
-	'/portfolio-security-infrastructure': 'Security / Infrastructure',
-	'/portfolio-consumer-commerce': 'Consumer / Commerce'
-};
-
-const CARD =
-	/class="partners-1__partner (partner-type-\d+)\s*"[\s\S]{0,600}?data-micromodal-trigger="([^"]*)"[\s\S]{0,400}?alt="([^"]*)"/g;
-const MODAL =
-	/<div class="modal micromodal-slide" id="([^"]*)"([\s\S]*?)(?=<div class="modal micromodal-slide" id=|<\/section)/g;
-const WEBSITE = /<a class="partners-1__partner-button" href="([^"]*)"[^>]*>\s*Website\s*<\/a>/;
-const LOGO_SUFFIX = /\s*logo$/i;
-// the class the fund puts on a company it has exited
-const EXITED = 'partner-type-2';
+const LIST = 'let arr_obj_portfolio = [';
+const ENTRY = /(?=\{\s*"featured":)/;
+// a field of an entry: each on its own line, the sectors' and the status's
+// own names being inside them
+const FIELD = (name: string) => new RegExp(`^\\s*"${name}":\\s*"((?:[^"\\\\]|\\\\.)*)"`, 'm');
+const STATUS = /"status":\s*\{\s*"name":\s*"([^"]*)"/;
+const SECTORS = /"sector":\s*\[([^\]]*)\]/;
+const SECTOR = /\{\s*"name":\s*"((?:[^"\\]|\\.)*)"/g;
+const DESCRIPTION = /"description":\s*`([\s\S]*?)`/;
+// the description's opening paragraph or heading
+const OPENING = /<(p|h\d|div)\b[^>]*>([\s\S]*?)<\/\1>/;
+const BUYER = /^acquired by\s+(.+?)\.?$/i;
+const TICKER = /\s*\((?:nasdaq|nyse)\b[^)]*\)/gi;
+const EXITED = /^exited$/i;
+const IPO = /^ipo$/i;
+const UNSAID = /^(?:-|other|others|all|n\/a|current)$/i;
+const STEALTH = /^stealth\b/i;
 
 const unescape = (s: string) =>
 	s
-		.replace(/&#0?39;|&apos;|&#8217;/g, "'")
-		.replace(/&amp;/g, '&')
+		.replace(/&#0?39;|&apos;|&#8217;|&#x27;/g, "'")
 		.replace(/&quot;/g, '"')
-		.replace(/&lt;/g, '<')
-		.replace(/&gt;/g, '>')
-		.replace(/&nbsp;/g, ' ');
+		.replace(/&nbsp;/g, ' ')
+		.replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
+		.replace(/&#0?38;|&amp;/g, '&');
 
-const clean = (s: string) => unescape(s).replace(/\s+/g, ' ').trim();
+const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
 
-const nameOf = (alt: string) => clean(clean(alt).replace(LOGO_SUFFIX, ''));
+// the category is comma-joined, so a label holding a comma would read as two
+const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
-async function fetchText(path: string): Promise<string> {
-	const url = `${BASE_URL}${path}`;
-	const resp = await fetch(url, { headers: { 'User-Agent': UA } });
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${url}: ${resp.status}`);
+// a javascript string's contents, its escapes undone where they are json's
+const literal = (s: string) => {
+	try {
+		return JSON.parse(`"${s}"`) as string;
+	} catch {
+		return s;
 	}
-	return resp.text();
-}
+};
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const paths = Object.keys(SECTORS);
-	const [all, ...sectorPages] = await Promise.all([
-		fetchText(ALL_PATH),
-		...paths.map((p) => fetchText(p).catch(() => ''))
-	]);
-
-	// which sector pages a company turns up on
-	const sectorsOf = new Map<string, string[]>();
-	sectorPages.forEach((html, i) => {
-		for (const m of html.matchAll(CARD)) {
-			const name = nameOf(m[3]);
-			if (!name) continue;
-			const held = sectorsOf.get(name) ?? [];
-			held.push(SECTORS[paths[i]]);
-			sectorsOf.set(name, held);
-		}
-	});
-
-	const modals = new Map([...all.matchAll(MODAL)].map((m) => [m[1], m[2]]));
+	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	if (!resp.ok) {
+		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+	}
+	const html = await resp.text();
+	const start = html.indexOf(LIST);
+	if (start < 0) {
+		throw new Error("sierra: the page's script carries no portfolio list — the page moved");
+	}
+	const list = html.slice(start, html.indexOf('</script>', start));
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-	for (const m of all.matchAll(CARD)) {
-		const name = nameOf(m[3]);
-		if (!name || seen.has(name)) continue;
-		seen.add(name);
+	for (const entry of list.split(ENTRY).slice(1)) {
+		const field = (name: string) => clean(literal(entry.match(FIELD(name))?.[1] ?? ''));
+		const name = field('name');
+		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
+		seen.add(name.toLowerCase());
+		const sectors = [...(entry.match(SECTORS)?.[1] ?? '').matchAll(SECTOR)].map(([, s]) => tag(literal(s)));
+		const wayOut = field('acquired');
+		const opening = entry.match(DESCRIPTION)?.[1].match(OPENING)?.[2] ?? '';
+		const buyer = clean(opening).match(BUYER)?.[1].replace(TICKER, '').trim();
+		const ipo = IPO.test(wayOut);
+		const out = ipo || EXITED.test(wayOut) || EXITED.test(entry.match(STATUS)?.[1] ?? '') || !!buyer;
+		const site = field('website');
 		companies.push({
 			name,
-			category: [...(sectorsOf.get(name) ?? []), m[1] === EXITED ? 'Exited' : '']
-				.filter(Boolean)
+			category: [
+				...sectors,
+				tag(field('stage')),
+				buyer ? `Acquired by ${tag(buyer)}` : '',
+				ipo ? 'IPO' : '',
+				out ? 'Exited' : ''
+			]
+				.filter((t, i, all) => t && !UNSAID.test(t) && all.indexOf(t) === i)
 				.join(', '),
-			url: modals.get(m[2])?.match(WEBSITE)?.[1] ?? ''
+			url: /^https?:\/\//i.test(site) ? site : PAGE_URL
 		});
 	}
 
 	if (companies.length === 0) {
-		throw new Error('sierra: no companies on the portfolio page');
+		throw new Error('sierra: no companies in the portfolio list — its entries moved');
 	}
 
 	return companies;

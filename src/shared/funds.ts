@@ -480,7 +480,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'joule', name: 'Joule Ventures', url: 'https://www.joulevc.com/portfolio' },
 	{ slug: 'jovono', name: 'Jovono', url: 'https://www.jovono.com/portfolio' },
 	{ slug: 'juniper', name: 'Juniper VC', url: 'https://www.junipervc.com/portfolio' },
-	{ slug: 'juvo', name: 'Juvo Ventures', url: 'https://juvovc.org/portfolio/' },
+	{ slug: 'juvo', name: 'Juvo Ventures', url: 'https://juvovc.org/#portfolio' },
 	{ slug: 'kfund', name: 'K Fund', url: 'https://www.kfund.vc/' },
 	{ slug: 'k5', name: 'K5 Global', url: 'https://www.k5global.com/companies' },
 	{ slug: 'k9', name: 'K9 Ventures', url: 'https://www.k9ventures.com/startups/' },
