@@ -8,6 +8,7 @@ import { scrape as twentyvc } from './twentyvc';
 import { scrape as twentyonefifty } from './twentyonefifty';
 import { scrape as threevc } from './3vc';
 import { scrape as fourdx } from './fourdx';
+import { scrape as fourimpact } from './fourimpact';
 import { scrape as fiftypartners } from './fiftypartners';
 import { scrape as fivehundred } from './fivehundred';
 import { scrape as fiveam } from './fiveam';
@@ -168,6 +169,7 @@ import { scrape as cantos } from './cantos';
 import { scrape as canvas } from './canvas';
 import { scrape as capitalize } from './capitalize';
 import { scrape as capnamic } from './capnamic';
+import { scrape as capricorn } from './capricorn';
 import { scrape as carbonsilicon } from './carbonsilicon';
 import { scrape as caruso } from './caruso';
 import { scrape as castleisland } from './castleisland';
@@ -213,6 +215,7 @@ import { scrape as bonfire } from './bonfire';
 import { scrape as boost } from './boost';
 import { scrape as borderless } from './borderless';
 import { scrape as boro } from './boro';
+import { scrape as borski } from './borski';
 import { scrape as bostonseed } from './bostonseed';
 import { scrape as boulder } from './boulder';
 import { scrape as bowery } from './bowery';
@@ -236,6 +239,7 @@ import { scrape as crush } from './crush';
 import { scrape as crv } from './crv';
 import { scrape as cti } from './cti';
 import { scrape as cultivian } from './cultivian';
+import { scrape as curiosity } from './curiosity';
 import { scrape as cusp } from './cusp';
 import { scrape as cybernetix } from './cybernetix';
 import { scrape as cyberstarts } from './cyberstarts';
@@ -286,6 +290,7 @@ import { scrape as elementum } from './elementum';
 import { scrape as elevate } from './elevate';
 import { scrape as elizabethstreet } from './elizabethstreet';
 import { scrape as emerging } from './emerging';
+import { scrape as endeit } from './endeit';
 import { scrape as eip } from './eip';
 import { scrape as engine } from './engine';
 import { scrape as engineeringcapital } from './engineeringcapital';
@@ -442,6 +447,7 @@ import { scrape as hyperplane } from './hyperplane';
 import { scrape as ibb } from './ibb';
 import { scrape as illuminate } from './illuminate';
 import { scrape as imaginary } from './imaginary';
+import { scrape as imecxpand } from './imecxpand';
 import { scrape as impactamerica } from './impactamerica';
 import { scrape as incisive } from './incisive';
 import { scrape as indexventures } from './indexventures';
@@ -663,6 +669,7 @@ import { scrape as picus } from './picus';
 import { scrape as pillar } from './pillar';
 import { scrape as pioneer } from './pioneer';
 import { scrape as pitango } from './pitango';
+import { scrape as pitchdrive } from './pitchdrive';
 import { scrape as planeta } from './planeta';
 import { scrape as playground } from './playground';
 import { scrape as plg } from './plg';
@@ -689,6 +696,7 @@ import { scrape as propeller } from './propeller';
 import { scrape as psv } from './psv';
 import { scrape as push } from './push';
 import { scrape as pxn } from './pxn';
+import { scrape as qbic } from './qbic';
 import { scrape as qed } from './qed';
 import { scrape as qualcomm } from './qualcomm';
 import { scrape as quantonation } from './quantonation';
@@ -758,9 +766,11 @@ import { scrape as seraphim } from './seraphim';
 import { scrape as serenacapital } from './serenacapital';
 import { scrape as serena } from './serena';
 import { scrape as serpentine } from './serpentine';
+import { scrape as setventures } from './setventures';
 import { scrape as sevensevensix } from './sevensevensix';
 import { scrape as sfc } from './sfc';
 import { scrape as shield } from './shield';
+import { scrape as shiftinvest } from './shiftinvest';
 import { scrape as shima } from './shima';
 import { scrape as shine } from './shine';
 import { scrape as shrug } from './shrug';
@@ -943,6 +953,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	'2150': twentyonefifty,
 	'3vc': threevc,
 	'4dx': fourdx,
+	'4impact': fourimpact,
 	'50partners': fiftypartners,
 	'500': fivehundred,
 	'5am': fiveam,
@@ -1103,6 +1114,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	canvas,
 	capitalize,
 	capnamic,
+	capricorn,
 	carbonsilicon,
 	caruso,
 	castleisland,
@@ -1148,6 +1160,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	boost,
 	borderless,
 	boro,
+	borski,
 	bostonseed,
 	boulder,
 	bowery,
@@ -1171,6 +1184,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	crv,
 	cti,
 	cultivian,
+	curiosity,
 	cusp,
 	cybernetix,
 	cyberstarts,
@@ -1221,6 +1235,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	elevate,
 	elizabethstreet,
 	emerging,
+	endeit,
 	eip,
 	engine,
 	engineeringcapital,
@@ -1377,6 +1392,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	ibb,
 	illuminate,
 	imaginary,
+	imecxpand,
 	impactamerica,
 	incisive,
 	indexventures,
@@ -1598,6 +1614,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	pillar,
 	pioneer,
 	pitango,
+	pitchdrive,
 	planeta,
 	playground,
 	plg,
@@ -1624,6 +1641,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	psv,
 	push,
 	pxn,
+	qbic,
 	qed,
 	qualcomm,
 	quantonation,
@@ -1693,9 +1711,11 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	serenacapital,
 	serena,
 	serpentine,
+	setventures,
 	sevensevensix,
 	sfc,
 	shield,
+	shiftinvest,
 	shima,
 	shine,
 	shrug,
