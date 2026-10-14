@@ -33,6 +33,7 @@ import { scrape as acequia } from './acequia';
 import { scrape as acre } from './acre';
 import { scrape as acrew } from './acrew';
 import { scrape as actone } from './actone';
+import { scrape as act } from './act';
 import { scrape as actions } from './actions';
 import { scrape as activecapital } from './activecapital';
 import { scrape as activeimpact } from './activeimpact';
@@ -89,6 +90,7 @@ import { scrape as astanor } from './astanor';
 import { scrape as asymmetry } from './asymmetry';
 import { scrape as atone } from './atone';
 import { scrape as atento } from './atento';
+import { scrape as atlanticbridge } from './atlanticbridge';
 import { scrape as atlas } from './atlas';
 import { scrape as atomic } from './atomic';
 import { scrape as atomico } from './atomico';
@@ -196,6 +198,7 @@ import { scrape as commerce } from './commerce';
 import { scrape as commonweal } from './commonweal';
 import { scrape as companyventures } from './companyventures';
 import { scrape as compound } from './compound';
+import { scrape as concentric } from './concentric';
 import { scrape as congruent } from './congruent';
 import { scrape as bbv } from './bbv';
 import { scrape as bluepointe } from './bluepointe';
@@ -333,6 +336,7 @@ import { scrape as foundationcapital } from './foundationcapital';
 import { scrape as foundationventures } from './foundationventures';
 import { scrape as foundercollective } from './foundercollective';
 import { scrape as founderfuel } from './founderfuel';
+import { scrape as foundersfactory } from './foundersfactory';
 import { scrape as foundersfund } from './foundersfund';
 import { scrape as flare } from './flare';
 import { scrape as flint } from './flint';
@@ -396,6 +400,7 @@ import { scrape as grove } from './grove';
 import { scrape as gsv } from './gsv';
 import { scrape as gtmfund } from './gtmfund';
 import { scrape as gula } from './gula';
+import { scrape as haatch } from './haatch';
 import { scrape as halogen } from './halogen';
 import { scrape as hannahgrey } from './hannahgrey';
 import { scrape as harlem } from './harlem';
@@ -466,6 +471,7 @@ import { scrape as k9 } from './k9';
 import { scrape as kapor } from './kapor';
 import { scrape as kdt } from './kdt';
 import { scrape as keen } from './keen';
+import { scrape as kennet } from './kennet';
 import { scrape as khosla } from './khosla';
 import { scrape as kibo } from './kibo';
 import { scrape as kickstart } from './kickstart';
@@ -528,6 +534,7 @@ import { scrape as mmv } from './mmv';
 import { scrape as medtechinnovator } from './medtechinnovator';
 import { scrape as mendoza } from './mendoza';
 import { scrape as menlo } from './menlo';
+import { scrape as mercia } from './mercia';
 import { scrape as mercuri } from './mercuri';
 import { scrape as msc } from './msc';
 import { scrape as meron } from './meron';
@@ -609,6 +616,7 @@ import { scrape as otb } from './otb';
 import { scrape as ourcrowd } from './ourcrowd';
 import { scrape as outlander } from './outlander';
 import { scrape as outsiders } from './outsiders';
+import { scrape as outward } from './outward';
 import { scrape as overkill } from './overkill';
 import { scrape as overlook } from './overlook';
 import { scrape as overture } from './overture';
@@ -662,6 +670,7 @@ import { scrape as projecta } from './projecta';
 import { scrape as propeller } from './propeller';
 import { scrape as psv } from './psv';
 import { scrape as push } from './push';
+import { scrape as pxn } from './pxn';
 import { scrape as qed } from './qed';
 import { scrape as qualcomm } from './qualcomm';
 import { scrape as quantonation } from './quantonation';
@@ -727,6 +736,7 @@ import { scrape as seraphim } from './seraphim';
 import { scrape as serenacapital } from './serenacapital';
 import { scrape as serena } from './serena';
 import { scrape as sevensevensix } from './sevensevensix';
+import { scrape as sfc } from './sfc';
 import { scrape as shield } from './shield';
 import { scrape as shima } from './shima';
 import { scrape as shine } from './shine';
@@ -932,6 +942,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	acre,
 	acrew,
 	actone,
+	act,
 	actions,
 	activecapital,
 	activeimpact,
@@ -988,6 +999,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	asymmetry,
 	atone,
 	atento,
+	atlanticbridge,
 	atlas,
 	atomic,
 	atomico,
@@ -1095,6 +1107,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	commonweal,
 	companyventures,
 	compound,
+	concentric,
 	congruent,
 	bbv,
 	bluepointe,
@@ -1232,6 +1245,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	foundationventures,
 	foundercollective,
 	founderfuel,
+	foundersfactory,
 	foundersfund,
 	flare,
 	flint,
@@ -1295,6 +1309,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	gsv,
 	gtmfund,
 	gula,
+	haatch,
 	halogen,
 	hannahgrey,
 	harlem,
@@ -1365,6 +1380,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	kapor,
 	kdt,
 	keen,
+	kennet,
 	khosla,
 	kibo,
 	kickstart,
@@ -1427,6 +1443,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	medtechinnovator,
 	mendoza,
 	menlo,
+	mercia,
 	mercuri,
 	msc,
 	meron,
@@ -1508,6 +1525,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	ourcrowd,
 	outlander,
 	outsiders,
+	outward,
 	overkill,
 	overlook,
 	overture,
@@ -1561,6 +1579,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	propeller,
 	psv,
 	push,
+	pxn,
 	qed,
 	qualcomm,
 	quantonation,
@@ -1626,6 +1645,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	serenacapital,
 	serena,
 	sevensevensix,
+	sfc,
 	shield,
 	shima,
 	shine,

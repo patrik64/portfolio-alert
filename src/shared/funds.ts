@@ -1,4 +1,4 @@
-// The 898 tracked funds, in case-insensitive alphabetical order by name — the
+// The 908 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -36,6 +36,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'acre', name: 'Acre Venture Partners', url: 'https://acre.vc/#partners' },
 	{ slug: 'acrew', name: 'Acrew Capital', url: 'https://www.acrewcapital.com/companies' },
 	{ slug: 'actone', name: 'Act One Ventures', url: 'https://www.actoneventures.com/portfolio' },
+	{ slug: 'act', name: 'ACT Venture Capital', url: 'https://actventure.capital/portfolio' },
 	{ slug: 'actions', name: 'Actions Capital', url: 'https://www.actions.capital/founders' },
 	{ slug: 'activecapital', name: 'Active Capital Company', url: 'https://www.activecapitalcompany.com/?scroll-to=portfolio' },
 	{ slug: 'activeimpact', name: 'Active Impact Investments', url: 'https://www.activeimpactinvestments.com/portfolio#fundi' },
@@ -108,6 +109,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'asymmetry', name: 'Asymmetry VC', url: 'https://asymmetry.vc/portfolio/' },
 	{ slug: 'atone', name: 'At One Ventures', url: 'https://www.atoneventures.com/portfolio' },
 	{ slug: 'atento', name: 'Atento Capital', url: 'https://www.atentocapital.com/portfolio' },
+	{ slug: 'atlanticbridge', name: 'Atlantic Bridge', url: 'https://www.abven.com/portfolio/' },
 	{ slug: 'atlas', name: 'Atlas Venture', url: 'https://atlasventure.com/portfolio/' },
 	{ slug: 'atomic', name: 'Atomic', url: 'https://www.atomic.vc/companies' },
 	{ slug: 'atomico', name: 'Atomico', url: 'https://careers.atomico.com/companies' },
@@ -232,6 +234,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'commonweal', name: 'Commonweal Ventures', url: 'https://www.commonwealventures.com/portfolio' },
 	{ slug: 'companyventures', name: 'Company Ventures', url: 'https://www.companyventures.com/portfolio' },
 	{ slug: 'compound', name: 'Compound', url: 'https://www.compound.vc/portfolio' },
+	{ slug: 'concentric', name: 'Concentric', url: 'https://concentric.vc/investments/' },
 	{ slug: 'congruent', name: 'Congruent Ventures', url: 'https://www.congruentvc.com/portfolio' },
 	{ slug: 'connect', name: 'Connect Ventures', url: 'https://www.connectventures.co/companies' },
 	{ slug: 'contour', name: 'Contour Venture Partners', url: 'https://www.contourventures.com/portfolio/' },
@@ -363,6 +366,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'foundationventures', name: 'Foundation Ventures', url: 'https://www.foundationventures.com/portfolio' },
 	{ slug: 'foundercollective', name: 'Founder Collective', url: 'https://foundercollective.com/portfolio/' },
 	{ slug: 'founderfuel', name: 'FounderFuel', url: 'https://founderfuel.com/companies/' },
+	{
+		slug: 'foundersfactory',
+		name: 'Founders Factory',
+		url: 'https://foundersfactory.com/portfolio/'
+	},
 	{ slug: 'foundersfund', name: 'Founders Fund', url: 'https://foundersfund.com/portfolio/' },
 	{ slug: 'foundry', name: 'Foundry', url: 'https://foundry.vc/portfolio/' },
 	{ slug: 'fouracres', name: 'Four Acres Capital', url: 'https://www.fouracres.vc/portfolio' },
@@ -419,6 +427,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'gsv', name: 'GSV Ventures', url: 'https://gsv.ventures/portfolio/' },
 	{ slug: 'gtmfund', name: 'GTMfund', url: 'https://www.gtmfund.com/portfolio/' },
 	{ slug: 'gula', name: 'Gula Tech Adventures', url: 'https://www.gula.tech/portfolio' },
+	{ slug: 'haatch', name: 'Haatch', url: 'https://haatch.com/portfolio' },
 	{ slug: 'halogen', name: 'Halogen Ventures', url: 'https://halogenvc.com/portfolio' },
 	{ slug: 'hannahgrey', name: 'Hannah Grey', url: 'https://www.hannahgrey.com/portfolio-1' },
 	{ slug: 'harlem', name: 'Harlem Capital', url: 'https://harlem.capital/portfolio/' },
@@ -501,6 +510,7 @@ export const FUNDS: FundInfo[] = [
 		name: 'Keen Venture Partners',
 		url: 'https://www.keenventurepartners.com/portfolio'
 	},
+	{ slug: 'kennet', name: 'Kennet Partners', url: 'https://www.kennet.com/#portfolio' },
 	{ slug: 'khosla', name: 'Khosla Ventures', url: 'https://www.khoslaventures.com/portfolio/' },
 	{ slug: 'kibo', name: 'Kibo Ventures', url: 'https://www.kiboventures.com/portfolio' },
 	{ slug: 'kickstart', name: 'Kickstart Fund', url: 'https://kickstart.com/portfolio' },
@@ -567,6 +577,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'medtechinnovator', name: 'MedTech Innovator', url: 'https://medtechinnovator.org/portfolio-2/' },
 	{ slug: 'mendoza', name: 'Mendoza Ventures', url: 'https://mendoza-ventures.com/portfolio/' },
 	{ slug: 'menlo', name: 'Menlo Ventures', url: 'https://menlovc.com/portfolio/' },
+	{ slug: 'mercia', name: 'Mercia', url: 'https://www.mercia.co.uk/about-us/portfolio/' },
 	{ slug: 'mercuri', name: 'Mercuri', url: 'https://www.mercuri.vc/portfolio' },
 	{ slug: 'msc', name: 'Meridian Street Capital', url: 'https://msc.vc/#partners' },
 	{ slug: 'meron', name: 'Meron Capital', url: 'https://www.meron.vc/#portfolio' },
@@ -648,6 +659,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'ourcrowd', name: 'OurCrowd', url: 'https://www.ourcrowd.com/portfolio/all' },
 	{ slug: 'outlander', name: 'Outlander VC', url: 'https://outlander.vc/portfolio/' },
 	{ slug: 'outsiders', name: 'Outsiders Fund', url: 'https://www.outsidersfund.com/portfolio' },
+	{ slug: 'outward', name: 'Outward VC', url: 'https://outwardvc.com/companies/' },
 	{ slug: 'overkill', name: 'Overkill Ventures', url: 'https://www.overkill.vc/portfolio' },
 	{ slug: 'overlook', name: 'Overlook Ventures', url: 'https://www.overlook.vc/portfolio' },
 	{ slug: 'overture', name: 'Overture', url: 'https://www.overture.vc/portfolio' },
@@ -705,6 +717,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'propeller', name: 'Propeller', url: 'https://propellervc.com/portfolio' },
 	{ slug: 'psv', name: 'PSV', url: 'https://www.psv.xyz/portfolio' },
 	{ slug: 'push', name: 'PUSH VC', url: 'https://push.vc/portfolio' },
+	{ slug: 'pxn', name: 'PXN Ventures', url: 'https://www.pxnventures.co.uk/portfolio/' },
 	{ slug: 'qed', name: 'QED Investors', url: 'https://www.qedinvestors.com/companies' },
 	{ slug: 'qualcomm', name: 'Qualcomm Ventures', url: 'https://www.qualcommventures.com/portfolio/' },
 	{ slug: 'quantonation', name: 'Quantonation', url: 'https://www.quantonation.com/portfolio' },
@@ -786,6 +799,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'serenacapital', name: 'Serena', url: 'https://www.serena.vc/our-portfolio/' },
 	{ slug: 'serena', name: 'Serena Ventures', url: 'https://www.serenaventures.com/portfolio' },
 	{ slug: 'sevensevensix', name: 'Seven Seven Six', url: 'https://sevensevensix.com/portfolio' },
+	{ slug: 'sfc', name: 'SFC Capital', url: 'https://portal.sfccapital.com/portfolio' },
 	{ slug: 'shield', name: 'Shield Capital', url: 'https://shieldcap.com/#companies' },
 	{ slug: 'shima', name: 'Shima Capital', url: 'https://shima.capital/investments/' },
 	{ slug: 'shine', name: 'Shine Capital', url: 'https://www.shine.vc/portfolio' },
