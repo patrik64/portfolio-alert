@@ -506,6 +506,8 @@ import { scrape as join } from './join';
 import { scrape as jolt } from './jolt';
 import { scrape as joule } from './joule';
 import { scrape as jovono } from './jovono';
+import { scrape as jumpstartfoundry } from './jumpstartfoundry';
+import { scrape as jumpstartnova } from './jumpstartnova';
 import { scrape as juniper } from './juniper';
 import { scrape as juvo } from './juvo';
 import { scrape as kfund } from './kfund';
@@ -702,6 +704,7 @@ import { scrape as peak } from './peak';
 import { scrape as peakbridge } from './peakbridge';
 import { scrape as pear } from './pear';
 import { scrape as pebblebed } from './pebblebed';
+import { scrape as petra } from './petra';
 import { scrape as picksandshovels } from './picksandshovels';
 import { scrape as picus } from './picus';
 import { scrape as pillar } from './pillar';
@@ -1506,6 +1509,8 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	jolt,
 	joule,
 	jovono,
+	jumpstartfoundry,
+	jumpstartnova,
 	juniper,
 	juvo,
 	kfund,
@@ -1702,6 +1707,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	peakbridge,
 	pear,
 	pebblebed,
+	petra,
 	picksandshovels,
 	picus,
 	pillar,

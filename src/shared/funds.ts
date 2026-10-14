@@ -1,4 +1,4 @@
-// The 999 tracked funds, in case-insensitive alphabetical order by name — the
+// The 1002 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -561,6 +561,8 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'jolt', name: 'Jolt Capital', url: 'https://www.jolt-capital.com/portfolio' },
 	{ slug: 'joule', name: 'Joule Ventures', url: 'https://www.joulevc.com/portfolio' },
 	{ slug: 'jovono', name: 'Jovono', url: 'https://www.jovono.com/portfolio' },
+	{ slug: 'jumpstartfoundry', name: 'Jumpstart Foundry', url: 'https://jsf.co/jsf-portfolio/' },
+	{ slug: 'jumpstartnova', name: 'Jumpstart Nova', url: 'https://jumpstartnova.com/portfolio/' },
 	{ slug: 'juniper', name: 'Juniper VC', url: 'https://www.junipervc.com/portfolio' },
 	{ slug: 'juvo', name: 'Juvo Ventures', url: 'https://juvovc.org/#portfolio' },
 	{ slug: 'kfund', name: 'K Fund', url: 'https://www.kfund.vc/' },
@@ -777,6 +779,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'peakbridge', name: 'PeakBridge', url: 'https://peakbridge.vc/portfolio/' },
 	{ slug: 'pear', name: 'Pear VC', url: 'https://pear.vc/companies/' },
 	{ slug: 'pebblebed', name: 'Pebblebed', url: 'https://pebblebed.com/portfolio' },
+	{ slug: 'petra', name: 'Petra Capital Partners', url: 'https://petracapital.com/portfolio/' },
 	{ slug: 'picksandshovels', name: 'Picks and Shovels', url: 'https://www.picksandshovelsvc.com/#portfolio' },
 	{ slug: 'picus', name: 'Picus Capital', url: 'https://www.picuscap.com/portfolio' },
 	{ slug: 'pillar', name: 'Pillar VC', url: 'https://www.pillar.vc/companies/' },
