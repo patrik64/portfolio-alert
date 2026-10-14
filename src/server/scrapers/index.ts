@@ -60,6 +60,7 @@ import { scrape as aleph } from './aleph';
 import { scrape as alix } from './alix';
 import { scrape as allegis } from './allegis';
 import { scrape as alleycorp } from './alleycorp';
+import { scrape as alliance } from './alliance';
 import { scrape as alloyfund } from './alloyfund';
 import { scrape as alpaca } from './alpaca';
 import { scrape as alphaedison } from './alphaedison';
@@ -171,6 +172,7 @@ import { scrape as celesta } from './celesta';
 import { scrape as centrestreet } from './centrestreet';
 import { scrape as cervin } from './cervin';
 import { scrape as championhill } from './championhill';
+import { scrape as changeventures } from './changeventures';
 import { scrape as chapterone } from './chapterone';
 import { scrape as charge } from './charge';
 import { scrape as cherry } from './cherry';
@@ -305,6 +307,7 @@ import { scrape as figure8 } from './figure8';
 import { scrape as fika } from './fika';
 import { scrape as filrouge } from './filrouge';
 import { scrape as fincapital } from './fincapital';
+import { scrape as finch } from './finch';
 import { scrape as fintechcollective } from './fintechcollective';
 import { scrape as fintechv } from './fintechv';
 import { scrape as firebrand } from './firebrand';
@@ -444,6 +447,7 @@ import { scrape as interlace } from './interlace';
 import { scrape as inventure } from './inventure';
 import { scrape as invus } from './invus';
 import { scrape as iqcapital } from './iqcapital';
+import { scrape as iris } from './iris';
 import { scrape as ironspring } from './ironspring';
 import { scrape as isai } from './isai';
 import { scrape as ivp } from './ivp';
@@ -510,6 +514,7 @@ import { scrape as mango } from './mango';
 import { scrape as mangrove } from './mangrove';
 import { scrape as mantis } from './mantis';
 import { scrape as maple } from './maple';
+import { scrape as marketone } from './marketone';
 import { scrape as massive } from './massive';
 import { scrape as massmutual } from './massmutual';
 import { scrape as material } from './material';
@@ -559,6 +564,7 @@ import { scrape as neotribe } from './neotribe';
 import { scrape as newmarkets } from './newmarkets';
 import { scrape as newstack } from './newstack';
 import { scrape as newfund } from './newfund';
+import { scrape as newion } from './newion';
 import { scrape as nextfrontier } from './nextfrontier';
 import { scrape as nextplay } from './nextplay';
 import { scrape as nextview } from './nextview';
@@ -646,6 +652,7 @@ import { scrape as prelude } from './prelude';
 import { scrape as powerhouse } from './powerhouse';
 import { scrape as precursor } from './precursor';
 import { scrape as presence } from './presence';
+import { scrape as presto } from './presto';
 import { scrape as primary } from './primary';
 import { scrape as primeimpact } from './primeimpact';
 import { scrape as primemovers } from './primemovers';
@@ -707,6 +714,7 @@ import { scrape as s2g } from './s2g';
 import { scrape as s3vc } from './s3vc';
 import { scrape as saasvc } from './saasvc';
 import { scrape as salt } from './salt';
+import { scrape as samaipata } from './samaipata';
 import { scrape as sante } from './sante';
 import { scrape as satgana } from './satgana';
 import { scrape as schematic } from './schematic';
@@ -716,6 +724,7 @@ import { scrape as scout } from './scout';
 import { scrape as seedcapital } from './seedcapital';
 import { scrape as sentiero } from './sentiero';
 import { scrape as seraphim } from './seraphim';
+import { scrape as serenacapital } from './serenacapital';
 import { scrape as serena } from './serena';
 import { scrape as sevensevensix } from './sevensevensix';
 import { scrape as shield } from './shield';
@@ -837,6 +846,7 @@ import { scrape as variant } from './variant';
 import { scrape as vastvc } from './vastvc';
 import { scrape as vendep } from './vendep';
 import { scrape as venrock } from './venrock';
+import { scrape as ventech } from './ventech';
 import { scrape as venturefriends } from './venturefriends';
 import { scrape as venturesplatform } from './venturesplatform';
 import { scrape as venturesouq } from './venturesouq';
@@ -949,6 +959,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	alix,
 	allegis,
 	alleycorp,
+	alliance,
 	alloyfund,
 	alpaca,
 	alphaedison,
@@ -1060,6 +1071,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	centrestreet,
 	cervin,
 	championhill,
+	changeventures,
 	chapterone,
 	charge,
 	cherry,
@@ -1194,6 +1206,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	fika,
 	filrouge,
 	fincapital,
+	finch,
 	fintechcollective,
 	fintechv,
 	firebrand,
@@ -1333,6 +1346,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	inventure,
 	invus,
 	iqcapital,
+	iris,
 	ironspring,
 	isai,
 	ivp,
@@ -1399,6 +1413,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	mangrove,
 	mantis,
 	maple,
+	marketone,
 	massive,
 	massmutual,
 	material,
@@ -1448,6 +1463,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	newmarkets,
 	newstack,
 	newfund,
+	newion,
 	nextfrontier,
 	nextplay,
 	nextview,
@@ -1535,6 +1551,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	precursor,
 	prelude,
 	presence,
+	presto,
 	primary,
 	primeimpact,
 	primemovers,
@@ -1596,6 +1613,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	s3vc,
 	saasvc,
 	salt,
+	samaipata,
 	sante,
 	satgana,
 	schematic,
@@ -1605,6 +1623,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	seedcapital,
 	sentiero,
 	seraphim,
+	serenacapital,
 	serena,
 	sevensevensix,
 	shield,
@@ -1727,6 +1746,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	vastvc,
 	vendep,
 	venrock,
+	ventech,
 	venturefriends,
 	venturesplatform,
 	venturesouq,
