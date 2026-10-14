@@ -108,6 +108,7 @@ import { scrape as avid } from './avid';
 import { scrape as avp } from './avp';
 import { scrape as aws } from './aws';
 import { scrape as babel } from './babel';
+import { scrape as backingminds } from './backingminds';
 import { scrape as backstage } from './backstage';
 import { scrape as baincapital } from './baincapital';
 import { scrape as balderton } from './balderton';
@@ -245,6 +246,7 @@ import { scrape as cybernetix } from './cybernetix';
 import { scrape as cyberstarts } from './cyberstarts';
 import { scrape as daphni } from './daphni';
 import { scrape as dawn } from './dawn';
+import { scrape as dayonecapital } from './dayonecapital';
 import { scrape as dayone } from './dayone';
 import { scrape as dcvc } from './dcvc';
 import { scrape as debut } from './debut';
@@ -271,6 +273,7 @@ import { scrape as drive } from './drive';
 import { scrape as dynamo } from './dynamo';
 import { scrape as e14 } from './e14';
 import { scrape as e2mc } from './e2mc';
+import { scrape as earlygame } from './earlygame';
 import { scrape as earlylight } from './earlylight';
 import { scrape as earlybird } from './earlybird';
 import { scrape as earthandbeyond } from './earthandbeyond';
@@ -361,6 +364,7 @@ import { scrape as fly } from './fly';
 import { scrape as flybridge } from './flybridge';
 import { scrape as foundry } from './foundry';
 import { scrape as fouracres } from './fouracres';
+import { scrape as fov } from './fov';
 import { scrape as fpv } from './fpv';
 import { scrape as framework } from './framework';
 import { scrape as freestyle } from './freestyle';
@@ -416,6 +420,7 @@ import { scrape as gsv } from './gsv';
 import { scrape as gtmfund } from './gtmfund';
 import { scrape as gula } from './gula';
 import { scrape as haatch } from './haatch';
+import { scrape as hadean } from './hadean';
 import { scrape as halogen } from './halogen';
 import { scrape as hannahgrey } from './hannahgrey';
 import { scrape as harlem } from './harlem';
@@ -445,6 +450,7 @@ import { scrape as hummingbird } from './hummingbird';
 import { scrape as hvcapital } from './hvcapital';
 import { scrape as hyperplane } from './hyperplane';
 import { scrape as ibb } from './ibb';
+import { scrape as idekapital } from './idekapital';
 import { scrape as illuminate } from './illuminate';
 import { scrape as imaginary } from './imaginary';
 import { scrape as imecxpand } from './imecxpand';
@@ -468,12 +474,14 @@ import { scrape as inspired } from './inspired';
 import { scrape as intelcapital } from './intelcapital';
 import { scrape as interlace } from './interlace';
 import { scrape as inventure } from './inventure';
+import { scrape as investinor } from './investinor';
 import { scrape as invus } from './invus';
 import { scrape as iqcapital } from './iqcapital';
 import { scrape as iris } from './iris';
 import { scrape as ironspring } from './ironspring';
 import { scrape as isai } from './isai';
 import { scrape as ivp } from './ivp';
+import { scrape as jtventures } from './jtventures';
 import { scrape as jamfund } from './jamfund';
 import { scrape as javelin } from './javelin';
 import { scrape as jazz } from './jazz';
@@ -488,6 +496,7 @@ import { scrape as kfund } from './kfund';
 import { scrape as k5 } from './k5';
 import { scrape as k9 } from './k9';
 import { scrape as kapor } from './kapor';
+import { scrape as kaya } from './kaya';
 import { scrape as kdt } from './kdt';
 import { scrape as keen } from './keen';
 import { scrape as kennet } from './kennet';
@@ -523,6 +532,7 @@ import { scrape as lookingglass } from './lookingglass';
 import { scrape as longjourney } from './longjourney';
 import { scrape as lorimer } from './lorimer';
 import { scrape as lowercarbon } from './lowercarbon';
+import { scrape as luminar } from './luminar';
 import { scrape as lunar } from './lunar';
 import { scrape as lux } from './lux';
 import { scrape as lyticalventures } from './lyticalventures';
@@ -539,6 +549,7 @@ import { scrape as mango } from './mango';
 import { scrape as mangrove } from './mangrove';
 import { scrape as mantis } from './mantis';
 import { scrape as maple } from './maple';
+import { scrape as marathon } from './marathon';
 import { scrape as marketone } from './marketone';
 import { scrape as massive } from './massive';
 import { scrape as massmutual } from './massmutual';
@@ -561,6 +572,7 @@ import { scrape as meron } from './meron';
 import { scrape as merus } from './merus';
 import { scrape as metaplanet } from './metaplanet';
 import { scrape as metaprop } from './metaprop';
+import { scrape as metavallon } from './metavallon';
 import { scrape as mfv } from './mfv';
 import { scrape as mhs } from './mhs';
 import { scrape as mig } from './mig';
@@ -575,6 +587,7 @@ import { scrape as moonshots } from './moonshots';
 import { scrape as morpheus } from './morpheus';
 import { scrape as mosaic } from './mosaic';
 import { scrape as mouro } from './mouro';
+import { scrape as movens } from './movens';
 import { scrape as moxxie } from './moxxie';
 import { scrape as mubadala } from './mubadala';
 import { scrape as mucker } from './mucker';
@@ -601,6 +614,7 @@ import { scrape as night } from './night';
 import { scrape as nlc } from './nlc';
 import { scrape as node } from './node';
 import { scrape as noemis } from './noemis';
+import { scrape as nordicninja } from './nordicninja';
 import { scrape as norrsken } from './norrsken';
 import { scrape as northerngritstone } from './northerngritstone';
 import { scrape as northpond } from './northpond';
@@ -683,6 +697,7 @@ import { scrape as prelude } from './prelude';
 import { scrape as polytech } from './polytech';
 import { scrape as possible } from './possible';
 import { scrape as powerhouse } from './powerhouse';
+import { scrape as practica } from './practica';
 import { scrape as precursor } from './precursor';
 import { scrape as presence } from './presence';
 import { scrape as presto } from './presto';
@@ -693,6 +708,7 @@ import { scrape as primetime } from './primetime';
 import { scrape as prime } from './prime';
 import { scrape as projecta } from './projecta';
 import { scrape as propeller } from './propeller';
+import { scrape as proventure } from './proventure';
 import { scrape as psv } from './psv';
 import { scrape as push } from './push';
 import { scrape as pxn } from './pxn';
@@ -726,6 +742,7 @@ import { scrape as redsea } from './redsea';
 import { scrape as redswan } from './redswan';
 import { scrape as redstone } from './redstone';
 import { scrape as refashiond } from './refashiond';
+import { scrape as reflex } from './reflex';
 import { scrape as relay } from './relay';
 import { scrape as renegade } from './renegade';
 import { scrape as renewal } from './renewal';
@@ -755,6 +772,7 @@ import { scrape as salt } from './salt';
 import { scrape as samaipata } from './samaipata';
 import { scrape as sante } from './sante';
 import { scrape as satgana } from './satgana';
+import { scrape as scalecapital } from './scalecapital';
 import { scrape as schematic } from './schematic';
 import { scrape as scifi } from './scifi';
 import { scrape as scifounders } from './scifounders';
@@ -778,16 +796,19 @@ import { scrape as sierra } from './sierra';
 import { scrape as sigmaprime } from './sigmaprime';
 import { scrape as signalfire } from './signalfire';
 import { scrape as silentvc } from './silentvc';
+import { scrape as silicongardens } from './silicongardens';
 import { scrape as silversmith } from './silversmith';
 import { scrape as singular } from './singular';
 import { scrape as sixthirty } from './sixthirty';
 import { scrape as sixty8 } from './sixty8';
 import { scrape as slow } from './slow';
+import { scrape as smok } from './smok';
 import { scrape as socialleverage } from './socialleverage';
 import { scrape as sofinnova } from './sofinnova';
 import { scrape as sogal } from './sogal';
 import { scrape as soma } from './soma';
 import { scrape as sosv } from './sosv';
+import { scrape as scventures } from './scventures';
 import { scrape as southparkcommons } from './southparkcommons';
 import { scrape as spacecadet } from './spacecadet';
 import { scrape as spark } from './spark';
@@ -796,6 +817,7 @@ import { scrape as stageone } from './stageone';
 import { scrape as standardindustries } from './standardindustries';
 import { scrape as stripes } from './stripes';
 import { scrape as spice } from './spice';
+import { scrape as spintop } from './spintop';
 import { scrape as springtime } from './springtime';
 import { scrape as sprout } from './sprout';
 import { scrape as startingline } from './startingline';
@@ -853,6 +875,7 @@ import { scrape as transition } from './transition';
 import { scrape as triatomic } from './triatomic';
 import { scrape as tribecap } from './tribecap';
 import { scrape as tribecavp } from './tribecavp';
+import { scrape as trind } from './trind';
 import { scrape as trousdale } from './trousdale';
 import { scrape as trueventures } from './trueventures';
 import { scrape as truewealth } from './truewealth';
@@ -909,6 +932,7 @@ import { scrape as virtuevc } from './virtuevc';
 import { scrape as visiblehands } from './visiblehands';
 import { scrape as visibleventures } from './visibleventures';
 import { scrape as visionaries } from './visionaries';
+import { scrape as vitosha } from './vitosha';
 import { scrape as voimaventures } from './voimaventures';
 import { scrape as voloearth } from './voloearth';
 import { scrape as volta } from './volta';
@@ -1053,6 +1077,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	avp,
 	aws,
 	babel,
+	backingminds,
 	backstage,
 	baincapital,
 	balderton,
@@ -1190,6 +1215,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	cyberstarts,
 	daphni,
 	dawn,
+	dayonecapital,
 	dayone,
 	dcvc,
 	debut,
@@ -1216,6 +1242,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	dynamo,
 	e14,
 	e2mc,
+	earlygame,
 	earlylight,
 	earlybird,
 	earthandbeyond,
@@ -1306,6 +1333,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	flybridge,
 	foundry,
 	fouracres,
+	fov,
 	fpv,
 	framework,
 	freestyle,
@@ -1361,6 +1389,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	gtmfund,
 	gula,
 	haatch,
+	hadean,
 	halogen,
 	hannahgrey,
 	harlem,
@@ -1390,6 +1419,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	hvcapital,
 	hyperplane,
 	ibb,
+	idekapital,
 	illuminate,
 	imaginary,
 	imecxpand,
@@ -1413,12 +1443,14 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	intelcapital,
 	interlace,
 	inventure,
+	investinor,
 	invus,
 	iqcapital,
 	iris,
 	ironspring,
 	isai,
 	ivp,
+	jtventures,
 	jamfund,
 	javelin,
 	jazz,
@@ -1433,6 +1465,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	k5,
 	k9,
 	kapor,
+	kaya,
 	kdt,
 	keen,
 	kennet,
@@ -1468,6 +1501,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	longjourney,
 	lorimer,
 	lowercarbon,
+	luminar,
 	lunar,
 	lux,
 	lyticalventures,
@@ -1484,6 +1518,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	mangrove,
 	mantis,
 	maple,
+	marathon,
 	marketone,
 	massive,
 	massmutual,
@@ -1506,6 +1541,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	merus,
 	metaplanet,
 	metaprop,
+	metavallon,
 	mfv,
 	mhs,
 	mig,
@@ -1520,6 +1556,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	morpheus,
 	mosaic,
 	mouro,
+	movens,
 	moxxie,
 	mubadala,
 	mucker,
@@ -1546,6 +1583,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	nlc,
 	node,
 	noemis,
+	nordicninja,
 	norrsken,
 	northerngritstone,
 	northpond,
@@ -1627,6 +1665,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	polytech,
 	possible,
 	powerhouse,
+	practica,
 	precursor,
 	prelude,
 	presence,
@@ -1638,6 +1677,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	prime,
 	projecta,
 	propeller,
+	proventure,
 	psv,
 	push,
 	pxn,
@@ -1671,6 +1711,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	redswan,
 	redstone,
 	refashiond,
+	reflex,
 	relay,
 	renegade,
 	renewal,
@@ -1700,6 +1741,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	samaipata,
 	sante,
 	satgana,
+	scalecapital,
 	schematic,
 	scifi,
 	scifounders,
@@ -1723,16 +1765,19 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	sigmaprime,
 	signalfire,
 	silentvc,
+	silicongardens,
 	silversmith,
 	singular,
 	sixthirty,
 	sixty8,
 	slow,
+	smok,
 	socialleverage,
 	sofinnova,
 	sogal,
 	soma,
 	sosv,
+	scventures,
 	southparkcommons,
 	spacecadet,
 	spark,
@@ -1741,6 +1786,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	standardindustries,
 	stripes,
 	spice,
+	spintop,
 	springtime,
 	sprout,
 	startingline,
@@ -1798,6 +1844,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	triatomic,
 	tribecap,
 	tribecavp,
+	trind,
 	trousdale,
 	trueventures,
 	truewealth,
@@ -1855,6 +1902,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	visiblehands,
 	visibleventures,
 	visionaries,
+	vitosha,
 	voimaventures,
 	voloearth,
 	volta,
