@@ -1,99 +1,133 @@
 import type { ScrapedCompany } from './types';
 
-const BASE_URL = "https://www.quantonation.com";
-const API_URL = `${BASE_URL}/wp-json/wp/v2`;
-const PAGE_URL = `${BASE_URL}/portfolio/`;
+const BASE_URL = 'https://www.quantonation.com';
+const PAGE_URL = `${BASE_URL}/portfolio`;
 const UA =
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
-// the taxonomies behind each company, in the order they read best
-const TAXONOMIES = ["p_category", "p_stage", "p_status", "p_country"] as const;
+	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-const decode = (s: string) =>
-  s
-    .replace(/&amp;/g, "&")
-    .replace(/&#0?39;|&#x27;|&rsquo;/g, "'")
-    .replace(/&#8211;/g, "–")
-    .trim();
+// next.js, since the wordpress site and its api went in october 2026: the
+// portfolio page draws its grid in the browser from one list in react's
+// payload, a company each, giving its name, its theme ("computing",
+// "materials + energy"), its stage ("seed", "series b+", "listed",
+// "exited"), its countries and the fund it was backed from ("qi", "qii"),
+// all in lower case for the page to set in capitals. the theme, the stage,
+// the countries and the fund are kept as tags; a listing as IPO and an exit
+// each with the Exited tag. the list gives no company's site, so a company
+// links its page here.
+//
+// the payload arrives as a run of javascript string literals that have to
+// be unescaped and joined before the json inside them can be read.
 
-interface Post {
-  id: number;
-  title: { rendered: string };
-  link?: string;
-  p_category?: number[];
-  p_stage?: number[];
-  p_status?: number[];
-  p_country?: number[];
+// the companies stored under the names the old site gave them, which the
+// new one has changed: a moved name would read as a newcomer
+const STORED_AS: Record<string, string> = {
+	Chiral: 'Chiral Nano',
+	'Foqus Technologies': 'Foqus',
+	'KETS Quantum Security': 'Kets',
+	'PINC Technologies': 'Pinc',
+	'Pioniq Technologies': 'Pioniq',
+	'Project Eleven': 'Project 11',
+	Quobly: 'Quobly (former Siquance)',
+	Sensorium: 'Sensorium Tech Lab'
+};
+
+const CHUNK = /self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)/g;
+const LIST = '"companies":[{"companyName":';
+const LISTED = /^listed$/i;
+const EXITED = /^exited$/i;
+// the funds, "qi" to "qiii", are written in capitals
+const FUND = /^q[iv]+$/i;
+const UNSAID = /^(?:-|other|others|all|n\/a)$/i;
+const STEALTH = /^stealth\b/i;
+
+interface Company {
+	companyName?: string;
+	slug?: string;
+	theme?: string;
+	stage?: string;
+	location?: string[];
+	fund?: string;
+	draft?: boolean;
 }
 
-async function fetchJson<T>(url: string): Promise<T> {
-  const resp = await fetch(url, { headers: { "User-Agent": UA } });
-  if (!resp.ok) {
-    throw new Error(`Failed to fetch ${url}: ${resp.status}`);
-  }
-  return (await resp.json()) as T;
+const clean = (s: string) => s.replace(/\s+/g, ' ').trim();
+
+// the category is comma-joined, so a label holding a comma would read as two
+const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
+
+// "materials + energy" -> "Materials + Energy", "pre-seed" -> "Pre-Seed"
+const titled = (s: string) => tag(s).replace(/\b\w/g, (c) => c.toUpperCase());
+
+// the json value opening at start — an object or an array — up to its close
+function jsonAt(text: string, start: number): unknown {
+	let depth = 0;
+	let inString = false;
+	let escaped = false;
+	for (let i = start; i < text.length; i++) {
+		const c = text[i];
+		if (escaped) escaped = false;
+		else if (c === '\\') escaped = true;
+		else if (c === '"') inString = !inString;
+		else if (!inString) {
+			if (c === '{' || c === '[') depth++;
+			else if ((c === '}' || c === ']') && --depth === 0) {
+				try {
+					return JSON.parse(text.slice(start, i + 1));
+				} catch {
+					return undefined;
+				}
+			}
+		}
+	}
+	return undefined;
+}
+
+// a stage as tags: a listing and an exit are ways out
+function stageOf(stage: string): string[] {
+	if (LISTED.test(stage)) return ['IPO', 'Exited'];
+	if (EXITED.test(stage)) return ['Exited'];
+	return [titled(stage)];
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-  // companies come from the WP REST API (paginated, 100 per page)
-  const posts: Post[] = [];
-  let page = 1;
-  while (true) {
-    const resp = await fetch(`${API_URL}/portfolio?per_page=100&page=${page}`, {
-      headers: { "User-Agent": UA },
-    });
-    if (resp.status === 400) break;
-    if (!resp.ok) {
-      throw new Error(`Failed to fetch ${API_URL}/portfolio: ${resp.status}`);
-    }
-    const data: Post[] = await resp.json();
-    if (data.length === 0) break;
-    posts.push(...data);
-    page++;
-  }
-  if (posts.length === 0) {
-    throw new Error("quantonation: the portfolio API returned no companies");
-  }
+	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	if (!resp.ok) {
+		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+	}
+	const html = await resp.text();
+	const payload = [...html.matchAll(CHUNK)].map(([, literal]) => JSON.parse(literal) as string).join('');
+	const at = payload.indexOf(LIST);
+	const list = at < 0 ? undefined : jsonAt(payload, at + LIST.indexOf('['));
+	if (!Array.isArray(list)) {
+		throw new Error("quantonation: the page's payload carries no portfolio list — the page moved");
+	}
 
-  // resolve every taxonomy term id to its display name
-  const termNames = new Map<string, Map<number, string>>();
-  for (const taxonomy of TAXONOMIES) {
-    const terms = await fetchJson<{ id: number; name: string }[]>(
-      `${API_URL}/${taxonomy}?per_page=100`,
-    );
-    termNames.set(taxonomy, new Map(terms.map((t) => [t.id, decode(t.name)])));
-  }
+	const companies: ScrapedCompany[] = [];
+	const seen = new Set<string>();
+	for (const company of list as Company[]) {
+		const written = clean(company.companyName ?? '');
+		if (!written || company.draft || STEALTH.test(written)) continue;
+		const name = STORED_AS[written] ?? written;
+		if (seen.has(name.toLowerCase())) continue;
+		seen.add(name.toLowerCase());
+		const fund = clean(company.fund ?? '');
+		companies.push({
+			name,
+			category: [
+				titled(company.theme ?? ''),
+				...stageOf(clean(company.stage ?? '')),
+				...(company.location ?? []).map(titled),
+				FUND.test(fund) ? fund.toUpperCase() : titled(fund)
+			]
+				.filter((t, i, all) => t && !UNSAID.test(t) && all.indexOf(t) === i)
+				.join(', '),
+			url: company.slug ? `${PAGE_URL}/${encodeURIComponent(company.slug)}` : PAGE_URL
+		});
+	}
 
-  // websites only appear in the portfolio page's popups, keyed by post id
-  const websiteById = new Map<number, string>();
-  const pageResp = await fetch(PAGE_URL, { headers: { "User-Agent": UA } });
-  if (pageResp.ok) {
-    const html = await pageResp.text();
-    for (const popup of html.split('<div class="container-popup" id="').slice(1)) {
-      const id = Number(popup.split("-popup")[0]);
-      const website = popup.match(
-        /<a class="action website[^"]*" href="(https?:\/\/[^"]+)"/,
-      )?.[1];
-      if (id && website) websiteById.set(id, website);
-    }
-  }
+	if (companies.length === 0) {
+		throw new Error('quantonation: the portfolio list names no companies');
+	}
 
-  const companies: ScrapedCompany[] = posts.map((post) => {
-    const labels: string[] = [];
-    for (const taxonomy of TAXONOMIES) {
-      for (const termId of post[taxonomy] ?? []) {
-        const name = termNames.get(taxonomy)?.get(termId);
-        // "Active" is the default state and carries no signal
-        if (!name || name === "Active" || labels.includes(name)) continue;
-        labels.push(name);
-      }
-    }
-
-    return {
-      name: decode(post.title.rendered),
-      category: labels.join(", "),
-      url: websiteById.get(post.id) || post.link || "",
-    };
-  });
-
-  return companies;
+	return companies;
 }
