@@ -1,6 +1,7 @@
 import { FUNDS } from '../../shared/funds';
 import type { ScrapedCompany } from './types';
 // these slugs lead with a digit, so the bindings can't be named after them
+import { scrape as fourohsix } from './fourohsix';
 import { scrape as zeroonea } from './01a';
 import { scrape as tend } from './10d';
 import { scrape as twentyfifty } from './twentyfifty';
@@ -29,6 +30,7 @@ import { scrape as amplifyher } from './amplifyher';
 import { scrape as amplitude } from './amplitude';
 import { scrape as a16z } from './a16z';
 import { scrape as acapital } from './acapital';
+import { scrape as abingworth } from './abingworth';
 import { scrape as able } from './able';
 import { scrape as abstract } from './abstract';
 import { scrape as accel } from './accel';
@@ -45,6 +47,7 @@ import { scrape as acton } from './acton';
 import { scrape as ada } from './ada';
 import { scrape as adapt } from './adapt';
 import { scrape as advent } from './advent';
+import { scrape as adventls } from './adventls';
 import { scrape as aera } from './aera';
 import { scrape as axv } from './axv';
 import { scrape as afore } from './afore';
@@ -111,6 +114,7 @@ import { scrape as aws } from './aws';
 import { scrape as babel } from './babel';
 import { scrape as backingminds } from './backingminds';
 import { scrape as backstage } from './backstage';
+import { scrape as bainlifesciences } from './bainlifesciences';
 import { scrape as baincapital } from './baincapital';
 import { scrape as balderton } from './balderton';
 import { scrape as axeleo } from './axeleo';
@@ -222,6 +226,7 @@ import { scrape as boost } from './boost';
 import { scrape as borderless } from './borderless';
 import { scrape as boro } from './boro';
 import { scrape as borski } from './borski';
+import { scrape as bostonmillennia } from './bostonmillennia';
 import { scrape as bostonseed } from './bostonseed';
 import { scrape as boulder } from './boulder';
 import { scrape as bowery } from './bowery';
@@ -284,6 +289,7 @@ import { scrape as earlybird } from './earlybird';
 import { scrape as earthandbeyond } from './earthandbeyond';
 import { scrape as eastlink } from './eastlink';
 import { scrape as ecapital } from './ecapital';
+import { scrape as echohealth } from './echohealth';
 import { scrape as echovc } from './echovc';
 import { scrape as eclipse } from './eclipse';
 import { scrape as ecliptic } from './ecliptic';
@@ -446,6 +452,7 @@ import { scrape as henq } from './henq';
 import { scrape as hetz } from './hetz';
 import { scrape as hexa } from './hexa';
 import { scrape as highland } from './highland';
+import { scrape as hlm } from './hlm';
 import { scrape as hofcapital } from './hofcapital';
 import { scrape as homebrew } from './homebrew';
 import { scrape as horizons } from './horizons';
@@ -525,6 +532,7 @@ import { scrape as laconia } from './laconia';
 import { scrape as lakehouse } from './lakehouse';
 import { scrape as lakestar } from './lakestar';
 import { scrape as launchny } from './launchny';
+import { scrape as launchpad } from './launchpad';
 import { scrape as ldv } from './ldv';
 import { scrape as leadout } from './leadout';
 import { scrape as learncapital } from './learncapital';
@@ -535,13 +543,16 @@ import { scrape as lifeforce } from './lifeforce';
 import { scrape as lifeline } from './lifeline';
 import { scrape as lightbank } from './lightbank';
 import { scrape as lightspeed } from './lightspeed';
+import { scrape as lightstone } from './lightstone';
 import { scrape as linkventures } from './linkventures';
 import { scrape as localglobe } from './localglobe';
 import { scrape as lookingglass } from './lookingglass';
 import { scrape as longjourney } from './longjourney';
 import { scrape as lorimer } from './lorimer';
 import { scrape as lowercarbon } from './lowercarbon';
+import { scrape as lrvhealth } from './lrvhealth';
 import { scrape as luminar } from './luminar';
+import { scrape as lumira } from './lumira';
 import { scrape as lunar } from './lunar';
 import { scrape as lux } from './lux';
 import { scrape as lyticalventures } from './lyticalventures';
@@ -560,6 +571,7 @@ import { scrape as mantis } from './mantis';
 import { scrape as maple } from './maple';
 import { scrape as marathon } from './marathon';
 import { scrape as marketone } from './marketone';
+import { scrape as mgbventures } from './mgbventures';
 import { scrape as massive } from './massive';
 import { scrape as massmutual } from './massmutual';
 import { scrape as material } from './material';
@@ -598,6 +610,7 @@ import { scrape as mosaic } from './mosaic';
 import { scrape as mouro } from './mouro';
 import { scrape as movens } from './movens';
 import { scrape as moxxie } from './moxxie';
+import { scrape as mpmbioimpact } from './mpmbioimpact';
 import { scrape as mubadala } from './mubadala';
 import { scrape as mucker } from './mucker';
 import { scrape as mundi } from './mundi';
@@ -634,6 +647,7 @@ import { scrape as norwest } from './norwest';
 import { scrape as notable } from './notable';
 import { scrape as notation } from './notation';
 import { scrape as notion } from './notion';
+import { scrape as novartisvf } from './novartisvf';
 import { scrape as nphard } from './nphard';
 import { scrape as nucleus } from './nucleus';
 import { scrape as nuwa } from './nuwa';
@@ -732,6 +746,7 @@ import { scrape as quest } from './quest';
 import { scrape as quiet } from './quiet';
 import { scrape as qumra } from './qumra';
 import { scrape as quona } from './quona';
+import { scrape as racapital } from './racapital';
 import { scrape as race } from './race';
 import { scrape as r7 } from './r7';
 import { scrape as racap } from './racap';
@@ -782,6 +797,7 @@ import { scrape as s3vc } from './s3vc';
 import { scrape as saasvc } from './saasvc';
 import { scrape as salt } from './salt';
 import { scrape as samaipata } from './samaipata';
+import { scrape as sanofiventures } from './sanofiventures';
 import { scrape as sante } from './sante';
 import { scrape as satgana } from './satgana';
 import { scrape as scalecapital } from './scalecapital';
@@ -847,6 +863,7 @@ import { scrape as supermoon } from './supermoon';
 import { scrape as supernode } from './supernode';
 import { scrape as supernova } from './supernova';
 import { scrape as svangel } from './svangel';
+import { scrape as svhealth } from './svhealth';
 import { scrape as swanlaab } from './swanlaab';
 import { scrape as systemiq } from './systemiq';
 import { scrape as targetglobal } from './targetglobal';
@@ -985,6 +1002,7 @@ import { scrape as zetta } from './zetta';
 import { scrape as zigg } from './zigg';
 
 const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
+	'406': fourohsix,
 	'01a': zeroonea,
 	'10d': tend,
 	'2050': twentyfifty,
@@ -1012,6 +1030,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	amplitude,
 	a16z,
 	acapital,
+	abingworth,
 	able,
 	abstract,
 	accel,
@@ -1028,6 +1047,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	ada,
 	adapt,
 	advent,
+	adventls,
 	aera,
 	axv,
 	afore,
@@ -1094,6 +1114,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	babel,
 	backingminds,
 	backstage,
+	bainlifesciences,
 	baincapital,
 	balderton,
 	axeleo,
@@ -1205,6 +1226,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	borderless,
 	boro,
 	borski,
+	bostonmillennia,
 	bostonseed,
 	boulder,
 	bowery,
@@ -1267,6 +1289,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	earthandbeyond,
 	eastlink,
 	ecapital,
+	echohealth,
 	echovc,
 	eclipse,
 	ecliptic,
@@ -1429,6 +1452,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	hetz,
 	hexa,
 	highland,
+	hlm,
 	hofcapital,
 	homebrew,
 	horizons,
@@ -1508,6 +1532,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	lakehouse,
 	lakestar,
 	launchny,
+	launchpad,
 	ldv,
 	leadout,
 	learncapital,
@@ -1518,13 +1543,16 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	lifeline,
 	lightbank,
 	lightspeed,
+	lightstone,
 	linkventures,
 	localglobe,
 	lookingglass,
 	longjourney,
 	lorimer,
 	lowercarbon,
+	lrvhealth,
 	luminar,
+	lumira,
 	lunar,
 	lux,
 	lyticalventures,
@@ -1543,6 +1571,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	maple,
 	marathon,
 	marketone,
+	mgbventures,
 	massive,
 	massmutual,
 	material,
@@ -1581,6 +1610,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	mouro,
 	movens,
 	moxxie,
+	mpmbioimpact,
 	mubadala,
 	mucker,
 	mundi,
@@ -1617,6 +1647,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	notable,
 	notation,
 	notion,
+	novartisvf,
 	nphard,
 	nucleus,
 	nuwa,
@@ -1715,6 +1746,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	quiet,
 	qumra,
 	quona,
+	racapital,
 	race,
 	r7,
 	racap,
@@ -1765,6 +1797,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	saasvc,
 	salt,
 	samaipata,
+	sanofiventures,
 	sante,
 	satgana,
 	scalecapital,
@@ -1830,6 +1863,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	supernode,
 	supernova,
 	svangel,
+	svhealth,
 	swanlaab,
 	systemiq,
 	targetglobal,
