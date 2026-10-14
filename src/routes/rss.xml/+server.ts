@@ -18,7 +18,7 @@ export const GET = (event: RequestEvent) =>
 		// newcomers. funds imported on the same day share a branch of the query
 		const [baselines, funds] = await Promise.all([
 			repo(Company).groupBy({ group: ['fundSlug'], min: ['firstSeenAt'] }),
-			repo(Fund).find({ limit: 1000 })
+			repo(Fund).find({ limit: 100_000 })
 		]);
 		const fundsByBaselineEnd = new Map<number, string[]>();
 		for (const b of baselines) {

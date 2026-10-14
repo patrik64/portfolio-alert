@@ -80,7 +80,7 @@ if (funds.length !== declared) {
 // how many funds the app says were refreshed within the last `hours`
 async function freshlyFetched(hours) {
 	try {
-		const resp = await fetch(`${BASE_URL}/api/funds?_limit=1000`, {
+		const resp = await fetch(`${BASE_URL}/api/funds?_limit=100000`, {
 			signal: AbortSignal.timeout(30_000)
 		});
 		if (!resp.ok) throw new Error(String(resp.status));

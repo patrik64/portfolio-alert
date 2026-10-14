@@ -265,7 +265,7 @@ async function groupsFromResults() {
 async function groupsFromNewcomers() {
 	const [rows, funds] = await Promise.all([
 		api('companies?isNewcomer=true&_limit=100000'),
-		api('funds?_limit=1000')
+		api('funds?_limit=100000')
 	]);
 	const names = new Map(funds.map((f) => [f.slug, f.name]));
 
