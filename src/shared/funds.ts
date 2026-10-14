@@ -1,4 +1,4 @@
-// The 924 tracked funds, in case-insensitive alphabetical order by name — the
+// The 934 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -14,10 +14,12 @@ export interface FundInfo {
 export const FUNDS: FundInfo[] = [
 	{ slug: '01a', name: '01A', url: 'https://01a.com/portfolio' },
 	{ slug: '10d', name: '10D', url: 'https://www.10d.vc/portfolio/' },
+	{ slug: '2050', name: '2050', url: 'https://2050.do/portfolio/' },
 	{ slug: 'twentyvc', name: '20VC', url: 'https://20vc.fund/portfolio' },
 	{ slug: '2150', name: '2150', url: 'https://www.2150.vc/investments' },
 	{ slug: '3vc', name: '3VC', url: 'https://three.vc/portfolio/' },
 	{ slug: '4dx', name: '4DX Ventures', url: 'https://www.4dxventures.com/portfolio' },
+	{ slug: '50partners', name: '50 Partners', url: 'https://www.50partners.fr/startups/toutes' },
 	{ slug: '500', name: '500 Global', url: 'https://500.co/portfolio' },
 	{ slug: '5am', name: '5AM Ventures', url: 'https://5amventures.com/portfolio/' },
 	{ slug: '645', name: '645 Ventures', url: 'https://645ventures.com/portfolio' },
@@ -271,6 +273,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'define', name: 'Define Ventures', url: 'https://www.definevc.com/partners' },
 	{ slug: 'defined', name: 'Defined', url: 'https://definedvc.com/companies' },
 	{ slug: 'defy', name: 'Defy', url: 'https://defy.vc/companies/' },
+	{ slug: 'demea', name: 'Demea Invest', url: 'https://www.demea-si.com/en/portfolio' },
 	{ slug: 'designerfund', name: 'Designer Fund', url: 'https://designerfund.com/companies' },
 	{ slug: 'dfs', name: 'DFS', url: 'https://www.dfs.vc/portfolio.html' },
 	{ slug: 'differential', name: 'Differential Ventures', url: 'https://www.differential.vc/portfolio' },
@@ -322,6 +325,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'exceptional', name: 'Exceptional Capital', url: 'https://www.exceptionalcap.com/portfolio' },
 	{ slug: 'expa', name: 'Expa', url: 'https://www.expa.com/portfolio/' },
 	{ slug: 'expansion', name: 'Expansion', url: 'https://expansion-vc.eu/portfolio' },
+	{ slug: 'expon', name: 'Expon Capital', url: 'https://expon.capital/portfolio' },
 	{ slug: 'exponent', name: 'Exponent', url: 'https://www.exponentpe.com/our-portfolio' },
 	{ slug: 'fprime', name: 'F-Prime Capital', url: 'https://www.fprimecapital.com/portfolio/' },
 	{ slug: 'f2', name: 'F2 Venture Capital', url: 'https://www.f2vc.com/companies' },
@@ -450,6 +454,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'helium3', name: 'Helium-3 Ventures', url: 'https://www.helium-3ventures.com/#portfolio' },
 	{ slug: 'henq', name: 'henQ', url: 'https://www.henq.vc/#portfolio' },
 	{ slug: 'hetz', name: 'Hetz Ventures', url: 'https://www.hetz.vc/our-portfolio' },
+	{ slug: 'hexa', name: 'Hexa', url: 'https://www.hexa.com/companies' },
 	{ slug: 'highland', name: 'Highland Europe', url: 'https://www.highlandeurope.com/companies/' },
 	{ slug: 'hofcapital', name: 'HOF Capital', url: 'https://hofcapital.com/portfolio' },
 	{ slug: 'homebrew', name: 'Homebrew', url: 'https://www.homebrew.co/#Portfolio' },
@@ -503,6 +508,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'jazz', name: 'Jazz Venture Partners', url: 'https://jazzvp.com/#portfolio' },
 	{ slug: 'jllspark', name: 'JLL Spark', url: 'https://spark.jllt.com/portfolio/' },
 	{ slug: 'join', name: 'Join Capital', url: 'https://www.join.capital/portfolio/' },
+	{ slug: 'jolt', name: 'Jolt Capital', url: 'https://www.jolt-capital.com/portfolio' },
 	{ slug: 'joule', name: 'Joule Ventures', url: 'https://www.joulevc.com/portfolio' },
 	{ slug: 'jovono', name: 'Jovono', url: 'https://www.jovono.com/portfolio' },
 	{ slug: 'juniper', name: 'Juniper VC', url: 'https://www.junipervc.com/portfolio' },
@@ -653,9 +659,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'offline', name: 'Offline Ventures', url: 'https://offline.vc/portfolio' },
 	{ slug: 'okapi', name: 'Okapi Venture Capital', url: 'https://okapivc.com/portfolio/' },
 	{ slug: 'omers', name: 'OMERS Ventures', url: 'https://www.omersventures.com/companies' },
+	{ slug: 'omnes', name: 'Omnes Capital', url: 'https://www.omnescapital.com/investments' },
 	{ slug: 'omnivore', name: 'Omnivore', url: 'https://omnivore.vc/portfolio' },
 	{ slug: 'oneway', name: 'One Way Ventures', url: 'https://www.onewayvc.com/portfolio' },
 	{ slug: 'oneequity', name: 'OneEquity', url: 'https://www.oneequity.com/portfolio' },
+	{ slug: 'oneragtime', name: 'OneRagtime', url: 'https://www.oneragtime.com/portfolio-companies' },
 	{ slug: 'onevc', name: 'ONEVC', url: 'https://www.onevc.vc/#portfolio' },
 	{ slug: 'openocean', name: 'OpenOcean', url: 'https://www.openocean.vc/portfolio' },
 	{ slug: 'operator', name: 'Operator Partners', url: 'https://www.operatorpartners.com/portfolio' },
@@ -749,6 +757,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'recvc', name: 'Reciprocal Ventures', url: 'https://recvc.com/portfolio' },
 	{ slug: 'recursive', name: 'Recursive Ventures', url: 'https://www.recursiveventures.com/' },
 	{ slug: 'redbear', name: 'Red Bear Ventures', url: 'https://www.redbear.vc/portfolio' },
+	{ slug: 'redriverwest', name: 'Red River West', url: 'https://www.redriverwest.com/portfolio' },
 	{ slug: 'redsea', name: 'Red Sea Ventures', url: 'https://www.redseaventures.com/' },
 	{ slug: 'redswan', name: 'Red Swan Ventures', url: 'https://www.redswanventures.com/portfolio' },
 	{ slug: 'redalpine', name: 'Redalpine', url: 'https://www.redalpine.com/portfolio' },
@@ -979,6 +988,7 @@ export const FUNDS: FundInfo[] = [
 		name: 'True Wealth Ventures',
 		url: 'https://truewealthvc.com/portfolio/'
 	},
+	{ slug: 'truffle', name: 'Truffle Capital', url: 'https://www.truffle.com/en/portfolio' },
 	{ slug: 'tsvc', name: 'TSVC', url: 'https://www.tsvcap.com/portfolio-new' },
 	{ slug: 'tusk', name: 'Tusk Venture Partners', url: 'https://www.tusk.vc/portfolio' },
 	{ slug: 'twelvebelow', name: 'Twelve Below', url: 'https://www.twelvebelow.co/portfolio' },

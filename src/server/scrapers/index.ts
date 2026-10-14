@@ -3,10 +3,12 @@ import type { ScrapedCompany } from './types';
 // these slugs lead with a digit, so the bindings can't be named after them
 import { scrape as zeroonea } from './01a';
 import { scrape as tend } from './10d';
+import { scrape as twentyfifty } from './twentyfifty';
 import { scrape as twentyvc } from './twentyvc';
 import { scrape as twentyonefifty } from './twentyonefifty';
 import { scrape as threevc } from './3vc';
 import { scrape as fourdx } from './fourdx';
+import { scrape as fiftypartners } from './fiftypartners';
 import { scrape as fivehundred } from './fivehundred';
 import { scrape as fiveam } from './fiveam';
 import { scrape as sixfortyfive } from './sixfortyfive';
@@ -248,6 +250,7 @@ import { scrape as decisivepoint } from './decisivepoint';
 import { scrape as define } from './define';
 import { scrape as defined } from './defined';
 import { scrape as defy } from './defy';
+import { scrape as demea } from './demea';
 import { scrape as designerfund } from './designerfund';
 import { scrape as dfs } from './dfs';
 import { scrape as differential } from './differential';
@@ -299,6 +302,7 @@ import { scrape as eurazeo } from './eurazeo';
 import { scrape as exceptional } from './exceptional';
 import { scrape as expa } from './expa';
 import { scrape as expansion } from './expansion';
+import { scrape as expon } from './expon';
 import { scrape as exponent } from './exponent';
 import { scrape as fprime } from './fprime';
 import { scrape as f2 } from './f2';
@@ -423,6 +427,7 @@ import { scrape as helios } from './helios';
 import { scrape as helium3 } from './helium3';
 import { scrape as henq } from './henq';
 import { scrape as hetz } from './hetz';
+import { scrape as hexa } from './hexa';
 import { scrape as highland } from './highland';
 import { scrape as hofcapital } from './hofcapital';
 import { scrape as homebrew } from './homebrew';
@@ -468,6 +473,7 @@ import { scrape as javelin } from './javelin';
 import { scrape as jazz } from './jazz';
 import { scrape as jllspark } from './jllspark';
 import { scrape as join } from './join';
+import { scrape as jolt } from './jolt';
 import { scrape as joule } from './joule';
 import { scrape as jovono } from './jovono';
 import { scrape as juniper } from './juniper';
@@ -610,9 +616,11 @@ import { scrape as octopus } from './octopus';
 import { scrape as offline } from './offline';
 import { scrape as okapi } from './okapi';
 import { scrape as omers } from './omers';
+import { scrape as omnes } from './omnes';
 import { scrape as omnivore } from './omnivore';
 import { scrape as oneway } from './oneway';
 import { scrape as oneequity } from './oneequity';
+import { scrape as oneragtime } from './oneragtime';
 import { scrape as onevc } from './onevc';
 import { scrape as openocean } from './openocean';
 import { scrape as operator } from './operator';
@@ -705,6 +713,7 @@ import { scrape as recursive } from './recursive';
 import { scrape as redbear } from './redbear';
 import { scrape as redalpine } from './redalpine';
 import { scrape as redbud } from './redbud';
+import { scrape as redriverwest } from './redriverwest';
 import { scrape as redsea } from './redsea';
 import { scrape as redswan } from './redswan';
 import { scrape as redstone } from './redstone';
@@ -837,6 +846,7 @@ import { scrape as tribecavp } from './tribecavp';
 import { scrape as trousdale } from './trousdale';
 import { scrape as trueventures } from './trueventures';
 import { scrape as truewealth } from './truewealth';
+import { scrape as truffle } from './truffle';
 import { scrape as tsvc } from './tsvc';
 import { scrape as tusk } from './tusk';
 import { scrape as twelvebelow } from './twelvebelow';
@@ -929,9 +939,11 @@ import { scrape as zigg } from './zigg';
 const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	'01a': zeroonea,
 	'10d': tend,
+	'2050': twentyfifty,
 	'2150': twentyonefifty,
 	'3vc': threevc,
 	'4dx': fourdx,
+	'50partners': fiftypartners,
 	'500': fivehundred,
 	'5am': fiveam,
 	'645': sixfortyfive,
@@ -1173,6 +1185,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	define,
 	defined,
 	defy,
+	demea,
 	designerfund,
 	dfs,
 	differential,
@@ -1224,6 +1237,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	exceptional,
 	expa,
 	expansion,
+	expon,
 	exponent,
 	fprime,
 	f2,
@@ -1348,6 +1362,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	helium3,
 	henq,
 	hetz,
+	hexa,
 	highland,
 	hofcapital,
 	homebrew,
@@ -1393,6 +1408,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	jazz,
 	jllspark,
 	join,
+	jolt,
 	joule,
 	jovono,
 	juniper,
@@ -1535,9 +1551,11 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	offline,
 	okapi,
 	omers,
+	omnes,
 	omnivore,
 	oneway,
 	oneequity,
+	oneragtime,
 	onevc,
 	openocean,
 	operator,
@@ -1630,6 +1648,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	redbear,
 	redalpine,
 	redbud,
+	redriverwest,
 	redsea,
 	redswan,
 	redstone,
@@ -1762,6 +1781,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	trousdale,
 	trueventures,
 	truewealth,
+	truffle,
 	tsvc,
 	tusk,
 	twelvebelow,
