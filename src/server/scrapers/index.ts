@@ -86,6 +86,7 @@ import { scrape as arcane } from './arcane';
 import { scrape as archventure } from './archventure';
 import { scrape as ardent } from './ardent';
 import { scrape as argon } from './argon';
+import { scrape as armilar } from './armilar';
 import { scrape as array } from './array';
 import { scrape as arrington } from './arrington';
 import { scrape as artis } from './artis';
@@ -114,6 +115,7 @@ import { scrape as baincapital } from './baincapital';
 import { scrape as balderton } from './balderton';
 import { scrape as axeleo } from './axeleo';
 import { scrape as axial } from './axial';
+import { scrape as axon } from './axon';
 import { scrape as azolla } from './azolla';
 import { scrape as bcapital } from './bcapital';
 import { scrape as b2venture } from './b2venture';
@@ -140,6 +142,7 @@ import { scrape as btv } from './btv';
 import { scrape as betterventures } from './betterventures';
 import { scrape as beyondearth } from './beyondearth';
 import { scrape as bigidea } from './bigidea';
+import { scrape as bigsur } from './bigsur';
 import { scrape as bigfoot } from './bigfoot';
 import { scrape as bip } from './bip';
 import { scrape as blackops } from './blackops';
@@ -160,6 +163,7 @@ import { scrape as btn } from './btn';
 import { scrape as buildingventures } from './buildingventures';
 import { scrape as byfounders } from './byfounders';
 import { scrape as byld } from './byld';
+import { scrape as bynd } from './bynd';
 import { scrape as c4v } from './c4v';
 import { scrape as cake } from './cake';
 import { scrape as calmstorm } from './calmstorm';
@@ -172,6 +176,7 @@ import { scrape as capitalize } from './capitalize';
 import { scrape as capnamic } from './capnamic';
 import { scrape as capricorn } from './capricorn';
 import { scrape as carbonsilicon } from './carbonsilicon';
+import { scrape as cardumen } from './cardumen';
 import { scrape as caruso } from './caruso';
 import { scrape as castleisland } from './castleisland';
 import { scrape as cathay } from './cathay';
@@ -293,6 +298,7 @@ import { scrape as elementum } from './elementum';
 import { scrape as elevate } from './elevate';
 import { scrape as elizabethstreet } from './elizabethstreet';
 import { scrape as emerging } from './emerging';
+import { scrape as encomenda } from './encomenda';
 import { scrape as endeit } from './endeit';
 import { scrape as eip } from './eip';
 import { scrape as engine } from './engine';
@@ -315,6 +321,7 @@ import { scrape as exponent } from './exponent';
 import { scrape as fprime } from './fprime';
 import { scrape as f2 } from './f2';
 import { scrape as f7 } from './f7';
+import { scrape as faber } from './faber';
 import { scrape as fcavp } from './fcavp';
 import { scrape as felicis } from './felicis';
 import { scrape as felix } from './felix';
@@ -457,6 +464,7 @@ import { scrape as imecxpand } from './imecxpand';
 import { scrape as impactamerica } from './impactamerica';
 import { scrape as incisive } from './incisive';
 import { scrape as indexventures } from './indexventures';
+import { scrape as indico } from './indico';
 import { scrape as indiebio } from './indiebio';
 import { scrape as industrifonden } from './industrifonden';
 import { scrape as industrious } from './industrious';
@@ -474,6 +482,7 @@ import { scrape as inspired } from './inspired';
 import { scrape as intelcapital } from './intelcapital';
 import { scrape as interlace } from './interlace';
 import { scrape as inventure } from './inventure';
+import { scrape as inveready } from './inveready';
 import { scrape as investinor } from './investinor';
 import { scrape as invus } from './invus';
 import { scrape as iqcapital } from './iqcapital';
@@ -591,6 +600,7 @@ import { scrape as movens } from './movens';
 import { scrape as moxxie } from './moxxie';
 import { scrape as mubadala } from './mubadala';
 import { scrape as mucker } from './mucker';
+import { scrape as mundi } from './mundi';
 import { scrape as munichre } from './munichre';
 import { scrape as muse } from './muse';
 import { scrape as musha } from './musha';
@@ -695,6 +705,7 @@ import { scrape as p72 } from './p72';
 import { scrape as polaris } from './polaris';
 import { scrape as prelude } from './prelude';
 import { scrape as polytech } from './polytech';
+import { scrape as portugalventures } from './portugalventures';
 import { scrape as possible } from './possible';
 import { scrape as powerhouse } from './powerhouse';
 import { scrape as practica } from './practica';
@@ -706,6 +717,7 @@ import { scrape as primeimpact } from './primeimpact';
 import { scrape as primemovers } from './primemovers';
 import { scrape as primetime } from './primetime';
 import { scrape as prime } from './prime';
+import { scrape as primo } from './primo';
 import { scrape as projecta } from './projecta';
 import { scrape as propeller } from './propeller';
 import { scrape as proventure } from './proventure';
@@ -835,6 +847,7 @@ import { scrape as supermoon } from './supermoon';
 import { scrape as supernode } from './supernode';
 import { scrape as supernova } from './supernova';
 import { scrape as svangel } from './svangel';
+import { scrape as swanlaab } from './swanlaab';
 import { scrape as systemiq } from './systemiq';
 import { scrape as targetglobal } from './targetglobal';
 import { scrape as ten13 } from './ten13';
@@ -920,6 +933,7 @@ import { scrape as venturefriends } from './venturefriends';
 import { scrape as venturesplatform } from './venturesplatform';
 import { scrape as venturesouq } from './venturesouq';
 import { scrape as vertex } from './vertex';
+import { scrape as vertis } from './vertis';
 import { scrape as verve } from './verve';
 import { scrape as vestigo } from './vestigo';
 import { scrape as vibevc } from './vibevc';
@@ -1055,6 +1069,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	archventure,
 	ardent,
 	argon,
+	armilar,
 	array,
 	arrington,
 	artis,
@@ -1083,6 +1098,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	balderton,
 	axeleo,
 	axial,
+	axon,
 	azolla,
 	bcapital,
 	b2venture,
@@ -1109,6 +1125,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	betterventures,
 	beyondearth,
 	bigidea,
+	bigsur,
 	bigfoot,
 	bip,
 	blackops,
@@ -1129,6 +1146,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	buildingventures,
 	byfounders,
 	byld,
+	bynd,
 	c4v,
 	cake,
 	calmstorm,
@@ -1141,6 +1159,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	capnamic,
 	capricorn,
 	carbonsilicon,
+	cardumen,
 	caruso,
 	castleisland,
 	cathay,
@@ -1262,6 +1281,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	elevate,
 	elizabethstreet,
 	emerging,
+	encomenda,
 	endeit,
 	eip,
 	engine,
@@ -1284,6 +1304,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	fprime,
 	f2,
 	f7,
+	faber,
 	fcavp,
 	felicis,
 	felix,
@@ -1426,6 +1447,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	impactamerica,
 	incisive,
 	indexventures,
+	indico,
 	indiebio,
 	industrifonden,
 	industrious,
@@ -1443,6 +1465,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	intelcapital,
 	interlace,
 	inventure,
+	inveready,
 	investinor,
 	invus,
 	iqcapital,
@@ -1560,6 +1583,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	moxxie,
 	mubadala,
 	mucker,
+	mundi,
 	munichre,
 	muse,
 	musha,
@@ -1663,6 +1687,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	p72,
 	polaris,
 	polytech,
+	portugalventures,
 	possible,
 	powerhouse,
 	practica,
@@ -1675,6 +1700,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	primemovers,
 	primetime,
 	prime,
+	primo,
 	projecta,
 	propeller,
 	proventure,
@@ -1804,6 +1830,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	supernode,
 	supernova,
 	svangel,
+	swanlaab,
 	systemiq,
 	targetglobal,
 	ten13,
@@ -1890,6 +1917,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	venturesplatform,
 	venturesouq,
 	vertex,
+	vertis,
 	verve,
 	vestigo,
 	vibevc,
