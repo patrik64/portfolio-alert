@@ -1,4 +1,4 @@
-// The 881 tracked funds, in case-insensitive alphabetical order by name — the
+// The 888 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -61,6 +61,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'aisling', name: 'Aisling Capital', url: 'https://www.aislingcapital.com/portfolio' },
 	{ slug: 'aix', name: 'AIX Ventures', url: 'https://www.aixventures.com/portfolio' },
 	{ slug: 'alaya', name: 'Alaya Capital', url: 'https://alaya-capital.com/portfolio/' },
+	{ slug: 'albion', name: 'AlbionVC', url: 'https://albion.vc/companies/' },
 	{
 		slug: 'alchemist',
 		name: 'Alchemist Accelerator',
@@ -141,6 +142,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'beepartners', name: 'Bee Partners', url: 'https://beepartners.vc/portfolio' },
 	{ slug: 'behindgenius', name: 'Behind Genius Ventures', url: 'https://www.behindgeniusventures.com/portfolio' },
 	{ slug: 'behold', name: 'Behold Ventures', url: 'https://behold.vc/portfolio' },
+	{ slug: 'beringea', name: 'Beringea', url: 'https://www.beringea.com/portfolio' },
 	{ slug: 'bessemer', name: 'Bessemer Venture Partners', url: 'https://www.bvp.com/companies' },
 	{ slug: 'betaboom', name: 'Beta Boom', url: 'https://www.betaboom.com/portfolio' },
 	{ slug: 'bettercapital', name: 'Better Capital', url: 'https://www.bettercapital.vc/portfolio/' },
@@ -495,6 +497,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'kibo', name: 'Kibo Ventures', url: 'https://www.kiboventures.com/portfolio' },
 	{ slug: 'kickstart', name: 'Kickstart Fund', url: 'https://kickstart.com/portfolio' },
 	{ slug: 'kima', name: 'Kima Ventures', url: 'https://www.kimaventures.com/portfolio' },
+	{ slug: 'kindredcapital', name: 'Kindred Capital', url: 'https://kindredcapital.vc/portfolio' },
 	{ slug: 'kindred', name: 'Kindred Ventures', url: 'https://kindredventures.com/portfolio/' },
 	{ slug: 'kinnevik', name: 'Kinnevik', url: 'https://www.kinnevik.com/investments/' },
 	{ slug: 'kittyhawk', name: 'KittyHawk Ventures', url: 'https://www.kittyhawkvc.com/investments-portfolio' },
@@ -522,6 +525,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'longjourney', name: 'Long Journey Ventures', url: 'https://www.longjourney.vc/portfolio' },
 	{ slug: 'lorimer', name: 'Lorimer Ventures', url: 'https://www.lorimerventures.com/portfolio' },
 	{ slug: 'lowercarbon', name: 'Lowercarbon Capital', url: 'https://lowercarbon.com/companies/' },
+	{ slug: 'lunar', name: 'Lunar Ventures', url: 'https://www.lunar.vc/portfolio' },
 	{ slug: 'lux', name: 'Lux Capital', url: 'https://www.luxcapital.com/companies' },
 	{ slug: 'lyticalventures', name: 'Lytical Ventures', url: 'https://www.lyticalventures.com/companies' },
 	{ slug: 'm12', name: 'M12', url: 'https://m12.vc/portfolio/' },
@@ -569,6 +573,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'molten', name: 'Molten Ventures', url: 'https://www.moltenventures.com/portfolio/all' },
 	{ slug: 'monashees', name: 'Monashees', url: 'https://www.monashees.com/portfolio' },
 	{ slug: 'moneta', name: 'Moneta Ventures', url: 'https://www.moneta.vc/portfolio/' },
+	{ slug: 'moonfire', name: 'Moonfire', url: 'https://www.moonfire.com/portfolio/' },
 	{ slug: 'moonshots', name: 'Moonshots Capital', url: 'https://moonshotscapital.com/portfolios/' },
 	{ slug: 'morpheus', name: 'Morpheus Ventures', url: 'https://morpheus.com/portfolio/' },
 	{ slug: 'mosaic', name: 'Mosaic Ventures', url: 'https://www.mosaicventures.com/portfolio' },
@@ -715,6 +720,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'redalpine', name: 'Redalpine', url: 'https://www.redalpine.com/portfolio' },
 	{ slug: 'redbud', name: 'Redbud VC', url: 'https://redbud.vc/portfolio' },
 	{ slug: 'redpoint', name: 'Redpoint', url: 'https://www.redpoint.com/companies/' },
+	{ slug: 'redstone', name: 'Redstone', url: 'https://www.redstone.vc/portfolio' },
 	{ slug: 'refashiond', name: 'REFASHIOND Ventures', url: 'https://www.refashiond.com/fund-i-portfolio' },
 	{ slug: 'relay', name: 'Relay Ventures', url: 'https://relay.vc/portfolio/' },
 	{ slug: 'renegade', name: 'Renegade Partners', url: 'https://www.renegadepartners.com/companies' },
@@ -1022,6 +1028,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'voloearth', name: 'VoLo Earth', url: 'https://www.voloearth.com/portfolio' },
 	{ slug: 'volta', name: 'Volta Ventures', url: 'https://volta.ventures/#portfolio' },
 	{ slug: 'voyagervc', name: 'Voyager Ventures', url: 'https://www.voyagervc.com/portfolio' },
+	{ slug: 'vsquared', name: 'Vsquared Ventures', url: 'https://vsquared.vc/portfolio/' },
 	{ slug: 'vtfcapital', name: 'VTF Capital', url: 'https://vtfcapital.com/portfolio/' },
 	{
 		slug: 'vuventurepartners',

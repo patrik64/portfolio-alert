@@ -54,6 +54,7 @@ import { scrape as airtree } from './airtree';
 import { scrape as aisling } from './aisling';
 import { scrape as aix } from './aix';
 import { scrape as alaya } from './alaya';
+import { scrape as albion } from './albion';
 import { scrape as alchemist } from './alchemist';
 import { scrape as aleph } from './aleph';
 import { scrape as alix } from './alix';
@@ -122,6 +123,7 @@ import { scrape as beco } from './beco';
 import { scrape as beepartners } from './beepartners';
 import { scrape as behindgenius } from './behindgenius';
 import { scrape as behold } from './behold';
+import { scrape as beringea } from './beringea';
 import { scrape as bessemer } from './bessemer';
 import { scrape as betaboom } from './betaboom';
 import { scrape as bettercapital } from './bettercapital';
@@ -466,6 +468,7 @@ import { scrape as kickstart } from './kickstart';
 import { scrape as kima } from './kima';
 import { scrape as kittyhawk } from './kittyhawk';
 import { scrape as kleiner } from './kleiner';
+import { scrape as kindredcapital } from './kindredcapital';
 import { scrape as kindred } from './kindred';
 import { scrape as kinnevik } from './kinnevik';
 import { scrape as konvoy } from './konvoy';
@@ -491,6 +494,7 @@ import { scrape as lookingglass } from './lookingglass';
 import { scrape as longjourney } from './longjourney';
 import { scrape as lorimer } from './lorimer';
 import { scrape as lowercarbon } from './lowercarbon';
+import { scrape as lunar } from './lunar';
 import { scrape as lux } from './lux';
 import { scrape as lyticalventures } from './lyticalventures';
 import { scrape as m12 } from './m12';
@@ -534,6 +538,7 @@ import { scrape as moderne } from './moderne';
 import { scrape as molten } from './molten';
 import { scrape as monashees } from './monashees';
 import { scrape as moneta } from './moneta';
+import { scrape as moonfire } from './moonfire';
 import { scrape as moonshots } from './moonshots';
 import { scrape as morpheus } from './morpheus';
 import { scrape as mosaic } from './mosaic';
@@ -676,6 +681,7 @@ import { scrape as redalpine } from './redalpine';
 import { scrape as redbud } from './redbud';
 import { scrape as redsea } from './redsea';
 import { scrape as redswan } from './redswan';
+import { scrape as redstone } from './redstone';
 import { scrape as refashiond } from './refashiond';
 import { scrape as relay } from './relay';
 import { scrape as renegade } from './renegade';
@@ -851,6 +857,7 @@ import { scrape as voimaventures } from './voimaventures';
 import { scrape as voloearth } from './voloearth';
 import { scrape as volta } from './volta';
 import { scrape as voyagervc } from './voyagervc';
+import { scrape as vsquared } from './vsquared';
 import { scrape as vtfcapital } from './vtfcapital';
 import { scrape as vuventurepartners } from './vuventurepartners';
 import { scrape as watertower } from './watertower';
@@ -936,6 +943,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	aisling,
 	aix,
 	alaya,
+	albion,
 	alchemist,
 	aleph,
 	alix,
@@ -1004,6 +1012,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	beepartners,
 	behindgenius,
 	behold,
+	beringea,
 	bessemer,
 	betaboom,
 	bettercapital,
@@ -1348,6 +1357,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	kima,
 	kittyhawk,
 	kleiner,
+	kindredcapital,
 	kindred,
 	kinnevik,
 	konvoy,
@@ -1373,6 +1383,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	longjourney,
 	lorimer,
 	lowercarbon,
+	lunar,
 	lux,
 	lyticalventures,
 	m12,
@@ -1416,6 +1427,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	molten,
 	monashees,
 	moneta,
+	moonfire,
 	moonshots,
 	morpheus,
 	mosaic,
@@ -1558,6 +1570,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	redbud,
 	redsea,
 	redswan,
+	redstone,
 	refashiond,
 	relay,
 	renegade,
@@ -1734,6 +1747,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	voloearth,
 	volta,
 	voyagervc,
+	vsquared,
 	vtfcapital,
 	vuventurepartners,
 	watertower,
