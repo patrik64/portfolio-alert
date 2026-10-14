@@ -1,11 +1,6 @@
 import type { ScrapedCompany } from './types';
 
 const PAGE_URL = 'https://www.racap.com/portfolio';
-// the company pages are asked for one at a time, a pause between them
-const PACE_MS = 150;
-const REFUSED_MS = 20_000;
-// no company page is begun past this, leaving the run its time
-const DEADLINE_MS = 150_000;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
@@ -16,22 +11,20 @@ const UA =
 // Health"), its vertical ("Energy", "Agriculture & Food"), its status
 // ("Current Private Investment", "IPO'd/Acquired") and the stage the fund
 // came in at ("Series A", "NewCo") — and name each value in their options.
-// a company's page adds its site and the year the fund invested. the
-// domain, the vertical, the stage, the status and the year are kept as
-// tags; a status of "IPO'd/Acquired" says the company went public or was
-// sold, not that the fund is out of it, and is kept as written. a company
-// page that will not load, or is not reached by the deadline, leaves its
-// company linking it.
+// the domain, the vertical, the stage and the status are kept as tags; a
+// status of "IPO'd/Acquired" says the company went public or was sold, not
+// that the fund is out of it, and is kept as written.
+//
+// a company's page adds its site and the year the fund invested, but the
+// pages are slow — a second each — and two hundred and fifty of them run
+// far past what a run may take, so they are not read: every company links
+// its page here.
 
 const SCOPE = /v-scope="PortfolioFilters\(([\s\S]*?)\)"/;
 const OPTION = /<option value="([^"]+)">\s*([^<]*?)\s*<\/option>/g;
 const TILE = /<article v-show="rowMatches\((\d+)\)"[^>]*>([\s\S]*?)<\/article>/g;
 const NAME = /<h3 class="sr-only">\s*<div class="type-ui-2">([\s\S]*?)<\/div>/;
 const HREF = /<a\s+href="([^"]*)"/;
-const SITE = /<a\s+href="([^"]*)"[^>]*>\s*<span>Website<\/span>/;
-const FACT = (label: string) =>
-	new RegExp(`<dt\\b[^>]*>${label}</dt>\\s*<dd\\b[^>]*>([\\s\\S]*?)</dd>`, 'i');
-const YEAR = /\b(?:19|20)\d{2}\b/;
 const UNSAID = /^(?:-|other|others|all|n\/a)$/i;
 const STEALTH = /^stealth\b/i;
 
@@ -82,40 +75,8 @@ function arrayAt(text: string, start: number): unknown {
 	return undefined;
 }
 
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-// a page, or a refusal waited out once
-async function get(url: string): Promise<Response> {
-	const headers = { 'User-Agent': UA };
-	const resp = await fetch(url, { headers });
-	if (resp.status !== 429) return resp;
-	await resp.body?.cancel();
-	await wait(REFUSED_MS);
-	return fetch(url, { headers });
-}
-
-// a company page's site and the year the fund invested, or nothing when it will not load
-async function detailsOf(href: string): Promise<{ site: string; year?: string }> {
-	try {
-		const resp = await get(href);
-		if (!resp.ok) {
-			await resp.body?.cancel();
-			return { site: '' };
-		}
-		const html = await resp.text();
-		const site = unescape(html.match(SITE)?.[1] ?? '').trim();
-		return {
-			site: /^https?:\/\//i.test(site) ? site : '',
-			year: clean(html.match(FACT('Initial Investment Year'))?.[1] ?? '').match(YEAR)?.[0]
-		};
-	} catch {
-		return { site: '' };
-	}
-}
-
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const started = Date.now();
-	const resp = await get(PAGE_URL);
+	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}
@@ -131,39 +92,28 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-	let withSite = 0;
 	for (const [, index, tile] of html.matchAll(TILE)) {
 		const name = clean(tile.match(NAME)?.[1] ?? '');
 		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 		seen.add(name.toLowerCase());
 		const row: Row = (rows as Row[])[Number(index)] ?? {};
 		const href = unescape(tile.match(HREF)?.[1] ?? '').trim();
-		const reached = /^https?:\/\//i.test(href) && Date.now() - started < DEADLINE_MS;
-		if (reached && companies.length > 0) await wait(PACE_MS);
-		const { site, year } = reached ? await detailsOf(href) : { site: '', year: undefined };
-		if (site) withSite++;
 		companies.push({
 			name,
 			category: [
 				...named(row.domain),
 				...named(row.vertical),
 				...named(row.stage),
-				...named(row.status),
-				year ? `Invested ${year}` : ''
+				...named(row.status)
 			]
 				.filter((t, i, all) => t && !UNSAID.test(t) && all.indexOf(t) === i)
 				.join(', '),
-			url: site || href || PAGE_URL
+			url: href ? new URL(href, PAGE_URL).href : PAGE_URL
 		});
 	}
 
 	if (companies.length === 0) {
 		throw new Error('racapital: no companies in the portfolio grid — the markup moved');
 	}
-	// without the company pages every company would link its page here
-	if (withSite === 0) {
-		throw new Error("racapital: no company page gave its site — the pages' markup moved");
-	}
-
 	return companies;
 }
