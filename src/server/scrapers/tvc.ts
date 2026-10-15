@@ -13,9 +13,9 @@ const UA =
 // the Exited tag and a listing with the IPO tag.
 //
 // the site relaunched in october 2026; the nuxt page before it wrote no
-// names, and its companies were named by their picture files. the fund
-// writes nine of those otherwise now, and they are stored under the old
-// spelling so they do not come up as new.
+// names, and its companies were named by their picture files. the rows
+// stored under those guesses were renamed to the fund's own spelling by
+// hand when the page began to write it.
 
 const CARD = /<a\b([^>]*\bclass="card big"[^>]*)>([\s\S]*?)<\/a>/g;
 const HREF = /\bhref="([^"]*)"/;
@@ -27,19 +27,6 @@ const EXIT = /^exit(?:ed)?$/i;
 const LISTED = /^(?:nasdaq|nyse|amex|lse|aim|euronext|tsx|asx)\b/i;
 const UNSAID = /^(?:-|other|others|all|n\/a)$/i;
 const STEALTH = /^stealth\b/i;
-
-// the fund's spelling now, and the one the company is stored under
-const STORED_AS: Record<string, string> = {
-	'X-Energy': 'X Energy',
-	'BettaF!sh': 'Bettafish',
-	'Cocoon Carbon': 'Cocoon',
-	'Fork & Good': 'Fork And Good',
-	'coding.bio': 'Coding Bio',
-	'Red Queen Bio': 'Redqueenbiobackground',
-	Apothékary: 'Apothekary',
-	Speak_: 'Speak',
-	SNAFU: 'Snafu Records'
-};
 
 const unescape = (s: string) =>
 	s
@@ -65,8 +52,7 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 	const seen = new Set<string>();
 	let withSite = 0;
 	for (const [, attrs, card] of html.matchAll(CARD)) {
-		const written = clean(card.match(NAME)?.[1] ?? '');
-		const name = STORED_AS[written] ?? written;
+		const name = clean(card.match(NAME)?.[1] ?? '');
 		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 		seen.add(name.toLowerCase());
 		const badge = clean(card.match(BADGE)?.[1] ?? '');
