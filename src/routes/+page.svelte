@@ -10,10 +10,24 @@
 	let funds = $state<Record<string, Fund>>({});
 	let statuses = $state<Record<string, Status>>({});
 	let running = $state(false);
+	let search = $state('');
 
 	const cards = $derived(
 		FUNDS.map((f) => ({ ...f, fund: funds[f.slug], status: statuses[f.slug] }))
 	);
+
+	// accents folded away, so "sante" finds Santé Ventures and "idek" Idékapital
+	const fold = (s: string) =>
+		s
+			.normalize('NFD')
+			.replace(/[̀-ͯ]/g, '')
+			.toLowerCase();
+
+	const shown = $derived.by(() => {
+		const q = fold(search.trim());
+		if (!q) return cards;
+		return cards.filter((c) => fold(c.name).includes(q) || c.slug.includes(q));
+	});
 
 	async function reloadFunds() {
 		// explicit limit — remult's REST API defaults to 100 rows per page, and
@@ -75,7 +89,10 @@
 	class="mx-auto mt-2 w-full max-w-[71rem] px-6 py-4 lg:dashed-frame"
 >
 	<div class="flex flex-wrap items-center justify-between gap-2">
-		<h1 class="text-lg font-semibold">funds</h1>
+		<div class="flex items-baseline gap-3">
+			<h1 class="text-lg font-semibold">funds</h1>
+			<span class="text-sm text-gray-900">{shown.length} of {cards.length} funds</span>
+		</div>
 		{#if dev}
 			<button
 				type="button"
@@ -88,8 +105,16 @@
 		{/if}
 	</div>
 
+	<input
+		type="text"
+		placeholder="filter funds by name…"
+		aria-label="filter funds by name"
+		bind:value={search}
+		class="form-input mt-3 w-full focus:shadow-outline-gray"
+	/>
+
 	<div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-		{#each cards as card (card.slug)}
+		{#each shown as card (card.slug)}
 			<div
 				class="group relative rounded-lg bg-white px-4 py-3 shadow-lg transition duration-500 ease-in-out hover:bg-gray-300"
 			>
@@ -137,6 +162,10 @@
 					<p class="mt-1 text-xs text-danger-500">{card.fund.lastError}</p>
 				{/if}
 			</div>
+		{:else}
+			<p class="text-sm text-gray-900 sm:col-span-2 lg:col-span-3">
+				no funds match “{search.trim()}”
+			</p>
 		{/each}
 	</div>
 </div>
