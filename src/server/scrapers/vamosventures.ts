@@ -112,7 +112,15 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		cards.set(id, { site, category });
 	}
 	if (cards.size === 0) {
-		throw new Error('vamosventures: no company cards on the portfolio page — the markup moved');
+		// from a datacenter address the page has answered 200 without its
+		// cards — some other page in its place — so the error says what came
+		const title = clean(html.match(/<title[^>]*>([^<]*)</i)?.[1] ?? '');
+		const opening = clean(html.replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ')).slice(0, 120);
+		throw new Error(
+			`vamosventures: no company cards on the portfolio page — it answered ${html.length} bytes` +
+				(title ? ` titled "${title}"` : '') +
+				(opening ? `, opening "${opening}"` : '')
+		);
 	}
 
 	// the whole feed, a page at a time; a part of it must not pass for the whole
