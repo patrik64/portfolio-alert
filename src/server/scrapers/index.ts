@@ -438,7 +438,6 @@ import { scrape as halogen } from './halogen';
 import { scrape as hannahgrey } from './hannahgrey';
 import { scrape as harlem } from './harlem';
 import { scrape as hax } from './hax';
-import { scrape as haystack } from './haystack';
 import { scrape as hcvc } from './hcvc';
 import { scrape as headline } from './headline';
 import { scrape as healthx } from './healthx';
@@ -1441,7 +1440,6 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	hannahgrey,
 	harlem,
 	hax,
-	haystack,
 	hcvc,
 	headline,
 	healthx,
