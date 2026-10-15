@@ -16,6 +16,12 @@
 //                                               a back catalog, taken in
 //                                               quietly the way a first
 //                                               fetch is
+//   node scripts/fetch-all.mjs --only=anthemis --dry-run
+//                                               the scrape alone, nothing
+//                                               stored: whether the site
+//                                               answers the deployment at
+//                                               all, which a laptop run
+//                                               cannot tell
 //
 // A full run stands down when most of the list was refreshed in the last
 // MIN_GAP_HOURS (12): a second run of the day finds nothing and clears the
@@ -49,6 +55,13 @@ if (ACCEPT !== undefined && !['newcomers', 'baseline'].includes(ACCEPT)) {
 }
 if (ACCEPT && !only) {
 	console.error('--accept takes --only, naming the funds whose flood it lets through');
+	process.exit(1);
+}
+// scrape only, through probeFund: nothing stored, no flags touched, no
+// results file — a diagnosis, never a refresh
+const DRY_RUN = process.argv.includes('--dry-run');
+if (DRY_RUN && ACCEPT !== undefined) {
+	console.error('a dry run stores nothing, so --accept has nothing to let through');
 	process.exit(1);
 }
 // how recently a full refresh must have run for this one to stand down; 0
@@ -102,8 +115,9 @@ async function freshlyFetched(hours) {
 // refreshed, and the newcomer flags survive for MIN_GAP_HOURS.
 //
 // A subset run never stands down: it is a smoke test or a new fund's first
-// import, and neither is a duplicate of anything.
-if (!only && !FORCE && MIN_GAP_HOURS > 0) {
+// import, and neither is a duplicate of anything. Nor does a dry run, which
+// refreshes nothing.
+if (!only && !FORCE && !DRY_RUN && MIN_GAP_HOURS > 0) {
 	const fresh = await freshlyFetched(MIN_GAP_HOURS);
 	// a couple of funds fail every night and a newly added one is imported on
 	// its own, so a full refresh is recognised by most of the list being fresh
@@ -121,7 +135,7 @@ if (!only && !FORCE && MIN_GAP_HOURS > 0) {
 }
 
 if (only) funds = funds.filter((f) => only.includes(f.slug));
-console.log(`refreshing ${funds.length} funds against ${BASE_URL}\n`);
+console.log(`${DRY_RUN ? 'probing' : 'refreshing'} ${funds.length} funds against ${BASE_URL}\n`);
 
 const results = [];
 const queue = [...funds];
@@ -130,7 +144,7 @@ async function worker() {
 	for (let fund = queue.shift(); fund; fund = queue.shift()) {
 		const started = Date.now();
 		try {
-			const resp = await fetch(`${BASE_URL}/api/fetchFund`, {
+			const resp = await fetch(`${BASE_URL}/api/${DRY_RUN ? 'probeFund' : 'fetchFund'}`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ args: ACCEPT ? [fund.slug, ACCEPT] : [fund.slug] }),
@@ -152,6 +166,12 @@ async function worker() {
 					error: `${resp.status} ${message}`.slice(0, 200)
 				});
 				console.log(`FAIL ${fund.slug.padEnd(20)} ${seconds}s  ${message.slice(0, 120)}`);
+			} else if (DRY_RUN) {
+				const { data } = await resp.json();
+				results.push({ slug: fund.slug, name: fund.name, total: data.total });
+				console.log(
+					`ok   ${fund.slug.padEnd(20)} ${seconds}s  ${data.total} companies, nothing stored — ${data.sample.join(' | ')}`
+				);
 			} else {
 				const { data } = await resp.json();
 				results.push({ slug: fund.slug, name: fund.name, ...data });
@@ -172,10 +192,18 @@ await Promise.all(Array.from({ length: CONCURRENCY }, worker));
 
 const failed = results.filter((r) => r.error);
 const added = results.reduce((n, r) => n + (r.added ?? 0), 0);
-console.log(`\n${results.length - failed.length}/${results.length} funds refreshed, ${added} newcomers`);
+if (DRY_RUN) {
+	console.log(`\n${results.length - failed.length}/${results.length} funds answered, nothing stored`);
+} else {
+	console.log(`\n${results.length - failed.length}/${results.length} funds refreshed, ${added} newcomers`);
+}
 if (failed.length) {
 	console.log(`failed: ${failed.map((f) => f.slug).join(', ')}`);
 }
+
+// a dry run is its own report: every failure counts, and nothing is left
+// for post-newcomers.mjs to announce
+if (DRY_RUN) process.exit(failed.length ? 1 : 0);
 
 // what the run found, for post-newcomers.mjs
 writeFileSync(RESULTS_FILE, JSON.stringify(results, null, 2));

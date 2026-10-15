@@ -13,6 +13,14 @@ export interface FetchResult {
 	absorbed: number;
 }
 
+// what a probe found: the scrape alone, nothing stored
+export interface ProbeResult {
+	slug: string;
+	total: number;
+	// the first few names, to tell a right list from a wrong one at a glance
+	sample: string[];
+}
+
 // a fetch turning up more than this many companies at once is held back,
 // nothing stored: that is what a redesigned page suddenly listing its whole
 // back catalog looks like (Collaborative Fund's 521 on 2 October 2026), and
@@ -121,6 +129,32 @@ const nameKey = (name: string) => name.trim().toLowerCase().replace(/\s+/g, ' ')
 
 const inFlight = new Set<string>();
 
+interface Scraper {
+	name: string;
+	scrape: () => Promise<ScrapedCompany[]>;
+}
+
+// a scrape, given the four minutes a fetch allows it
+const scrapeWithin = (entry: Scraper) =>
+	Promise.race([
+		entry.scrape(),
+		new Promise<never>((_, reject) =>
+			setTimeout(() => reject(new Error(`${entry.name}: scrape timed out after 4 minutes`)), 240_000)
+		)
+	]);
+
+// what a scrape found, one company a name — a page sometimes lists a company
+// twice — with the names decoded
+const uniqueByName = (scraped: ScrapedCompany[]): Map<string, ScrapedCompany> => {
+	const byKey = new Map<string, ScrapedCompany>();
+	for (const c of scraped) {
+		const name = decodeEntities(c.name ?? '');
+		const key = nameKey(name);
+		if (key && !byKey.has(key)) byKey.set(key, { ...c, name });
+	}
+	return byKey;
+};
+
 // the sql database when one is connected; undefined on the json fallback
 // store (dev without DATABASE_URL), where callers filter in memory instead
 function sqlDb(): SqlDatabase | undefined {
@@ -155,22 +189,7 @@ export class ScrapeController {
 		if (inFlight.has(slug)) throw new Error(`${entry.name}: fetch already running`);
 		inFlight.add(slug);
 		try {
-			const scraped = await Promise.race([
-				entry.scrape(),
-				new Promise<never>((_, reject) =>
-					setTimeout(
-						() => reject(new Error(`${entry.name}: scrape timed out after 4 minutes`)),
-						240_000
-					)
-				)
-			]);
-
-			const byKey = new Map<string, ScrapedCompany>();
-			for (const c of scraped) {
-				const name = decodeEntities(c.name ?? '');
-				const key = nameKey(name);
-				if (key && !byKey.has(key)) byKey.set(key, { ...c, name });
-			}
+			const byKey = uniqueByName(await scrapeWithin(entry));
 
 			// the database half of the fetch, all or nothing — and only that
 			// half, so no connection sits idle in a transaction through the scrape
@@ -243,6 +262,32 @@ export class ScrapeController {
 				.upsert({ where: { slug }, set: { lastError: message } })
 				.catch(() => {});
 			throw err;
+		} finally {
+			inFlight.delete(slug);
+		}
+	}
+
+	// the scrape alone, nothing stored. a scraper that passes on a laptop can
+	// still be turned away from the deployment's shared addresses — by a
+	// firewall that refuses datacenter traffic, by a rate limit — and this
+	// tells which, from where the nightly runs, without a night's wait and
+	// without touching what the last fetch left. no transaction: nothing is
+	// written, and a connection must not sit idle through the scrape
+	@BackendMethod({ allowed: true, transactional: false })
+	static async probeFund(slug: string): Promise<ProbeResult> {
+		if (!import.meta.env.SSR) throw new Error('probeFund only runs on the server');
+		const { scraperBySlug } = await import('../server/scrapers/index');
+		const entry = scraperBySlug.get(slug);
+		if (!entry) throw new Error(`unknown fund: ${slug}`);
+		if (inFlight.has(slug)) throw new Error(`${entry.name}: fetch already running`);
+		inFlight.add(slug);
+		try {
+			const found = uniqueByName(await scrapeWithin(entry));
+			return {
+				slug,
+				total: found.size,
+				sample: [...found.values()].slice(0, 3).map((c) => c.name)
+			};
 		} finally {
 			inFlight.delete(slug);
 		}
