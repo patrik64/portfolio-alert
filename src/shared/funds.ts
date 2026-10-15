@@ -1058,7 +1058,7 @@ export const FUNDS: FundInfo[] = [
 	{
 		slug: 'tvc',
 		name: 'The Venture Collective',
-		url: 'https://www.theventurecollective.com/portfolio/'
+		url: 'https://theventurecollective.com/portfolio'
 	},
 	{ slug: 'thirdprime', name: 'Third Prime', url: 'https://www.thirdprime.vc/portfolio' },
 	{

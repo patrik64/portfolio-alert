@@ -63,7 +63,17 @@ async function websiteOf(slug: string): Promise<string> {
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-  const html = await fetchPage(PAGE_URL);
+  // cloudflare scores a datacenter address as automated and answers 403 on
+  // every path of the site, the listing included; the same request passes
+  // from a laptop, so the error says so rather than look like a broken page
+  const html = await fetchPage(PAGE_URL).catch((err: unknown) => {
+    if (err instanceof Error && /: 403$/.test(err.message)) {
+      throw new Error(
+        "stripes: the site's firewall refused this address (403) — it answers fetches run locally",
+      );
+    }
+    throw err;
+  });
 
   interface Card {
     name: string;

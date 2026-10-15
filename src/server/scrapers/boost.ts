@@ -13,8 +13,15 @@ const UA =
 // shelves it goes on, the year the fund came in, where it is, and whether
 // the fund is out of it. the script puts a company on each of its shelves
 // and on the featured one, so one it puts nowhere is left out here too.
+//
+// the backend asks airtable afresh on every call and now and then runs out
+// of time (a 504), answering in under a second the next moment; a server
+// error or a refusal is waited out and asked again, a few times, before the
+// run gives up.
 
 const FEED = /fetch\(\s*['"`](https?:\/\/[^'"`]+)['"`]\s*\)/;
+const RETRY_MS = 20_000;
+const TRIES = 3;
 // the shelves the page has, as the script names them
 const SHELVES = new Set(['Bio / Health', 'Crypto', 'VR/AR', 'Space', 'Climate', 'AI', 'Other', 'Robotics']);
 const DOMAIN = /^[\w-]+(\.[\w-]+)+(\/\S*)?$/;
@@ -34,12 +41,20 @@ interface Record {
 // the category is comma-joined, so a label holding a comma would read as two
 const tag = (s: string) => s.replace(/\s+/g, ' ').trim().replace(/\s*,\s*/g, ' / ');
 
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// a page, or a server error or refusal waited out and asked again
 async function fetchText(url: string): Promise<string> {
-	const resp = await fetch(url, { headers: { 'User-Agent': UA } });
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${url}: ${resp.status}`);
+	let status = 0;
+	for (let attempt = 1; attempt <= TRIES; attempt++) {
+		const resp = await fetch(url, { headers: { 'User-Agent': UA } });
+		if (resp.ok) return resp.text();
+		status = resp.status;
+		await resp.body?.cancel();
+		if ((status !== 429 && status < 500) || attempt === TRIES) break;
+		await wait(RETRY_MS);
 	}
-	return resp.text();
+	throw new Error(`Failed to fetch ${url}: ${status}`);
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {

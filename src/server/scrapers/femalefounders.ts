@@ -2,6 +2,9 @@ import type { ScrapedCompany } from './types';
 
 const BASE_URL = 'https://femalefoundersfund.com';
 const PAGE_URL = `${BASE_URL}/portfolio/`;
+// the site's feed of its portfolio posts, ten a page
+const FEED_URL = `${BASE_URL}/feed/?post_type=portfolio&paged=`;
+const MAX_FEED_PAGES = 40;
 // the site's firewall turns a browser user agent away with a 403 once it has
 // seen a few requests from an address, and answers a request that says
 // plainly who is asking, as okapi's and frist cressey's do
@@ -9,22 +12,30 @@ const OWN_UA = 'portfolio-alert/1.0 (+https://portfolio-alert.vercel.app)';
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-// wordpress, a theme of its own, behind a firewall that closes its rest api. the
-// portfolio page is a grid of cards, each a logo and the founders' names —
-// never the company's — linking the company's page on the fund's site, with
-// the sectors the page's filter reads as a data attribute and a badge on the
-// ones sold ("acquired"). the company's page names it in its title ("Billie
-// - Female Founders Fund") and links its site from an "About Billie" button;
-// those pages are asked for one at a time, a pause between them, and a page
-// that will not load leaves its company named after its address on the
-// fund's site and linking there.
+// wordpress, a theme of its own, behind a firewall that closes its rest api
+// to the portfolio. the portfolio page is a grid of cards, each a logo and
+// the founders' names — never the company's — linking the company's page on
+// the fund's site, with the sectors the page's filter reads as a data
+// attribute and a badge on the ones sold ("acquired"). the site's feed of
+// its portfolio posts names each company and gives its page, ten a page,
+// and is read page by page until it runs out; the grid says which
+// companies are listed, the feed names them.
+//
+// a company's page names it too, in its title ("Billie - Female Founders
+// Fund"), and links its site from an "About Billie" button; but asking for
+// eighty of those pages a night is what had the firewall turn the fetch
+// away, so a page is asked for only when the feed does not name its
+// company. every company links its page on the fund's site, and a page
+// that will not load leaves its company named after its address there.
 
 const CARD = /(?=<div class="portfolio" data-filter=)/;
 const FILTER = /^<div class="portfolio" data-filter="([^"]*)"/;
 const PAGE = /<a class="portfolio-link" href="([^"]+)"/;
 const BADGE = /class="portfolio-badge"[^>]*>\s*<span>([\s\S]*?)<\/span>/;
+const ITEM = /<item>([\s\S]*?)<\/item>/g;
+const ITEM_TITLE = /<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/;
+const ITEM_LINK = /<link>\s*([^<\s]+)\s*<\/link>/;
 const TITLE = /<title>([\s\S]*?)<\/title>/;
-const SITE = /<a class="btn" href="(https?:\/\/[^"]+)"[^>]*>\s*About\b/i;
 const STEALTH = /^stealth\b/i;
 const PACE_MS = 150;
 const RETRY_DELAY_MS = 20_000;
@@ -60,46 +71,68 @@ const slugName = (page: string) =>
 		.map((word) => word[0].toUpperCase() + word.slice(1))
 		.join(' ');
 
-// what a company's page says: its name and its site
-async function pageOf(page: string): Promise<{ name: string; site: string } | null> {
-	try {
-		let resp = await get(page);
-		if (resp.status === 429) {
-			await wait(RETRY_DELAY_MS);
-			resp = await get(page);
-		}
-		if (!resp.ok) return null;
-		const html = await resp.text();
-		const name = clean(html.match(TITLE)?.[1] ?? '').replace(/\s+[-–|]\s+Female Founders Fund\s*$/i, '');
-		return { name, site: unescape(html.match(SITE)?.[1] ?? '') };
-	} catch {
-		return null;
-	}
-}
-
-// the portfolio page; the captcha siteground's firewall puts under a 2xx
-// status in front of an address it distrusts, vercel's among them some
-// nights, or a refusal, is waited out once, and the error says what
-// answered
-async function portfolioPage(): Promise<string> {
+// a page or feed of the fund's site; the captcha siteground's firewall puts
+// under a 2xx status in front of an address it distrusts, vercel's among
+// them some nights, or a refusal, is waited out once, and what answered is
+// said
+async function load(url: string): Promise<{ ok: boolean; status: number; answer: string; body: string }> {
 	let answer = '';
+	let status = 0;
+	let body = '';
 	for (let attempt = 0; attempt < 2; attempt++) {
 		if (attempt > 0) await wait(RETRY_DELAY_MS);
-		const resp = await get(PAGE_URL);
-		const html = await resp.text();
-		const captcha = /sgcaptcha/i.test(html);
-		if (resp.ok && !captcha) return html;
-		answer = `${resp.status}` + (captcha ? ", siteground's captcha" : '');
+		const resp = await get(url);
+		status = resp.status;
+		body = await resp.text();
+		const captcha = /sgcaptcha/i.test(body);
+		if (resp.ok && !captcha) return { ok: true, status, answer: '', body };
+		answer = `${status}` + (captcha ? ", siteground's captcha" : '');
+		// a 404 is an answer, not a mood: not asked for again
+		if (status === 404) break;
 	}
-	throw new Error(`femalefounders: ${PAGE_URL} answered ${answer}`);
+	return { ok: false, status, answer, body };
+}
+
+// the companies' names by their page, from the feed, read until it runs out
+async function feedNames(): Promise<Map<string, string>> {
+	const names = new Map<string, string>();
+	for (let n = 1, perPage = 0; n <= MAX_FEED_PAGES; n++) {
+		const { ok, status, body } = await load(`${FEED_URL}${n}`);
+		// wordpress answers a page past the feed's last with a 404
+		if (!ok && status === 404 && n > 1) break;
+		if (!ok) break;
+		const items = [...body.matchAll(ITEM)];
+		for (const [, item] of items) {
+			const link = item.match(ITEM_LINK)?.[1] ?? '';
+			const name = clean(item.match(ITEM_TITLE)?.[1] ?? '');
+			if (link && name) names.set(link, name);
+		}
+		if (n === 1) perPage = items.length;
+		if (items.length === 0 || items.length < perPage) break;
+	}
+	return names;
+}
+
+// what a company's page says: its name, or nothing when it will not load
+async function nameOnPage(page: string): Promise<string> {
+	try {
+		const { ok, body } = await load(page);
+		if (!ok) return '';
+		return clean(body.match(TITLE)?.[1] ?? '').replace(/\s+[-–|]\s+Female Founders Fund\s*$/i, '');
+	} catch {
+		return '';
+	}
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const html = await portfolioPage();
+	const grid = await load(PAGE_URL);
+	if (!grid.ok) {
+		throw new Error(`femalefounders: ${PAGE_URL} answered ${grid.answer}`);
+	}
 
 	const cards: { page: string; sectors: string[]; badge: string }[] = [];
 	const pages = new Set<string>();
-	for (const card of html.split(CARD).slice(1)) {
+	for (const card of grid.body.split(CARD).slice(1)) {
 		const page = unescape(card.match(PAGE)?.[1] ?? '');
 		if (!page || pages.has(page)) continue;
 		pages.add(page);
@@ -116,12 +149,17 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		throw new Error('femalefounders: no companies on the portfolio page');
 	}
 
+	const names = await feedNames();
+
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-	for (const [i, card] of cards.entries()) {
-		if (i > 0) await wait(PACE_MS);
-		const found = await pageOf(card.page);
-		const name = found?.name || slugName(card.page);
+	for (const card of cards) {
+		let name = names.get(card.page) ?? '';
+		if (!name) {
+			// the feed left this one out: its page names it
+			if (companies.length > 0) await wait(PACE_MS);
+			name = (await nameOnPage(card.page)) || slugName(card.page);
+		}
 		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 		seen.add(name.toLowerCase());
 		// "acquired" -> "Acquired", with the Exited tag
@@ -131,7 +169,7 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 			category: [...card.sectors, badge, /^(acquired|exited|ipo|merged)/i.test(badge) ? 'Exited' : '']
 				.filter((t, k, all) => t && all.indexOf(t) === k)
 				.join(', '),
-			url: found?.site || card.page
+			url: card.page
 		});
 	}
 

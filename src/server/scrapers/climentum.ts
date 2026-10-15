@@ -11,7 +11,9 @@ const UA =
 // shown only behind "Load More". the page renders the first few; the rest
 // live only in the page's script, one of the site's chunks, whose name
 // changes with every publish, so the chunks the page loads are searched for
-// the one placing the cards.
+// the one placing the cards. the helpers the compiled script wraps a card's
+// properties in are renamed with every publish too (`J({…})` one month,
+// `Y({…})` the next), so none is spelled below.
 //
 // a card names its company nowhere but in its logo, and its line is not a
 // safe guide either — a few copies were left with the component's default
@@ -50,7 +52,7 @@ const CHUNK = /https:\/\/framerusercontent\.com\/sites\/[\w-]+\/[\w.-]+\.mjs/g;
 // the component's properties by the ids framer gave them in the designer:
 // the logo, and the line, which a card sets after all its others
 const LINE = /,width:`[^`]*`,yC003PqF9:`/g;
-const LOGO = /\bTF2QaYnFQ:J\(\{[^{}]*?\bsrc:`https:\/\/framerusercontent\.com\/images\/([\w-]+)\./;
+const LOGO = /\bTF2QaYnFQ:\w+\(\{[^{}]*?\bsrc:`https:\/\/framerusercontent\.com\/images\/([\w-]+)\./;
 const DEFAULT_LOGO = /\bTF2QaYnFQ:\w+\?\?\w+\.TF2QaYnFQ\?\?\{[^{}]*?\bsrc:`https:\/\/framerusercontent\.com\/images\/([\w-]+)\./;
 const VARIANT = /\bvariant:\w+\(`(\w+)`\)/;
 // the component's variants by the names given them: "Variant 2 Exit"

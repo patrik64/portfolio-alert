@@ -1,8 +1,6 @@
 import type { ScrapedCompany } from './types';
 
 const PAGE_URL = 'https://www.anthemis.com/portfolio/';
-const PACE_MS = 150;
-const REFUSED_MS = 20_000;
 // the site turns the usual browser string away with a 403 and answers
 // this one, which says who is asking
 const UA = 'portfolio-alert/1.0 (+https://portfolio-alert.vercel.app)';
@@ -17,10 +15,13 @@ const RETRY_DELAY_MS = 10_000;
 // classes the terms the filters above it read: the thesis ("Payments"),
 // the strategy ("Venture", "Lab", "Fund") and the stage ("Early",
 // "Growth", or "Acquired" for the ones the fund is out of), spelled out
-// on the filters' buttons and kept as tags. the company's page has its
-// site behind a "website" link; those pages are fetched one at a time,
-// and a page that will not load, or has no such link, leaves its company
-// linking to it.
+// on the filters' buttons and kept as tags.
+//
+// a company's page has its site behind a "website" link, and nothing else
+// on the fund's site gives it — not its rest api, not its feed. reading a
+// hundred and fifty of those pages a night is what had the firewall turn
+// the fetch away, so they are not read: the grid alone is, one request,
+// and every company links its page on the fund's site.
 
 const FILTER = /(?=\belementor-widget-taxonomy-filter\b)/;
 const FILTER_TAXONOMY = /&quot;taxonomy&quot;:&quot;([\w-]+)&quot;/;
@@ -32,8 +33,6 @@ const LINK = /<a\b[^>]*\bhref="([^"]*)"/;
 const NAME = /<h2\b[^>]*>([\s\S]*?)<\/h2>/;
 const TAXONOMIES = ['thesis', 'strategy', 'stage'];
 const OUT = /^acquired$/i;
-const ANCHOR = /<a\b([^>]*)>([\s\S]*?)<\/a>/g;
-const HREF = /\bhref="([^"]*)"/;
 const STEALTH = /^stealth\b/i;
 
 const unescape = (s: string) =>
@@ -58,32 +57,6 @@ const spelled = (slug: string) =>
 		.join(' ');
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-// the company's site, from the "website" link on its page on the fund's
-// site, or nothing when the page will not load; a refusal is waited out
-// once
-async function siteOf(page: string): Promise<string> {
-	for (let attempt = 0; attempt < 2; attempt++) {
-		try {
-			const resp = await fetch(page, { headers: { 'User-Agent': UA } });
-			if (resp.status === 429 && attempt === 0) {
-				await resp.body?.cancel();
-				await wait(REFUSED_MS);
-				continue;
-			}
-			if (!resp.ok) return '';
-			for (const [, attributes, body] of (await resp.text()).matchAll(ANCHOR)) {
-				if (!/^website$/i.test(clean(body))) continue;
-				const site = unescape(attributes.match(HREF)?.[1] ?? '').trim();
-				if (/^https?:\/\//i.test(site) && !/anthemis\.com/i.test(site)) return site;
-			}
-			return '';
-		} catch {
-			return '';
-		}
-	}
-	return '';
-}
 
 // the portfolio page, or an error saying what answered instead
 async function portfolioPage(): Promise<string> {
@@ -129,13 +102,10 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		);
 		const out = terms.some((t) => OUT.test(t));
 		const page = unescape(item.match(LINK)?.[1] ?? '').trim();
-		const own = /^https?:\/\//i.test(page);
-		if (own) await wait(PACE_MS);
-		const site = own ? await siteOf(page) : '';
 		companies.push({
 			name,
 			category: [...terms, out ? 'Exited' : ''].filter((t, i, all) => t && all.indexOf(t) === i).join(', '),
-			url: site || (own ? page : PAGE_URL)
+			url: /^https?:\/\//i.test(page) ? page : PAGE_URL
 		});
 	}
 	if (companies.length === 0) {

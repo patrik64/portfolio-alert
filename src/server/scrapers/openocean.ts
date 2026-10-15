@@ -87,21 +87,18 @@ export async function scrape(): Promise<ScrapedCompany[]> {
     throw new Error("openocean: the portfolio cards' facts moved");
   }
 
-  // one page per company, and the sitemap lists them all
+  // one page per company, and the sitemap lists them: a company the sitemap
+  // knows that the list does not show means the list is cut short. the other
+  // way round proves nothing — a company can be on the list before the
+  // sitemap carries its page (ubitium, added in 2026, was), and its card
+  // already holds everything the fund says of it
   const sitemap = await fetchPage(`${BASE_URL}/sitemap.xml`);
   const published = new Set(
     [...sitemap.matchAll(/<loc>[^<]*\/portfolio\/([^<\/]+?)\/?<\/loc>/g)].map((m) => m[1]),
   );
-  if (published.size > 0) {
-    for (const slug of slugs) {
-      if (!published.has(slug)) {
-        throw new Error(`openocean: ${slug} is listed but not in the sitemap`);
-      }
-    }
-    for (const slug of published) {
-      if (!slugs.has(slug)) {
-        throw new Error(`openocean: ${slug} is in the sitemap but not listed`);
-      }
+  for (const slug of published) {
+    if (!slugs.has(slug)) {
+      throw new Error(`openocean: ${slug} is in the sitemap but not listed`);
     }
   }
 
