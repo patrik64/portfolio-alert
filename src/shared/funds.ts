@@ -109,7 +109,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'ardent', name: 'Ardent Venture Partners', url: 'https://ardent.vc/portfolio' },
 	{ slug: 'argon', name: 'Argon Ventures', url: 'https://www.argon.vc/companies' },
 	{ slug: 'armilar', name: 'Armilar Venture Partners', url: 'https://www.armilar.com/portfolio' },
-	{ slug: 'array', name: 'Array Ventures', url: 'https://www.array.vc/#investments' },
+	{ slug: 'array', name: 'Array Ventures', url: 'https://www.array.vc/portfolio' },
 	{ slug: 'arrington', name: 'Arrington Capital', url: 'https://www.arringtoncapital.com/portfolio/' },
 	{ slug: 'artis', name: 'ARTIS', url: 'https://www.av.co/companies' },
 	{ slug: 'ascension', name: 'Ascension', url: 'https://www.ascension.vc/portfolio' },

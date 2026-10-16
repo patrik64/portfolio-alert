@@ -28,7 +28,15 @@ async function fetchPage(url: string) {
   let lastError: unknown;
   for (let attempt = 1; attempt <= 5; attempt++) {
     try {
-      const resp = await fetch(url, { headers: { "User-Agent": UA } });
+      // the headers a browser sends with that user agent, no more: cloudflare
+      // weighs a browser's name arriving without them as a sign of a script
+      const resp = await fetch(url, {
+        headers: {
+          "User-Agent": UA,
+          Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          "Accept-Language": "en-US,en;q=0.9",
+        },
+      });
       if (!resp.ok) {
         const err = new Error(`Failed to fetch ${url}: ${resp.status}`);
         if (resp.status === 429 && attempt < 5) {

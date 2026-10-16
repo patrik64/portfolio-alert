@@ -19,10 +19,18 @@ const UA =
 // write the company's name — "Talent is distributed. Opportunity is not." — so
 // there is nothing to identify them by, and they are left out rather than
 // guessed at.
+//
+// a caption closes on a sale where there was one, "(Acquired by Mars for
+// nearly $1B in 2021.)", "(Acq. by Later in 2024)", which gives the buyer
+// and the Exited tag. squarespace renames the block's classes now and then
+// (october 2026 put "website-component-block" among them), so a block is
+// known by the one class that stays, sqs-block-image.
 
-const BLOCK = '<div class="sqs-block image-block sqs-block-image"';
+const BLOCK = /(?=<div class="sqs-block\b[^"]*\bsqs-block-image\b[^"]*")/;
 const SITE = /<a[^>]*href="(https?:\/\/[^"]+)"/;
 const CAPTION = /<div class="image-caption">([\s\S]*?)<\/div>/;
+// "(Acquired by Mars for nearly $1B in 2021.)", "(Acq by Postscript in 2024)"
+const SALE = /\(\s*acq(?:uired|\.)?\s+by\s+(.+?)(?:\s+(?:in|for)\b[^)]*)?\s*\.?\s*\)\.?\s*$/i;
 const SUFFIX = /^(co|com)$/i;
 const MAX_NAME_WORDS = 5;
 
@@ -78,7 +86,9 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		// nothing links here and nothing names it
 		if (!label) continue;
 
-		const words = clean(block.match(CAPTION)?.[1] ?? '')
+		const caption = clean(block.match(CAPTION)?.[1] ?? '');
+		const buyer = caption.match(SALE)?.[1].trim() ?? '';
+		const words = caption
 			.replace(/[,.;:]/g, ' ')
 			.split(/\s+/)
 			.filter(Boolean);
@@ -98,7 +108,11 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 
 		if (!name || seen.has(name)) continue;
 		seen.add(name);
-		companies.push({ name, category: '', url: site });
+		companies.push({
+			name,
+			category: buyer ? `Acquired by ${buyer}, Exited` : '',
+			url: site
+		});
 	}
 
 	if (companies.length === 0) {

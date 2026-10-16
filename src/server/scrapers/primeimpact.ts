@@ -10,15 +10,19 @@ const UA =
 //
 // each block is a card: the logo links to the company, the title holds its
 // name and the subtitle a sentence about it. one block carries no title — it
-// is the banner above the grid — and is skipped.
+// is the banner above the grid — and is skipped. squarespace renames the
+// classes on these blocks now and then (october 2026 made an image block a
+// "website-component-block … image-block" and its title "sqs-cdk-dynamic-text"),
+// so a block is known by its "image-block" class wherever it sits in the
+// list, and the title by its "image-title" class.
 //
 // the fund files its companies under nothing at all: no sectors, no filters,
 // no exits section, and the sentence is prose rather than a tag. so the
 // category is left empty rather than filled with a line that would only read
 // as one long tag.
 
-const BLOCK = /<div class="sqs-block image-block sqs-block-image"[^>]*id="block-[^"]+"/g;
-const NAME = /class="image-title sqs-dynamic-text"[^>]*>([\s\S]*?)<\/div>/;
+const BLOCK = /<div class="sqs-block\b[^"]*\bimage-block\b[^"]*"[^>]*id="block-[^"]+"/g;
+const NAME = /class="image-title\b[^"]*"[^>]*>([\s\S]*?)<\/div>/;
 const SITE = /href="(https?:\/\/(?!definitions\.sqspcdn|[^"]*squarespace)[^"]+)"/;
 
 const unescape = (s: string) =>

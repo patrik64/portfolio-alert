@@ -21,8 +21,12 @@ const UA =
 // that moved would read as the old one leaving and a new one arriving.
 //
 // the blocks with no link are the fund's own section art and a portrait.
+//
+// squarespace renamed the image block's classes in october 2026 ("sqs-block
+// website-component-block … sqs-block-image image-block"), so a block is
+// known by the one class that stayed, wherever it sits in the list.
 
-const BLOCK = /<div class="sqs-block image-block sqs-block-image"/g;
+const BLOCK = /<div class="sqs-block [^"]*\bsqs-block-image\b[^"]*"/g;
 const SITE = /href="(https?:\/\/(?!(?:www\.)?plgventures|[^"]*squarespace)[^"]+)"/;
 const LOGO = /<img[^>]*src="(https:\/\/images\.squarespace-cdn\.com\/[^"?]+)/;
 // what a company puts in front of its brand to get a free address

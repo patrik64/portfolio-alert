@@ -3,9 +3,30 @@ import type { ScrapedCompany } from './types';
 const BASE_URL = "https://www.htgf.de";
 const PAGE_URL = `${BASE_URL}/en/portfolio/`;
 const LIST_URL = `${BASE_URL}/wp-json/htgf/v1/mq_portfolio`;
-const BATCH_SIZE = 10;
+// the company pages are asked for one at a time, a pause between them
+const PACE_MS = 150;
+// a refusal (429) is waited out once, for as long as the site asks within reason
+const REFUSED_MS = 20_000;
+const REFUSED_MAX_MS = 30_000;
+// no company page is begun past this, leaving the run its time
+const DEADLINE_MS = 150_000;
 const UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+
+// the grid is empty until the page asks for it, and the request it makes
+// answers with every card at once (the page size raised to take the whole
+// portfolio): a card a company with its name, the year the fund came in,
+// its state, its status and its sectors — the broad one ("Agritech & Food")
+// and the focus areas under it ("Agritech", "Food") — all as ids that the
+// page's filter buttons spell out. the sectors, the state, the year and the
+// status are kept as tags, an exit or a listing with the Exited tag.
+//
+// a company's own site is written only on its page here, and five hundred
+// of those read at a run is what the site rate-limits with 429s. so the
+// pages are read newest company first, one at a time with a pause, a
+// refusal waited out once and a second one ending the reading, and none
+// begun past the deadline: a company whose page was not read links its
+// page here. the list itself must come whole.
 
 // the filter row offers Active, Exit and IPO; the company pages show a fourth
 const EXTRA_STATUSES: Record<string, string> = { semiexit: "Semi-Exit" };
@@ -17,10 +38,12 @@ const text = (s: string) =>
     .replace(/&#0?39;|&#8217;|&#x27;|&rsquo;/g, "'")
     .replace(/&quot;/g, '"')
     .replace(/&#8211;/g, "–")
-    .replace(/&#8203;|&#x200b;|\u200b/gi, "")
-    .replace(/&nbsp;|\u00a0/g, " ")
+    .replace(/&#8203;|&#x200b;|​/gi, "")
+    .replace(/&nbsp;| /g, " ")
     .replace(/\s+/g, " ")
     .trim();
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function fetchPage(url: string) {
   const resp = await fetch(url, { headers: { "User-Agent": UA } });
@@ -30,9 +53,30 @@ async function fetchPage(url: string) {
   return resp.text();
 }
 
-// the company page is the only place the company's own website appears
-async function websiteOf(link: string) {
-  const html = await fetchPage(link);
+// how long a 429 asks to be waited out, within reason
+const refusedFor = (resp: Response) => {
+  const asked = Number(resp.headers.get("retry-after"));
+  return asked > 0 ? Math.min(asked * 1000, REFUSED_MAX_MS) : REFUSED_MS;
+};
+
+// a company page's answer: its html, or the status it gave instead and, for
+// a 429, how long it asks to be left alone
+async function askPage(link: string): Promise<{ html: string; status: number; wait: number }> {
+  try {
+    const resp = await fetch(link, { headers: { "User-Agent": UA } });
+    if (!resp.ok) {
+      const wait = resp.status === 429 ? refusedFor(resp) : 0;
+      await resp.body?.cancel();
+      return { html: "", status: resp.status, wait };
+    }
+    return { html: await resp.text(), status: resp.status, wait: 0 };
+  } catch {
+    return { html: "", status: 0, wait: 0 };
+  }
+}
+
+// the company's own site, written on its page under "company info"
+function websiteIn(html: string) {
   const about = html.slice(html.indexOf('id="company-info"'));
   // a few of the links were typed with a space left on the end
   return (
@@ -43,8 +87,7 @@ async function websiteOf(link: string) {
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-  // the grid is empty until the page asks for it; this is the request it makes,
-  // with the page size raised to take the portfolio in one go
+  const started = Date.now();
   const resp = await fetch(LIST_URL, {
     method: "POST",
     headers: { "User-Agent": UA, "Content-Type": "application/json" },
@@ -67,8 +110,8 @@ export async function scrape(): Promise<ScrapedCompany[]> {
     throw new Error("htgf: the portfolio request returned no companies");
   }
 
-  // sectors, german states and statuses all reach the cards as ids, and the
-  // filter buttons are where each one is spelled out
+  // sectors, focus areas, german states and statuses all reach the cards as
+  // ids, and the filter buttons are where each one is spelled out
   const labels = new Map<string, string>();
   for (const button of (await fetchPage(PAGE_URL)).matchAll(
     /<button([^>]*)>([\s\S]{0,200}?)<\/button>/g,
@@ -97,12 +140,14 @@ export async function scrape(): Promise<ScrapedCompany[]> {
     if (!name || seen.has(name)) continue;
     seen.add(name);
 
-    // a company sits in one or more categories, each of which arrives as its
-    // own id alongside the ids of the areas above it
+    // the broad sector first, then the focus areas under it; the attribute
+    // the sectors come in has carried a year ("data-sectors25")
     const sectors: string[] = [];
-    for (const id of (card.match(/data-sector="([^"]*)"/)?.[1] ?? "").split(",")) {
-      const label = labels.get(id);
-      if (label && !sectors.includes(label)) sectors.push(label);
+    for (const attr of [/data-sectors?\d*="([^"]*)"/, /data-focus_area="([^"]*)"/]) {
+      for (const id of (card.match(attr)?.[1] ?? "").split(",")) {
+        const label = labels.get(id);
+        if (label && !sectors.includes(label)) sectors.push(label);
+      }
     }
 
     cards.push({
@@ -123,14 +168,24 @@ export async function scrape(): Promise<ScrapedCompany[]> {
     throw new Error(`htgf: read ${cards.length} of the ${listing.count} companies listed`);
   }
 
+  // the sites, as far as the deadline and the site's patience allow: the
+  // grid comes newest first, so the companies likeliest to be new are read
+  // first. the site budgets a few dozen page reads before it answers 429,
+  // and a wait buys one more at best — so the first refusal is waited out
+  // once, and a second ends the reading for the night
   const websites = new Map<string, string>();
-  for (let i = 0; i < cards.length; i += BATCH_SIZE) {
-    const batch = await Promise.all(
-      cards
-        .slice(i, i + BATCH_SIZE)
-        .map(async (card) => [card.name, card.link ? await websiteOf(card.link) : ""] as const),
-    );
-    for (const [name, website] of batch) websites.set(name, website);
+  let refusals = 0;
+  for (const card of cards) {
+    if (!card.link || Date.now() - started >= DEADLINE_MS) break;
+    if (websites.size > 0) await sleep(PACE_MS);
+    let answer = await askPage(card.link);
+    if (answer.status === 429) {
+      if (++refusals > 1) break;
+      await sleep(answer.wait);
+      answer = await askPage(card.link);
+      if (answer.status === 429) break;
+    }
+    websites.set(card.name, websiteIn(answer.html));
   }
 
   return cards.map((card) => {
@@ -148,7 +203,7 @@ export async function scrape(): Promise<ScrapedCompany[]> {
       ]
         .filter(Boolean)
         .join(", "),
-      url: websites.get(card.name) ?? "",
+      url: websites.get(card.name) || card.link || PAGE_URL,
     };
   });
 }
