@@ -26,6 +26,16 @@ interface RefreshResponse {
   settings?: { pager?: { total_rows?: number; total_pages?: number } };
 }
 
+// cloudflare's block page, answered since october 2026 to every client that is
+// not a browser — curl and node alike, from a laptop as from the deployment,
+// whatever the user agent or headers — on every path but robots.txt and the
+// news feed; the rest api, the sitemaps and the company feeds included. there
+// is no door left that an honest request can use
+const BLOCKED = /Sorry, you have been blocked|Attention Required! \| Cloudflare/;
+
+// the firewall's answer, which asking again cannot change
+class Blocked extends Error {}
+
 // the grid is a FacetWP listing in auto-detect mode: pages are fetched by
 // POSTing the refresh action to the listing page itself, which answers with
 // the full page render plus the pager state
@@ -52,16 +62,24 @@ async function fetchRefreshPage(paged: number): Promise<RefreshResponse> {
         headers: { "User-Agent": UA, "Content-Type": "application/json" },
         body,
       });
+      const raw = await resp.text();
       if (!resp.ok) {
+        // the dashboard should say what it is rather than show a bare status
+        if (resp.status === 403 && BLOCKED.test(raw)) {
+          throw new Blocked(
+            "balderton: cloudflare blocks the request outright (\"Sorry, you have been blocked\") — " +
+              "the site turns away every client but a browser, a laptop's too",
+          );
+        }
         throw new Error(`Failed to fetch ${PAGE_URL} page ${paged}: ${resp.status}`);
       }
-      const raw = await resp.text();
       const start = raw.indexOf('{"facets');
       if (start < 0) {
         throw new Error(`balderton: page ${paged} did not answer with the listing payload`);
       }
       return JSON.parse(raw.slice(start));
     } catch (err) {
+      if (err instanceof Blocked) throw err;
       lastError = err;
       if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, 300 * attempt));
     }

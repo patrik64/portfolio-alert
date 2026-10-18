@@ -11,7 +11,9 @@ const UA =
 // logos read; the three logos that link nowhere are kept by their files.
 // an address not listed here still imports, named after itself the way
 // the other domain-named scrapers do it, until it is added; an unlinked
-// file not listed is left out. nothing marks an exit.
+// file not listed is left out. nothing marks an exit. a block is known by
+// its sqs-block-image class alone, the rest of its classes having changed
+// under it once already.
 const NAMES: Record<string, string> = {
 	'brandzooka.com': 'Brandzooka',
 	'constellationlabs.io': 'Constellation',
@@ -43,7 +45,9 @@ const IMAGES: Record<string, string> = {
 	'Outpost Design white': 'Outpost'
 };
 
-const BLOCK = /(?=<div class="sqs-block image-block sqs-block-image)/;
+// squarespace renames the block's other classes now and then (october 2026
+// made it "website-component-block …"); sqs-block-image is the one that stays
+const BLOCK = /(?=<div class="sqs-block\b[^"]*\bsqs-block-image\b[^"]*")/;
 const LINK = /<a\b[^>]*\bclass="[^"]*\bsqs-block-image-link\b[^"]*"[^>]*\bhref="([^"]*)"|<a\b[^>]*\bhref="([^"]*)"[^>]*\bclass="[^"]*\bsqs-block-image-link\b/;
 const IMAGE = /\bdata-src="([^"]*)"/;
 const STEALTH = /^stealth\b/i;

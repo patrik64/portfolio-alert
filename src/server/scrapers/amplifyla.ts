@@ -19,6 +19,12 @@ const UA =
 // with ("Altitude AI - Amplify"). a page that will not load leaves the
 // logo's alt text, cleaned, and a company with neither fails the run. an
 // exited logo whose alt text says "Acquired" keeps that as a tag.
+//
+// in october 2026 the site went dark: the domain still points at wp engine,
+// which answers with its own certificate and "site not configured", the
+// domain's registration touched the day before — a move in progress, it
+// seems, the fund itself being active. a fetch that fails before any answer
+// says why, rather than "fetch failed", and the run fails as before.
 
 const ITEM = /<article\b[^>]*\bid="post-(\d+)"[^>]*\bclass="([^"]*\belementor-grid-item\b[^"]*)"[^>]*>([\s\S]*?)<\/article>/g;
 const LINK = /<a\b[^>]*\bhref="([^"]*)"/;
@@ -70,7 +76,19 @@ async function nameOf(post: string): Promise<string> {
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	let resp: Response;
+	try {
+		resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	} catch (err) {
+		// the cause behind node's bare "fetch failed": a certificate for another
+		// host, a name that no longer resolves, a connection refused
+		const cause = (err as { cause?: { code?: string; message?: string } }).cause;
+		const why = [cause?.code, cause?.message ?? (err instanceof Error ? err.message : String(err))]
+			.filter(Boolean)
+			.join(': ')
+			.slice(0, 160);
+		throw new Error(`amplifyla: ${PAGE_URL} did not answer — ${why}`);
+	}
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}

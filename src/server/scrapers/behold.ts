@@ -8,6 +8,12 @@ const UA =
 // under each one, so the names are kept here, keyed on the company's own
 // domain (or its logo file, for the two that aren't linked). checked against
 // each company's own site; deriveName below covers anything added since.
+//
+// squarespace renames the classes on its image blocks now and then (october
+// 2026 added "website-component-block" and reordered the rest), so a block
+// is found by the one class that stays, sqs-block-image. the fund's own
+// badge sits in the grid's last block, linked nowhere and captioned as no
+// portfolio company, and is passed over by that.
 const NAMES: Record<string, string> = {
   "5fortress.com": "5 Fortress",
   "aurorapunks.com": "Aurora Punks",
@@ -23,7 +29,9 @@ const NAMES: Record<string, string> = {
   "lurkit.com": "Lurkit",
   "oddiko.com": "Oddiko",
   "porcelainfortress.com": "Porcelain Fortress",
+  // puzzlr became pzlr, and moved its site with the name
   "puzzlr.co": "Puzzlr",
+  "pzlr.com": "Pzlr",
   "redroverinteractive.com": "Red Rover Interactive",
   "rorointeractive.com": "Roro",
   "sevenstars.games": "Seven Stars",
@@ -88,12 +96,15 @@ export async function scrape(): Promise<ScrapedCompany[]> {
   const companies: ScrapedCompany[] = [];
   const seen = new Set<string>();
 
-  for (const block of grid.split('<div class="sqs-block image-block sqs-block-image"').slice(1)) {
+  for (const block of grid.split(/<div class="sqs-block [^"]*\bsqs-block-image\b[^"]*"/).slice(1)) {
     const src = block.match(/data-image="([^"]+)"/)?.[1] ?? "";
     if (!src) continue;
     // the two companies behold doesn't link to still belong in the list
     const url = block.match(/class="\s*sqs-block-image-link[\s\S]{0,200}?href="(https?:\/\/[^"]+)"/)?.[1] ?? "";
     const alt = decode(block.match(/alt="([^"]*)"/)?.[1] ?? "");
+    // a logo neither linked, nor captioned as a portfolio company, nor known
+    // by its file is not a company's — the fund's own badge, say
+    if (!url && !/portfolio company\s+\S/i.test(alt) && !NAMES[fileOf(src)]) continue;
 
     const host = hostOf(url);
     const name = NAMES[host || fileOf(src)] ?? deriveName(alt, src, host);
