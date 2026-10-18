@@ -74,10 +74,11 @@ const FRESH_SHARE = 0.8;
 // the API only lists funds that have been fetched at least once, so a fund
 // newly added to funds.ts would otherwise never get its first fetch
 const registry = readFileSync(new URL('../src/shared/funds.ts', import.meta.url), 'utf8');
-// a name holding an apostrophe is written in double quotes, so both kinds count
-let funds = [...registry.matchAll(/slug: '([^']+)',\s*name: (?:'([^']*)'|"([^"]*)")/gs)].map(
-	(m) => ({ slug: m[1], name: m[2] ?? m[3] })
-);
+// a name holding an apostrophe is written in double quotes, so both kinds
+// count; an entry marked local names a fund fetched from a laptop only
+let funds = [
+	...registry.matchAll(/\{[^{}]*\bslug: '([^']+)',\s*name: (?:'([^']*)'|"([^"]*)")[^{}]*\}/gs)
+].map((m) => ({ slug: m[1], name: m[2] ?? m[3], local: /\blocal: true\b/.test(m[0]) }));
 if (funds.length === 0) {
 	console.error('no funds parsed from src/shared/funds.ts');
 	process.exit(1);
@@ -89,6 +90,14 @@ if (funds.length !== declared) {
 	console.error(`parsed ${funds.length} funds but the registry declares ${declared}`);
 	process.exit(1);
 }
+
+// a fund marked local is fetched from a laptop only: its site refuses the
+// deployment's addresses, and a night of asking would only record the
+// refusal. a full run against the deployment leaves such funds out; naming
+// them, or running against a local server, asks for them like any other
+const LOCAL_BASE = /^https?:\/\/(?:localhost|127\.0\.0\.1|\[::1\])(?::\d+)?(?:\/|$)/.test(BASE_URL);
+const leftOut = !only && !LOCAL_BASE ? funds.filter((f) => f.local) : [];
+if (leftOut.length) funds = funds.filter((f) => !f.local);
 
 // how many funds the app says were refreshed within the last `hours`
 async function freshlyFetched(hours) {
@@ -135,7 +144,13 @@ if (!only && !FORCE && !DRY_RUN && MIN_GAP_HOURS > 0) {
 }
 
 if (only) funds = funds.filter((f) => only.includes(f.slug));
-console.log(`${DRY_RUN ? 'probing' : 'refreshing'} ${funds.length} funds against ${BASE_URL}\n`);
+console.log(`${DRY_RUN ? 'probing' : 'refreshing'} ${funds.length} funds against ${BASE_URL}`);
+if (leftOut.length) {
+	console.log(
+		`leaving out ${leftOut.length} fetched from a laptop only: ${leftOut.map((f) => f.slug).join(', ')}`
+	);
+}
+console.log('');
 
 const results = [];
 const queue = [...funds];
@@ -217,7 +232,10 @@ if (process.env.GITHUB_STEP_SUMMARY) {
 		...results
 			.filter((r) => r.added > 0)
 			.map((r) => `- **${r.slug}**: ${r.added} new`),
-		...failed.map((f) => `- ❌ **${f.slug}**: ${f.error}`)
+		...failed.map((f) => `- ❌ **${f.slug}**: ${f.error}`),
+		...(leftOut.length
+			? [`- left out, fetched from a laptop only: ${leftOut.map((f) => f.slug).join(', ')}`]
+			: [])
 	];
 	appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join('\n') + '\n');
 }

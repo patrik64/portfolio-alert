@@ -139,6 +139,14 @@
 							+{card.fund.newCount} new
 						</span>
 					{/if}
+					{#if card.local}
+						<span
+							class="rounded-full bg-gray-200 px-2 py-0.5 text-xs font-semibold text-gray-600"
+							title="its site refuses the deployment's addresses, so the nightly leaves it out and it is fetched from a laptop"
+						>
+							local only
+						</span>
+					{/if}
 				</div>
 				<div class="mt-1 flex items-center justify-between gap-2 text-xs text-gray-500">
 					<span>

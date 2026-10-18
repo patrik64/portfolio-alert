@@ -9,6 +9,10 @@ export interface FundInfo {
 	slug: string;
 	name: string;
 	url: string;
+	// fetched from a laptop only: the site refuses the deployment's shared
+	// addresses outright (a firewall scoring them as bots), so the nightly
+	// leaves the fund out rather than record the refusal every night
+	local?: true;
 }
 
 export const FUNDS: FundInfo[] = [
@@ -892,7 +896,7 @@ export const FUNDS: FundInfo[] = [
 		name: 'Sanofi Ventures',
 		url: 'https://www.sanofiventures.com/portfolio/'
 	},
-	{ slug: 'sante', name: 'Santé Ventures', url: 'https://sante.com/portfolio' },
+	{ slug: 'sante', name: 'Santé Ventures', url: 'https://sante.com/portfolio', local: true },
 	{ slug: 'sapphire', name: 'Sapphire Ventures', url: 'https://sapphireventures.com/companies/' },
 	{ slug: 'satgana', name: 'Satgana', url: 'https://www.satgana.com/portfolio' },
 	{ slug: 'scalecapital', name: 'Scale Capital', url: 'https://www.scalecapital.com/portfolio' },
@@ -989,7 +993,7 @@ export const FUNDS: FundInfo[] = [
 		name: 'Streamlined Ventures',
 		url: 'https://www.streamlined.vc/companies'
 	},
-	{ slug: 'stripes', name: 'Stripes', url: 'https://www.stripes.co/investments#sort=all' },
+	{ slug: 'stripes', name: 'Stripes', url: 'https://www.stripes.co/investments#sort=all', local: true },
 	{ slug: 'strive', name: 'STRIVE', url: 'https://strive.vc/en/portfolio' },
 	{ slug: 'strongvc', name: 'Strong Ventures', url: 'https://strongvc.notion.site/' },
 	{ slug: 'struck', name: 'Struck Capital', url: 'https://struckcapital.com/portfolio/' },
