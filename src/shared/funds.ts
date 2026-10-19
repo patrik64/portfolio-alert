@@ -1,4 +1,4 @@
-// The 1004 tracked funds, in case-insensitive alphabetical order by name — the
+// The 1007 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -118,6 +118,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'artis', name: 'ARTIS', url: 'https://www.av.co/companies' },
 	{ slug: 'ascension', name: 'Ascension', url: 'https://www.ascension.vc/portfolio' },
 	{ slug: 'astanor', name: 'Astanor', url: 'https://astanor.com/portfolio/' },
+	{ slug: 'asymmetric', name: 'Asymmetric Capital Partners', url: 'https://www.acp.vc/companies' },
 	{ slug: 'asymmetry', name: 'Asymmetry VC', url: 'https://asymmetry.vc/portfolio/' },
 	{ slug: 'atone', name: 'At One Ventures', url: 'https://www.atoneventures.com/portfolio' },
 	{ slug: 'atento', name: 'Atento Capital', url: 'https://www.atentocapital.com/portfolio' },
@@ -268,6 +269,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'congruent', name: 'Congruent Ventures', url: 'https://www.congruentvc.com/portfolio' },
 	{ slug: 'connect', name: 'Connect Ventures', url: 'https://www.connectventures.co/companies' },
 	{ slug: 'contour', name: 'Contour Venture Partners', url: 'https://www.contourventures.com/portfolio/' },
+	{ slug: 'converge', name: 'Converge', url: 'https://converge.vc/portfolio/' },
 	{ slug: 'coral', name: 'Coral Capital', url: 'https://www.coralcap.co/portfolio/?lang=en' },
 	{ slug: 'corevc', name: 'Core VC', url: 'https://www.corevc.com/portfolio' },
 	{ slug: 'correlation', name: 'Correlation Ventures', url: 'https://correlationvc.com/companies/' },
@@ -467,6 +469,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'gradient', name: 'Gradient Ventures', url: 'https://www.gradient.com/portfolio/' },
 	{ slug: 'graniteasia', name: 'Granite Asia', url: 'https://www.graniteasia.com/portfolio' },
 	{ slug: 'graph', name: 'Graph Ventures', url: 'https://www.graphventures.com/#companies' },
+	{
+		slug: 'greathill',
+		name: 'Great Hill Partners',
+		url: 'https://www.greathillpartners.com/companies'
+	},
 	{ slug: 'greatoaks', name: 'Great Oaks Venture Capital', url: 'https://www.greatoaksvc.com/portfolio' },
 	{ slug: 'greatpoint', name: 'GreatPoint Ventures', url: 'https://www.gpv.com/companies' },
 	{ slug: 'greenegg', name: 'Green Egg Ventures', url: 'https://greenegg.vc/#portfolio' },

@@ -95,6 +95,7 @@ import { scrape as arrington } from './arrington';
 import { scrape as artis } from './artis';
 import { scrape as ascension } from './ascension';
 import { scrape as astanor } from './astanor';
+import { scrape as asymmetric } from './asymmetric';
 import { scrape as asymmetry } from './asymmetry';
 import { scrape as atone } from './atone';
 import { scrape as atento } from './atento';
@@ -233,6 +234,7 @@ import { scrape as bowery } from './bowery';
 import { scrape as boxgroup } from './boxgroup';
 import { scrape as connect } from './connect';
 import { scrape as contour } from './contour';
+import { scrape as converge } from './converge';
 import { scrape as coral } from './coral';
 import { scrape as corevc } from './corevc';
 import { scrape as correlation } from './correlation';
@@ -420,6 +422,7 @@ import { scrape as gorilla } from './gorilla';
 import { scrape as gradient } from './gradient';
 import { scrape as graniteasia } from './graniteasia';
 import { scrape as graph } from './graph';
+import { scrape as greathill } from './greathill';
 import { scrape as greatoaks } from './greatoaks';
 import { scrape as greatpoint } from './greatpoint';
 import { scrape as greenegg } from './greenegg';
@@ -1100,6 +1103,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	artis,
 	ascension,
 	astanor,
+	asymmetric,
 	asymmetry,
 	atone,
 	atento,
@@ -1238,6 +1242,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	boxgroup,
 	connect,
 	contour,
+	converge,
 	coral,
 	corevc,
 	correlation,
@@ -1425,6 +1430,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	gradient,
 	graniteasia,
 	graph,
+	greathill,
 	greatoaks,
 	greatpoint,
 	greenegg,
