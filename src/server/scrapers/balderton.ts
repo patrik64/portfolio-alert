@@ -1,8 +1,8 @@
-import type { ScrapedCompany } from './types';
+import { request } from "node:https";
+import type { ScrapedCompany } from "./types";
 
 const PAGE_URL = "https://www.balderton.com/companies/";
-const UA =
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+const UA = "portfolio-alert/1.0 (+https://portfolio-alert.vercel.app)";
 
 const NAMED: Record<string, string> = { amp: "&", quot: '"', apos: "'", lt: "<", gt: ">", nbsp: " " };
 
@@ -15,8 +15,8 @@ const decode = (s: string) =>
 
 const text = (s: string) =>
   decode(s.replace(/<[^>]+>/g, " "))
-    .replace(/\u200b/g, "")
-    .replace(/\u00a0/g, " ")
+    .replace(/​/g, "")
+    .replace(/ /g, " ")
     .replace(/\s+/g, " ")
     .trim();
 
@@ -26,15 +26,48 @@ interface RefreshResponse {
   settings?: { pager?: { total_rows?: number; total_pages?: number } };
 }
 
-// cloudflare's block page, answered since october 2026 to every client that is
-// not a browser — curl and node alike, from a laptop as from the deployment,
-// whatever the user agent or headers — on every path but robots.txt and the
-// news feed; the rest api, the sitemaps and the company feeds included. there
-// is no door left that an honest request can use
+interface Answer {
+  status: number;
+  body: string;
+}
+
+// cloudflare's block page, answered since october 2026 — from a laptop as from
+// the deployment, on every path but robots.txt and the news feed — to every
+// request that claims to be a browser without being one, and to fetch's
+// requests whatever they claim: undici's signature, it seems. a client that
+// says what it is, over http/1.1 through node's https module, is let through,
+// so that is how the listing is asked for
 const BLOCKED = /Sorry, you have been blocked|Attention Required! \| Cloudflare/;
 
 // the firewall's answer, which asking again cannot change
 class Blocked extends Error {}
+
+function post(url: string, body: string): Promise<Answer> {
+  return new Promise((resolve, reject) => {
+    const req = request(
+      url,
+      {
+        method: "POST",
+        headers: {
+          "User-Agent": UA,
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(body),
+        },
+      },
+      (res) => {
+        const chunks: Buffer[] = [];
+        res.on("data", (chunk: Buffer) => chunks.push(chunk));
+        res.on("end", () =>
+          resolve({ status: res.statusCode ?? 0, body: Buffer.concat(chunks).toString("utf8") }),
+        );
+        res.on("error", reject);
+      },
+    );
+    req.setTimeout(30_000, () => req.destroy(new Error(`balderton: ${url} did not answer in 30 s`)));
+    req.on("error", reject);
+    req.end(body);
+  });
+}
 
 // the grid is a FacetWP listing in auto-detect mode: pages are fetched by
 // POSTing the refresh action to the listing page itself, which answers with
@@ -57,21 +90,15 @@ async function fetchRefreshPage(paged: number): Promise<RefreshResponse> {
   let lastError: unknown;
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
-      const resp = await fetch(PAGE_URL, {
-        method: "POST",
-        headers: { "User-Agent": UA, "Content-Type": "application/json" },
-        body,
-      });
-      const raw = await resp.text();
-      if (!resp.ok) {
+      const { status, body: raw } = await post(PAGE_URL, body);
+      if (status !== 200) {
         // the dashboard should say what it is rather than show a bare status
-        if (resp.status === 403 && BLOCKED.test(raw)) {
+        if (status === 403 && BLOCKED.test(raw)) {
           throw new Blocked(
-            "balderton: cloudflare blocks the request outright (\"Sorry, you have been blocked\") — " +
-              "the site turns away every client but a browser, a laptop's too",
+            'balderton: cloudflare blocks the request outright ("Sorry, you have been blocked")',
           );
         }
-        throw new Error(`Failed to fetch ${PAGE_URL} page ${paged}: ${resp.status}`);
+        throw new Error(`Failed to fetch ${PAGE_URL} page ${paged}: ${status}`);
       }
       const start = raw.indexOf('{"facets');
       if (start < 0) {
@@ -121,7 +148,8 @@ export async function scrape(): Promise<ScrapedCompany[]> {
       if (!name || byName.has(name)) continue;
 
       const sectorSlug = classes.match(/\bsector-([a-z0-9-]+)/)?.[1] ?? "";
-      const sector = labels.get(sectorSlug) ?? "";
+      // "Other" is the page's catch-all, not a sector
+      const sector = labels.get(sectorSlug)?.replace(/^Other$/, "") ?? "";
       const location = text(card.match(/class="label-M[^"]*"[^>]*>([\s\S]*?)<\/span>/)?.[1] ?? "");
       // the wrapper also carries WordPress's own status-publish class, so the
       // exit marker is matched by its exact name

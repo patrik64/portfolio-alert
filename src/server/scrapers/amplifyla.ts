@@ -15,16 +15,18 @@ const UA =
 // "Fintech") and which are kept as tags. no company is named in words on
 // the grid, the logos' alt text being loose ("LOGO BITIUM", "Acquired logo
 // Clover") or empty, so each company's page on the fund's site, reached by
-// its post's id, is fetched one at a time for the name its title opens
-// with ("Altitude AI - Amplify"). a page that will not load leaves the
-// logo's alt text, cleaned, and a company with neither fails the run. an
-// exited logo whose alt text says "Acquired" keeps that as a tag.
+// its post's id (?p=<id>, which the site sends on to the post's own address,
+// a slug for most and the id for some), is fetched one at a time for the
+// name its title opens with ("Altitude AI - Amplify"). a page that will not
+// load leaves the logo's alt text, cleaned, and a company with neither fails
+// the run. an exited logo whose alt text says "Acquired" keeps that as a tag.
 //
-// in october 2026 the site went dark: the domain still points at wp engine,
-// which answers with its own certificate and "site not configured", the
-// domain's registration touched the day before — a move in progress, it
-// seems, the fund itself being active. a fetch that fails before any answer
-// says why, rather than "fetch failed", and the run fails as before.
+// in october 2026 the site went dark for three days: the domain pointed at
+// wp engine, which answered with its own certificate and "site not
+// configured" — a move, the site back on the 19th and slower than before, a
+// second and more for each answer, redirects included, which puts the run
+// near two minutes from the deployment. a fetch that fails before any
+// answer says why, rather than "fetch failed", and the run fails as before.
 
 const ITEM = /<article\b[^>]*\bid="post-(\d+)"[^>]*\bclass="([^"]*\belementor-grid-item\b[^"]*)"[^>]*>([\s\S]*?)<\/article>/g;
 const LINK = /<a\b[^>]*\bhref="([^"]*)"/;
