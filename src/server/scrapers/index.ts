@@ -846,6 +846,7 @@ import { scrape as squareone } from './squareone';
 import { scrape as stageone } from './stageone';
 import { scrape as standardindustries } from './standardindustries';
 import { scrape as stripes } from './stripes';
+import { scrape as spectrum } from './spectrum';
 import { scrape as spice } from './spice';
 import { scrape as spintop } from './spintop';
 import { scrape as springtime } from './springtime';
@@ -859,6 +860,7 @@ import { scrape as strive } from './strive';
 import { scrape as strongvc } from './strongvc';
 import { scrape as struck } from './struck';
 import { scrape as sugar } from './sugar';
+import { scrape as summit } from './summit';
 import { scrape as superangel } from './superangel';
 import { scrape as superhero } from './superhero';
 import { scrape as supermoon } from './supermoon';
@@ -967,6 +969,7 @@ import { scrape as visibleventures } from './visibleventures';
 import { scrape as visionaries } from './visionaries';
 import { scrape as vitosha } from './vitosha';
 import { scrape as voimaventures } from './voimaventures';
+import { scrape as volition } from './volition';
 import { scrape as voloearth } from './voloearth';
 import { scrape as volta } from './volta';
 import { scrape as voyagervc } from './voyagervc';
@@ -1848,6 +1851,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	stageone,
 	standardindustries,
 	stripes,
+	spectrum,
 	spice,
 	spintop,
 	springtime,
@@ -1861,6 +1865,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	strongvc,
 	struck,
 	sugar,
+	summit,
 	superangel,
 	superhero,
 	supermoon,
@@ -1970,6 +1975,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	visionaries,
 	vitosha,
 	voimaventures,
+	volition,
 	voloearth,
 	volta,
 	voyagervc,

@@ -1,4 +1,4 @@
-// The 1001 tracked funds, in case-insensitive alphabetical order by name — the
+// The 1004 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -961,6 +961,7 @@ export const FUNDS: FundInfo[] = [
 	},
 	{ slug: 'spacecadet', name: 'Space Cadet', url: 'https://spacecadet.ventures/portfolio' },
 	{ slug: 'spark', name: 'Spark Capital', url: 'https://www.sparkcapital.com/companies' },
+	{ slug: 'spectrum', name: 'Spectrum Equity', url: 'https://www.spectrumequity.com/portfolio/' },
 	{ slug: 'spice', name: 'Spice Capital', url: 'https://www.spicecapital.xyz/portfolio' },
 	{ slug: 'spintop', name: 'Spintop Ventures', url: 'https://spintopventures.com/portfolio/' },
 	{
@@ -998,6 +999,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'strongvc', name: 'Strong Ventures', url: 'https://strongvc.notion.site/' },
 	{ slug: 'struck', name: 'Struck Capital', url: 'https://struckcapital.com/portfolio/' },
 	{ slug: 'sugar', name: 'Sugar Capital', url: 'https://www.sugarcap.com/' },
+	{ slug: 'summit', name: 'Summit Partners', url: 'https://www.summitpartners.com/portfolio' },
 	{ slug: 'superangel', name: 'SuperAngel', url: 'https://www.superangel.vc/#portfolio' },
 	{ slug: 'superhero', name: 'Superhero', url: 'https://superherocapital.com/portfolio/' },
 	{
@@ -1198,6 +1200,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'visionaries', name: 'Visionaries', url: 'https://visionaries.vc/#portfolio' },
 	{ slug: 'vitosha', name: 'Vitosha Ventures', url: 'https://vitosha.vc/investment-projects/' },
 	{ slug: 'voimaventures', name: 'Voima Ventures', url: 'https://voimaventures.com/portfolio/' },
+	{ slug: 'volition', name: 'Volition Capital', url: 'https://www.volitioncapital.com/portfolio/' },
 	{ slug: 'voloearth', name: 'VoLo Earth', url: 'https://www.voloearth.com/portfolio' },
 	{ slug: 'volta', name: 'Volta Ventures', url: 'https://volta.ventures/#portfolio' },
 	{ slug: 'voyagervc', name: 'Voyager Ventures', url: 'https://www.voyagervc.com/portfolio' },
