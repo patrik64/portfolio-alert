@@ -6,8 +6,16 @@ const PAGE_URL = `${BASE_URL}/en/portfolio/`;
 const FEED_URL = `${BASE_URL}/feed/?post_type=portfolio&lang=en`;
 const SITEMAP_URL = `${BASE_URL}/portfolio-sitemap.xml`;
 const MAX_PAGES = 100;
-// the feed's pages are asked for one at a time, a pause between them
-const PACE_MS = 150;
+// the feed's pages are asked for one at a time, a pause between them: the
+// host answers a client's requests one at a time whatever it is sent, so
+// asking for several at once gains nothing, and makes a page past the end
+// twenty-five seconds coming instead of one
+const PACE_MS = 500;
+// the thirty requests ran past the night's four minutes on 2026-10-20, a run
+// that takes half a minute at most on other nights: an answer this long
+// coming is given up on and asked for once more, so that a single hung
+// request cannot run the night's budget out
+const ANSWER_MS = 30_000;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
@@ -34,6 +42,11 @@ const EXITS = 'exits-en';
 const UNSAID = /^(?:-|other|others|all|n\/a)$/i;
 const STEALTH = /^stealth\b/i;
 
+interface Answer {
+	status: number;
+	body: string;
+}
+
 const unescape = (s: string) =>
 	s
 		.replace(/&#0?39;|&apos;|&#8217;|&#x27;/g, "'")
@@ -58,32 +71,53 @@ const pictureOf = (src: string) => (src.split('/').pop() ?? '').replace(/-\d+x\d
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-async function fetchText(url: string): Promise<string> {
-	const resp = await fetch(url, { headers: { 'User-Agent': UA } });
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${url}: ${resp.status}`);
+async function get(url: string): Promise<Answer> {
+	for (let attempt = 0; ; attempt++) {
+		try {
+			const resp = await fetch(url, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(ANSWER_MS) });
+			return { status: resp.status, body: await resp.text() };
+		} catch (e) {
+			if (!(e instanceof Error && e.name === 'TimeoutError')) throw e;
+			if (attempt > 0) {
+				throw new Error(`portugalventures: ${url} did not answer in ${ANSWER_MS / 1000} s, asked twice`);
+			}
+		}
 	}
-	return resp.text();
 }
 
-// every entry's title by its address's last part, the feed read to its end
+async function fetchText(url: string): Promise<string> {
+	const answer = await get(url);
+	if (answer.status !== 200) {
+		throw new Error(`Failed to fetch ${url}: ${answer.status}`);
+	}
+	return answer.body;
+}
+
+// a page of the feed's items, or nothing past its last page
+async function feedPage(page: number): Promise<RegExpMatchArray[] | undefined> {
+	const url = `${FEED_URL}&paged=${page}`;
+	const answer = await get(url);
+	// the feed answers a page past its last with "not found"
+	if (answer.status === 404 && page > 1) return undefined;
+	if (answer.status !== 200) {
+		throw new Error(`Failed to fetch ${url}: ${answer.status}`);
+	}
+	const items = [...answer.body.matchAll(ITEM)];
+	return items.length > 0 ? items : undefined;
+}
+
+// every entry's title by its address's last part, the feed read to its end:
+// a page shorter than the first is its last, or else the one past it is empty
 async function titles(): Promise<Map<string, string>> {
 	const bySlug = new Map<string, string>();
+	let pageSize = 0;
 	for (let page = 1; page <= MAX_PAGES; page++) {
 		if (page > 1) await wait(PACE_MS);
-		const url: string = `${FEED_URL}&paged=${page}`;
-		const resp: Response = await fetch(url, { headers: { 'User-Agent': UA } });
-		// the feed answers a page past its last with "not found"
-		if (resp.status === 404 && page > 1) {
-			await resp.body?.cancel();
-			return bySlug;
-		}
-		if (!resp.ok) {
-			throw new Error(`Failed to fetch ${url}: ${resp.status}`);
-		}
-		const items = [...(await resp.text()).matchAll(ITEM)];
-		if (items.length === 0) return bySlug;
+		const items = await feedPage(page);
+		if (!items) return bySlug;
 		for (const [, title, link] of items) bySlug.set(slugOf(clean(link)), clean(title));
+		if (page === 1) pageSize = items.length;
+		else if (items.length < pageSize) return bySlug;
 	}
 	throw new Error(`portugalventures: the feed ran past ${MAX_PAGES} pages`);
 }

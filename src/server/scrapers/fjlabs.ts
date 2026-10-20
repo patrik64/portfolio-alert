@@ -1,12 +1,20 @@
+import { request } from 'node:https';
 import type { ScrapedCompany } from './types';
 
 const PAGE_URL = 'https://www.fjlabs.com/portfolio';
 const MAX_PAGES = 60;
+// the pages are asked for one at a time, a pause between them
+const PACE_MS = 250;
+// the pauses before a refused page is asked for again
+const RETRY_MS = [2_000, 8_000];
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
-// cloudflare in front of the site turned the nightly run away with a 403 on
-// its first night; a refused page is asked for once more, saying plainly who
-// is asking, as for helios and stray dog
+// cloudflare in front of the site turns the nightly run away with a 403 now
+// and then: on its first night, and on 2026-10-20 at the third page after two
+// had come through, when asking once more under the app's own name did not
+// help. balderton's cloudflare refused fetch whatever name it gave and let
+// the app's own name through node's https module, so a refused page is now
+// asked for again that way, after a pause, and once more after a longer one
 const OWN_UA = 'portfolio-alert/1.0 (+https://portfolio-alert.vercel.app)';
 
 // webflow: the portfolio is a collection a hundred to a page, walked through
@@ -29,6 +37,11 @@ const MARKETPLACE = field('Marketplace');
 const NEXT = /href="(\?[a-z0-9_]+_page=\d+)"[^>]*class="[^"]*w-pagination-next/;
 const STEALTH = /^stealth\b/i;
 
+interface Answer {
+	status: number;
+	body: string;
+}
+
 const unescape = (s: string) =>
 	s
 		.replace(/&#0?39;|&apos;|&#8217;|&#x27;/g, "'")
@@ -42,18 +55,48 @@ const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g
 // the category is comma-joined, so a label holding a comma would read as two
 const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// the page through node's https module, under the app's own name
+function getHonestly(url: string): Promise<Answer> {
+	return new Promise((resolve, reject) => {
+		const req = request(url, { headers: { 'User-Agent': OWN_UA } }, (res) => {
+			const chunks: Buffer[] = [];
+			res.on('data', (chunk: Buffer) => chunks.push(chunk));
+			res.on('end', () =>
+				resolve({ status: res.statusCode ?? 0, body: Buffer.concat(chunks).toString('utf8') })
+			);
+			res.on('error', reject);
+		});
+		req.setTimeout(30_000, () => req.destroy(new Error(`fjlabs: ${url} did not answer in 30 s`)));
+		req.on('error', reject);
+		req.end();
+	});
+}
+
+async function fetchPage(url: string): Promise<string> {
+	const resp = await fetch(url, { headers: { 'User-Agent': UA } });
+	if (resp.ok) return resp.text();
+	await resp.body?.cancel();
+	let status = resp.status;
+	for (const ms of RETRY_MS) {
+		if (status !== 403) break;
+		await wait(ms);
+		const answer = await getHonestly(url);
+		if (answer.status === 200) return answer.body;
+		status = answer.status;
+	}
+	throw new Error(`Failed to fetch ${url}: ${status}`);
+}
+
 export async function scrape(): Promise<ScrapedCompany[]> {
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
 
 	let url = PAGE_URL;
 	for (let page = 0; page < MAX_PAGES && url; page++) {
-		let resp = await fetch(url, { headers: { 'User-Agent': UA } });
-		if (resp.status === 403) resp = await fetch(url, { headers: { 'User-Agent': OWN_UA } });
-		if (!resp.ok) {
-			throw new Error(`Failed to fetch ${url}: ${resp.status}`);
-		}
-		const html = await resp.text();
+		if (page > 0) await wait(PACE_MS);
+		const html = await fetchPage(url);
 
 		for (const item of html.split(ITEM).slice(1)) {
 			const name = clean(item.match(NAME)?.[1] ?? '');
