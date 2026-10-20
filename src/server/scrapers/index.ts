@@ -850,6 +850,7 @@ import { scrape as stageone } from './stageone';
 import { scrape as standardindustries } from './standardindustries';
 import { scrape as stripes } from './stripes';
 import { scrape as spectrum } from './spectrum';
+import { scrape as speedinvest } from './speedinvest';
 import { scrape as spice } from './spice';
 import { scrape as spintop } from './spintop';
 import { scrape as springtime } from './springtime';
@@ -1858,6 +1859,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	standardindustries,
 	stripes,
 	spectrum,
+	speedinvest,
 	spice,
 	spintop,
 	springtime,

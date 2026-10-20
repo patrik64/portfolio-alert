@@ -1,6 +1,6 @@
 # portfolio-alert
 
-Up-to-date information about companies backed by 1007 venture capital and private
+Up-to-date information about companies backed by 1008 venture capital and private
 equity funds. Scrapes each fund's public portfolio page, stores companies in
 Supabase (postgres), and highlights newcomers — companies that appeared in a
 fund's portfolio since the last fetch.
@@ -117,7 +117,7 @@ local experiments. Tables are created automatically on first use.
 ```sh
 pnpm dev             # start the dev server
 pnpm check           # typecheck (svelte-check)
-pnpm test-scrapers   # smoke-test all 1007 scrapers outside the app
+pnpm test-scrapers   # smoke-test all 1008 scrapers outside the app
 pnpm test-scrapers townhall sequoia   # ...or just some of them
 pnpm build           # production build
 ```
@@ -162,7 +162,7 @@ nightly leaves the fund out, the dashboard says so, and it is refreshed from a
 laptop against a local dev server now and then:
 
 ```sh
-BASE_URL=http://localhost:5173 pnpm fetch-all --only=sante,stripes
+BASE_URL=http://localhost:5173 pnpm fetch-all --only=sante,speedinvest,stripes
 pnpm fetch-all --only=stripes --dry-run   # the scrape alone, from production,
                                           # to see whether the site relented
 ```
