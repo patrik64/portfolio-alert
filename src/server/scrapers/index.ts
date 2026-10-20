@@ -663,6 +663,7 @@ import { scrape as oceanazul } from './oceanazul';
 import { scrape as octopus } from './octopus';
 import { scrape as offline } from './offline';
 import { scrape as okapi } from './okapi';
+import { scrape as oktaventures } from './oktaventures';
 import { scrape as omers } from './omers';
 import { scrape as omnes } from './omnes';
 import { scrape as omnivore } from './omnivore';
@@ -802,6 +803,7 @@ import { scrape as s3vc } from './s3vc';
 import { scrape as saasvc } from './saasvc';
 import { scrape as salt } from './salt';
 import { scrape as samaipata } from './samaipata';
+import { scrape as samsungnext } from './samsungnext';
 import { scrape as sanofiventures } from './sanofiventures';
 import { scrape as sante } from './sante';
 import { scrape as satgana } from './satgana';
@@ -1672,6 +1674,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	octopus,
 	offline,
 	okapi,
+	oktaventures,
 	omers,
 	omnes,
 	omnivore,
@@ -1811,6 +1814,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	saasvc,
 	salt,
 	samaipata,
+	samsungnext,
 	sanofiventures,
 	sante,
 	satgana,

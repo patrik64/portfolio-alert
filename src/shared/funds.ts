@@ -1,4 +1,4 @@
-// The 1008 tracked funds, in case-insensitive alphabetical order by name — the
+// The 1010 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -742,6 +742,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'octopus', name: 'Octopus Ventures', url: 'https://octopusventures.com/portfolio/' },
 	{ slug: 'offline', name: 'Offline Ventures', url: 'https://offline.vc/portfolio' },
 	{ slug: 'okapi', name: 'Okapi Venture Capital', url: 'https://okapivc.com/portfolio/' },
+	{ slug: 'oktaventures', name: 'Okta Ventures', url: 'https://www.okta.com/company/okta-ventures/' },
 	{ slug: 'omers', name: 'OMERS Ventures', url: 'https://www.omersventures.com/companies' },
 	{ slug: 'omnes', name: 'Omnes Capital', url: 'https://www.omnescapital.com/investments' },
 	{ slug: 'omnivore', name: 'Omnivore', url: 'https://omnivore.vc/portfolio' },
@@ -898,6 +899,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'salesforce', name: 'Salesforce Ventures', url: 'https://salesforceventures.com/portfolio/' },
 	{ slug: 'salt', name: 'Salt VC', url: 'https://salt.vc/portfolio' },
 	{ slug: 'samaipata', name: 'Samaipata', url: 'https://www.samaipata.vc/our-portfolio' },
+	{ slug: 'samsungnext', name: 'Samsung Next', url: 'https://www.samsungnext.com/portfolio' },
 	{
 		slug: 'sanofiventures',
 		name: 'Sanofi Ventures',
