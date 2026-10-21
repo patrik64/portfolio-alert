@@ -14,7 +14,9 @@ const UA =
 // ("Active", "Exited", "Acquired", "We tried"). the script's address
 // changes with every build and is found among the page's own, by the
 // content it holds; it carries the content once a language, and the
-// english is the one whose names are the cards'.
+// english is the one whose names are the cards'. the panel's own chunk
+// names the "website-link" field too, and loads first since october 2026,
+// so a chunk is only taken for the content once its records name the cards.
 //
 // the cards say which companies are listed; the content adds their sites
 // and tags. the sector, the place, the round and the year are kept as
@@ -70,9 +72,10 @@ async function contentFor(html: string, names: Set<string>): Promise<Map<string,
 	const scripts = [...new Set([...html.matchAll(SCRIPT)].map(([, path]) => path))];
 	for (const path of scripts) {
 		const code = await fetchText(`${BASE_URL}${path}`);
-		if (!code.includes('"website-link"')) continue;
+		// a record's field, not the code reading it: "website-link":"https…"
+		if (!code.includes('"website-link":')) continue;
 		let best = new Map<string, Entry>();
-		let bestHits = -1;
+		let bestHits = 0;
 		for (const [, literal] of code.matchAll(CONTENT)) {
 			if (!literal.includes('"website-link"')) continue;
 			let records: Entry[];
@@ -86,7 +89,7 @@ async function contentFor(html: string, names: Set<string>): Promise<Map<string,
 			const hits = [...names].filter((name) => byName.has(name)).length;
 			if (hits > bestHits) [best, bestHits] = [byName, hits];
 		}
-		return best;
+		if (bestHits > 0) return best;
 	}
 	return new Map();
 }

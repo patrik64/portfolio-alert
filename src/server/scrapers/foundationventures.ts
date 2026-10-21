@@ -9,6 +9,11 @@ const UA =
 // ("Adobe Express - file.png"). a company is known by the address it links
 // to, under the name it gives itself, looked up once; one missing from the
 // list is named after its address until it is added.
+//
+// on 2026-10-21 the fund's squarespace account lapsed: every address on the
+// domain answers 404 with squarespace's "Website Expired" page, and the fund
+// shows up under no other domain. that page is told apart from a moved
+// portfolio, so the run says why it fails.
 const NAMES: Record<string, string> = {
 	'abwaab.me': 'Abwaab',
 	'accordpartners.ai': 'Accord Partners',
@@ -25,6 +30,7 @@ const NAMES: Record<string, string> = {
 };
 
 const ITEM = /(?=<figure class="gallery-grid-item\b)/;
+const EXPIRED = /"title":"Website Expired"/;
 const LINK = /<a\b[^>]*\bhref="(https?:\/\/[^"]+)"/;
 
 const DECORATION = ['goto', 'get', 'try', 'use', 'join', 'with', 'go', 'my'];
@@ -60,10 +66,13 @@ function domainName(host: string): string {
 
 export async function scrape(): Promise<ScrapedCompany[]> {
 	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	const html = await resp.text();
+	if (EXPIRED.test(html)) {
+		throw new Error("foundationventures: the fund's squarespace site has expired — nothing to read until it is renewed");
+	}
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}
-	const html = await resp.text();
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
