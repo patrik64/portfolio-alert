@@ -1,93 +1,65 @@
 import type { ScrapedCompany } from './types';
 
-const PAGE_URL = 'https://www.foundationventures.com/portfolio';
+const PAGE_URL = 'https://www.foundationventures.com/';
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-// squarespace: the portfolio is one gallery of logos, each linking the
-// company's site, with no captions and image files named anything at all
-// ("Adobe Express - file.png"). a company is known by the address it links
-// to, under the name it gives itself, looked up once; one missing from the
-// list is named after its address until it is added.
-//
-// on 2026-10-21 the fund's squarespace account lapsed: every address on the
-// domain answers 404 with squarespace's "Website Expired" page, and the fund
-// shows up under no other domain. that page is told apart from a moved
-// portfolio, so the run says why it fails.
-const NAMES: Record<string, string> = {
-	'abwaab.me': 'Abwaab',
-	'accordpartners.ai': 'Accord Partners',
-	'aydi.com': 'Aydi',
-	'flashq.ai': 'FlashQ',
-	'flextock.com': 'Flextock',
-	'kenzz.com': 'Kenzz',
-	'minly.com': 'Minly',
-	'nowpay.com': 'NowPay',
-	'rabbitmart.com': 'Rabbit',
-	'sakneen.com': 'Sakneen',
-	'swypex.com': 'Swypex',
-	'trella.app': 'Trella'
-};
+// astro, since october 2026: the squarespace site lapsed on 2026-10-21 and
+// came back the next day as a single page. its "Our Companies & People"
+// section is a grid of tiles, each the company's logo (its alt text the
+// company's name), the fund it came from ("Fund I"), its sector and a line
+// about it, and a panel the tile opens, held in a template beside it, that
+// names the company again and links its site. the sector and the fund are
+// kept as tags.
 
-const ITEM = /(?=<figure class="gallery-grid-item\b)/;
-const EXPIRED = /"title":"Website Expired"/;
-const LINK = /<a\b[^>]*\bhref="(https?:\/\/[^"]+)"/;
+const TILE =
+	/<button class="tile"[^>]*\bdata-panel-target="([^"]+)"[^>]*>([\s\S]*?)<\/button>\s*<template id="\1"[^>]*>([\s\S]*?)<\/template>/g;
+const LOGO = /<img\b[^>]*\balt="([^"]*)"/;
+const TITLE = /class="panel-title"[^>]*>([\s\S]*?)<\/h2>/;
+const FUND = /class="tile__fund"[^>]*>([^<]*)</;
+const SECTOR = /class="tile__industry"[^>]*>([^<]*)</;
+const SITE = /<a\b[^>]*\bclass="panel-website"[^>]*\bhref="([^"]*)"|<a\b[^>]*\bhref="([^"]*)"[^>]*\bclass="panel-website"/;
+const UNSAID = /^(?:-|other|others|all|n\/a)$/i;
+const STEALTH = /^stealth\b/i;
 
-const DECORATION = ['goto', 'get', 'try', 'use', 'join', 'with', 'go', 'my'];
-const SUBDOMAIN = /^(www|en|de|fr|es|it|pt|nl|uk|us|app)$/i;
-const SUFFIX = /^(co|com|or|ne|ac|go)$/i;
-const MIN_BRAND = 3;
+const unescape = (s: string) =>
+	s
+		.replace(/&#0?39;|&apos;|&#8217;|&#x27;/g, "'")
+		.replace(/&quot;/g, '"')
+		.replace(/&nbsp;/g, ' ')
+		.replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
+		.replace(/&#0?38;|&amp;/g, '&');
 
-const unescape = (s: string) => s.replace(/&amp;/g, '&');
+const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
 
-const hostOf = (url: string) => {
-	try {
-		return new URL(url).hostname.toLowerCase().replace(/^www\./, '');
-	} catch {
-		return '';
-	}
-};
-
-// "getfoo.com" -> "Foo", "ark-climate.de" -> "Ark Climate"
-function domainName(host: string): string {
-	const parts = host.split('.').filter((part) => !SUBDOMAIN.test(part));
-	let label =
-		parts.length >= 3 && SUFFIX.test(parts[parts.length - 2])
-			? parts[parts.length - 3]
-			: (parts[parts.length - 2] ?? parts[0] ?? '');
-	const bare = DECORATION.find((d) => label.startsWith(d) && label.length - d.length >= MIN_BRAND);
-	if (bare) label = label.slice(bare.length);
-	return label
-		.split('-')
-		.filter(Boolean)
-		.map((word) => word[0].toUpperCase() + word.slice(1))
-		.join(' ');
-}
+// the category is comma-joined, so a label holding a comma would read as two
+const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
 export async function scrape(): Promise<ScrapedCompany[]> {
 	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
-	const html = await resp.text();
-	if (EXPIRED.test(html)) {
-		throw new Error("foundationventures: the fund's squarespace site has expired — nothing to read until it is renewed");
-	}
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}
+	const html = await resp.text();
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-	for (const item of html.split(ITEM).slice(1)) {
-		const url = unescape(item.match(LINK)?.[1] ?? '');
-		const host = hostOf(url);
-		if (!host) continue;
-		const name = NAMES[host] ?? domainName(host);
-		if (!name || seen.has(name.toLowerCase())) continue;
+	for (const [, , tile, panel] of html.matchAll(TILE)) {
+		const name = clean(panel.match(TITLE)?.[1] ?? '') || clean(tile.match(LOGO)?.[1] ?? '');
+		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 		seen.add(name.toLowerCase());
-		companies.push({ name, category: '', url });
+		const site = unescape(panel.match(SITE)?.slice(1).find(Boolean) ?? '').trim();
+		companies.push({
+			name,
+			category: [tag(tile.match(SECTOR)?.[1] ?? ''), tag(tile.match(FUND)?.[1] ?? '')]
+				.filter((t, i, all) => t && !UNSAID.test(t) && all.indexOf(t) === i)
+				.join(', '),
+			url: /^https?:\/\//i.test(site) ? site : PAGE_URL
+		});
 	}
 
 	if (companies.length === 0) {
-		throw new Error('foundationventures: no logos in the portfolio gallery');
+		throw new Error('foundationventures: no company tiles on the page — the markup moved');
 	}
 
 	return companies;

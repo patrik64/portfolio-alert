@@ -15,6 +15,11 @@ const UA =
 // label ("Women's Health", "Deep Tech / Climate"); the script's address
 // changes with every build and is read from the page. the domain and the
 // label are kept as tags, an exit with the Exited tag.
+//
+// the site is a lovable project. on 2026-10-22 every address on the domain
+// answered 404 with lovable's own "Project not found" page — the project
+// unpublished or deleted, no other domain to be found — and the run says so
+// rather than fail on a bare 404.
 
 const TILE = /<button type="button" class="group relative aspect-\[4\/5\][^"]*"[^>]*>([\s\S]*?)<\/button>/g;
 const NAME = /<img\b[^>]*\balt="([^"]*)"/;
@@ -25,6 +30,7 @@ const SCRIPT = /<script\b[^>]*\bsrc="(\/assets\/index-[^"]+\.js)"/;
 // a company as the script writes it: {name:`Aiir`,sector:`…`,website:`…`,…}
 const RECORD = /\{name:`([^`]*)`((?:,[\w$]+:(?:`[^`]*`|[\w$!.]+))*)\}/g;
 const FIELD = /,([\w$]+):`([^`]*)`/g;
+const GONE = /<title>Project not found<\/title>/;
 const UNSAID = /^(?:-|other|others|all|n\/a)$/i;
 const STEALTH = /^stealth\b/i;
 
@@ -63,7 +69,14 @@ async function recordsFor(html: string): Promise<Map<string, Record<string, stri
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const html = await fetchText(PAGE_URL);
+	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	const html = await resp.text();
+	if (GONE.test(html)) {
+		throw new Error("borski: lovable no longer serves the fund's site (\"Project not found\") — nothing to read until it is back");
+	}
+	if (!resp.ok) {
+		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+	}
 	const tiles = [...html.matchAll(TILE)].map(([, tile]) => tile);
 	const counted = Number(html.match(COUNT)?.[1] ?? 0);
 	if (tiles.length < counted) {

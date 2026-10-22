@@ -415,7 +415,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'fortitude', name: 'Fortitude Ventures', url: 'https://fortitudevc.com/#investments' },
 	{ slug: 'foundamental', name: 'Foundamental', url: 'https://www.foundamental.com/portfolio' },
 	{ slug: 'foundationcapital', name: 'Foundation Capital', url: 'https://foundationcapital.com/portfolio' },
-	{ slug: 'foundationventures', name: 'Foundation Ventures', url: 'https://www.foundationventures.com/portfolio' },
+	{ slug: 'foundationventures', name: 'Foundation Ventures', url: 'https://www.foundationventures.com/' },
 	{ slug: 'foundercollective', name: 'Founder Collective', url: 'https://foundercollective.com/portfolio/' },
 	{ slug: 'founderfuel', name: 'FounderFuel', url: 'https://founderfuel.com/companies/' },
 	{
@@ -1224,7 +1224,7 @@ export const FUNDS: FundInfo[] = [
 	{
 		slug: 'vuventurepartners',
 		name: 'VU Venture Partners',
-		url: 'https://www.vuventurepartners.com/investments'
+		url: 'https://vuventurepartners.com/portfolio'
 	},
 	{
 		slug: 'watertower',

@@ -1,87 +1,105 @@
 import type { ScrapedCompany } from './types';
 
-const PAGE_URL = 'https://www.vuventurepartners.com/investments';
+// the bare domain: www answers with a 301, which would turn the function's
+// POST into a GET
+const SITE_URL = 'https://vuventurepartners.com';
+const PAGE_URL = `${SITE_URL}/portfolio`;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-// strikingly ("Powered by Strikingly.com" in the first comment), server-rendered:
-// six sections — Consumer, Enterprise, FinTech, Frontier, Healthcare, PropTech —
-// each a logo grid linking the company sites, with the sector as the section
-// heading. every logo has an empty alt and title and a numeric upload key
-// ("106216/981112_98228.png"), and the text under it is a one-line pitch, not a
-// name, so the hostname names the company, as for worklife and boxgroup. three
-// logos carry no link at all and nothing else identifies them; they are skipped.
+// base44, since october 2026 (a strikingly page of logos before, whose
+// companies had to be named after their addresses): the site is an app drawn
+// in the browser, and its portfolio page asks one of the app's backend
+// functions, getVUPortfolio, for the companies — which it answers to any
+// visitor, signed in or not. a company comes with its name, site, vertical
+// and sectors ("Space, Aerospace, & Defense"), stage, where it is and
+// whether the fund is out ("Exited: M&A"). the app's id is read from the
+// page, where its script names it. the sectors, the stage and the first
+// country are kept as tags, a sale with the Acquired tag, an exit with the
+// Exited tag.
 
-// generic second levels — "autolab.com.co" is Autolab, not Com
-const GENERIC = new Set(['com', 'co', 'net', 'org', 'gov', 'edu', 'ac']);
-// the fund's own links; none of them is a logo link today, but the grid regex
-// should not start picking them up if the layout changes
-const NOT_A_COMPANY = /\/\/(?:[a-z0-9-]+\.)*(?:vuventurepartners\.com|typeform\.com|consider\.com)\b/i;
-// one company is linked through its instagram profile rather than a site
-const SOCIAL = /\/\/(?:[a-z0-9-]+\.)*(?:instagram\.com|facebook\.com|twitter\.com|x\.com|linkedin\.com)\b/i;
-// handle suffixes, not part of the name ("loradicarlo_hq")
-const NOISE = /^(hq|official)$/i;
+const APP_ID = /\bappId\s*=\s*"([0-9a-f]{24})"/;
+const EXITED = /^exited\b/i;
+const ACQUIRED = /\bm\s*&\s*a\b|acqui/i;
+const UNSAID = /^(?:-|other|others|all|n\/a|not specified)$/i;
+const STEALTH = /^stealth\b/i;
 
-const decode = (s: string) =>
-	s
-		.replace(/<[^>]+>/g, '')
-		.replace(/&amp;/g, '&')
-		.replace(/&#x27;|&#39;/g, "'")
-		.replace(/&quot;/g, '"')
-		.replace(/&nbsp;/g, ' ')
-		.replace(/\s+/g, ' ')
-		.trim();
-
-const capitalize = (s: string) => (/^[a-z]/.test(s) ? s.charAt(0).toUpperCase() + s.slice(1) : s);
-
-function nameFor(url: string): string {
-	const parsed = new URL(url);
-	let label: string;
-	if (SOCIAL.test(url)) {
-		// the profile handle, "instagram.com/loradicarlo_hq/" -> "loradicarlo_hq"
-		label = decodeURIComponent(parsed.pathname.split('/').filter(Boolean)[0] ?? '').replace(
-			/^@/,
-			''
-		);
-	} else {
-		const labels = parsed.hostname.replace(/^www\./, '').split('.');
-		if (labels.length > 1) labels.pop();
-		if (labels.length > 1 && GENERIC.has(labels[labels.length - 1])) labels.pop();
-		label = labels[labels.length - 1];
-	}
-	const words = label
-		.split(/[-_+.]/)
-		.filter((w) => w && !NOISE.test(w))
-		.map(capitalize);
-	return words.join(' ');
+interface Entry {
+	name?: unknown;
+	websiteUrl?: unknown;
+	vertical?: unknown;
+	sectors?: unknown;
+	companyStage?: unknown;
+	locations?: unknown;
+	exitStatus?: unknown;
 }
 
+const clean = (s: unknown) => String(s ?? '').replace(/\s+/g, ' ').trim();
+
+// the category is comma-joined, so a label holding a comma would read as two
+const tag = (s: unknown) =>
+	clean(s)
+		.replace(/\s*,\s*&\s*/g, ' & ')
+		.replace(/\s*,\s*/g, ' / ');
+
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+	const page = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	if (!page.ok) {
+		throw new Error(`Failed to fetch ${PAGE_URL}: ${page.status}`);
 	}
-	const html = await resp.text();
-	const body = html.split('<body')[1] ?? '';
+	const appId = (await page.text()).match(APP_ID)?.[1];
+	if (!appId) {
+		throw new Error("vuventurepartners: no app id in the page — the site moved off base44's app shell");
+	}
+
+	const url = `${SITE_URL}/api/apps/${appId}/functions/getVUPortfolio`;
+	const resp = await fetch(url, {
+		method: 'POST',
+		headers: {
+			'User-Agent': UA,
+			'Content-Type': 'application/json',
+			Accept: 'application/json',
+			'X-App-Id': appId,
+			'Base44-Functions-Version': 'prod'
+		},
+		body: '{}'
+	});
+	if (!resp.ok) {
+		throw new Error(`Failed to fetch ${url}: ${resp.status}`);
+	}
+	const rows = ((await resp.json()) as { companies?: unknown }).companies;
+	if (!Array.isArray(rows)) {
+		throw new Error('vuventurepartners: the portfolio function answered no list of companies');
+	}
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-	for (const section of body.split('id="section-').slice(1)) {
-		// the sector heading, the one oversized line in the section
-		const category = decode(section.match(/font-size: 160%[^>]*>([\s\S]*?)<\/p>/)?.[1] ?? '');
-		for (const [, url] of section.matchAll(
-			/<a href="(https?:\/\/[^"]+)"[^>]*aria-label="image link"/g
-		)) {
-			if (NOT_A_COMPANY.test(url) || seen.has(url)) continue;
-			seen.add(url);
-			const name = nameFor(url);
-			if (!name) continue;
-			companies.push({ name, category, url });
-		}
+	for (const row of rows as Entry[]) {
+		const name = clean(row.name);
+		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
+		seen.add(name.toLowerCase());
+		const sectors = Array.isArray(row.sectors) ? row.sectors : [];
+		const where = Array.isArray(row.locations) ? (row.locations[0] as { country?: unknown } | undefined) : undefined;
+		const exit = clean(row.exitStatus);
+		const site = clean(row.websiteUrl);
+		companies.push({
+			name,
+			category: [
+				tag(row.vertical),
+				...sectors.map(tag),
+				tag(row.companyStage),
+				tag(where?.country),
+				EXITED.test(exit) && ACQUIRED.test(exit) ? 'Acquired' : '',
+				EXITED.test(exit) ? 'Exited' : ''
+			]
+				.filter((t, i, all) => t && !UNSAID.test(t) && all.indexOf(t) === i)
+				.join(', '),
+			url: /^https?:\/\//i.test(site) ? site : PAGE_URL
+		});
 	}
 
 	if (companies.length === 0) {
-		throw new Error('vuventurepartners: no companies on the investments page');
+		throw new Error('vuventurepartners: no companies in the portfolio');
 	}
 
 	return companies;

@@ -10,6 +10,11 @@ const UA =
 // its site. an exit's year runs from the investment to the sale, with the
 // buyer after it ("2008 - 2014 (MacroMill)"). the sector and the year the
 // fund came in are kept as tags, an exit with the Exited tag and its buyer.
+//
+// on 2026-10-22 the domain still pointed at webflow, which answered every
+// address, robots.txt among them, with its own error page rather than the
+// site's: the site unpublished or taken off the domain, no other domain to
+// be found. the run says so rather than fail on a bare 404.
 
 const CARD = /(?=<div role="listitem" class="collection-item w-dyn-item">)/;
 const NAME = /<div class="body-xl">([\s\S]*?)<\/div>/;
@@ -24,6 +29,8 @@ const SITE = /<div class="paragraph allcaps">Website<\/div><a href="([^"]*)"/i;
 const INVESTED = /^\s*((?:19|20)\d{2})(?!\d)/;
 const BUYER = /\(([^()]+)\)\s*$/;
 const EXIT = /^exit(?:ed)?$/i;
+// webflow's own error page, served where a domain has no published site
+const NO_SITE = /webflow-https-errors\.webflow\.css/;
 const UNSAID = /^(?:-|other|others|all|n\/a)$/i;
 const STEALTH = /^stealth\b/i;
 
@@ -42,10 +49,13 @@ const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
 export async function scrape(): Promise<ScrapedCompany[]> {
 	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	const html = await resp.text();
+	if (NO_SITE.test(html)) {
+		throw new Error("endeit: webflow serves no site on the fund's domain — nothing to read until it is published again");
+	}
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}
-	const html = await resp.text();
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
