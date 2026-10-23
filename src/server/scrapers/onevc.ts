@@ -1,99 +1,97 @@
 import type { ScrapedCompany } from './types';
 
-const BASE_URL = 'https://www.onevc.vc';
-const PAGE_URL = `${BASE_URL}/`;
+const PAGE_URL = 'https://onevc.vc/';
+// the portfolio as markdown, written from the same source as the pages
+const PORTFOLIO_URL = 'https://onevc.vc/portfolio.md';
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
-const BATCH_SIZE = 8;
 
-// webflow. the portfolio is a section of the fund's one page rather than a
-// page of its own, and it is a wall of logos — but the fund gave every logo
-// its alt text, so the wall names the companies even though it prints nothing.
-//
-// what it does not carry is anything else: a logo links to the fund's page for
-// the company, and the company's own address, where it sits and the stage the
-// fund came in at are all printed there. so the pages are read too.
-//
-// the fund writes a headquarters as it pleases — São Paulo, Brazil beside Sao
-// Paulo, SP and a Bogotá, Colomia — and its stage in two casings. those are
-// its own words for its own companies and are left as written; a page that
-// cannot be reached leaves the company with no category and the fund's page
-// for an address.
-//
-// the year a company was founded is on those pages too. a year is not a name
-// to file one under, so it is left out.
+// next.js, since october 2026 (webflow before, on www, whose certificate the
+// new host no longer covers): the home page's portfolio is a wall of logos
+// linking a page per company, and the site publishes the whole of it as
+// markdown besides, listed in its llms.txt — a heading per company under
+// the site's four groups ("Fintech & Insurtech"), then its category,
+// founding year, investment stage, headquarters and website, then prose.
+// an exit is marked in the heading ("Rappi (Exit)"). the group, category,
+// stage and headquarters are kept as tags, an exit with the Exited tag.
 
-const LOGO = /<a [^>]*href="(\/portfolio\/[^"]+)"[^>]*>\s*<img[^>]*\balt="([^"]*)"/g;
-const HQ = /Headquarters:<\/strong><\/div>\s*<div[^>]*>([\s\S]*?)<\/div>/;
-const STAGE = /ONEVC Investment Stage:<\/strong><\/div>\s*<div[^>]*>([\s\S]*?)<\/div>/;
-// the fund puts the company's own address in a block of its own
-const SITE = /<div class="div-block-4">\s*<a [^>]*href="([^"]+)"/;
+const GROUP = /^## (.+)$/;
+const COMPANY = /^### (.+)$/;
+const FIELD = /^- ([A-Za-z ]+):\s*(.*)$/;
+const EXIT = /\s*\(exit\)\s*$/i;
+const UNSAID = /^(?:-|other|others|all|n\/a)$/i;
+const STEALTH = /^stealth\b/i;
 
-interface Detail {
-	category: string;
-	url: string;
-}
+// companies the site renamed after they were stored, kept under the stored
+// names so the renames are not taken for new companies
+const STORED_AS: Record<string, string> = {
+	enter: 'Enter (formerly Talisman)',
+	loopi: 'LoopiPay'
+};
 
-const un = (s: string) =>
-	s
-		.replace(/&#0?39;|&apos;|&#8217;|&#x27;/g, "'")
-		.replace(/&quot;/g, '"')
-		.replace(/&lt;/g, '<')
-		.replace(/&gt;/g, '>')
-		.replace(/&nbsp;/g, ' ')
-		.replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
-		.replace(/&#0?38;|&amp;/g, '&');
-
-const clean = (s: string) => un(s.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
+const clean = (s: string) => s.replace(/\s+/g, ' ').trim();
 
 // the category is comma-joined, so a place written "São Paulo, Brazil" would
-// read as two tags rather than one, and a stage written "Series A, B, C" as
-// three
+// read as two tags rather than one
 const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
-async function fetchDetail(path: string): Promise<Detail> {
-	const url = `${BASE_URL}${path}`;
-	try {
-		const resp = await fetch(url, { headers: { 'User-Agent': UA } });
-		if (!resp.ok) return { category: '', url };
-		const page = await resp.text();
-		return {
-			category: [tag(page.match(STAGE)?.[1] ?? ''), tag(page.match(HQ)?.[1] ?? '')]
-				.filter(Boolean)
-				.join(', '),
-			url: clean(page.match(SITE)?.[1] ?? '') || url
-		};
-	} catch {
-		return { category: '', url };
-	}
+interface Entry {
+	name: string;
+	exited: boolean;
+	group: string;
+	fields: Record<string, string>;
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	const resp = await fetch(PORTFOLIO_URL, { headers: { 'User-Agent': UA } });
 	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+		throw new Error(`Failed to fetch ${PORTFOLIO_URL}: ${resp.status}`);
 	}
-	const html = await resp.text();
+	const markdown = await resp.text();
 
-	const found: { name: string; path: string }[] = [];
-	const seen = new Set<string>();
-	for (const [, path, alt] of html.matchAll(LOGO)) {
-		const name = clean(alt);
-		if (!name || seen.has(name.toLowerCase())) continue;
-		seen.add(name.toLowerCase());
-		found.push({ name, path });
-	}
-	if (found.length === 0) {
-		throw new Error('onevc: the portfolio is no longer a wall of named logos');
+	const entries: Entry[] = [];
+	let group = '';
+	for (const line of markdown.split('\n')) {
+		const heading = line.match(GROUP);
+		if (heading) {
+			group = clean(heading[1]);
+			continue;
+		}
+		const company = line.match(COMPANY);
+		if (company) {
+			const given = clean(company[1]);
+			entries.push({ name: clean(given.replace(EXIT, '')), exited: EXIT.test(given), group, fields: {} });
+			continue;
+		}
+		const field = line.match(FIELD);
+		const current = entries[entries.length - 1];
+		if (field && current) current.fields[clean(field[1]).toLowerCase()] = clean(field[2]);
 	}
 
 	const companies: ScrapedCompany[] = [];
-	for (let start = 0; start < found.length; start += BATCH_SIZE) {
-		const batch = found.slice(start, start + BATCH_SIZE);
-		const details = await Promise.all(batch.map((entry) => fetchDetail(entry.path)));
-		batch.forEach((entry, index) => {
-			companies.push({ name: entry.name, ...details[index] });
+	const seen = new Set<string>();
+	for (const { name: given, exited, group: inGroup, fields } of entries) {
+		const name = STORED_AS[given.toLowerCase()] ?? given;
+		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
+		seen.add(name.toLowerCase());
+		const site = fields.website ?? '';
+		companies.push({
+			name,
+			category: [
+				tag(inGroup),
+				tag(fields.category ?? ''),
+				tag(fields['investment stage'] ?? ''),
+				tag(fields['head quarters'] ?? ''),
+				exited ? 'Exited' : ''
+			]
+				.filter((t, i, all) => t && !UNSAID.test(t) && all.indexOf(t) === i)
+				.join(', '),
+			url: /^https?:\/\//i.test(site) ? site : fields['on the site'] || PAGE_URL
 		});
+	}
+
+	if (companies.length === 0) {
+		throw new Error('onevc: no companies in the portfolio markdown — the file moved');
 	}
 
 	return companies;

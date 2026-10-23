@@ -749,7 +749,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'oneway', name: 'One Way Ventures', url: 'https://www.onewayvc.com/portfolio' },
 	{ slug: 'oneequity', name: 'OneEquity', url: 'https://www.oneequity.com/portfolio' },
 	{ slug: 'oneragtime', name: 'OneRagtime', url: 'https://www.oneragtime.com/portfolio-companies' },
-	{ slug: 'onevc', name: 'ONEVC', url: 'https://www.onevc.vc/#portfolio' },
+	{ slug: 'onevc', name: 'ONEVC', url: 'https://onevc.vc/' },
 	{ slug: 'openocean', name: 'OpenOcean', url: 'https://www.openocean.vc/portfolio' },
 	{ slug: 'operator', name: 'Operator Partners', url: 'https://www.operatorpartners.com/portfolio' },
 	{ slug: 'orbimed', name: 'OrbiMed', url: 'https://www.orbimed.com/portfolio/' },
@@ -1116,7 +1116,7 @@ export const FUNDS: FundInfo[] = [
 	},
 	{ slug: 'trind', name: 'Trind Ventures', url: 'https://trind.vc/portfolio' },
 	{ slug: 'trousdale', name: 'Trousdale Ventures', url: 'https://trousdale.vc/portfolio/' },
-	{ slug: 'trueventures', name: 'True Ventures', url: 'https://www.trueventures.com/portfolio' },
+	{ slug: 'trueventures', name: 'True Ventures', url: 'https://www.trueventures.com/companies' },
 	{
 		slug: 'truewealth',
 		name: 'True Wealth Ventures',

@@ -25,6 +25,10 @@ const UA =
 // two companies have a card but no record behind it. they are added from their
 // cards, named by the logo's filename, which is the only place the fund writes
 // them at all.
+//
+// on 2026-10-22 the fund's server stopped taking connections — from the
+// deployment and a laptop alike, on both ports — so a fetch that fails
+// before any answer says why rather than "fetch failed".
 
 const CARD = '<div class="team-block">';
 const LINK = /<a href="([^"]*)"/;
@@ -72,10 +76,22 @@ interface Card {
 }
 
 async function fetchText(url: string, init?: RequestInit): Promise<string> {
-	const resp = await fetch(url, {
-		...init,
-		headers: { 'User-Agent': UA, ...(init?.headers ?? {}) }
-	});
+	let resp: Response;
+	try {
+		resp = await fetch(url, {
+			...init,
+			headers: { 'User-Agent': UA, ...(init?.headers ?? {}) }
+		});
+	} catch (err) {
+		// the cause behind node's bare "fetch failed": a connection that times
+		// out or is refused, a name that no longer resolves
+		const cause = (err as { cause?: { code?: string; message?: string } }).cause;
+		const why = [cause?.code, cause?.message ?? (err instanceof Error ? err.message : String(err))]
+			.filter(Boolean)
+			.join(': ')
+			.slice(0, 160);
+		throw new Error(`relay: ${url} did not answer — ${why}`);
+	}
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${url}: ${resp.status}`);
 	}
