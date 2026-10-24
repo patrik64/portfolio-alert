@@ -12,6 +12,11 @@ const UA =
 // opens, so only the row is read: the name, the sector, how the fund holds it
 // — venture, platform, or digital assets, under which it lists bitcoin and
 // ethereum beside the companies — and the site, as a protocol-relative link.
+//
+// on 2026-10-24 the fund's site was rebuilt as a single static page about
+// the firm, with no portfolio on it or anywhere else on the domain, and the
+// companies page answers 404. the run says so rather than fail on a bare
+// 404.
 
 const CARD = '<div class="pld-post-list-item-wrapper">';
 const NAME = /<h3 class="pld-post-title">([\s\S]*?)<\/h3>/;
@@ -36,6 +41,9 @@ const address = (href: string) => (href.startsWith('//') ? `https:${href}` : hre
 
 export async function scrape(): Promise<ScrapedCompany[]> {
 	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	if (resp.status === 404) {
+		throw new Error("innovatingcapital: the fund's rebuilt site lists no portfolio — nothing to read until it does");
+	}
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}

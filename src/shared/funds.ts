@@ -1219,7 +1219,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'voloearth', name: 'VoLo Earth', url: 'https://www.voloearth.com/portfolio' },
 	{ slug: 'volta', name: 'Volta Ventures', url: 'https://volta.ventures/#portfolio' },
 	{ slug: 'voyagervc', name: 'Voyager Ventures', url: 'https://www.voyagervc.com/portfolio' },
-	{ slug: 'vsquared', name: 'Vsquared Ventures', url: 'https://vsquared.vc/portfolio/' },
+	{ slug: 'vsquared', name: 'Vsquared Ventures', url: 'https://vsquared.vc/portfolio' },
 	{ slug: 'vtfcapital', name: 'VTF Capital', url: 'https://vtfcapital.com/portfolio/' },
 	{
 		slug: 'vuventurepartners',
