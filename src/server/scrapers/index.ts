@@ -752,7 +752,6 @@ import { scrape as quest } from './quest';
 import { scrape as quiet } from './quiet';
 import { scrape as qumra } from './qumra';
 import { scrape as quona } from './quona';
-import { scrape as racapital } from './racapital';
 import { scrape as race } from './race';
 import { scrape as r7 } from './r7';
 import { scrape as racap } from './racap';
@@ -1763,7 +1762,6 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	quiet,
 	qumra,
 	quona,
-	racapital,
 	race,
 	r7,
 	racap,

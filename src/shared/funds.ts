@@ -1,4 +1,4 @@
-// The 1010 tracked funds, in case-insensitive alphabetical order by name — the
+// The 1009 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -841,7 +841,6 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'quona', name: 'Quona Capital', url: 'https://quona.com/portfolio/' },
 	{ slug: 'r7', name: 'R7', url: 'https://www.r7.vc/' },
 	{ slug: 'racap', name: 'RA Capital', url: 'https://www.racap.com/portfolio' },
-	{ slug: 'racapital', name: 'RA Capital Management', url: 'https://www.racap.com/portfolio' },
 	{ slug: 'race', name: 'Race Capital', url: 'https://race.capital/companies' },
 	{ slug: 'radian', name: 'Radian Capital', url: 'https://www.radiancapital.com/companies' },
 	{ slug: 'radical', name: 'Radical Ventures', url: 'https://radical.vc/portfolio/' },
