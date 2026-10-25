@@ -39,7 +39,19 @@ const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g
 const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	let resp: Response;
+	try {
+		resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	} catch (err) {
+		// the cause behind node's bare "fetch failed": a connection that times
+		// out or is refused, a name that no longer resolves
+		const cause = (err as { cause?: { code?: string; message?: string } }).cause;
+		const why = [cause?.code, cause?.message ?? (err instanceof Error ? err.message : String(err))]
+			.filter(Boolean)
+			.join(': ')
+			.slice(0, 160);
+		throw new Error(`shiftinvest: ${PAGE_URL} did not answer — ${why}`);
+	}
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}

@@ -7,7 +7,9 @@ const UA =
 // wordpress, the whole grid on the one page: every box wraps its logo in a
 // link to the company's own address whose title attribute names it — the
 // #new_tab fragment is the site's own signal and comes off. the line under
-// the logo is a description, and no sectors are recorded.
+// the logo is a description, and no sectors are recorded. wp engine turned
+// the nightly run away with a 403 one night and let it in the next, so a
+// refusal is asked again once after a wait.
 
 const BOX = /<a href="(https?:\/\/[^"#]+)(?:#[^"]*)?" title="([^"]+)">/g;
 
@@ -23,12 +25,22 @@ const unescape = (s: string) =>
 
 const clean = (s: string) => unescape(s).replace(/\s+/g, ' ').trim();
 
-export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+async function get(url: string): Promise<string> {
+	for (let attempt = 0; ; attempt++) {
+		const resp = await fetch(url, { headers: { 'User-Agent': UA } });
+		const body = await resp.text();
+		if (resp.ok) return body;
+		if (attempt === 0) {
+			await new Promise((resolve) => setTimeout(resolve, 10_000));
+			continue;
+		}
+		const title = clean(body.match(/<title[^>]*>([^<]*)</)?.[1] ?? '');
+		throw new Error(`Failed to fetch ${url}: ${resp.status}${title ? ` "${title}"` : ''}`);
 	}
-	const html = await resp.text();
+}
+
+export async function scrape(): Promise<ScrapedCompany[]> {
+	const html = await get(PAGE_URL);
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();

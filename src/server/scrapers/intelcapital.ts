@@ -37,10 +37,17 @@ const label = (slug: string) =>
 
 export async function scrape(): Promise<ScrapedCompany[]> {
 	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	const html = await resp.text();
+	// when the site is down, intel's cdn answers every path with the company's
+	// own "Page Unavailable" page, styled from failover.intel.com
+	if (/failover\.intel\.com/.test(html)) {
+		throw new Error(
+			`intelcapital: the site is down — Intel's "Page Unavailable" page answers (${resp.status})`
+		);
+	}
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}
-	const html = await resp.text();
 
 	const items = [...html.matchAll(ITEM)].map(([, sector, region, id, name]) => ({
 		sector,
