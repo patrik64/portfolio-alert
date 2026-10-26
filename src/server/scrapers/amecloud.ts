@@ -4,10 +4,11 @@ const PAGE_URL = 'https://www.amecloudventures.com/portfolio';
 // the portfolio page loads its companies from this widget, as jsonp
 const WIDGET_URL = 'https://ame.ivest.in/people/9/embeddable_portfolio?callback=portfolio';
 // the widget's server now and then answers a 500 and the page on the next
-// try, so a server error or a refusal is asked about again, twice, after
-// waits that double from two seconds
-const TRIES = 3;
-const RETRY_MS = 2_000;
+// try, and one night (2026-10-26) went on answering 500 for longer than six
+// seconds, so a server error or a refusal is asked about again, four times,
+// after waits that double from five seconds — a minute and a quarter in all
+const TRIES = 5;
+const RETRY_MS = 5_000;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
