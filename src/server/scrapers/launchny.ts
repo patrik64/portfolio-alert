@@ -9,10 +9,11 @@ const UA =
 // company's own address, so their names come from that domain, with the
 // logo's filename allowed to correct the spacing and capitals where it
 // spells the domain out. a tile without a link has only its filename to go
-// by: cleaned of the site's LaunchNY_ prefix, size suffixes and the word
-// logo, it serves as the name unless what is left is an upload hash or a
-// single stock word, in which case the company cannot be named and the tile
-// is left out.
+// by: cleaned of the site's LaunchNY_ prefix, size suffixes, wordpress's
+// mark for an image edited in place and the word logo, it serves as the
+// name unless what is left is an upload hash, an email client's
+// "thumbnail_…" or a single stock word, in which case the company cannot be
+// named and the tile is left out.
 
 const ITEM = 'class="portfolio--list-item"';
 const SITE = /href="(https?:\/\/[^"]+)"/;
@@ -22,7 +23,7 @@ const DECORATION = ['goto', 'get', 'try', 'use', 'join', 'with', 'trust', 'go', 
 const SUBDOMAIN = /^(www|en|de|fr|es|it|pt|nl|uk|us|sg|in|corp|shop|about|info|site)$/i;
 const SUFFIX = /^(co|com|or|ne|ac|go)$/i;
 const MIN_BRAND = 3;
-const JUNK = /^([0-9a-f]{8,}.*|green|logo|image|screenshot|)$/i;
+const JUNK = /^([0-9a-f]{8,}.*|thumbnail\b.*|green|logo|image|screenshot|)$/i;
 
 const key = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
 
@@ -57,6 +58,7 @@ const fileLabel = (src: string) =>
 	decodeURIComponent(src.split('/').pop() ?? '')
 		.replace(/\.\w+$/, '')
 		.replace(/-\d+x\d+$/, '')
+		.replace(/-e\d{9,}$/i, '')
 		.replace(/^LaunchNY[-_]/i, '')
 		.replace(/[-_]logo$/i, '')
 		.replace(/[-_+]+/g, ' ')

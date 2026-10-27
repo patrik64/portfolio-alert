@@ -14,6 +14,9 @@ const ITEM = /<li\b[^>]*\bclass="timeline-item"[^>]*>([\s\S]*?)<\/li>/g;
 const NAME = /class="timeline-name"[^>]*>([\s\S]*?)<\/div>/;
 const HREF = /<a\b[^>]*\bhref="([^"]*)"/;
 const STEALTH = /^stealth\b/i;
+// companies that have since renamed, kept under the names stored for them:
+// resim.ai now answers as signalflag.ai
+const STORED_AS: Record<string, string> = { signalflag: 'Resim' };
 
 const unescape = (s: string) =>
 	s
@@ -37,7 +40,8 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 	const seen = new Set<string>();
 	for (const [, item] of section.matchAll(ITEM)) {
 		const cell = item.match(NAME)?.[1] ?? '';
-		const name = clean(cell);
+		const shown = clean(cell);
+		const name = STORED_AS[shown.toLowerCase()] ?? shown;
 		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 		seen.add(name.toLowerCase());
 		const site = unescape(cell.match(HREF)?.[1] ?? '').trim();

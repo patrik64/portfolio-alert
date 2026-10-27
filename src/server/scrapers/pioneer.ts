@@ -11,6 +11,11 @@ const PAGE_SIZE = 100;
 // status
 const TRIES = 3;
 const RETRY_MS = 5_000;
+// companies that have since renamed, kept under the names stored for them
+const STORED_AS: Record<string, string> = {
+	'paradev (formerly superset)': 'Superset',
+	paradev: 'Superset'
+};
 
 // the site is softr over the fund's airtable base, so the page itself is an
 // empty shell: the companies are fetched afterwards from a datasource route
@@ -96,7 +101,8 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		const body: { records?: Row[]; offset?: string } = await (await ask(url, offset)).json();
 
 		for (const row of body.records ?? []) {
-			const name = clean(row.fields?.Name ?? '');
+			const shown = clean(row.fields?.Name ?? '');
+			const name = STORED_AS[shown.toLowerCase()] ?? shown;
 			if (!name || seen.has(name.toLowerCase())) continue;
 			seen.add(name.toLowerCase());
 

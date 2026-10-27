@@ -19,6 +19,13 @@ const BATCH_DELAY_MS = 150;
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+// companies the directory has since renamed, kept under the names stored for
+// them
+const STORED_AS: Record<string, string> = {
+  "paradev (formerly superset)": "Superset",
+  paradev: "Superset",
+};
+
 interface Hit {
   name?: string;
   website?: string;
@@ -95,7 +102,7 @@ export async function scrape(): Promise<ScrapedCompany[]> {
       // subindustry repeats its parent ("Healthcare -> Medical Devices")
       const subindustry = hit.subindustry?.split("->").pop()?.trim() ?? "";
       byId.set(hit.objectID, {
-        name: hit.name.trim(),
+        name: STORED_AS[hit.name.trim().toLowerCase()] ?? hit.name.trim(),
         // "Active" is the default state; the rest (Acquired, Public, Inactive)
         // is worth recording alongside the industry and batch
         category: [

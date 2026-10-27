@@ -34,6 +34,12 @@ const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g
 // the category is comma-joined, so a label holding a comma would read as two
 const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
+// companies the page has since renamed, kept under the names stored for them
+const STORED_AS: Record<string, string> = {
+	'algafilm technologies': 'AlgaFilm',
+	'pythag tech': 'Pythag'
+};
+
 // "…/uploads/2026/01/heaten-logo-exit-v3.png" -> "heaten-logo-exit-v3"
 const fileOf = (src: string) => {
 	const last = unescape(src).split(/[?#]/)[0].split('/').pop() ?? '';
@@ -58,7 +64,8 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		const heading = clean(section.match(HEADING)?.[1] ?? '');
 		if (/\bportfolio$/i.test(heading)) fund = tag(heading.replace(/\s*\bportfolio$/i, ''));
 		for (const item of section.split(ITEM).slice(1)) {
-			const name = clean(item.match(TITLE)?.[1] ?? '');
+			const shown = clean(item.match(TITLE)?.[1] ?? '');
+			const name = STORED_AS[shown.toLowerCase()] ?? shown;
 			if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 			seen.add(name.toLowerCase());
 			const site = unescape(item.match(LINK)?.[1] ?? '').trim();

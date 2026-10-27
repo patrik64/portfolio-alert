@@ -4,6 +4,9 @@ const PAGE_URL = "https://www.kimaventures.com/portfolio";
 const UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
+// companies the page has since renamed, kept under the names stored for them
+const STORED_AS: Record<string, string> = { "grive.ai": "Grive" };
+
 interface Company {
   name?: string;
   url?: string;
@@ -35,7 +38,7 @@ export async function scrape(): Promise<ScrapedCompany[]> {
   const companies: ScrapedCompany[] = list
     .filter((c) => c.name)
     .map((c) => ({
-      name: c.name!.trim(),
+      name: STORED_AS[c.name!.trim().toLowerCase()] ?? c.name!.trim(),
       category: [
         ...(c.sector ?? []).map((s) => s.name).filter(Boolean),
         c.country?.name,
