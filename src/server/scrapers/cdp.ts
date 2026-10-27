@@ -13,6 +13,20 @@ const UA =
 // its front has the name and its back a link to the site. one card, filed
 // under the vehicle "test", is the cms's own test entry and is left out.
 // nothing marks an exit.
+//
+// in october 2026 the page took on the cards of the two pnrr funds, digital
+// and green transition, and some of those name a company the page already
+// lists under another spelling, or one it has since renamed; each is kept
+// under the name stored for it, so a company listed twice reads as one.
+const STORED_AS: Record<string, string> = {
+	daze: 'DazeTechnology',
+	'energy dome': 'EnergyDome',
+	'h.b.i.': 'HBI',
+	'ht material science': 'HT Materials Science Limited',
+	lymphatica: 'Lymphatica Medtech',
+	ngr: 'Next Generation Robotics',
+	'radical storage': 'Lean Team'
+};
 
 const CARD = /(?=<div\b[^>]*\bclass="blocks-portfolio__card-wrapper\b)/;
 const DATA = /^<div\b([^>]*)>/;
@@ -45,7 +59,8 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 			[...(card.match(DATA)?.[1] ?? '').matchAll(ATTR)].map(([, key, value]) => [key, clean(value)])
 		);
 		if (data.get('category') !== 'InvestimentoDiretto' || /^test$/i.test(data.get('veicolo') ?? '')) continue;
-		const name = clean(card.match(NAME)?.[1] ?? '');
+		const shown = clean(card.match(NAME)?.[1] ?? '');
+		const name = STORED_AS[shown.toLowerCase()] ?? shown;
 		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 		seen.add(name.toLowerCase());
 		const sectors = (data.get('settore') ?? '')
