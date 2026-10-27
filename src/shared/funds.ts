@@ -887,7 +887,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'rootvc', name: 'Root Ventures', url: 'https://root.vc/' },
 	{ slug: 'round2', name: 'Round2 Capital', url: 'https://round2cap.com/portfolio/' },
 	{ slug: 'rre', name: 'RRE Ventures', url: 'https://rre.com/portfolio' },
-	{ slug: 'rtp', name: 'RTP Global', url: 'https://rtp.vc/our-companies/' },
+	{ slug: 'rtp', name: 'RTP Global', url: 'https://rtp.vc/companies' },
 	{ slug: 's2g', name: 'S2G Investments', url: 'https://www.s2ginvestments.com/companies' },
 	{ slug: 's3vc', name: 'S3 Ventures', url: 'https://www.s3vc.com/companies-all' },
 	{

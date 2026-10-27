@@ -29,6 +29,11 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}
 	const html = await resp.text();
+	// the domain stopped serving the site in october 2026 and answers
+	// cloudflare registrar's parking page in its place
+	if (/parking\.registrar\.cloudflare\.com/.test(html)) {
+		throw new Error("jovono: the domain is parked at cloudflare registrar — the fund's site is gone");
+	}
 
 	const blob = html.match(DATA)?.[1];
 	if (!blob) {
