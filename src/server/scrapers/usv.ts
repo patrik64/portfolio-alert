@@ -24,6 +24,16 @@ interface Company {
 	legacyUrl?: string | null;
 }
 
+// the flight data writes what json cannot hold as a string starting with "$"
+// ("$undefined", "$NaN", a reference to another chunk), and doubles the "$"
+// of a string that really starts with one ("$$ZK", a token ticker)
+const unflight = (_key: string, value: unknown) =>
+	typeof value === 'string' && value.startsWith('$')
+		? value.startsWith('$$')
+			? value.slice(1)
+			: undefined
+		: value;
+
 const clean = (s: string) => s.replace(/[\u200b]/g, '').replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
 
 // the category is comma-joined, so a note holding a comma would read as two
@@ -58,7 +68,7 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 	for (const m of flight.matchAll(RECORD)) {
 		let record: Company;
 		try {
-			record = JSON.parse(objectAt(flight, m.index ?? 0)) as Company;
+			record = JSON.parse(objectAt(flight, m.index ?? 0), unflight) as Company;
 		} catch {
 			continue;
 		}
