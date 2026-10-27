@@ -3,7 +3,6 @@ import { repo } from 'remult';
 import { api } from '../../server/api';
 import { dayEnd, dayKey, rssFeed, WINDOW_DAYS } from '../../server/rss';
 import { Company } from '../../shared/Company';
-import { Fund } from '../../shared/Fund';
 import { TIMELINE_START } from '../../shared/timeline';
 
 // GET /rss.xml — the nightly newcomer digests as an rss feed
@@ -16,10 +15,7 @@ export const GET = (event: RequestEvent) =>
 		// a fund's first day is its baseline import — the whole portfolio as it
 		// stood, which neither the timeline nor the bluesky post counts as
 		// newcomers. funds imported on the same day share a branch of the query
-		const [baselines, funds] = await Promise.all([
-			repo(Company).groupBy({ group: ['fundSlug'], min: ['firstSeenAt'] }),
-			repo(Fund).find({ limit: 100_000 })
-		]);
+		const baselines = await repo(Company).groupBy({ group: ['fundSlug'], min: ['firstSeenAt'] });
 		const fundsByBaselineEnd = new Map<number, string[]>();
 		for (const b of baselines) {
 			if (!b.firstSeenAt.min) continue;
@@ -49,12 +45,8 @@ export const GET = (event: RequestEvent) =>
 				? [{ fundSlug: c.fundSlug, name: c.name, url: c.url, firstSeenAt: c.firstSeenAt }]
 				: []
 		);
-		const latestFetch = funds.reduce<Date | undefined>(
-			(latest, f) => (f.lastFetchedAt && (!latest || f.lastFetchedAt > latest) ? f.lastFetchedAt : latest),
-			undefined
-		);
 
-		return new Response(rssFeed(rows, latestFetch, now), {
+		return new Response(rssFeed(rows, now), {
 			headers: {
 				// browsers render plain xml as a document tree, while the feed's own
 				// media type gets them offering a download; readers accept either

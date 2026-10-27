@@ -49,7 +49,8 @@ https://portfolio-alert.vercel.app/rss.xml
   by fund (name, category, url and first-seen date per company).
 - **about** (`/about`) — what the app does and how the pages fit together.
 - **rss** (`/rss.xml`) — the nightly newcomer digests as a feed: one item per
-  night that found some, naming every company under its fund.
+  night that found some, and per fund let through by hand, naming every
+  company under its fund.
 
 Every company row shows when the company was first encountered ("first seen").
 
@@ -185,8 +186,11 @@ recorded.
 The same digests are served as an RSS feed at `/rss.xml`, straight from the
 database and covering the same stretch as the timeline: one item per night
 that found newcomers, with the companies named under their funds and linked to
-their sites. A night still being written is
-held back until it has settled, so readers never cache a half-announced one.
+their sites. Newcomers that land more than an hour apart (the most a run may
+take) are separate items, so a fund let through by hand the next morning gets
+an item of its own rather than growing the night's. The newest item is held
+back until an hour after its last newcomer, when nothing more can join it, so
+readers never cache a half-announced one.
 
 A fund that turns up more than 30 new companies at once is held back: the
 fetch fails with a note saying so, nothing is stored, and its earlier

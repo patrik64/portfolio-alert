@@ -1,8 +1,9 @@
 // The newcomers feed: one item per night that turned up new portfolio
 // companies — the same digest scripts/post-newcomers.mjs puts on bluesky, with
 // the headline as the title and every company named under its fund, each
-// linking to its own site. A feed has no length limit, so no night is ever
-// summarized into counts.
+// linking to its own site. A fund let through by hand later in the day (see
+// the README) gets an item of its own, as it gets a post of its own. A feed
+// has no length limit, so no night is ever summarized into counts.
 
 import { FUNDS } from '../shared/funds';
 
@@ -14,14 +15,16 @@ export const FEED_URL = `${SITE_URL}/rss.xml`;
 // keeps (it runs at 22:23 utc, around midnight in Vienna)
 export const TIME_ZONE = 'Europe/Vienna';
 // how far back the feed reaches at most (it never predates the timeline), and
-// at most how many nights it carries
+// at most how many items it carries
 export const WINDOW_DAYS = 90;
 const MAX_ITEMS = 30;
-// a fetch lands its newcomers over a few seconds and the nightly run keeps
-// going for minutes, so a night this fresh is still being written: it stays
-// out of the feed until it has settled, because a reader that caches a
-// half-written entry may never show the rest of it
-const QUIET_MS = 20 * 60_000;
+// a run lands its newcomers within the hour the workflow allows it, so
+// newcomers further apart than that came from separate runs — the night's and
+// a fund let through by hand in the morning — and make separate items. the
+// newest run stays out of the feed until that long has passed, when nothing
+// more can join it: a reader that caches an item never shows what is added to
+// it later
+const RUN_MS = 60 * 60_000;
 
 const clock = new Intl.DateTimeFormat('en', {
 	timeZone: TIME_ZONE,
@@ -29,6 +32,7 @@ const clock = new Intl.DateTimeFormat('en', {
 	month: '2-digit',
 	day: '2-digit',
 	hour: '2-digit',
+	minute: '2-digit',
 	hourCycle: 'h23'
 });
 const inVienna = (d: Date) =>
@@ -102,22 +106,43 @@ const describe = (rows: FeedRow[]) => {
 		.join('\n');
 };
 
-// rows are the genuine newcomers (no baseline imports), newest first;
-// latestFetch is when any fund was last refreshed successfully
-export function rssFeed(rows: FeedRow[], latestFetch: Date | undefined, now = new Date()) {
-	const byDay = groupBy(rows, (r) => dayKey(r.firstSeenAt));
-	const latest = Math.max(rows[0]?.firstSeenAt.getTime() ?? 0, latestFetch?.getTime() ?? 0);
-	if (latest && now.getTime() - latest < QUIET_MS) byDay.delete(dayKey(new Date(latest)));
+// the runs that landed the rows, newest first, each within one day: a gap of
+// more than RUN_MS starts an earlier one
+function runs(rows: FeedRow[]) {
+	const found: { day: string; rows: FeedRow[] }[] = [];
+	for (const row of rows) {
+		const day = dayKey(row.firstSeenAt);
+		const run = found.at(-1);
+		if (run && run.day === day && run.rows.at(-1)!.firstSeenAt.getTime() - row.firstSeenAt.getTime() <= RUN_MS) {
+			run.rows.push(row);
+		} else {
+			found.push({ day, rows: [row] });
+		}
+	}
+	return found;
+}
 
-	const nights = [...byDay].sort(([a], [b]) => (a < b ? 1 : -1)).slice(0, MAX_ITEMS);
-	const items = nights.map(([day, rows]) => {
+// rows are the genuine newcomers (no baseline imports), newest first
+export function rssFeed(rows: FeedRow[], now = new Date()) {
+	const found = runs(rows);
+	if (rows.length && now.getTime() - rows[0].firstSeenAt.getTime() < RUN_MS) found.shift();
+
+	const nights = found.slice(0, MAX_ITEMS);
+	const items = nights.map(({ day, rows }, i) => {
 		const link = `${SITE_URL}/timeline#${day}`;
+		// a day's first run is known by the day alone, as every night was before
+		// runs were told apart; a later one by the time it began
+		const later = found[i + 1]?.day === day;
+		const start = inVienna(rows.at(-1)!.firstSeenAt);
+		const guid = later
+			? `<guid isPermaLink="false">${link}T${start.hour}:${start.minute}</guid>`
+			: `<guid>${link}</guid>`;
 		return [
 			'<item>',
 			`<title>${escape(headline(rows.length))}</title>`,
 			`<link>${link}</link>`,
-			`<guid>${link}</guid>`,
-			// when the night's last newcomer landed
+			guid,
+			// when the run's last newcomer landed
 			`<pubDate>${rows[0].firstSeenAt.toUTCString()}</pubDate>`,
 			`<description>${escape(describe(rows))}</description>`,
 			'</item>'
@@ -127,7 +152,7 @@ export function rssFeed(rows: FeedRow[], latestFetch: Date | undefined, now = ne
 	const description =
 		`New portfolio companies of ${FUNDS.length} venture capital and private equity funds: ` +
 		'one item per night that found some, as announced on bluesky at @portfolio-alert.bsky.social.';
-	const updated = nights.length ? `<lastBuildDate>${nights[0][1][0].firstSeenAt.toUTCString()}</lastBuildDate>\n` : '';
+	const updated = nights.length ? `<lastBuildDate>${nights[0].rows[0].firstSeenAt.toUTCString()}</lastBuildDate>\n` : '';
 
 	return (
 		`<?xml version="1.0" encoding="UTF-8"?>\n` +
