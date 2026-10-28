@@ -1,141 +1,116 @@
 import type { ScrapedCompany } from './types';
 
-const BASE_URL = 'https://mcj.vc';
-const LIST_URL = `${BASE_URL}/portfolio?format=json`;
+const BASE_URL = 'https://ovr.vc';
+const REST_URL = `${BASE_URL}/wp-json/wp/v2`;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-// squarespace, and the portfolio is a collection rather than a gallery, so it
-// answers in json: a company per record with the fund's own sector for it and
-// its tags. the section on the capital page is a summary block capped at
-// thirty, which is the newest of them rather than all; the collection behind
-// it holds eighty-nine, and that is what is read.
+// in october 2026 mcj became override: mcj.vc now answers with a permanent
+// redirect to ovr.vc, a wordpress site whose portfolio is a post type the
+// rest api serves, a company a record. the fund files each under its sector,
+// what it sells (hardware, software, services) and the rounds it came in at,
+// as terms of three taxonomies, read once for their names; a fourth says which
+// of its funds, which is the fund's business rather than the company's.
 //
-// the company's address is not a field. it is somewhere in the write-up, which
-// for the older half is an essay with thirty links in it — press, podcasts,
-// founders' profiles — and for the newer half a Resources list. so a link is
-// only taken as the company's own where its host bears the company's name,
-// preferring the one that points at the site rather than into it; failing
-// that, where the fund labels it "<company>'s website", which is how four of
-// them are written whose address says something else entirely — Face Plant at
-// eatfaceplant.com, Arch at getarch.com.
+// the company's own address is not in the record. it is the one button on the
+// company's page, so the pages are read one after another. the host answers
+// a quick run of requests with 429s that pass in seconds, and say nothing of
+// how long, so every request waits a while and asks again; a company page that
+// will not come leaves the company with the page itself as its link.
 //
-// seven companies name themselves nowhere in their own write-up, so they keep
-// the fund's page for them, which is where the portfolio links anyway.
-//
-// the tags carry what a company does, which of atoms or bits it is, and
-// whether it mitigates or adapts — all of them things about the company. two
-// say which round the fund came in at instead, and those are left out.
+// the new site lists the 39 companies of the fund's second fund, under names
+// that are in five places not the ones mcj used. the old site's 89 stay stored.
 
-const ROUND = /^(?:pre[-\s]?seed|seed|series\s+[a-z]|bridge)$/i;
-const LINK = /<a\b[^>]*?\bhref="(https?:\/\/[^"]+)"[^>]*>([\s\S]*?)<\/a>/g;
+const TAXONOMIES = ['sector', 'business-model', 'stage-invested'] as const;
+const TRIES = 4;
+const BACKOFF_MS = 2_000;
+const PACE_MS = 250;
+const BUTTON = /<a class="elementor-button elementor-button-link[^"]*" href="(https?:\/\/[^"]+)"/;
 
-interface Item {
-	title?: string;
-	fullUrl?: string;
-	body?: string;
-	categories?: string[];
-	tags?: string[];
-}
-interface Page {
-	items?: Item[];
-	pagination?: { nextPage?: boolean; nextPageUrl?: string };
-}
+// companies stored from mcj's site under the names it gave them
+const STORED_AS: Record<string, string> = {
+	aalo: 'Aalo Atomics',
+	hammerhead: 'Hammerhead AI',
+	'mantel capture': 'Mantel',
+	'odyssey energy solutions': 'Odyssey Energy',
+	// the new site misspells it
+	resevoir: 'Reservoir'
+};
 
-const clean = (s: string) =>
+type Taxonomy = (typeof TAXONOMIES)[number];
+
+type Item = { title?: { rendered?: string }; link?: string } & { [T in Taxonomy]?: number[] };
+
+const unescape = (s: string) =>
 	s
-		.replace(/<[^>]+>/g, ' ')
-		.replace(/&#0?39;|&apos;|&#8217;|&#x27;|’/g, "'")
-		.replace(/&quot;|&#8220;|&#8221;/g, '"')
-		.replace(/&nbsp;/g, ' ')
+		.replace(/&#0?39;|&apos;|&#8217;/g, "'")
 		.replace(/&#0?38;|&amp;/g, '&')
-		.replace(/\s+/g, ' ')
-		.trim();
+		.replace(/&quot;/g, '"')
+		.replace(/&#8211;/g, '–')
+		.replace(/&nbsp;/g, ' ');
 
-// the same name written two ways — spaces, capitals and punctuation set aside
-const key = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+const clean = (s: string) => unescape(s).replace(/\s+/g, ' ').trim();
 
-// the brand out of an address: "www.eatfaceplant.com" -> "eatfaceplant"
-const hostKey = (url: string) => {
+// the category is comma-joined, so a term holding a comma would read as two
+const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function get(url: string): Promise<Response> {
+	for (let attempt = 1; ; attempt++) {
+		const resp = await fetch(url, { headers: { 'User-Agent': UA } });
+		if (resp.status !== 429 || attempt === TRIES) return resp;
+		await wait(BACKOFF_MS * attempt);
+	}
+}
+
+async function json<T>(url: string): Promise<T> {
+	const resp = await get(url);
+	if (!resp.ok) {
+		throw new Error(`Failed to fetch ${url}: ${resp.status}`);
+	}
+	return (await resp.json()) as T;
+}
+
+async function siteOf(page: string): Promise<string> {
 	try {
-		const labels = new URL(url).hostname.replace(/^www\./, '').split('.');
-		if (labels.length > 1) labels.pop();
-		return key(labels[labels.length - 1] ?? '');
+		const resp = await get(page);
+		if (!resp.ok) return '';
+		return (await resp.text()).match(BUTTON)?.[1] ?? '';
 	} catch {
 		return '';
 	}
-};
-
-const atRoot = (url: string) => {
-	try {
-		return !new URL(url).pathname.replace(/\/+$/, '');
-	} catch {
-		return false;
-	}
-};
-
-// the one link in a write-up that is the company itself
-function addressOf(item: Item): string {
-	const name = key(item.title ?? '');
-	if (!name) return '';
-
-	const links = [...(item.body ?? '').matchAll(LINK)]
-		.map(([, url, text]) => ({ url, text: clean(text) }))
-		.filter(({ url }) => !url.includes('mcj.vc'));
-
-	// an address that carries the company's name is the company's, and the one
-	// that points at the site beats the one that points at a page inside it
-	const named = links.filter(({ url }) => {
-		const host = hostKey(url);
-		return host.length >= 3 && (host.startsWith(name) || name.startsWith(host));
-	});
-	const own = named.find(({ url }) => atRoot(url)) ?? named[0];
-	if (own) return own.url;
-
-	// failing that, the fund saying which link is the website
-	const labelled = links.find(({ text }) => {
-		if (!/\bwebsite\b/i.test(text)) return false;
-		const said = key(text.replace(/\bwebsite\b/i, '').replace(/'s$/i, ''));
-		return said.length >= 3 && (said.startsWith(name) || name.startsWith(said));
-	});
-	return labelled?.url ?? '';
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const items: Item[] = [];
-	let next: string | undefined = LIST_URL;
-	// the collection answers twenty at a time and says where the next twenty are
-	for (let page = 1; next && page <= 20; page++) {
-		const resp: Response = await fetch(next, { headers: { 'User-Agent': UA } });
-		if (!resp.ok) {
-			throw new Error(`Failed to fetch ${next}: ${resp.status}`);
+	const records = await json<Item[]>(`${REST_URL}/portfolio?per_page=100`);
+	if (records.length === 0) {
+		throw new Error('mcj: no companies in the portfolio collection');
+	}
+
+	const terms = new Map<number, string>();
+	for (const taxonomy of TAXONOMIES) {
+		for (const term of await json<{ id: number; name: string }[]>(`${REST_URL}/${taxonomy}?per_page=100`)) {
+			terms.set(term.id, tag(term.name));
 		}
-		const found = (await resp.json()) as Page;
-		items.push(...(found.items ?? []));
-		next = found.pagination?.nextPage
-			? `${BASE_URL}${found.pagination.nextPageUrl}&format=json`
-			: undefined;
 	}
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-	for (const item of items) {
-		const name = clean(item.title ?? '');
+	for (const record of records) {
+		const shown = clean(record.title?.rendered ?? '');
+		const name = STORED_AS[shown.toLowerCase()] ?? shown;
 		if (!name || seen.has(name.toLowerCase())) continue;
 		seen.add(name.toLowerCase());
-
+		const page = record.link ?? '';
+		await wait(PACE_MS);
 		companies.push({
 			name,
-			category: [...(item.categories ?? []), ...(item.tags ?? [])]
-				.map(clean)
-				.filter((tag) => tag && !ROUND.test(tag))
+			category: TAXONOMIES.flatMap((t) => (record[t] ?? []).map((id) => terms.get(id) ?? ''))
+				.filter(Boolean)
 				.join(', '),
-			url: addressOf(item) || (item.fullUrl ? `${BASE_URL}${item.fullUrl}` : '')
+			url: (page && (await siteOf(page))) || page
 		});
-	}
-
-	if (companies.length === 0) {
-		throw new Error('mcj: no companies in the portfolio collection');
 	}
 
 	return companies;

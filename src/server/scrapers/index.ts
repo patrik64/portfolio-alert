@@ -585,7 +585,6 @@ import { scrape as maverick } from './maverick';
 import { scrape as maveron } from './maveron';
 import { scrape as mayfield } from './mayfield';
 import { scrape as mbx } from './mbx';
-import { scrape as mcj } from './mcj';
 import { scrape as mmv } from './mmv';
 import { scrape as medtechinnovator } from './medtechinnovator';
 import { scrape as mendoza } from './mendoza';
@@ -684,6 +683,7 @@ import { scrape as outsiders } from './outsiders';
 import { scrape as outward } from './outward';
 import { scrape as overkill } from './overkill';
 import { scrape as overlook } from './overlook';
+import { scrape as mcj } from './mcj';
 import { scrape as overture } from './overture';
 import { scrape as overwater } from './overwater';
 import { scrape as ovni } from './ovni';
@@ -1595,7 +1595,6 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	maveron,
 	mayfield,
 	mbx,
-	mcj,
 	mmv,
 	medtechinnovator,
 	mendoza,
@@ -1694,6 +1693,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	outward,
 	overkill,
 	overlook,
+	mcj,
 	overture,
 	overwater,
 	ovni,

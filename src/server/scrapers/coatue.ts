@@ -3,7 +3,7 @@ import type { ScrapedCompany } from './types';
 const BASE_URL = 'https://www.coatue.com';
 const PAGE_URL = `${BASE_URL}/portfolio`;
 // what the page's "load more" asks for: the next companies of its grid
-const MORE_URL = `${BASE_URL}/api/portfolio`;
+const MORE_URL = `${BASE_URL}/api/portfolio-grid-item-list`;
 const PACE_MS = 150;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
@@ -11,7 +11,8 @@ const UA =
 // next over contentful: the full portfolio page ships the first four dozen
 // of its companies in the data it renders from (__NEXT_DATA__), with the
 // count of all of them, and its "load more" asks the site's own route for
-// the rest, four dozen at a time from where the list stands. a company is
+// the rest, four dozen at a time from where the list stands. (until october
+// 2026 the grid was a PortfolioGrid, and the route took its id.) a company is
 // its name, its site, the stage the fund first came in at ("Venture" or
 // "Growth") and a status, "Active" or "Exit". the page covers, it says, all
 // current and exited private investments across the funds coatue manages.
@@ -30,8 +31,7 @@ interface Item {
 
 interface Grid {
 	__typename?: string;
-	sys?: { id?: string };
-	itemsCollection?: { total?: number; items?: Item[] };
+	portfolioGridItemCollection?: { total?: number; items?: Item[] };
 }
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -51,17 +51,16 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 	const sections = (JSON.parse(payload) as {
 		props?: { pageProps?: { page?: { sectionsCollection?: { items?: Grid[] } } } };
 	}).props?.pageProps?.page?.sectionsCollection?.items;
-	const grid = sections?.find((s) => s?.__typename === 'PortfolioGrid');
-	const id = grid?.sys?.id;
-	if (!grid || !id) {
+	const grid = sections?.find((s) => s?.__typename === 'PortfolioGridItemList');
+	if (!grid) {
 		throw new Error('coatue: the portfolio page carries no portfolio grid');
 	}
 
-	const items = [...(grid.itemsCollection?.items ?? [])];
-	let total = grid.itemsCollection?.total ?? items.length;
+	const items = [...(grid.portfolioGridItemCollection?.items ?? [])];
+	let total = grid.portfolioGridItemCollection?.total ?? items.length;
 	while (items.length < total) {
 		await wait(PACE_MS);
-		const url = `${MORE_URL}?id=${encodeURIComponent(id)}&skip=${items.length}`;
+		const url = `${MORE_URL}?skip=${items.length}`;
 		const more = await fetch(url, { headers: { 'User-Agent': UA, Accept: 'application/json' } });
 		if (!more.ok) {
 			throw new Error(

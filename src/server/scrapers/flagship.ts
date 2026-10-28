@@ -30,6 +30,11 @@ function parseGrid(html: string): { name: string; path: string }[] {
 async function fetchList(params: string): Promise<{ name: string; path: string }[]> {
   const url = `${BASE_URL}/companies?${params}`;
   const resp = await fetch(url, { headers: { "User-Agent": UA } });
+  // on 2026-10-28 cloudflare put its bot challenge in front of the whole
+  // site, robots.txt included, for a laptop as for the deployment
+  if (resp.headers.get("cf-mitigated") === "challenge") {
+    throw new Error(`flagship: ${url} answered ${resp.status} with cloudflare's bot challenge`);
+  }
   if (!resp.ok) {
     throw new Error(`Failed to fetch ${url}: ${resp.status}`);
   }
