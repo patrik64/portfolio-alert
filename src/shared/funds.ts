@@ -440,7 +440,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'fuelventures', name: 'Fuel Ventures', url: 'https://www.fuel.ventures/portfolio' },
 	{ slug: 'further', name: 'Further Ventures', url: 'https://ventures.further.ae/companies' },
 	{ slug: 'fusionfund', name: 'Fusion Fund', url: 'https://www.fusionfund.com/portfolio' },
-	{ slug: 'futureafrica', name: 'Future Africa', url: 'https://www.future.africa/companies' },
+	{
+		slug: 'futureafrica',
+		name: 'Future Africa',
+		url: 'https://future-africa.webflow.io/companies'
+	},
 	{ slug: 'futurefood', name: 'Future Food Fund', url: 'https://futurefoodfund.nl/portfolio/' },
 	{ slug: 'futureperfect', name: 'Future Perfect Ventures', url: 'https://www.futureperfectventures.com/invest' },
 	{ slug: 'futurepositive', name: 'Future Positive Capital', url: 'https://www.futurepositivecapital.com/companies' },

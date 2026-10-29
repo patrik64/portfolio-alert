@@ -65,10 +65,19 @@ const note = (s: string) =>
 		.replace(/^acquired by\b/i, 'Acquired by')
 		.replace(/\.$/, '');
 
+// on 2026-10-29 cloudflare put its bot challenge in front of the whole site,
+// robots.txt and the rest api included, for a laptop as for the deployment
+function failure(url: string, resp: Response): Error {
+	if (resp.headers.get('cf-mitigated') === 'challenge') {
+		return new Error(`firstmark: ${url} answered ${resp.status} with cloudflare's bot challenge`);
+	}
+	return new Error(`Failed to fetch ${url}: ${resp.status}`);
+}
+
 async function fetchText(url: string): Promise<string> {
 	const resp = await fetch(url, { headers: { 'User-Agent': UA } });
 	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${url}: ${resp.status}`);
+		throw failure(url, resp);
 	}
 	return resp.text();
 }
@@ -76,7 +85,7 @@ async function fetchText(url: string): Promise<string> {
 async function fetchJson<T>(url: string): Promise<{ data: T; resp: Response }> {
 	const resp = await fetch(url, { headers: { 'User-Agent': UA } });
 	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${url}: ${resp.status}`);
+		throw failure(url, resp);
 	}
 	return { data: (await resp.json()) as T, resp };
 }

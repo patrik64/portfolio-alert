@@ -1,6 +1,6 @@
 import type { ScrapedCompany } from './types';
 
-const PAGE_URL = 'https://www.future.africa/companies';
+const PAGE_URL = 'https://future-africa.webflow.io/companies';
 const MAX_PAGES = 20;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
@@ -14,6 +14,12 @@ const UA =
 // the words, since the fund still holds some of them. a logo grid above the
 // list repeats most of the companies under older names ("Andela Inc") and is
 // not read.
+//
+// in october 2026 the fund moved future.africa to a next.js site that so far
+// holds a line and a link to its investor portal, and www.future.africa no
+// longer answers. the webflow site, last published in april, is still served
+// at webflow's own address for it, so it is read there until the new site
+// lists the companies.
 
 const ITEM = /(?=<div[^>]*role="listitem"[^>]*class="[^"]*\bportco-collection-litem\b)/;
 const NAME = /class="modal-company-name"[^>]*>([\s\S]*?)<\/div>/;
