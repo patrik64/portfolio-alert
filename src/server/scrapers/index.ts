@@ -490,6 +490,7 @@ import { scrape as inovo } from './inovo';
 import { scrape as insight } from './insight';
 import { scrape as inspired } from './inspired';
 import { scrape as intelcapital } from './intelcapital';
+import { scrape as intelligence } from './intelligence';
 import { scrape as interlace } from './interlace';
 import { scrape as inventure } from './inventure';
 import { scrape as inveready } from './inveready';
@@ -1501,6 +1502,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	insight,
 	inspired,
 	intelcapital,
+	intelligence,
 	interlace,
 	inventure,
 	inveready,
