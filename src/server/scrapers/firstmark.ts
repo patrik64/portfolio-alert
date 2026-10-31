@@ -3,6 +3,8 @@ import type { ScrapedCompany } from './types';
 const BASE_URL = 'https://www.firstmark.com';
 const PAGE_URL = `${BASE_URL}/portfolio`;
 const API = `${BASE_URL}/wp-json/wp/v2`;
+const BOARD_URL = 'https://jobs.firstmark.com/companies';
+const GETRO_API = 'https://api.getro.com/api/v2';
 const PER_PAGE = 100;
 const MAX_PAGES = 20;
 // cloudflare in front of the site answers a burst of page requests with 429s
@@ -24,6 +26,33 @@ const UA =
 // the notes and the companies' pages, one by one, for the sites; a page that
 // will not load leaves its company linking to that page. the notes are kept
 // as the fund writes them, a typo or a capital included.
+//
+// on 2026-10-29 cloudflare put its bot challenge in front of the whole site,
+// robots.txt and the rest api included, for a laptop as for the deployment.
+// while it stands the fund's jobs board is read instead, which getro runs on a
+// host of its own: a page naming the board's network, then getro's search, a
+// dozen companies at a time. the board is the fund's list but not its whole
+// portfolio — about ninety of the hundred and fifty, and a company shows only
+// once the fund adds it — so the site is asked first every run and read again
+// as soon as it answers. the board does not say which the fund has exited, and
+// spells some names its own way; those are read as stored from the site.
+
+// companies stored from the site under the names it gave them
+const STORED_AS: Record<string, string> = {
+	'aspect build': 'Aspect',
+	// the company behind ada, at the same address
+	'friends electric': 'Ada',
+	'goodday software': 'GoodDay',
+	'h company': 'H',
+	'henry ai': 'Henry',
+	// getro took the name and the address from an older company's
+	'highbeam research': 'Highbeam',
+	'kasa living': 'Kasa',
+	'loop returns': 'Loop',
+	'parametrix insurance': 'Parametrix',
+	'payy.link': 'Payy',
+	'unlimited funds': 'Unlimited'
+};
 
 interface Post {
 	slug?: string;
@@ -39,6 +68,22 @@ interface Term {
 	slug?: string;
 }
 
+interface BoardCompany {
+	name?: string;
+	domain?: string;
+	stage?: string;
+	visible_industry_tags?: string[];
+}
+
+const NEXT_DATA = /<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/;
+const STAGES: Record<string, string> = {
+	pre_seed: 'Pre-seed',
+	seed: 'Seed',
+	private_equity: 'Private Equity',
+	acquisition: 'Acquired',
+	ipo: 'IPO'
+};
+const UNSAID = /^(?:other|series_unknown|undisclosed|unknown)$/i;
 const ITEM = /(?=<li\b[^>]*\bdata-list-item\b)/;
 const ITEM_PAGE = /href="https?:\/\/(?:www\.)?firstmark\.com\/portfolio\/([^/"?#]+)\/?"/;
 const NOTE = /<p class="origin-top-left f-ui-2\b[^"]*">([\s\S]*?)<\/p>/;
@@ -65,8 +110,21 @@ const note = (s: string) =>
 		.replace(/^acquired by\b/i, 'Acquired by')
 		.replace(/\.$/, '');
 
-// on 2026-10-29 cloudflare put its bot challenge in front of the whole site,
-// robots.txt and the rest api included, for a laptop as for the deployment
+// "https://www.firstmark.com/" -> "firstmark.com"
+const bare = (domain: string) =>
+	domain
+		.trim()
+		.toLowerCase()
+		.replace(/^https?:\/\//, '')
+		.replace(/^www\./, '')
+		.replace(/[/?#].*$/, '');
+
+// "series_b" -> "Series B"
+const stageOf = (stage: string) =>
+	UNSAID.test(stage)
+		? ''
+		: (STAGES[stage] ?? stage.replace(/^series_([a-z])$/, (_, letter: string) => `Series ${letter.toUpperCase()}`));
+
 function failure(url: string, resp: Response): Error {
 	if (resp.headers.get('cf-mitigated') === 'challenge') {
 		return new Error(`firstmark: ${url} answered ${resp.status} with cloudflare's bot challenge`);
@@ -112,12 +170,67 @@ async function siteOf(page: string): Promise<string> {
 	}
 }
 
+async function readBoard(): Promise<ScrapedCompany[]> {
+	const data = (await fetchText(BOARD_URL)).match(NEXT_DATA)?.[1];
+	const network = data ? (JSON.parse(data)?.props?.pageProps?.network as { id?: string | number } | undefined) : undefined;
+	if (!network?.id) {
+		throw new Error("firstmark: the jobs board names no network — getro's page moved");
+	}
+
+	const found: BoardCompany[] = [];
+	let count = Infinity;
+	for (let page = 0; page < MAX_PAGES && found.length < count; page++) {
+		if (page > 0) await wait(PACE_MS);
+		const answer = await fetch(`${GETRO_API}/collections/${network.id}/search/companies`, {
+			method: 'POST',
+			headers: { 'User-Agent': UA, 'Content-Type': 'application/json', Accept: 'application/json' },
+			body: JSON.stringify({ hitsPerPage: 12, page, query: '', filters: '' })
+		});
+		if (!answer.ok) {
+			throw new Error(`firstmark: getro's company search answered ${answer.status} on page ${page}`);
+		}
+		const { results } = (await answer.json()) as { results?: { companies?: BoardCompany[]; count?: number } };
+		const companies = results?.companies ?? [];
+		count = results?.count ?? 0;
+		if (companies.length === 0) break;
+		found.push(...companies);
+	}
+	// a part of the list must not pass for the whole
+	if (found.length === 0 || found.length < count) {
+		throw new Error(`firstmark: getro's search gave ${found.length} of the ${count} companies it counts`);
+	}
+
+	const companies: ScrapedCompany[] = [];
+	const seen = new Set<string>();
+	for (const company of found) {
+		const shown = clean(company.name ?? '');
+		const name = STORED_AS[shown.toLowerCase()] ?? shown;
+		const domain = bare(company.domain ?? '');
+		// the board may list the fund too, for its own openings
+		if (!name || STEALTH.test(name) || domain === 'firstmark.com' || seen.has(name.toLowerCase())) continue;
+		seen.add(name.toLowerCase());
+		companies.push({
+			name,
+			category: [...(company.visible_industry_tags ?? []).map(tag), stageOf(clean(company.stage ?? ''))]
+				.filter((t, i, all) => t && all.indexOf(t) === i)
+				.join(', '),
+			url: domain ? `https://${domain}` : BOARD_URL
+		});
+	}
+
+	return companies;
+}
+
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const [sectors, statuses, html] = await Promise.all([
-		terms('portfolio_categories'),
-		terms('status_categories'),
-		fetchText(PAGE_URL)
-	]);
+	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	if (resp.headers.get('cf-mitigated') === 'challenge') {
+		return readBoard();
+	}
+	if (!resp.ok) {
+		throw failure(PAGE_URL, resp);
+	}
+	const html = await resp.text();
+	const [sectors, statuses] = await Promise.all([terms('portfolio_categories'), terms('status_categories')]);
 
 	// the exit notes, by the company page each card links
 	const notes = new Map<string, string>();
