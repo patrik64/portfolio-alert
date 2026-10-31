@@ -448,6 +448,7 @@ import { scrape as healthy } from './healthy';
 import { scrape as hearstlab } from './hearstlab';
 import { scrape as heartcore } from './heartcore';
 import { scrape as heavybit } from './heavybit';
+import { scrape as helicase } from './helicase';
 import { scrape as helios } from './helios';
 import { scrape as helium3 } from './helium3';
 import { scrape as henq } from './henq';
@@ -1458,6 +1459,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	hearstlab,
 	heartcore,
 	heavybit,
+	helicase,
 	helios,
 	helium3,
 	henq,

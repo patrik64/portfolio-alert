@@ -1,4 +1,4 @@
-// The 1009 tracked funds, in case-insensitive alphabetical order by name — the
+// The 1010 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -503,6 +503,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'hearstlab', name: 'HearstLab', url: 'https://www.hearstlab.com/portfolio' },
 	{ slug: 'heartcore', name: 'Heartcore Capital', url: 'https://www.heartcore.com/companies' },
 	{ slug: 'heavybit', name: 'Heavybit', url: 'https://www.heavybit.com/portfolio' },
+	{ slug: 'helicase', name: 'Helicase Venture', url: 'https://www.helicaseventure.com/portfolio' },
 	{ slug: 'helios', name: 'Helios Capital', url: 'https://www.helioscapital.us/portfolio-2/' },
 	{ slug: 'helium3', name: 'Helium-3 Ventures', url: 'https://www.helium-3ventures.com/#portfolio' },
 	{ slug: 'henq', name: 'henQ', url: 'https://www.henq.vc/#portfolio' },
