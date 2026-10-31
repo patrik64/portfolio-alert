@@ -156,8 +156,10 @@ pnpm post-newcomers --check          # prove the app password still works
 
 `scripts/fetch-all.mjs` calls the same `fetchFund` endpoint the dashboard's
 buttons use, five funds at a time, and leaves what each fund gained in
-`fetch-results.json`. A single stubborn site (a firewall refusing datacenter
-addresses, say) does not turn the night red — only a broad failure does. A site
+`fetch-results.json`. A full run asks the funds that failed once more, ten
+minutes after the rest are done, since a firewall's refusal is often gone by
+then. A single stubborn site (a firewall refusing datacenter addresses, say)
+does not turn the night red — only a broad failure does. A site
 that refuses them outright is marked `local: true` in `src/shared/funds.ts`: the
 nightly leaves the fund out, the dashboard says so, and it is refreshed from a
 laptop against a local dev server now and then:

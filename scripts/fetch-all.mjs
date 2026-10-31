@@ -27,6 +27,9 @@
 // MIN_GAP_HOURS (12): a second run of the day finds nothing and clears the
 // newcomers the first one marked.
 //
+// A full run asks the funds that failed once more, RETRY_WAIT_MINUTES (10) after
+// the rest are done, before it reports them as failed.
+//
 // What each fund gained lands in fetch-results.json, which post-newcomers.mjs
 // reads to announce the night's finds.
 
@@ -69,6 +72,8 @@ if (DRY_RUN && ACCEPT !== undefined) {
 const MIN_GAP_HOURS = Number(process.env.MIN_GAP_HOURS ?? 12);
 // the share of the list that must be that fresh to call it a full refresh
 const FRESH_SHARE = 0.8;
+// how long after the rest of a full run the funds that failed are asked again
+const RETRY_WAIT_MINUTES = Number(process.env.RETRY_WAIT_MINUTES ?? 10);
 
 // the fund list comes from the repo's canonical registry, not from the API:
 // the API only lists funds that have been fetched at least once, so a fund
@@ -204,6 +209,21 @@ async function worker() {
 }
 
 await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+
+// a firewall's refusal is often gone within minutes: some nights siteground's
+// captcha turns away a run of funds and lets the next ones through. a failed
+// fetch stored nothing, so asking again is safe, and the second answer is the
+// one reported. a subset run and a dry run are diagnoses, and keep the first
+if (!only && !DRY_RUN) {
+	const refused = results.filter((r) => r.error);
+	if (refused.length) {
+		console.log(`\nasking the ${refused.length} that failed again in ${RETRY_WAIT_MINUTES} minutes\n`);
+		await new Promise((resolve) => setTimeout(resolve, RETRY_WAIT_MINUTES * 60_000));
+		results.splice(0, results.length, ...results.filter((r) => !r.error));
+		queue.push(...refused);
+		await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+	}
+}
 
 const failed = results.filter((r) => r.error);
 const added = results.reduce((n, r) => n + (r.added ?? 0), 0);

@@ -14,6 +14,10 @@ const UA =
 // api's own id; one missing from it is named after its link's address until
 // it is added. a company out of the current portfolio with no note is kept
 // as "Past portfolio" rather than counted an exit.
+//
+// on 2026-10-30 the fund's site became a single picture, its logo over five of
+// its companies' logos, and the api answers 404. the run says so rather than
+// fail on a bare 404.
 const NAMES: Record<number, string> = {
 	56: 'LendingClub',
 	57: 'BlazeMeter',
@@ -111,6 +115,9 @@ function domainName(host: string): string {
 
 export async function scrape(): Promise<ScrapedCompany[]> {
 	const resp = await fetch(API_URL, { headers: { 'User-Agent': UA, Accept: 'application/json' } });
+	if (resp.status === 404) {
+		throw new Error("flint: the fund's site is now a single picture with no portfolio behind it — nothing to read until it lists one");
+	}
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${API_URL}: ${resp.status}`);
 	}

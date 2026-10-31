@@ -371,7 +371,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'exponent', name: 'Exponent', url: 'https://www.exponentpe.com/our-portfolio' },
 	{ slug: 'fprime', name: 'F-Prime Capital', url: 'https://www.fprimecapital.com/portfolio/' },
 	{ slug: 'f2', name: 'F2 Venture Capital', url: 'https://www.f2vc.com/companies' },
-	{ slug: 'f7', name: 'f7 Ventures', url: 'https://www.f7ventures.com/portfolio/' },
+	{ slug: 'f7', name: 'f7 Ventures', url: 'https://www.f7ventures.com/#portfolio' },
 	{ slug: 'faber', name: 'Faber', url: 'https://www.faber.vc/portfolio/' },
 	{ slug: 'fcavp', name: 'FCA Venture Partners', url: 'https://www.fcavp.com/portfolio' },
 	{ slug: 'felicis', name: 'Felicis', url: 'https://www.felicis.com/companies' },
@@ -752,6 +752,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'oneway', name: 'One Way Ventures', url: 'https://www.onewayvc.com/portfolio' },
 	{ slug: 'oneequity', name: 'OneEquity', url: 'https://www.oneequity.com/portfolio' },
 	{ slug: 'oneragtime', name: 'OneRagtime', url: 'https://www.oneragtime.com/portfolio-companies' },
+	{ slug: 'targetglobal', name: 'OneTarget', url: 'https://onetarget.vc/portfolio' },
 	{ slug: 'onevc', name: 'ONEVC', url: 'https://onevc.vc/' },
 	{ slug: 'openocean', name: 'OpenOcean', url: 'https://www.openocean.vc/portfolio' },
 	{ slug: 'operator', name: 'Operator Partners', url: 'https://www.operatorpartners.com/portfolio' },
@@ -910,7 +911,7 @@ export const FUNDS: FundInfo[] = [
 	},
 	{ slug: 'sante', name: 'Santé Ventures', url: 'https://sante.com/portfolio', local: true },
 	{ slug: 'sapphire', name: 'Sapphire Ventures', url: 'https://sapphireventures.com/companies/' },
-	{ slug: 'satgana', name: 'Satgana', url: 'https://www.satgana.com/portfolio' },
+	{ slug: 'satgana', name: 'Satgana', url: 'https://www.satgana.com/#portfolio' },
 	{ slug: 'scalecapital', name: 'Scale Capital', url: 'https://www.scalecapital.com/portfolio' },
 	{
 		slug: 'schematic',
@@ -1043,7 +1044,6 @@ export const FUNDS: FundInfo[] = [
 		name: 'Systemiq Capital',
 		url: 'https://www.systemiqcapital.earth/portfolio-overview'
 	},
-	{ slug: 'targetglobal', name: 'Target Global', url: 'https://www.targetglobal.vc/portfolio' },
 	{ slug: 'tau', name: 'Tau Ventures', url: 'https://www.tauventures.com/portfolio' },
 	{ slug: 'tcg', name: 'TCG', url: 'https://tcg.co/portfolio/' },
 	{ slug: 'tcv', name: 'TCV', url: 'https://www.tcv.com/partnerships' },

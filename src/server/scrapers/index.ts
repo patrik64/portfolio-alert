@@ -669,6 +669,7 @@ import { scrape as omnivore } from './omnivore';
 import { scrape as oneway } from './oneway';
 import { scrape as oneequity } from './oneequity';
 import { scrape as oneragtime } from './oneragtime';
+import { scrape as targetglobal } from './targetglobal';
 import { scrape as onevc } from './onevc';
 import { scrape as openocean } from './openocean';
 import { scrape as operator } from './operator';
@@ -875,7 +876,6 @@ import { scrape as svangel } from './svangel';
 import { scrape as svhealth } from './svhealth';
 import { scrape as swanlaab } from './swanlaab';
 import { scrape as systemiq } from './systemiq';
-import { scrape as targetglobal } from './targetglobal';
 import { scrape as ten13 } from './ten13';
 import { scrape as telluride } from './telluride';
 import { scrape as teneleven } from './teneleven';
@@ -1679,6 +1679,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	oneway,
 	oneequity,
 	oneragtime,
+	targetglobal,
 	onevc,
 	openocean,
 	operator,
@@ -1885,7 +1886,6 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	svhealth,
 	swanlaab,
 	systemiq,
-	targetglobal,
 	ten13,
 	telluride,
 	teneleven,

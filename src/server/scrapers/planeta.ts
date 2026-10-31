@@ -3,6 +3,9 @@ import type { ScrapedCompany } from './types';
 const PAGE_URL = 'https://planet-a.com/startups/';
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+// the host answered a run of the deployment's requests with a 429 one night
+// (2026-10-30), gone by morning, so a refusal is waited out once
+const RETRY_DELAY_MS = 10_000;
 
 // wordpress: the startups page shows every company as a column, its name as
 // the fund writes it, most in capitals ("ARIS MACHINA", "goodcarbon"), a
@@ -35,7 +38,11 @@ const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g
 const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	let resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	if (resp.status === 429) {
+		await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
+		resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	}
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}
