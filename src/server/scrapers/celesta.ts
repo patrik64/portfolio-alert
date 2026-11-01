@@ -7,22 +7,37 @@ const REFUSED_MS = 20_000;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-// webflow: the portfolio page holds every company as a card — its name,
-// the categories the filter reads ("AI/ML", "Life Sciences", and
-// "Featured", which is for show and dropped) and its stage, "Active",
-// "Exited", or "Exited" and "IPO" together — and the filter runs in the
-// browser. a card links the company's page on the fund's site, where its
-// own site is under "Links"; those pages are fetched one at a time, and a
-// page that will not load leaves its company linking to it.
+// webflow, relaid on 2026-10-31: the portfolio page holds every company as a
+// card — its name, its sectors ("AI Infrastructure"), its status, "Active",
+// "Exited" or "IPO", and under an IPO sometimes the listing ("NASDAQ: CRDO") —
+// and the filter runs in the browser. the page writes the list out twice, as
+// rows and as this grid, and only the grid has the listing. a card links the
+// company's page on the fund's site, which gives the year the fund came in,
+// where the company is based and its site, the first of its buttons that isn't
+// a social network; those pages are fetched one at a time, and a page that will
+// not load leaves its company linking to it.
 
-const CARD = /(?=<div\b[^>]*\bclass="collection-item-12 w-dyn-item")/;
+const CARD = /(?=<div\b[^>]*\bclass="grid_item_link w-dyn-item")/;
 const NAME = /\bfs-list-field="name"[^>]*>([\s\S]*?)<\/div>/;
-const HEADING = /<h2\b[^>]*>([\s\S]*?)<\/h2>/;
 const PAGE = /\bhref="(\/portfolio\/[^"]+)"/;
-const CATEGORY = /\bfs-list-field="category"[^>]*>([\s\S]*?)<\/div>/g;
-const STAGE = /\bfs-list-field="stage"[^>]*>([\s\S]*?)<\/div>/g;
-const SITE = /<a\b[^>]*\bhref="([^"]*)"[^>]*\bclass="port-site\b/;
+const SECTOR = /\bfs-list-value="([^"]*)"\s+fs-list-field="sector"/g;
+const STATUS = /\bclass="port_status\b[^"]*"[^>]*>([\s\S]*?)<\/div>/g;
+const INVESTED = />Initial Investment<\/div>\s*<div\b[^>]*>\s*((?:19|20)\d{2})\b/;
+const PLACE = />location<\/div>\s*<div\b[^>]*>([^<]*)</;
+const BUTTON = /<a\b[^>]*\bhref="(https?:\/\/[^"]+)"[^>]*\bclass="transparent_button\b/g;
+const SOCIAL = /^https?:\/\/(?:[a-z]+\.)?(?:linkedin|twitter|x|facebook|instagram|youtube)\.com\//i;
 const STEALTH = /^stealth\b/i;
+
+// companies stored from the old page under the names it gave them
+const STORED_AS: Record<string, string> = {
+	hioctave: 'HiO'
+};
+
+interface Details {
+	site: string;
+	invested: string;
+	place: string;
+}
 
 const unescape = (s: string) =>
 	s
@@ -39,9 +54,10 @@ const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// the company's site, from its page on the fund's site, or nothing when the
+// what the company's page on the fund's site says of it, or nothing when the
 // page will not load; a refusal is waited out once
-async function siteOf(page: string): Promise<string> {
+async function detailsOf(page: string): Promise<Details> {
+	const nothing = { site: '', invested: '', place: '' };
 	for (let attempt = 0; attempt < 2; attempt++) {
 		try {
 			const resp = await fetch(page, { headers: { 'User-Agent': UA } });
@@ -50,14 +66,19 @@ async function siteOf(page: string): Promise<string> {
 				await wait(REFUSED_MS);
 				continue;
 			}
-			if (!resp.ok) return '';
-			const site = unescape((await resp.text()).match(SITE)?.[1] ?? '').trim();
-			return /^https?:\/\//i.test(site) ? site : '';
+			if (!resp.ok) return nothing;
+			const html = await resp.text();
+			const buttons = [...html.matchAll(BUTTON)].map(([, href]) => unescape(href).trim());
+			return {
+				site: buttons.find((href) => !SOCIAL.test(href)) ?? '',
+				invested: html.match(INVESTED)?.[1] ?? '',
+				place: tag(html.match(PLACE)?.[1] ?? '')
+			};
 		} catch {
-			return '';
+			return nothing;
 		}
 	}
-	return '';
+	return nothing;
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
@@ -70,27 +91,30 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
 	for (const card of html.split(CARD).slice(1)) {
-		const name = clean(card.match(NAME)?.[1] ?? '') || clean(card.match(HEADING)?.[1] ?? '');
+		const shown = clean(card.match(NAME)?.[1] ?? '');
+		const name = STORED_AS[shown.toLowerCase()] ?? shown;
 		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 		seen.add(name.toLowerCase());
-		// the stage is a list, "Exited" and "IPO" for one that went public
-		const stages = [...card.matchAll(STAGE)].map(([, stage]) => tag(stage));
-		const exited = stages.some((s) => /^exit/i.test(s));
-		const listed = stages.some((s) => /\bipo\b/i.test(s));
+		// the status comes first, and under it a listing where there is one
+		const [status = '', listing = ''] = [...card.matchAll(STATUS)].map(([, line]) => tag(line));
+		const listed = /^ipo$/i.test(status);
 		const path = card.match(PAGE)?.[1];
 		const page = path ? `${BASE_URL}${unescape(path)}` : PAGE_URL;
 		if (path) await wait(PACE_MS);
-		const site = path ? await siteOf(page) : '';
+		const details = path ? await detailsOf(page) : { site: '', invested: '', place: '' };
 		companies.push({
 			name,
 			category: [
-				...[...card.matchAll(CATEGORY)].map(([, category]) => tag(category)).filter((c) => !/^featured$/i.test(c)),
+				...[...card.matchAll(SECTOR)].map(([, sector]) => tag(sector)),
+				details.invested ? `Invested ${details.invested}` : '',
+				details.place,
 				listed ? 'IPO' : '',
-				exited ? 'Exited' : ''
+				listing,
+				listed || /^exit/i.test(status) ? 'Exited' : ''
 			]
 				.filter((t, i, all) => t && all.indexOf(t) === i)
 				.join(', '),
-			url: site || page
+			url: details.site || page
 		});
 	}
 	if (companies.length === 0) {
