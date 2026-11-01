@@ -1,4 +1,4 @@
-// The 1011 tracked funds, in case-insensitive alphabetical order by name — the
+// The 1019 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -152,6 +152,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'baincapital', name: 'Bain Capital Ventures', url: 'https://baincapitalventures.com/portfolio/' },
 	{ slug: 'balderton', name: 'Balderton', url: 'https://www.balderton.com/companies/' },
 	{ slug: 'ballistic', name: 'Ballistic Ventures', url: 'https://ballisticventures.com/portfolio/' },
+	{ slug: 'balnord', name: 'Balnord', url: 'https://www.balnord.vc/portfolio' },
 	{ slug: 'bam', name: 'BAM Ventures', url: 'https://www.bam.vc/companies' },
 	{ slug: 'baroda', name: 'Baroda Ventures', url: 'https://www.barodaventures.com/companies' },
 	{ slug: 'baruch', name: 'Baruch Future Ventures', url: 'https://www.baruch.vc/portfolio/' },
@@ -216,6 +217,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'byld', name: 'Byld', url: 'https://www.byld.vc/portfolio' },
 	{ slug: 'bynd', name: 'Bynd Venture Capital', url: 'https://www.bynd.vc/en/portfolio' },
 	{ slug: 'c4v', name: 'C4 Ventures', url: 'https://c4v.com/companies/' },
+	{ slug: 'cacao', name: 'Cacao Capital', url: 'https://cacao-capital.com/portfolio' },
 	{ slug: 'cake', name: 'Cake Ventures', url: 'https://www.cake.vc/companies' },
 	{ slug: 'calmstorm', name: 'Calm/Storm', url: 'https://www.calmstorm.vc/portfolio' },
 	{ slug: 'cic', name: 'Cambridge Innovation Capital', url: 'https://www.cic.vc/companies/' },
@@ -470,6 +472,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'goldenseeds', name: 'Golden Seeds', url: 'https://www.goldenseeds.com/our-companies' },
 	{ slug: 'gv', name: 'Google Ventures', url: 'https://www.gv.com/portfolio' },
 	{ slug: 'gorilla', name: 'Gorilla Capital', url: 'https://gorillacapital.fi/portfolio/' },
+	{ slug: 'gpo', name: 'GPO Fund', url: 'https://www.gpofund.com/portfolio' },
 	{ slug: 'gradient', name: 'Gradient Ventures', url: 'https://www.gradient.com/portfolio/' },
 	{ slug: 'graniteasia', name: 'Granite Asia', url: 'https://www.graniteasia.com/portfolio' },
 	{ slug: 'graph', name: 'Graph Ventures', url: 'https://www.graphventures.com/#companies' },
@@ -540,6 +543,11 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'inertia', name: 'Inertia', url: 'https://inertia.vc/portfolio' },
 	{ slug: 'inflecthealth', name: 'Inflect Health', url: 'https://www.inflect.health/capital' },
 	{ slug: 'initialized', name: 'Initialized Capital', url: 'https://initialized.com/portfolio' },
+	{
+		slug: 'innogest',
+		name: 'Innogest Capital',
+		url: 'https://www.innogestcapital.com/healthcare/portfolio-healthcare/'
+	},
 	{ slug: 'innospark', name: 'Innospark Ventures', url: 'https://innospark.vc/portfolio/' },
 	{ slug: 'innovatingcapital', name: 'Innovating Capital', url: 'https://innovating.capital/companies/' },
 	{
@@ -551,6 +559,11 @@ export const FUNDS: FundInfo[] = [
 		slug: 'innovationindustries',
 		name: 'Innovation Industries',
 		url: 'https://www.innovationindustries.com/portfolio'
+	},
+	{
+		slug: 'innovationworks',
+		name: 'Innovation Works',
+		url: 'https://www.innovationworks.org/investors/portfolio/'
 	},
 	{ slug: 'innovestor', name: 'Innovestor', url: 'https://innovestorgroup.com/venture-capital/portfolio-companies/' },
 	{ slug: 'inovo', name: 'Inovo.vc', url: 'https://inovo.vc/portfolio' },
@@ -626,6 +639,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'lererhippeau', name: 'Lerer Hippeau', url: 'https://www.lererhippeau.com/portfolio' },
 	{ slug: 'lifeforce', name: 'Lifeforce Capital', url: 'https://www.lifeforcecap.com/portfolio' },
 	{ slug: 'lifeline', name: 'Lifeline Ventures', url: 'https://www.lifelineventures.com/companies/' },
+	{ slug: 'lifex', name: 'LifeX Ventures', url: 'https://lifex.vc/founders' },
 	{ slug: 'lightbank', name: 'Lightbank', url: 'https://www.lightbank.com/companies' },
 	{ slug: 'lightspeed', name: 'Lightspeed Ventures', url: 'https://lsvp.com/companies/' },
 	{ slug: 'lightstone', name: 'Lightstone Ventures', url: 'https://www.lightstonevc.com/' },
@@ -1098,6 +1112,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'thirdsphere', name: 'Third Sphere', url: 'https://thirdsphere.com/portfolio/all/' },
 	{ slug: 'thomabravo', name: 'Thoma Bravo', url: 'https://www.thomabravo.com/portfolio' },
 	{ slug: 'timon', name: 'Timon Capital', url: 'https://www.timoncapital.com/portfolio' },
+	{ slug: 'tkpartners', name: 'TK & Partners', url: 'https://tk-partners.co/our-portfolio/' },
 	{ slug: 'tlv', name: 'TLV Partners', url: 'https://tlv.partners/portfolio/' },
 	{ slug: 'tmv', name: 'TMV', url: 'https://www.tmv.vc/companies' },
 	{ slug: 'tnbaura', name: 'TNB Aura', url: 'https://www.tnbaura.vc/portfolio' },
@@ -1108,6 +1123,11 @@ export const FUNDS: FundInfo[] = [
 		slug: 'trailhead',
 		name: 'Trailhead Capital',
 		url: 'https://www.trailheadcap.com/portfolio-companies'
+	},
+	{
+		slug: 'transformhealth',
+		name: 'Transform Health Ventures',
+		url: 'https://transformhealthventures.com/portfolio/'
 	},
 	{ slug: 'transformation', name: 'Transformation Capital', url: 'https://transformcap.com/partner-companies' },
 	{ slug: 'transition', name: 'Transition', url: 'https://transition.vc/companies' },

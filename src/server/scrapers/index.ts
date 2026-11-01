@@ -125,6 +125,7 @@ import { scrape as azolla } from './azolla';
 import { scrape as bcapital } from './bcapital';
 import { scrape as b2venture } from './b2venture';
 import { scrape as ballistic } from './ballistic';
+import { scrape as balnord } from './balnord';
 import { scrape as bam } from './bam';
 import { scrape as baroda } from './baroda';
 import { scrape as baruch } from './baruch';
@@ -170,6 +171,7 @@ import { scrape as byfounders } from './byfounders';
 import { scrape as byld } from './byld';
 import { scrape as bynd } from './bynd';
 import { scrape as c4v } from './c4v';
+import { scrape as cacao } from './cacao';
 import { scrape as cake } from './cake';
 import { scrape as calmstorm } from './calmstorm';
 import { scrape as cic } from './cic';
@@ -419,6 +421,7 @@ import { scrape as gingerbread } from './gingerbread';
 import { scrape as glasswing } from './glasswing';
 import { scrape as glilot } from './glilot';
 import { scrape as gorilla } from './gorilla';
+import { scrape as gpo } from './gpo';
 import { scrape as gradient } from './gradient';
 import { scrape as graniteasia } from './graniteasia';
 import { scrape as graph } from './graph';
@@ -481,10 +484,12 @@ import { scrape as industrious } from './industrious';
 import { scrape as inertia } from './inertia';
 import { scrape as inflecthealth } from './inflecthealth';
 import { scrape as initialized } from './initialized';
+import { scrape as innogest } from './innogest';
 import { scrape as innospark } from './innospark';
 import { scrape as innovatingcapital } from './innovatingcapital';
 import { scrape as innovationendeavors } from './innovationendeavors';
 import { scrape as innovationindustries } from './innovationindustries';
+import { scrape as innovationworks } from './innovationworks';
 import { scrape as innovestor } from './innovestor';
 import { scrape as inovo } from './inovo';
 import { scrape as insight } from './insight';
@@ -547,6 +552,7 @@ import { scrape as leftlane } from './leftlane';
 import { scrape as lererhippeau } from './lererhippeau';
 import { scrape as lifeforce } from './lifeforce';
 import { scrape as lifeline } from './lifeline';
+import { scrape as lifex } from './lifex';
 import { scrape as lightbank } from './lightbank';
 import { scrape as lightspeed } from './lightspeed';
 import { scrape as lightstone } from './lightstone';
@@ -902,6 +908,7 @@ import { scrape as thirdrock } from './thirdrock';
 import { scrape as thirdsphere } from './thirdsphere';
 import { scrape as thomabravo } from './thomabravo';
 import { scrape as timon } from './timon';
+import { scrape as tkpartners } from './tkpartners';
 import { scrape as tlv } from './tlv';
 import { scrape as tmv } from './tmv';
 import { scrape as tnbaura } from './tnbaura';
@@ -909,6 +916,7 @@ import { scrape as toba } from './toba';
 import { scrape as toyota } from './toyota';
 import { scrape as townhall } from './townhall';
 import { scrape as trianglepeak } from './trianglepeak';
+import { scrape as transformhealth } from './transformhealth';
 import { scrape as transformation } from './transformation';
 import { scrape as uncork } from './uncork';
 import { scrape as trailhead } from './trailhead';
@@ -1137,6 +1145,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	bcapital,
 	b2venture,
 	ballistic,
+	balnord,
 	bam,
 	baroda,
 	baruch,
@@ -1182,6 +1191,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	byld,
 	bynd,
 	c4v,
+	cacao,
 	cake,
 	calmstorm,
 	cic,
@@ -1431,6 +1441,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	glasswing,
 	glilot,
 	gorilla,
+	gpo,
 	gradient,
 	graniteasia,
 	graph,
@@ -1493,10 +1504,12 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	inertia,
 	inflecthealth,
 	initialized,
+	innogest,
 	innospark,
 	innovatingcapital,
 	innovationendeavors,
 	innovationindustries,
+	innovationworks,
 	innovestor,
 	inovo,
 	insight,
@@ -1559,6 +1572,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	lererhippeau,
 	lifeforce,
 	lifeline,
+	lifex,
 	lightbank,
 	lightspeed,
 	lightstone,
@@ -1914,6 +1928,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	thirdsphere,
 	thomabravo,
 	timon,
+	tkpartners,
 	tlv,
 	tmv,
 	tnbaura,
@@ -1921,6 +1936,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	toyota,
 	townhall,
 	trianglepeak,
+	transformhealth,
 	transformation,
 	uncork,
 	trailhead,
