@@ -4,6 +4,7 @@ import type { ScrapedCompany } from './types';
 import { scrape as fourohsix } from './fourohsix';
 import { scrape as zeroonea } from './01a';
 import { scrape as tend } from './10d';
+import { scrape as fourteenfourteen } from './1414';
 import { scrape as twentyfifty } from './twentyfifty';
 import { scrape as twentyvc } from './twentyvc';
 import { scrape as twentyonefifty } from './twentyonefifty';
@@ -46,6 +47,7 @@ import { scrape as activepartners } from './activepartners';
 import { scrape as acton } from './acton';
 import { scrape as ada } from './ada';
 import { scrape as adapt } from './adapt';
+import { scrape as adevinta } from './adevinta';
 import { scrape as advent } from './advent';
 import { scrape as adventls } from './adventls';
 import { scrape as aera } from './aera';
@@ -152,12 +154,15 @@ import { scrape as bigsur } from './bigsur';
 import { scrape as bigfoot } from './bigfoot';
 import { scrape as bip } from './bip';
 import { scrape as blackops } from './blackops';
+import { scrape as blackfin } from './blackfin';
 import { scrape as blackhorn } from './blackhorn';
+import { scrape as blacksheep } from './blacksheep';
 import { scrape as blank } from './blank';
 import { scrape as bling } from './bling';
 import { scrape as blossom } from './blossom';
 import { scrape as bluventures } from './bluventures';
 import { scrape as boxone } from './boxone';
+import { scrape as brandenburg } from './brandenburg';
 import { scrape as brandproject } from './brandproject';
 import { scrape as breadandbutter } from './breadandbutter';
 import { scrape as breaktrail } from './breaktrail';
@@ -213,6 +218,7 @@ import { scrape as collabcapital } from './collabcapital';
 import { scrape as collabfund } from './collabfund';
 import { scrape as colle } from './colle';
 import { scrape as collide } from './collide';
+import { scrape as comeback } from './comeback';
 import { scrape as commerce } from './commerce';
 import { scrape as commonweal } from './commonweal';
 import { scrape as companyventures } from './companyventures';
@@ -221,10 +227,13 @@ import { scrape as concentric } from './concentric';
 import { scrape as congruent } from './congruent';
 import { scrape as bbv } from './bbv';
 import { scrape as bluepointe } from './bluepointe';
+import { scrape as blueworld } from './blueworld';
+import { scrape as blumberg } from './blumberg';
 import { scrape as boldstart } from './boldstart';
 import { scrape as bolt } from './bolt';
 import { scrape as bond } from './bond';
 import { scrape as bonfire } from './bonfire';
+import { scrape as bookmark } from './bookmark';
 import { scrape as boost } from './boost';
 import { scrape as borderless } from './borderless';
 import { scrape as boro } from './boro';
@@ -240,6 +249,7 @@ import { scrape as converge } from './converge';
 import { scrape as coral } from './coral';
 import { scrape as corevc } from './corevc';
 import { scrape as correlation } from './correlation';
+import { scrape as cortado } from './cortado';
 import { scrape as cortical } from './cortical';
 import { scrape as costanoa } from './costanoa';
 import { scrape as craft } from './craft';
@@ -276,6 +286,7 @@ import { scrape as dfs } from './dfs';
 import { scrape as differential } from './differential';
 import { scrape as digitalis } from './digitalis';
 import { scrape as digitx } from './digitx';
+import { scrape as dip } from './dip';
 import { scrape as distributed } from './distributed';
 import { scrape as divergent } from './divergent';
 import { scrape as dncapital } from './dncapital';
@@ -546,6 +557,7 @@ import { scrape as launchny } from './launchny';
 import { scrape as launchpad } from './launchpad';
 import { scrape as ldv } from './ldv';
 import { scrape as leadout } from './leadout';
+import { scrape as leafytunnel } from './leafytunnel';
 import { scrape as learncapital } from './learncapital';
 import { scrape as learnstart } from './learnstart';
 import { scrape as leftlane } from './leftlane';
@@ -812,6 +824,7 @@ import { scrape as saasvc } from './saasvc';
 import { scrape as salt } from './salt';
 import { scrape as samaipata } from './samaipata';
 import { scrape as samsungnext } from './samsungnext';
+import { scrape as sandwater } from './sandwater';
 import { scrape as sanofiventures } from './sanofiventures';
 import { scrape as sante } from './sante';
 import { scrape as satgana } from './satgana';
@@ -830,10 +843,12 @@ import { scrape as serpentine } from './serpentine';
 import { scrape as setventures } from './setventures';
 import { scrape as sevensevensix } from './sevensevensix';
 import { scrape as sfc } from './sfc';
+import { scrape as shape } from './shape';
 import { scrape as shield } from './shield';
 import { scrape as shiftinvest } from './shiftinvest';
 import { scrape as shima } from './shima';
 import { scrape as shine } from './shine';
+import { scrape as shorooq } from './shorooq';
 import { scrape as shrug } from './shrug';
 import { scrape as sierra } from './sierra';
 import { scrape as sigmaprime } from './sigmaprime';
@@ -1013,6 +1028,7 @@ import { scrape as xfund } from './xfund';
 import { scrape as xrcventures } from './xrcventures';
 import { scrape as xyz } from './xyz';
 import { scrape as ycombinator } from './ycombinator';
+import { scrape as yara } from './yara';
 import { scrape as yesvc } from './yesvc';
 import { scrape as ylventures } from './ylventures';
 import { scrape as zcg } from './zcg';
@@ -1025,6 +1041,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	'406': fourohsix,
 	'01a': zeroonea,
 	'10d': tend,
+	'1414': fourteenfourteen,
 	'2050': twentyfifty,
 	'2150': twentyonefifty,
 	'3vc': threevc,
@@ -1066,6 +1083,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	acton,
 	ada,
 	adapt,
+	adevinta,
 	advent,
 	adventls,
 	aera,
@@ -1172,12 +1190,15 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	bigfoot,
 	bip,
 	blackops,
+	blackfin,
 	blackhorn,
+	blacksheep,
 	blank,
 	bling,
 	blossom,
 	bluventures,
 	boxone,
+	brandenburg,
 	brandproject,
 	breadandbutter,
 	breaktrail,
@@ -1233,6 +1254,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	collabfund,
 	colle,
 	collide,
+	comeback,
 	commerce,
 	commonweal,
 	companyventures,
@@ -1241,10 +1263,13 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	congruent,
 	bbv,
 	bluepointe,
+	blueworld,
+	blumberg,
 	boldstart,
 	bolt,
 	bond,
 	bonfire,
+	bookmark,
 	boost,
 	borderless,
 	boro,
@@ -1260,6 +1285,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	coral,
 	corevc,
 	correlation,
+	cortado,
 	cortical,
 	costanoa,
 	craft,
@@ -1296,6 +1322,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	differential,
 	digitalis,
 	digitx,
+	dip,
 	distributed,
 	divergent,
 	dncapital,
@@ -1566,6 +1593,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	launchpad,
 	ldv,
 	leadout,
+	leafytunnel,
 	learncapital,
 	learnstart,
 	leftlane,
@@ -1832,6 +1860,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	salt,
 	samaipata,
 	samsungnext,
+	sandwater,
 	sanofiventures,
 	sante,
 	satgana,
@@ -1850,10 +1879,12 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	setventures,
 	sevensevensix,
 	sfc,
+	shape,
 	shield,
 	shiftinvest,
 	shima,
 	shine,
+	shorooq,
 	shrug,
 	sierra,
 	sigmaprime,
@@ -2034,6 +2065,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	xrcventures,
 	xyz,
 	ycombinator,
+	yara,
 	yesvc,
 	ylventures,
 	zcg,
