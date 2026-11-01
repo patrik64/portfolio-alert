@@ -1,4 +1,4 @@
-// The 1035 tracked funds, in case-insensitive alphabetical order by name — the
+// The 1038 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -226,6 +226,8 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'breakout', name: 'Breakout Ventures', url: 'https://breakout.vc/portfolio' },
 	{ slug: 'breakthrough', name: 'Breakthrough Energy', url: 'https://www.breakthroughenergy.org/portfolio/index.html' },
 	{ slug: 'breega', name: 'Breega', url: 'https://portfolio.breega.com/' },
+	{ slug: 'brickyard', name: 'Brickyard', url: 'https://www.justlaybrick.com/portcos' },
+	{ slug: 'brighter', name: 'Brighter Capital', url: 'https://brightercapital.com/#investments' },
 	{ slug: 'broocknell', name: 'Broocknell Ventures', url: 'https://broocknell.com/all-projects/' },
 	{ slug: 'btn', name: 'BTN Ventures', url: 'https://www.btn.vc/portfolio' },
 	{ slug: 'buildingventures', name: 'Building Ventures', url: 'https://buildingventures.com/companies/' },
@@ -247,6 +249,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'carbonsilicon', name: 'Carbon Silicon Ventures', url: 'https://carbonsilicon.vc/' },
 	{ slug: 'cardumen', name: 'Cardumen Capital', url: 'https://www.cardumencapital.com/portfolio' },
 	{ slug: 'caruso', name: 'Caruso Ventures', url: 'https://carusoventures.com/investments' },
+	{ slug: 'casaverde', name: 'Casa Verde Capital', url: 'https://casaverdecapital.com/portfolio/' },
 	{ slug: 'castleisland', name: 'Castle Island Ventures', url: 'https://castleisland.vc/portfolio/' },
 	{ slug: 'cathay', name: 'Cathay Innovation', url: 'https://cathayinnovation.com/portfolio/' },
 	{ slug: 'cathexis', name: 'Cathexis Ventures', url: 'https://cathexis.ventures/portfolio' },

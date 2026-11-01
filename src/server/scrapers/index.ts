@@ -169,6 +169,8 @@ import { scrape as breaktrail } from './breaktrail';
 import { scrape as breakout } from './breakout';
 import { scrape as breakthrough } from './breakthrough';
 import { scrape as breega } from './breega';
+import { scrape as brickyard } from './brickyard';
+import { scrape as brighter } from './brighter';
 import { scrape as broocknell } from './broocknell';
 import { scrape as btn } from './btn';
 import { scrape as buildingventures } from './buildingventures';
@@ -190,6 +192,7 @@ import { scrape as capricorn } from './capricorn';
 import { scrape as carbonsilicon } from './carbonsilicon';
 import { scrape as cardumen } from './cardumen';
 import { scrape as caruso } from './caruso';
+import { scrape as casaverde } from './casaverde';
 import { scrape as castleisland } from './castleisland';
 import { scrape as cathay } from './cathay';
 import { scrape as cathexis } from './cathexis';
@@ -1205,6 +1208,8 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	breakout,
 	breakthrough,
 	breega,
+	brickyard,
+	brighter,
 	broocknell,
 	btn,
 	buildingventures,
@@ -1226,6 +1231,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	carbonsilicon,
 	cardumen,
 	caruso,
+	casaverde,
 	castleisland,
 	cathay,
 	cathexis,
