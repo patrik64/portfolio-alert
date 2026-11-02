@@ -170,6 +170,18 @@ pnpm fetch-all --only=stripes --dry-run   # the scrape alone, from production,
                                           # to see whether the site relented
 ```
 
+A fund with nothing to read for now, its site down or rebuilt without a
+portfolio, is marked `paused: true` in `src/shared/funds.ts`. Nothing fetches it
+until that comes off: every run of `fetch-all` leaves it out, even one naming it,
+the `fetchFund` endpoint refuses it, and the dashboard says so and offers no
+refresh. Its companies stay as they are, along with the error it was paused over.
+A dry run naming it still asks, since that stores nothing, and shows whether the
+site has come back:
+
+```sh
+pnpm fetch-all --only=flint --dry-run
+```
+
 `scripts/post-newcomers.mjs` then announces the finds on Bluesky as
 [@portfolio-alert.bsky.social](https://bsky.app/profile/portfolio-alert.bsky.social),
 naming every company and linking it to its own site. A long list continues into

@@ -59,8 +59,8 @@
 	async function fetchAll() {
 		if (running) return;
 		running = true;
-		statuses = Object.fromEntries(FUNDS.map((f) => [f.slug, 'pending' as Status]));
-		const queue = FUNDS.map((f) => f.slug);
+		const queue = FUNDS.filter((f) => !f.paused).map((f) => f.slug);
+		statuses = Object.fromEntries(queue.map((slug) => [slug, 'pending' as Status]));
 		// 5 workers drain the queue; one fund failing doesn't stop the rest
 		await Promise.all(
 			Array.from({ length: 5 }, async () => {
@@ -147,6 +147,14 @@
 							local only
 						</span>
 					{/if}
+					{#if card.paused}
+						<span
+							class="rounded-full bg-gray-200 px-2 py-0.5 text-xs font-semibold text-gray-600"
+							title="not fetched until it is unpaused; its companies are as they were when it last worked"
+						>
+							paused
+						</span>
+					{/if}
 				</div>
 				<div class="mt-1 flex items-center justify-between gap-2 text-xs text-gray-500">
 					<span>
@@ -154,7 +162,7 @@
 							? `fetched ${card.fund.lastFetchedAt.toLocaleString()}`
 							: ''}
 					</span>
-					{#if dev}
+					{#if dev && !card.paused}
 						<button
 							type="button"
 							aria-label={`refresh ${card.name}`}

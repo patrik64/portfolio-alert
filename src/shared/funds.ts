@@ -13,6 +13,10 @@ export interface FundInfo {
 	// addresses outright (a firewall scoring them as bots), so the nightly
 	// leaves the fund out rather than record the refusal every night
 	local?: true;
+	// not fetched at all, by anyone, until this comes off: the site has nothing to
+	// read for now, or nothing it will give us. the companies stay as they are, and
+	// a dry run that names the fund still asks, to see whether it has come back
+	paused?: true;
 }
 
 export const FUNDS: FundInfo[] = [
@@ -423,9 +427,14 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'firstminute', name: 'firstminute capital', url: 'https://www.firstminute.capital/portfolio' },
 	{ slug: 'fitch', name: 'Fitch Ventures', url: 'https://www.fitchventures.com/portfolio' },
 	{ slug: 'fjlabs', name: 'FJ Labs', url: 'https://www.fjlabs.com/portfolio' },
-	{ slug: 'flagship', name: 'Flagship Pioneering', url: 'https://www.flagshippioneering.com/companies' },
+	{
+		slug: 'flagship',
+		name: 'Flagship Pioneering',
+		url: 'https://www.flagshippioneering.com/companies',
+		paused: true
+	},
 	{ slug: 'flare', name: 'Flare Capital Partners', url: 'https://www.flarecapital.com/companies/' },
-	{ slug: 'flint', name: 'Flint Capital', url: 'https://flintcap.com/' },
+	{ slug: 'flint', name: 'Flint Capital', url: 'https://flintcap.com/', paused: true },
 	{ slug: 'floodgate', name: 'Floodgate', url: 'https://www.floodgate.com/companies' },
 	{ slug: 'flourish', name: 'Flourish Ventures', url: 'https://flourishventures.com/portfolio/' },
 	{ slug: 'flucas', name: 'Flucas Ventures', url: 'https://www.flucasvc.com/portfolio' },
@@ -571,7 +580,12 @@ export const FUNDS: FundInfo[] = [
 		url: 'https://www.innogestcapital.com/healthcare/portfolio-healthcare/'
 	},
 	{ slug: 'innospark', name: 'Innospark Ventures', url: 'https://innospark.vc/portfolio/' },
-	{ slug: 'innovatingcapital', name: 'Innovating Capital', url: 'https://innovating.capital/companies/' },
+	{
+		slug: 'innovatingcapital',
+		name: 'Innovating Capital',
+		url: 'https://innovating.capital/companies/',
+		paused: true
+	},
 	{
 		slug: 'innovationendeavors',
 		name: 'Innovation Endeavors',
@@ -910,7 +924,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'redstone', name: 'Redstone', url: 'https://www.redstone.vc/portfolio' },
 	{ slug: 'refashiond', name: 'REFASHIOND Ventures', url: 'https://www.refashiond.com/fund-i-portfolio' },
 	{ slug: 'reflex', name: 'Reflex Capital', url: 'https://www.reflexcapital.com/portfolio/' },
-	{ slug: 'relay', name: 'Relay Ventures', url: 'https://relay.vc/portfolio/' },
+	{ slug: 'relay', name: 'Relay Ventures', url: 'https://relay.vc/portfolio/', paused: true },
 	{ slug: 'renegade', name: 'Renegade Partners', url: 'https://www.renegadepartners.com/companies' },
 	{ slug: 'renewal', name: 'Renewal Funds', url: 'https://www.renewalfunds.com/portfolio/' },
 	{ slug: 'resolute', name: 'Resolute Ventures', url: 'https://www.resolute.vc/companies' },

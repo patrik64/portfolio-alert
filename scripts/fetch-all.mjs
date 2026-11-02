@@ -30,6 +30,9 @@
 // A full run asks the funds that failed once more, RETRY_WAIT_MINUTES (10) after
 // the rest are done, before it reports them as failed.
 //
+// A fund marked paused in funds.ts is left out of every run, even one naming it.
+// Only a dry run naming it still asks, which stores nothing.
+//
 // What each fund gained lands in fetch-results.json, which post-newcomers.mjs
 // reads to announce the night's finds.
 
@@ -80,10 +83,16 @@ const RETRY_WAIT_MINUTES = Number(process.env.RETRY_WAIT_MINUTES ?? 10);
 // newly added to funds.ts would otherwise never get its first fetch
 const registry = readFileSync(new URL('../src/shared/funds.ts', import.meta.url), 'utf8');
 // a name holding an apostrophe is written in double quotes, so both kinds
-// count; an entry marked local names a fund fetched from a laptop only
+// count; an entry marked local names a fund fetched from a laptop only, and one
+// marked paused a fund not fetched at all
 let funds = [
 	...registry.matchAll(/\{[^{}]*\bslug: '([^']+)',\s*name: (?:'([^']*)'|"([^"]*)")[^{}]*\}/gs)
-].map((m) => ({ slug: m[1], name: m[2] ?? m[3], local: /\blocal: true\b/.test(m[0]) }));
+].map((m) => ({
+	slug: m[1],
+	name: m[2] ?? m[3],
+	local: /\blocal: true\b/.test(m[0]),
+	paused: /\bpaused: true\b/.test(m[0])
+}));
 if (funds.length === 0) {
 	console.error('no funds parsed from src/shared/funds.ts');
 	process.exit(1);
@@ -103,6 +112,13 @@ if (funds.length !== declared) {
 const LOCAL_BASE = /^https?:\/\/(?:localhost|127\.0\.0\.1|\[::1\])(?::\d+)?(?:\/|$)/.test(BASE_URL);
 const leftOut = !only && !LOCAL_BASE ? funds.filter((f) => f.local) : [];
 if (leftOut.length) funds = funds.filter((f) => !f.local);
+
+// a paused fund stays out until the flag comes off, whoever runs this and wherever
+// against. a dry run naming one still asks: it stores nothing, and it is how to see
+// whether the site has come back
+const askedAnyway = (f) => DRY_RUN && only?.includes(f.slug);
+const paused = funds.filter((f) => f.paused && !askedAnyway(f) && (!only || only.includes(f.slug)));
+funds = funds.filter((f) => !f.paused || askedAnyway(f));
 
 // how many funds the app says were refreshed within the last `hours`
 async function freshlyFetched(hours) {
@@ -154,6 +170,9 @@ if (leftOut.length) {
 	console.log(
 		`leaving out ${leftOut.length} fetched from a laptop only: ${leftOut.map((f) => f.slug).join(', ')}`
 	);
+}
+if (paused.length) {
+	console.log(`leaving out ${paused.length} paused: ${paused.map((f) => f.slug).join(', ')}`);
 }
 console.log('');
 
@@ -255,7 +274,8 @@ if (process.env.GITHUB_STEP_SUMMARY) {
 		...failed.map((f) => `- ❌ **${f.slug}**: ${f.error}`),
 		...(leftOut.length
 			? [`- left out, fetched from a laptop only: ${leftOut.map((f) => f.slug).join(', ')}`]
-			: [])
+			: []),
+		...(paused.length ? [`- left out, paused: ${paused.map((f) => f.slug).join(', ')}`] : [])
 	];
 	appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join('\n') + '\n');
 }

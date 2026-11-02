@@ -1,5 +1,5 @@
 // Standalone smoke test for the ported scrapers, outside the SvelteKit app:
-//   pnpm test-scrapers            run all 35
+//   pnpm test-scrapers            run all but the paused ones
 //   pnpm test-scrapers slug ...   run selected ones
 import { scraperBySlug, scrapers } from '../src/server/scrapers/index';
 
@@ -13,7 +13,7 @@ const targets = args.length
 			}
 			return s;
 		})
-	: scrapers;
+	: scrapers.filter((s) => !s.paused);
 
 let failed = 0;
 for (const s of targets) {

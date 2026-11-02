@@ -178,6 +178,8 @@ export class ScrapeController {
 		const { scraperBySlug } = await import('../server/scrapers/index');
 		const entry = scraperBySlug.get(slug);
 		if (!entry) throw new Error(`unknown fund: ${slug}`);
+		// before the try, so a refusal leaves the error the fund was paused over
+		if (entry.paused) throw new Error(`${entry.name}: paused, and not fetched until that comes off`);
 		if (accept) {
 			if (accept !== 'newcomers' && accept !== 'baseline') {
 				throw new Error(`accept is 'newcomers' or 'baseline', not '${accept}'`);
