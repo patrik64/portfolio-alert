@@ -213,10 +213,12 @@ import { scrape as cleo } from './cleo';
 import { scrape as clevelandavenue } from './clevelandavenue';
 import { scrape as climactic } from './climactic';
 import { scrape as climatecapital } from './climatecapital';
+import { scrape as climatekic } from './climatekic';
 import { scrape as climentum } from './climentum';
 import { scrape as clocktower } from './clocktower';
 import { scrape as coalition } from './coalition';
 import { scrape as coatue } from './coatue';
+import { scrape as cofounder } from './cofounder';
 import { scrape as collabcapital } from './collabcapital';
 import { scrape as collabfund } from './collabfund';
 import { scrape as colle } from './colle';
@@ -227,6 +229,7 @@ import { scrape as commonweal } from './commonweal';
 import { scrape as companyventures } from './companyventures';
 import { scrape as compound } from './compound';
 import { scrape as concentric } from './concentric';
+import { scrape as concept } from './concept';
 import { scrape as congruent } from './congruent';
 import { scrape as bbv } from './bbv';
 import { scrape as bluepointe } from './bluepointe';
@@ -883,6 +886,7 @@ import { scrape as spice } from './spice';
 import { scrape as spintop } from './spintop';
 import { scrape as springtime } from './springtime';
 import { scrape as sprout } from './sprout';
+import { scrape as starquest } from './starquest';
 import { scrape as startingline } from './startingline';
 import { scrape as story } from './story';
 import { scrape as stoutstreet } from './stoutstreet';
@@ -1252,10 +1256,12 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	clevelandavenue,
 	climactic,
 	climatecapital,
+	climatekic,
 	climentum,
 	clocktower,
 	coalition,
 	coatue,
+	cofounder,
 	collabcapital,
 	collabfund,
 	colle,
@@ -1266,6 +1272,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	companyventures,
 	compound,
 	concentric,
+	concept,
 	congruent,
 	bbv,
 	bluepointe,
@@ -1922,6 +1929,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	spintop,
 	springtime,
 	sprout,
+	starquest,
 	startingline,
 	story,
 	stoutstreet,

@@ -1,4 +1,4 @@
-// The 1038 tracked funds, in case-insensitive alphabetical order by name — the
+// The 1042 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -278,10 +278,16 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'clevelandavenue', name: 'Cleveland Avenue', url: 'https://www.clevelandavenue.com/portfolio' },
 	{ slug: 'climactic', name: 'Climactic', url: 'https://www.climactic.vc/portfolio' },
 	{ slug: 'climatecapital', name: 'Climate Capital', url: 'https://www.climatecapital.co/portfolio' },
+	{
+		slug: 'climatekic',
+		name: 'Climate KIC',
+		url: 'https://www.climate-kic.org/our-community/our-members/'
+	},
 	{ slug: 'climentum', name: 'Climentum Capital', url: 'https://climentum.com/portfolio' },
 	{ slug: 'clocktower', name: 'Clocktower Ventures', url: 'https://www.clocktowerventures.com/#section-portfolio' },
 	{ slug: 'coalition', name: 'Coalition Operators', url: 'https://www.coalitionoperators.com/portfolio' },
 	{ slug: 'coatue', name: 'Coatue', url: 'https://www.coatue.com/portfolio' },
+	{ slug: 'cofounder', name: 'Cofounder VC', url: 'https://www.cofounder.pl/' },
 	{ slug: 'collabcapital', name: 'Collab Capital', url: 'https://www.collab.capital/portfolio' },
 	{ slug: 'collabfund', name: 'Collaborative Fund', url: 'https://collabfund.com/portfolio/' },
 	{ slug: 'colle', name: 'Colle Capital', url: 'https://colle.vc/portfolio/' },
@@ -292,6 +298,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'companyventures', name: 'Company Ventures', url: 'https://www.companyventures.com/portfolio' },
 	{ slug: 'compound', name: 'Compound', url: 'https://www.compound.vc/portfolio' },
 	{ slug: 'concentric', name: 'Concentric', url: 'https://concentric.vc/investments/' },
+	{ slug: 'concept', name: 'Concept Ventures', url: 'https://concept.vc/portfolio' },
 	{ slug: 'congruent', name: 'Congruent Ventures', url: 'https://www.congruentvc.com/portfolio' },
 	{ slug: 'connect', name: 'Connect Ventures', url: 'https://www.connectventures.co/companies' },
 	{ slug: 'contour', name: 'Contour Venture Partners', url: 'https://www.contourventures.com/portfolio/' },
@@ -1055,6 +1062,11 @@ export const FUNDS: FundInfo[] = [
 		slug: 'standardindustries',
 		name: 'Standard Industries',
 		url: 'https://standardindustries.com/our-businesses/standard-investments/venture-capital'
+	},
+	{
+		slug: 'starquest',
+		name: 'Starquest Capital',
+		url: 'https://www.starquest-capital.com/portfolio/'
 	},
 	{ slug: 'startingline', name: 'Starting Line', url: 'https://www.startingline.vc/portfolio' },
 	{ slug: 'story', name: 'Story Ventures', url: 'https://www.storyventures.vc/portfolio' },
