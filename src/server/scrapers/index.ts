@@ -487,6 +487,7 @@ import { scrape as hummingbird } from './hummingbird';
 import { scrape as hvcapital } from './hvcapital';
 import { scrape as hyperplane } from './hyperplane';
 import { scrape as ibb } from './ibb';
+import { scrape as iconiq } from './iconiq';
 import { scrape as idekapital } from './idekapital';
 import { scrape as illuminate } from './illuminate';
 import { scrape as imaginary } from './imaginary';
@@ -1530,6 +1531,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	hvcapital,
 	hyperplane,
 	ibb,
+	iconiq,
 	idekapital,
 	illuminate,
 	imaginary,
