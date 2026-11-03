@@ -1,29 +1,34 @@
 import type { ScrapedCompany } from './types';
 
-const PAGE_URL = 'https://shiftinvest.com/companies';
+const PAGE_URL = 'https://www.shiftinvest.com/companies';
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-// a static page: the companies page is a grid of cards, the whole of it in
-// the page, a card a company linking its site, named in its logo's alt
-// text, with a line saying what it does ("Autonomous rail operations") and
-// an "Exit" badge for one the fund is out of; each card is classed for the
-// page's filter by the fund it sits in ("SHIFT III", "MIF I & II", "TTT
-// CT"), which the filter names. the card keeps older markup commented out
-// (a date, a badge) that the page does not show, and it is passed over.
-// what the company does and its fund are kept as tags, an exit with the
-// Exited tag.
+// a static page (astro): the companies page is a grid of tiles, the whole of
+// it in the page, a tile a company with a line saying what it does ("Yard
+// automation"), the theme the page filters by ("Mobility"), the year the
+// fund came in and an "Exit" badge for one it is out of. each tile opens a
+// dialog further down, matched by its id, which names the company in a
+// heading and links its site. what the company does, its theme and the year
+// are kept as tags, an exit with the Exited tag.
 
-const CARD = /(?=<div class="cell small-12 medium-6 large-3 company-container\b)/;
-const CLASSES = /^<div class="cell small-12 medium-6 large-3 company-container([^"]*)"/;
-const SITE = /<a class="company-item" href="([^"]*)"/;
-// the logo, not the picture behind it
-const NAME = /<div class="text">[\s\S]*?<img\b[^>]*\balt="([^"]*)"/;
-const LINE = /<p class="subtitle">([\s\S]*?)<\/p>/;
-const EXIT = /<div class="exit(?:-svg)?">\s*Exit\s*<\/div>/i;
-const FILTER = /data-filter="\.(cat\d+)"[^>]*>([^<]*)</g;
+const TILE = /<button type="button" class="company"[^>]*\bdata-open="([^"]*)"[^>]*\baria-label="About ([^"]*)"[^>]*>([\s\S]*?)<\/button>/g;
+const DIALOG = /<dialog class="company-card" id="([^"]*)"[^>]*>([\s\S]*?)<\/dialog>/g;
+const HEADING = /<h2 class="card-name"[^>]*>([\s\S]*?)<\/h2>/;
+const SITE = /<a\b[^>]*\bclass="[^"]*\bcard-link\b[^"]*"[^>]*\bhref="([^"]*)"/;
+const LINE = /<div class="desc"[^>]*>([\s\S]*?)<\/div>/;
+const THEME = /<span class="theme"[^>]*>([\s\S]*?)<\/span>/;
+const YEAR = /<span class="year"[^>]*>\s*(\d{4})\s*<\/span>/;
+const EXIT = /<span class="exit"[^>]*>\s*Exit\s*<\/span>/i;
 const UNSAID = /^(?:-|other|others|all|n\/a)$/i;
 const STEALTH = /^stealth\b/i;
+
+// companies the page has since renamed, kept under the names stored for them
+const STORED_AS: Record<string, string> = {
+	protix: 'Protix Biosystems',
+	'robin radar': 'Robin',
+	snocom: 'Snowcom'
+};
 
 const unescape = (s: string) =>
 	s
@@ -56,30 +61,27 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}
 	const html = await resp.text();
-	// the funds, by the class each card is shown under
-	const funds = new Map([...html.matchAll(FILTER)].map(([, cls, label]) => [cls, tag(label)]));
+	// the dialogs, by the id each tile opens
+	const dialogs = new Map([...html.matchAll(DIALOG)].map(([, id, body]) => [id, body]));
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
 	let withSite = 0;
-	for (const raw of html.split(CARD).slice(1)) {
-		const classes = raw.match(CLASSES)?.[1] ?? '';
-		// what the page shows, without the markup it keeps commented out
-		const card = raw.replace(/<!--[\s\S]*?-->/g, '');
-		const name = clean(card.match(NAME)?.[1] ?? '');
+	for (const [, id, label, tile] of html.matchAll(TILE)) {
+		const dialog = dialogs.get(id) ?? '';
+		const shown = clean(dialog.match(HEADING)?.[1] ?? '') || clean(label);
+		const name = STORED_AS[shown.toLowerCase()] ?? shown;
 		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 		seen.add(name.toLowerCase());
-		const site = unescape(card.match(SITE)?.[1] ?? '').trim();
+		const site = unescape(dialog.match(SITE)?.[1] ?? '').trim();
 		if (/^https?:\/\//i.test(site)) withSite++;
 		companies.push({
 			name,
 			category: [
-				tag(card.match(LINE)?.[1] ?? ''),
-				...classes
-					.trim()
-					.split(/\s+/)
-					.map((cls) => funds.get(cls) ?? ''),
-				EXIT.test(card) ? 'Exited' : ''
+				tag(tile.match(LINE)?.[1] ?? ''),
+				tag(tile.match(THEME)?.[1] ?? ''),
+				tile.match(YEAR)?.[1] ?? '',
+				EXIT.test(tile) ? 'Exited' : ''
 			]
 				.filter((t, i, all) => t && !UNSAID.test(t) && all.indexOf(t) === i)
 				.join(', '),
@@ -91,7 +93,7 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		throw new Error('shiftinvest: no companies on the companies page — the markup moved');
 	}
 	if (withSite === 0) {
-		throw new Error("shiftinvest: no company links its site — the cards' markup moved");
+		throw new Error("shiftinvest: no company links its site — the dialogs' markup moved");
 	}
 
 	return companies;

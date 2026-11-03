@@ -3,6 +3,7 @@ import type { ScrapedCompany } from './types';
 const BASE_URL = "https://broocknell.com";
 const SITEMAP_URL = `${BASE_URL}/sitemap.xml`;
 const BATCH_SIZE = 8;
+const RETRY_MS = [5_000, 15_000];
 // the sitemap lists the site's few fixed pages beside the project pages
 const STATIC_PAGES = new Set(["", "all-projects", "contact", "about", "error", "404"]);
 const UA =
@@ -24,12 +25,22 @@ const text = (s: string) =>
     .replace(/\s+/g, " ")
     .trim();
 
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// on 2026-11-03 cloudflare answered 520 for one project page in seventy-odd,
+// another one each time the walk was tried: a page the server fails is asked
+// for again after a pause, twice, before the walk gives up
 async function fetchPage(url: string) {
-  const resp = await fetch(url, { headers: { "User-Agent": UA } });
-  if (!resp.ok) {
-    throw new Error(`Failed to fetch ${url}: ${resp.status}`);
+  for (const pause of [...RETRY_MS, 0]) {
+    const resp = await fetch(url, { headers: { "User-Agent": UA } });
+    if (resp.ok) return resp.text();
+    await resp.body?.cancel();
+    if (resp.status < 500 || !pause) {
+      throw new Error(`Failed to fetch ${url}: ${resp.status}`);
+    }
+    await wait(pause);
   }
-  return resp.text();
+  throw new Error(`Failed to fetch ${url}`);
 }
 
 // the portfolio page draws its projects as pictures without writing anything;

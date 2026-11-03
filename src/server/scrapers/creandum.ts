@@ -69,7 +69,12 @@ export async function scrape(): Promise<ScrapedCompany[]> {
     cards.set(nameKey(name), { name, exited: classes.includes("exited") });
   }
   if (cards.size === 0) {
-    throw new Error("creandum: no companies found in the portfolio grid");
+    // on 2026-11-03 the page came without its grid twice in a night, a build that
+    // showed it before and after, so the error says what came instead
+    const title = text(html.match(/<title[^>]*>([\s\S]*?)<\/title>/)?.[1] ?? "") || "no title";
+    throw new Error(
+      `creandum: no companies found in the portfolio grid — the page was "${title.slice(0, 80)}", ${Math.round(html.length / 1000)} kB`,
+    );
   }
 
   // nuxt lists every page it generated, which is how the companies that have
