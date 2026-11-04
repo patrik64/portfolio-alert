@@ -16,7 +16,8 @@ const UA =
 // with the Exited tag. a list paged by webflow would be read page by page,
 // every page of it.
 
-const ROW = /(?=<div data-hoverimg="raise" role="listitem" class="collection-item w-dyn-item">)/;
+// a row's other attributes come and go (a hover effect's went on 2026-11-03)
+const ROW = /(?=<div\b[^>]*\brole="listitem" class="collection-item w-dyn-item">)/;
 const NAME = /<h2 class="company-name">([\s\S]*?)<\/h2>/;
 const FIELD = (name: string) => new RegExp(`fs-list-field="${name}"[^>]*>([^<]*)<`);
 const FACT = (label: string) =>

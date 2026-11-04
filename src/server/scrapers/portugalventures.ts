@@ -16,6 +16,11 @@ const PACE_MS = 500;
 // coming is given up on and asked for once more, so that a single hung
 // request cannot run the night's budget out
 const ANSWER_MS = 30_000;
+// the portfolio page, the one heavy request, went unanswered for thirty seconds
+// twice in both rounds on 2026-11-03 and 11-04, the nights the run came after
+// 02:30 utc (every night before 02:15 it passed): it is given a minute and a
+// half the second time, which the run's five minutes still hold
+const PAGE_ANSWER_MS = [ANSWER_MS, 90_000];
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
@@ -71,22 +76,23 @@ const pictureOf = (src: string) => (src.split('/').pop() ?? '').replace(/-\d+x\d
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-async function get(url: string): Promise<Answer> {
-	for (let attempt = 0; ; attempt++) {
+async function get(url: string, waits = [ANSWER_MS, ANSWER_MS]): Promise<Answer> {
+	for (const ms of waits) {
 		try {
-			const resp = await fetch(url, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(ANSWER_MS) });
+			const resp = await fetch(url, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(ms) });
 			return { status: resp.status, body: await resp.text() };
 		} catch (e) {
 			if (!(e instanceof Error && e.name === 'TimeoutError')) throw e;
-			if (attempt > 0) {
-				throw new Error(`portugalventures: ${url} did not answer in ${ANSWER_MS / 1000} s, asked twice`);
-			}
 		}
 	}
+	const asked = waits.every((ms) => ms === waits[0])
+		? `${waits[0] / 1000} s, asked twice`
+		: `${waits.map((ms) => ms / 1000).join(' s, then ')} s`;
+	throw new Error(`portugalventures: ${url} did not answer in ${asked}`);
 }
 
-async function fetchText(url: string): Promise<string> {
-	const answer = await get(url);
+async function fetchText(url: string, waits?: number[]): Promise<string> {
+	const answer = await get(url, waits);
 	if (answer.status !== 200) {
 		throw new Error(`Failed to fetch ${url}: ${answer.status}`);
 	}
@@ -123,7 +129,7 @@ async function titles(): Promise<Map<string, string>> {
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const html = await fetchText(PAGE_URL);
+	const html = await fetchText(PAGE_URL, PAGE_ANSWER_MS);
 	const tiles = [...html.matchAll(TILE)];
 	if (tiles.length === 0) {
 		throw new Error('portugalventures: no logos in the portfolio grid — the markup moved');
