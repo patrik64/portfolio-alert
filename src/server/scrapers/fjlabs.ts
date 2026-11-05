@@ -37,6 +37,13 @@ const MARKETPLACE = field('Marketplace');
 const NEXT = /href="(\?[a-z0-9_]+_page=\d+)"[^>]*class="[^"]*w-pagination-next/;
 const STEALTH = /^stealth\b/i;
 
+// companies the page has since renamed, kept under the names stored for them
+// (the same stage, year, country and sector, the site moved to the new name)
+const STORED_AS: Record<string, string> = {
+	'terra mobility': 'Busbud',
+	universal: 'Alongside Finance'
+};
+
 interface Answer {
 	status: number;
 	body: string;
@@ -99,7 +106,8 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		const html = await fetchPage(url);
 
 		for (const item of html.split(ITEM).slice(1)) {
-			const name = clean(item.match(NAME)?.[1] ?? '');
+			const shown = clean(item.match(NAME)?.[1] ?? '');
+			const name = STORED_AS[shown.toLowerCase()] ?? shown;
 			if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 			seen.add(name.toLowerCase());
 			const href = unescape(item.match(HREF)?.slice(1).find(Boolean) ?? '');

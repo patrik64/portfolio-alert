@@ -56,7 +56,17 @@ async function detailOf(slug: string) {
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-  const html = await fetchPage(PAGE_URL);
+  const resp = await fetch(PAGE_URL, { headers: { "User-Agent": UA } });
+  // the site's builds have twice come out without the grid: on 2026-11-03 the
+  // page held no cards, and from 2026-11-05 there was no page at all (404), the
+  // home page still linking it and every company page still there. the
+  // companies are then read from their own pages alone, which name them and
+  // the year creandum came in but not an exit, and the companies without a
+  // page, all of them stored long ago, are left out until the grid is back
+  if (resp.status !== 404 && !resp.ok) {
+    throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+  }
+  const html = resp.ok ? await resp.text() : "";
 
   // the grid carries no links, so a company is its logo's alt text; the green
   // cards above it are spotlights repeating companies from the grid itself
@@ -68,18 +78,12 @@ export async function scrape(): Promise<ScrapedCompany[]> {
     if (!name) continue;
     cards.set(nameKey(name), { name, exited: classes.includes("exited") });
   }
-  if (cards.size === 0) {
-    // on 2026-11-03 the page came without its grid twice in a night, a build that
-    // showed it before and after, so the error says what came instead
-    const title = text(html.match(/<title[^>]*>([\s\S]*?)<\/title>/)?.[1] ?? "") || "no title";
-    throw new Error(
-      `creandum: no companies found in the portfolio grid — the page was "${title.slice(0, 80)}", ${Math.round(html.length / 1000)} kB`,
-    );
-  }
+  const gridless = cards.size === 0;
 
   // nuxt lists every page it generated, which is how the companies that have
-  // one are found — the grid never names them
-  const build = html.match(/\/_nuxt\/static\/([^/"]+)\//)?.[1];
+  // one are found — the grid never names them; the home page names the build
+  // when the grid's page is missing
+  const build = (gridless ? await fetchPage(`${BASE_URL}/`) : html).match(/\/_nuxt\/static\/([^/"]+)\//)?.[1];
   if (!build) {
     throw new Error("creandum: the site's build id is missing — the page layout moved");
   }
@@ -90,6 +94,25 @@ export async function scrape(): Promise<ScrapedCompany[]> {
   const slugs = [...manifest.matchAll(/"\/commitments\/([^"/]+)"/g)].map((m) => m[1]);
   if (slugs.length === 0) {
     throw new Error("creandum: no company pages listed in the site manifest");
+  }
+
+  if (gridless) {
+    const companies = new Map<string, ScrapedCompany>();
+    for (let i = 0; i < slugs.length; i += BATCH_SIZE) {
+      for (const detail of await Promise.all(slugs.slice(i, i + BATCH_SIZE).map(detailOf))) {
+        if (!detail.name || companies.has(nameKey(detail.name))) continue;
+        companies.set(nameKey(detail.name), { name: detail.name, category: detail.backed, url: detail.url });
+      }
+    }
+    // a company page that stopped naming its company would leave next to nothing
+    if (companies.size < slugs.length * 0.8) {
+      const title = text(html.match(/<title[^>]*>([\s\S]*?)<\/title>/)?.[1] ?? "") || "no title";
+      throw new Error(
+        `creandum: the portfolio grid is missing (${resp.ok ? `the page was "${title.slice(0, 80)}"` : "404"}) ` +
+          `and only ${companies.size} of ${slugs.length} company pages named their company`,
+      );
+    }
+    return [...companies.values()];
   }
 
   const details = new Map<string, Awaited<ReturnType<typeof detailOf>>>();
