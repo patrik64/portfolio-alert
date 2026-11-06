@@ -1,32 +1,65 @@
+import { request } from 'node:https';
 import type { ScrapedCompany } from './types';
 
 const BASE_URL = 'https://www.dncapital.com';
-const PAGE_URL = `${BASE_URL}/portfolio_fulllist.html`;
+const PAGE_URL = `${BASE_URL}/portfolio`;
 // the companies' pages are asked for one at a time, a pause between them
 const PACE_MS = 150;
+// the pauses before a refused page is asked for again under the app's own name
+const RETRY_MS = [2_000, 8_000];
+const ANSWER_MS = 30_000;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+const OWN_UA = 'portfolio-alert/1.0 (+https://portfolio-alert.vercel.app)';
 
-// a static site of its own: the full list is a grid of logo tiles, each
-// linking a page per company by a bare slug, its hover text "Current" or
-// "Exited", a ribbon "ACQUIRED" or "IPO" on some — an ipo alone does not
-// make an exit here, five listed companies stayed current. nothing on the
-// list names a company, so the pages are fetched: each heads with the name
-// and sector, states a status, the date invested and a geography, and
-// links the site. the tiles' hover text is the marking kept up: the
-// status on a page lags it for a third of the exits, and the filter class
-// on a tile lags both, so a company is exited when its tile or its page
-// says so. a page that will not load leaves its company named off its
-// slug, linking to that page; the oldest exits' pages link no site.
+// rebuilt on astro (with sanity behind it) on 2026-11-05, the old full list
+// redirecting to a page that is not there, and cloudflare refusing the
+// nightly run's first ask with a 403. the portfolio page lists every company
+// in full: an item classed for the page's filters by its status ("current",
+// "exited") and its sectors, which the filter's buttons name, heading with
+// the name, and giving the location, the year invested and the entry stage,
+// linking a page per company. that page links the company's site and tags an
+// exit with what it was ("Acquired"). a page that will not load leaves its
+// company linking it. the sectors, locations, year, stage and outcome are
+// kept as tags, an exit with the Exited tag.
 
-const TILE = /<a\b[^>]*\bhref="([^"#:/]+)"[^>]*class="white"[^>]*>\s*<li\b[^>]*class="mix\b[^"]*"[^>]*>([\s\S]*?)<\/li>/g;
-const RIBBON = /class="ribbon2?\s+ribbon-top-right"[^>]*>\s*<span>([^<]*)<\/span>/;
-const STANDING = /class="hvrbox-text">([^<]*)</;
-const NAME = /<h1\b[^>]*>([\s\S]*?)<\/h1>\s*<h2\b[^>]*>([\s\S]*?)<\/h2>/;
-const FACT = /<span class="blue">\s*([^<:]+):\s*<\/span>\s*([^<]*)/g;
-const SITE = /<a\b[^>]*\bhref="(https?:\/\/[^"]+)"[^>]*target="_blank"/;
-const NOISE = /dncapital\.com|goldminemedia|twitter\.com|facebook\.com|linkedin\.com|atominvest/i;
+const ITEM = /(?=<li\b[^>]*\bdata-status=")/;
+const STATUS = /^<li\b[^>]*\bdata-status="([^"]*)"/;
+const SECTORS = /^<li\b[^>]*\bdata-sector="([^"]*)"/;
+const NAME = /<h3\b[^>]*>([\s\S]*?)<\/h3>/;
+const COLUMN = (column: string) => new RegExp(`data-column="${column}"[^>]*>\\s*<dt>[^<]*</dt>\\s*<dd>([\\s\\S]*?)</dd>`);
+const LINK = /\bhref="\/portfolio\/([^"#?/]+)"/;
+const SECTOR_LABEL = /data-filter="sector" data-value="([^"]*)"[^>]*>([^<]*)</g;
+const SITE = /<a\b(?=[^>]*aria-label="Visit the company website)[^>]*\bhref="(https?:\/\/[^"]+)"/;
+const OUTCOME = /<span\b[^>]*class="[^"]*\btag\b[^"]*"[^>]*>\s*(Acquired|IPO|Merged|Listed)\s*<\/span>/i;
+const YEAR = /^(?:19|20)\d{2}$/;
 const STEALTH = /^stealth\b/i;
+
+// the companies the new site names otherwise, kept under the names stored for
+// them off the old one (the same sites; "Kana" was stored as Lagan, its buyer's
+// site linked)
+const STORED_AS: Record<string, string> = {
+	accept: 'accept.inc',
+	artur: 'Artur Inside',
+	digitalmotors: 'Digital Motors',
+	eve: 'Eve Sleep',
+	hometogo: 'HomeToGo GmbH',
+	jobandtalent: 'job&talent',
+	kana: 'Lagan Technologies',
+	ombud: 'Ombud Inc',
+	optilyz: 'Opitlyz',
+	parallel: 'Parallel Wireless',
+	patronus: 'Patronus Group',
+	sanas: 'Sanas.ai',
+	socialstandards: 'Social Standards',
+	spire: 'Spire Science',
+	triple: 'TripleMint'
+};
+
+interface Answer {
+	status: number;
+	body: string;
+}
 
 const unescape = (s: string) =>
 	s
@@ -41,79 +74,106 @@ const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g
 // the category is comma-joined, so a label holding a comma would read as two
 const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
-// a name read off a slug, for a page that will not load: "auto1" is Auto1
-const slugName = (slug: string) =>
-	slug
-		.split(/[-_]/)
-		.filter(Boolean)
-		.map((word) => word[0].toUpperCase() + word.slice(1))
-		.join(' ');
-
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// a company's page, or nothing when it will not load
-async function pageOf(url: string): Promise<string> {
-	try {
-		let resp = await fetch(url, { headers: { 'User-Agent': UA } });
-		if (resp.status === 429) {
-			await wait(20_000);
-			resp = await fetch(url, { headers: { 'User-Agent': UA } });
+// the page through node's https module, under the app's own name
+function getHonestly(url: string): Promise<Answer> {
+	return new Promise((resolve, reject) => {
+		const req = request(url, { headers: { 'User-Agent': OWN_UA } }, (res) => {
+			const chunks: Buffer[] = [];
+			res.on('data', (chunk: Buffer) => chunks.push(chunk));
+			res.on('end', () =>
+				resolve({ status: res.statusCode ?? 0, body: Buffer.concat(chunks).toString('utf8') })
+			);
+			res.on('error', reject);
+		});
+		req.setTimeout(ANSWER_MS, () => req.destroy(new Error(`dncapital: ${url} did not answer in 30 s`)));
+		req.on('error', reject);
+		req.end();
+	});
+}
+
+// once the app's own name has been let through, the rest is asked under it
+let honest = false;
+
+async function get(url: string): Promise<Answer> {
+	if (honest) return getHonestly(url);
+	const resp = await fetch(url, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(ANSWER_MS) });
+	if (resp.status !== 403) return { status: resp.status, body: await resp.text() };
+	await resp.body?.cancel();
+	let answer: Answer = { status: resp.status, body: '' };
+	for (const ms of RETRY_MS) {
+		await wait(ms);
+		answer = await getHonestly(url);
+		if (answer.status !== 403) {
+			honest = answer.status === 200;
+			break;
 		}
-		return resp.ok ? await resp.text() : '';
+	}
+	return answer;
+}
+
+// a company's site and what its exit was, or nothing when its page will not load
+async function detailsOf(url: string): Promise<{ site: string; outcome: string }> {
+	try {
+		const { status, body } = await get(url);
+		if (status !== 200) return { site: '', outcome: '' };
+		return { site: unescape(body.match(SITE)?.[1] ?? '').trim(), outcome: clean(body.match(OUTCOME)?.[1] ?? '') };
 	} catch {
-		return '';
+		return { site: '', outcome: '' };
 	}
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+	honest = false;
+	const { status, body: html } = await get(PAGE_URL);
+	if (status !== 200) {
+		throw new Error(`Failed to fetch ${PAGE_URL}: ${status}`);
 	}
-	const tiles = [...(await resp.text()).matchAll(TILE)].map(([, slug, tile]) => ({
-		slug: unescape(slug),
-		ribbon: clean(tile.match(RIBBON)?.[1] ?? ''),
-		standing: clean(tile.match(STANDING)?.[1] ?? '')
-	}));
-	if (tiles.length === 0) {
-		throw new Error('dncapital: no companies on the portfolio list');
-	}
+	const sectors = new Map([...html.matchAll(SECTOR_LABEL)].map(([, value, label]) => [value, tag(label)]));
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-	for (const [i, tile] of tiles.entries()) {
-		if (i > 0) await wait(PACE_MS);
-		const page = `${BASE_URL}/${tile.slug}`;
-		const html = await pageOf(page);
-		const [, heading, sector] = html.match(NAME) ?? [];
-		const name = clean(heading ?? '') || slugName(tile.slug);
-		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
+	let withSite = 0;
+	for (const item of html.split(ITEM).slice(1)) {
+		const shown = clean(item.match(NAME)?.[1] ?? '');
+		const name = STORED_AS[shown.toLowerCase()] ?? shown;
+		const slug = item.match(LINK)?.[1];
+		if (!name || !slug || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 		seen.add(name.toLowerCase());
-		const facts = new Map([...html.matchAll(FACT)].map(([, label, value]) => [clean(label).toLowerCase(), clean(value)]));
-		const status = facts.get('status') ?? '';
-		const exited = /exited/i.test(tile.standing) || /\bexit/i.test(status);
-		const year = facts.get('date invested')?.match(/\b(?:19|20)\d{2}\b/)?.[0];
-		// "ACQUIRED" off the ribbon, and what a status adds: "Exit (PSG Equity)"
-		const outcome = [
-			tile.ribbon === 'IPO' ? 'IPO' : tile.ribbon.charAt(0) + tile.ribbon.slice(1).toLowerCase(),
-			status.match(/\(([^)]+)\)/)?.[0] ?? ''
-		]
-			.filter(Boolean)
-			.join(' ');
-		const site = [...html.matchAll(new RegExp(SITE.source, 'g'))].map((m) => unescape(m[1])).find((u) => !NOISE.test(u));
+		const column = (key: string) => clean(item.match(COLUMN(key))?.[1] ?? '');
+		const year = column('year');
+		const exited = /^exited$/i.test(item.match(STATUS)?.[1] ?? '');
+		const page = `${BASE_URL}/portfolio/${slug}`;
+		if (companies.length > 0) await wait(PACE_MS);
+		const { site, outcome } = await detailsOf(page);
+		if (site) withSite++;
 		companies.push({
 			name,
 			category: [
-				tag(sector ?? ''),
-				tag(facts.get('geography') ?? ''),
-				year ? `Invested ${year}` : '',
-				outcome,
+				...(item.match(SECTORS)?.[1] ?? '')
+					.split(/\s+/)
+					.map((value) => sectors.get(value) ?? ''),
+				...column('location')
+					.split(/\s*,\s*/)
+					.map((place) => tag(place)),
+				YEAR.test(year) ? `Invested ${year}` : '',
+				tag(column('stage')),
+				exited ? outcome : '',
 				exited ? 'Exited' : ''
 			]
 				.filter((t, k, all) => t && all.indexOf(t) === k)
 				.join(', '),
 			url: site || page
 		});
+	}
+
+	if (companies.length === 0) {
+		throw new Error('dncapital: no companies on the portfolio page — the markup moved');
+	}
+	// without the company pages every company would link its page here
+	if (withSite === 0) {
+		throw new Error("dncapital: no company page gave its site — the pages' markup moved");
 	}
 
 	return companies;

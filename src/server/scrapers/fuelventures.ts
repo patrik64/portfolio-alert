@@ -197,7 +197,8 @@ const NAMES: Record<string, string> = {
 };
 
 const TAB = /<li class="brz-tabs__nav--item brz-tabs__nav--desktop[^"]*">[\s\S]*?<span\b[^>]*>([\s\S]*?)<\/span>/g;
-const WIDGET = /(?=<div class="brz-posts\b)/;
+// the widget's attributes come and go (an id went in front of its class on 2026-11-05)
+const WIDGET = /(?=<div\b[^>]*\bclass="brz-posts[\s"])/;
 const POST = /(?=<div class="brz-posts__item")/;
 const LINK = /<a\b[^>]*class="brz-a brz-container-link"[^>]*href="(https?:\/\/[^"]+)"/;
 const LOGO = /<img class="brz-img"[^>]*\bsrc="([^"]+)"/;
