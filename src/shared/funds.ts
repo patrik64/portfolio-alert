@@ -1,4 +1,4 @@
-// The 1043 tracked funds, in case-insensitive alphabetical order by name — the
+// The 1047 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -318,6 +318,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'crane', name: 'Crane Venture Partners', url: 'https://crane.vc/portfolio' },
 	{ slug: 'creandum', name: 'Creandum', url: 'https://creandum.com/commitments/' },
 	{ slug: 'cdl', name: 'Creative Destruction Lab', url: 'https://creativedestructionlab.com/companies/' },
+	{ slug: 'creativeco', name: 'CreativeCo', url: 'https://www.creative.co/portfolio' },
 	{ slug: 'credo', name: 'Credo', url: 'https://www.credoventures.com/portfolio' },
 	{ slug: 'crew', name: 'Crew Capital', url: 'https://crew.vc/companies/' },
 	{ slug: 'crosscut', name: 'Crosscut Ventures', url: 'https://crosscut.vc/companies/' },
@@ -1126,7 +1127,10 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'tcg', name: 'TCG', url: 'https://tcg.co/portfolio/' },
 	{ slug: 'tcv', name: 'TCV', url: 'https://www.tcv.com/partnerships' },
 	{ slug: 'team8', name: 'Team8', url: 'https://team8.vc/portfolio/' },
+	{ slug: 'techsquare', name: 'Tech Square Ventures', url: 'https://techsquareventures.com/portfolio/' },
+	{ slug: 'techoperators', name: 'TechOperators', url: 'https://www.techoperators.com/portfolio' },
 	{ slug: 'techstars', name: 'Techstars', url: 'https://www.techstars.com/portfolio' },
+	{ slug: 'techstart', name: 'Techstart Ventures', url: 'https://www.techstart.vc/portfolio-list' },
 	{
 		slug: 'telluride',
 		name: 'Telluride Venture Network',

@@ -260,6 +260,7 @@ import { scrape as cortical } from './cortical';
 import { scrape as costanoa } from './costanoa';
 import { scrape as craft } from './craft';
 import { scrape as cdl } from './cdl';
+import { scrape as creativeco } from './creativeco';
 import { scrape as credo } from './credo';
 import { scrape as crane } from './crane';
 import { scrape as creandum } from './creandum';
@@ -916,7 +917,10 @@ import { scrape as tau } from './tau';
 import { scrape as tcg } from './tcg';
 import { scrape as tcv } from './tcv';
 import { scrape as team8 } from './team8';
+import { scrape as techsquare } from './techsquare';
+import { scrape as techoperators } from './techoperators';
 import { scrape as techstars } from './techstars';
+import { scrape as techstart } from './techstart';
 import { scrape as artemis } from './artemis';
 import { scrape as council } from './council';
 import { scrape as creatorfund } from './creatorfund';
@@ -1304,6 +1308,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	costanoa,
 	craft,
 	cdl,
+	creativeco,
 	credo,
 	crane,
 	creandum,
@@ -1960,7 +1965,10 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	tcg,
 	tcv,
 	team8,
+	techsquare,
+	techoperators,
 	techstars,
+	techstart,
 	artemis,
 	council,
 	creatorfund,
