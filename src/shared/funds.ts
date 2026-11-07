@@ -115,7 +115,12 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'aperture', name: 'APERTURE Venture Partners', url: 'http://www.aperturevp.com/portfolio' },
 	{ slug: 'apex', name: 'Apex Ventures', url: 'https://www.apex.ventures/portfolio' },
 	{ slug: 'arcane', name: 'Arcane Ventures', url: 'https://arcane-ventures.net/#portfolio' },
-	{ slug: 'archventure', name: 'ARCH Venture Partners', url: 'https://archventure.com/portfolio/' },
+	{
+		slug: 'archventure',
+		name: 'ARCH Venture Partners',
+		url: 'https://archventure.com/portfolio/',
+		paused: true
+	},
 	{ slug: 'ardent', name: 'Ardent Venture Partners', url: 'https://ardent.vc/portfolio' },
 	{ slug: 'argon', name: 'Argon Ventures', url: 'https://www.argon.vc/companies' },
 	{ slug: 'armilar', name: 'Armilar Venture Partners', url: 'https://www.armilar.com/portfolio' },
