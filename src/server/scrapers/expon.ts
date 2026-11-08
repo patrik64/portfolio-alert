@@ -1,6 +1,8 @@
 import type { ScrapedCompany } from './types';
 
-const PAGE_URL = 'https://expon.capital/portfolio';
+// the site's own address since expon.capital, which pointed at the same site,
+// began answering 522 on the 2026-11-07 night
+const PAGE_URL = 'https://www.exponcapital.com/portfolio';
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 

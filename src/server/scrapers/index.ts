@@ -180,6 +180,7 @@ import { scrape as bynd } from './bynd';
 import { scrape as c4v } from './c4v';
 import { scrape as cacao } from './cacao';
 import { scrape as cake } from './cake';
+import { scrape as cacrescent } from './cacrescent';
 import { scrape as calmstorm } from './calmstorm';
 import { scrape as cic } from './cic';
 import { scrape as canaan } from './canaan';
@@ -311,10 +312,13 @@ import { scrape as earlybird } from './earlybird';
 import { scrape as earthandbeyond } from './earthandbeyond';
 import { scrape as eastlink } from './eastlink';
 import { scrape as ecapital } from './ecapital';
+import { scrape as ecbf } from './ecbf';
 import { scrape as echohealth } from './echohealth';
 import { scrape as echovc } from './echovc';
 import { scrape as eclipse } from './eclipse';
 import { scrape as ecliptic } from './ecliptic';
+import { scrape as ecomachines } from './ecomachines';
+import { scrape as ecosystemintegrity } from './ecosystemintegrity';
 import { scrape as ecp } from './ecp';
 import { scrape as edovate } from './edovate';
 import { scrape as educapital } from './educapital';
@@ -329,6 +333,7 @@ import { scrape as emerging } from './emerging';
 import { scrape as encomenda } from './encomenda';
 import { scrape as endeit } from './endeit';
 import { scrape as eip } from './eip';
+import { scrape as engage } from './engage';
 import { scrape as engine } from './engine';
 import { scrape as engineeringcapital } from './engineeringcapital';
 import { scrape as eniac } from './eniac';
@@ -421,12 +426,15 @@ import { scrape as futureventures } from './futureventures';
 import { scrape as g2 } from './g2';
 import { scrape as goahead } from './goahead';
 import { scrape as gobi } from './gobi';
+import { scrape as gohub } from './gohub';
+import { scrape as goingvc } from './goingvc';
 import { scrape as goldhouse } from './goldhouse';
 import { scrape as goldengate } from './goldengate';
 import { scrape as goldenpalm } from './goldenpalm';
 import { scrape as goldenseeds } from './goldenseeds';
 import { scrape as gv } from './gv';
 import { scrape as gaingels } from './gaingels';
+import { scrape as gallery } from './gallery';
 import { scrape as gway } from './gway';
 import { scrape as geek } from './geek';
 import { scrape as generalatlantic } from './generalatlantic';
@@ -441,6 +449,7 @@ import { scrape as glilot } from './glilot';
 import { scrape as gorilla } from './gorilla';
 import { scrape as gpo } from './gpo';
 import { scrape as gradient } from './gradient';
+import { scrape as grand } from './grand';
 import { scrape as graniteasia } from './graniteasia';
 import { scrape as graph } from './graph';
 import { scrape as greathill } from './greathill';
@@ -628,6 +637,7 @@ import { scrape as metavallon } from './metavallon';
 import { scrape as mfv } from './mfv';
 import { scrape as mhs } from './mhs';
 import { scrape as mig } from './mig';
+import { scrape as mission } from './mission';
 import { scrape as mmc } from './mmc';
 import { scrape as mizmaa } from './mizmaa';
 import { scrape as moderne } from './moderne';
@@ -1228,6 +1238,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	c4v,
 	cacao,
 	cake,
+	cacrescent,
 	calmstorm,
 	cic,
 	canaan,
@@ -1359,10 +1370,13 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	earthandbeyond,
 	eastlink,
 	ecapital,
+	ecbf,
 	echohealth,
 	echovc,
 	eclipse,
 	ecliptic,
+	ecomachines,
+	ecosystemintegrity,
 	ecp,
 	edovate,
 	educapital,
@@ -1377,6 +1391,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	encomenda,
 	endeit,
 	eip,
+	engage,
 	engine,
 	engineeringcapital,
 	eniac,
@@ -1469,12 +1484,15 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	g2,
 	goahead,
 	gobi,
+	gohub,
+	goingvc,
 	goldhouse,
 	goldengate,
 	goldenpalm,
 	goldenseeds,
 	gv,
 	gaingels,
+	gallery,
 	gway,
 	geek,
 	generalatlantic,
@@ -1489,6 +1507,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	gorilla,
 	gpo,
 	gradient,
+	grand,
 	graniteasia,
 	graph,
 	greathill,
@@ -1676,6 +1695,7 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	mfv,
 	mhs,
 	mig,
+	mission,
 	mmc,
 	mizmaa,
 	moderne,
