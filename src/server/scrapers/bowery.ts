@@ -1,21 +1,26 @@
 import type { ScrapedCompany } from './types';
 
-const PAGE_URL = 'https://bowerycap.com/portfolio';
+// the portfolio moved onto the front page in the rebuild of 2026-11-09, and
+// /portfolio now redirects there
+const PAGE_URL = 'https://bowerycap.com/';
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-// craft cms: the portfolio page is a table served whole, a row a company —
-// its logo, named in the alt text ("ActionIQ logo"), a line about it, where
-// it is ("NYC", "Bay Area"), and a link to its site. a company the fund is
-// out of wears an "Exited" flag on its logo's corner; how it went is only
-// in the prose. the filters above the table run through the page's own
-// component but the first render holds every row.
+// astro, drawn whole on the server: the front page is a list of the
+// portfolio, a row a company — its logo, named in the alt text ("ActionIQ"),
+// a line about it, and beneath, an "Exited" tag for a company the fund is
+// out of, where it is ("NYC", "Bay Area") and a link to its site. how an
+// exit went is only in the prose. (the page's structured data lists the same
+// companies, without the tag.)
 
-const ROW = /(?=<div\b[^>]*\bdata-test="portfolio-result")/;
-const NAME = /\balt="([^"]*?)\s+logo"/;
-const EXITED = /\balt="Background for exited text"/;
-const PLACE = /lg:basis-3\/5">\s*([\s\S]*?)\s*<\/div>/;
-const SITE = /<a\b[^>]*?\bhref="([^"]*)"/;
+const ROW = /<li\b[^>]*\bclass="row"[^>]*>([\s\S]*?)<\/li>/g;
+const NAME = /<img\b[^>]*\balt="([^"]*)"/;
+const META = /<div\b[^>]*\bclass="meta"[^>]*>([\s\S]*?)<\/div>/;
+// the tag and the place are the meta line's spans, the tag marked as one
+const TAG = /<span\b[^>]*\bclass="tag"[^>]*>([\s\S]*?)<\/span>/g;
+const PLACE = /<span(?![^>]*\bclass=)[^>]*>([\s\S]*?)<\/span>/;
+const EXITED = /^exit(?:ed)?$/i;
+const SITE = /<a\b[^>]*?\bhref="([^"]*)"[^>]*\bclass="visit"/;
 const STEALTH = /^stealth\b/i;
 
 const unescape = (s: string) =>
@@ -40,14 +45,16 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-	for (const row of html.split(ROW).slice(1)) {
+	for (const [, row] of html.matchAll(ROW)) {
 		const name = clean(row.match(NAME)?.[1] ?? '');
 		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 		seen.add(name.toLowerCase());
 		const site = unescape(row.match(SITE)?.[1] ?? '').trim();
+		const meta = row.match(META)?.[1] ?? '';
+		const exited = [...meta.matchAll(TAG)].some(([, t]) => EXITED.test(clean(t)));
 		companies.push({
 			name,
-			category: [tag(row.match(PLACE)?.[1] ?? ''), EXITED.test(row) ? 'Exited' : ''].filter(Boolean).join(', '),
+			category: [tag(meta.match(PLACE)?.[1] ?? ''), exited ? 'Exited' : ''].filter(Boolean).join(', '),
 			url: /^https?:\/\//i.test(site) ? site : PAGE_URL
 		});
 	}

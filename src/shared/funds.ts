@@ -221,7 +221,7 @@ export const FUNDS: FundInfo[] = [
 	},
 	{ slug: 'bostonseed', name: 'Boston Seed Capital', url: 'https://bostonseed.com/portfolio/' },
 	{ slug: 'boulder', name: 'Boulder Ventures', url: 'https://www.boulderventures.com/whatwevedone' },
-	{ slug: 'bowery', name: 'Bowery Capital', url: 'https://bowerycap.com/portfolio' },
+	{ slug: 'bowery', name: 'Bowery Capital', url: 'https://bowerycap.com/' },
 	{ slug: 'boxgroup', name: 'BoxGroup', url: 'https://www.boxgroup.com/portfolio' },
 	{ slug: 'boxone', name: 'BoxOne Ventures', url: 'https://www.boxone.xyz/portfolio' },
 	{
@@ -423,7 +423,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'felicis', name: 'Felicis', url: 'https://www.felicis.com/companies' },
 	{ slug: 'felix', name: 'Felix Capital', url: 'https://www.felixcap.com/home/' },
 	{ slug: 'femalefounders', name: 'Female Founders Fund', url: 'https://femalefoundersfund.com/portfolio/' },
-	{ slug: 'fernbrook', name: 'Fernbrook', url: 'https://www.fernbrookmgmt.com/investments/' },
+	{ slug: 'fernbrook', name: 'Fernbrook', url: 'https://www.fernbrookmgmt.com/tech-brands/' },
 	{ slug: 'ffvc', name: 'ff Venture Capital', url: 'https://ffvc.com/portfolio/' },
 	{ slug: 'fifthwall', name: 'Fifth Wall', url: 'https://www.fifthwall.com/portfolio' },
 	{ slug: 'figure8', name: 'Figure 8', url: 'https://www.figure8.vc/#Portfolio' },
