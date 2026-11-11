@@ -31,7 +31,13 @@
             and I created this app to help me find new work.
         </p>
         <p> If you have some ideas/suggestions how to improve this app,
-            feel free to send me an email (the email address is on my github page).
+            feel free to send me a message on
+            <a
+				href="https://bsky.app/profile/patrik64.bsky.social"
+				target="_blank"
+				rel="external noreferrer"
+				class="font-semibold text-black transition duration-150 hover:text-white">bluesky</a>
+			or an email (the email address is on my github page).
     	</p>
 		<p>
 			<span class="font-semibold">portfolio alert</span> tracks the portfolio companies of
