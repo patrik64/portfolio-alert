@@ -37,7 +37,11 @@ const UA =
 // of the feed must load.
 
 const TILE =
-	/<div data-categories="[^"]*" class="col-xs-6[^"]*\bitem ([^"]*?)single-portfolio[^"]*">\s*<a href="([^"]*)"[^>]*>\s*<img\b[^>]*\bdata-src="([^"]*)"/g;
+	/<div data-categories="[^"]*" class="col-xs-6[^"]*\bitem ([^"]*?)single-portfolio[^"]*">\s*<a href="([^"]*)"[^>]*>\s*(<img\b[^>]*>)/g;
+// the logo's picture: lazily loaded, in data-src, until 2026-11-10, and
+// served plainly in src since
+const LAZY_SRC = /\bdata-src="([^"]*)"/;
+const SRC = /\ssrc="([^"]*)"/;
 const LABEL = /<a href="javascript:;" class="([^"]*)">([^<]*)<\/a>/g;
 const ITEM = /<item>\s*<title>([\s\S]*?)<\/title>\s*<link>([\s\S]*?)<\/link>/g;
 const ENTRY = /<url>([\s\S]*?)<\/url>/g;
@@ -152,7 +156,8 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-	for (const [, classes, link, src] of tiles) {
+	for (const [, classes, link, img] of tiles) {
+		const src = img.match(LAZY_SRC)?.[1] ?? img.match(SRC)?.[1] ?? '';
 		const href = unescape(link).trim();
 		const own = /^https?:\/\/(?:www\.)?portugalventures\.pt\//i.test(href);
 		// the logo's own page names it; failing that, the one entry filed under its picture

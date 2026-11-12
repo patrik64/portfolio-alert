@@ -1066,7 +1066,7 @@ export const FUNDS: FundInfo[] = [
 		local: true
 	},
 	{ slug: 'spice', name: 'Spice Capital', url: 'https://www.spicecapital.xyz/portfolio' },
-	{ slug: 'spintop', name: 'Spintop Ventures', url: 'https://spintopventures.com/portfolio/' },
+	{ slug: 'spintop', name: 'Spintop Ventures', url: 'https://spintopventures.com/portfolio' },
 	{
 		slug: 'springtime',
 		name: 'SpringTime Ventures',

@@ -4,13 +4,51 @@ const PAGE_URL = 'https://vineventures.com/';
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-// server-rendered wordpress: the portfolio is a filterable list on the
-// homepage, one <li data-tab data-location> row per company with the name in
-// the list-title cell, the display sector in the list-tab cell, the region in
-// the list-location cell, and the company site in the list-link anchor.
-// rows named "StealthCo" are unannounced placeholders (no name, no site) and
-// are skipped; a trailing "*" footnotes "Unicorns backed at prior firms" and
-// is stripped from the name.
+// next.js over sanity, rebuilt on 2026-11-11: the front page's portfolio is
+// drawn by the browser from the content react carries in its payload, where
+// it is a plain list — "portfolio":{"companies":[{"name","url"}…]} — of names
+// and sites, with no sector or region any more. the payload is a run of
+// string literals written into the page, read whole and searched for that
+// list.
+//
+// the rebuild shortened a few names the old page wrote out ("Ornn AI" is now
+// "Ornn", "Qodo (fka CodiumAI)" is "Qodo"), and each is kept under the name
+// it was stored as, so it is not taken for a new company.
+const STORED_AS: Record<string, string> = {
+	datum: 'Datum Technology',
+	'g2 systems': 'G2 Systems and Technologies',
+	ornn: 'Ornn AI',
+	qodo: 'Qodo (fka CodiumAI)',
+	wonderful: 'Wonderful Systems'
+};
+
+const CHUNK = /self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)/g;
+const LIST = '"portfolio":{"companies":';
+// rows named "StealthCo" were unannounced placeholders on the old page
+const STEALTH = /^stealth/i;
+
+interface Company {
+	name?: unknown;
+	url?: unknown;
+}
+
+// the array that opens at `start`, up to the bracket that closes it
+function arrayAt(text: string, start: number): string {
+	let depth = 0;
+	let inString = false;
+	for (let i = start; i < text.length; i++) {
+		const ch = text[i];
+		if (inString) {
+			if (ch === '\\') i++;
+			else if (ch === '"') inString = false;
+		} else if (ch === '"') inString = true;
+		else if (ch === '[') depth++;
+		else if (ch === ']' && --depth === 0) return text.slice(start, i + 1);
+	}
+	return '';
+}
+
+const text = (v: unknown) => (typeof v === 'string' ? v.replace(/\s+/g, ' ').trim() : '');
 
 export async function scrape(): Promise<ScrapedCompany[]> {
 	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
@@ -18,23 +56,23 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}
 	const html = await resp.text();
+	const payload = [...html.matchAll(CHUNK)].map(([, literal]) => JSON.parse(literal) as string).join('');
+	const at = payload.indexOf(LIST);
+	let list: Company[] = [];
+	try {
+		list = at < 0 ? [] : (JSON.parse(arrayAt(payload, at + LIST.length)) as Company[]);
+	} catch {
+		list = [];
+	}
 
 	const companies: ScrapedCompany[] = [];
-	for (const row of html.split(/<li data-tab="[^"]*" data-location="[^"]*" class="text-16">/).slice(1)) {
-		const name = (
-			row.match(/list-title">\s*<div class="">\s*<span>\+<\/span>([^<]*)<\/div>/)?.[1] ?? ''
-		)
-			.trim()
-			.replace(/\*$/, '');
-		if (!name || /^stealthco$/i.test(name)) continue;
-		const sector = (row.match(/list-tab show-for-large">\s*([^<]*?)\s*<\/div>/)?.[1] ?? '').trim();
-		const location = (row.match(/list-location">\s*([^<]*?)\s*<\/div>/)?.[1] ?? '').trim();
-		const url = row.match(/list-link text-right">\s*<a href="([^"]*)"/)?.[1] ?? '';
-		companies.push({
-			name,
-			category: [sector, location].filter(Boolean).join(', '),
-			url
-		});
+	const seen = new Set<string>();
+	for (const company of list) {
+		const written = text(company.name).replace(/\*$/, '');
+		const name = STORED_AS[written.toLowerCase()] ?? written;
+		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
+		seen.add(name.toLowerCase());
+		companies.push({ name, category: '', url: text(company.url) || PAGE_URL });
 	}
 
 	if (companies.length === 0) {

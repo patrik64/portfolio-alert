@@ -1,30 +1,37 @@
 import type { ScrapedCompany } from './types';
 
-const PAGE_URL = 'https://spintopventures.com/portfolio/';
-const MAX_PAGES = 40;
-// the company pages are asked for one at a time, a pause between them
-const PACE_MS = 150;
-const REFUSED_MS = 20_000;
-// no company page is begun past this, leaving the run its time
-const DEADLINE_MS = 150_000;
+const BASE_URL = 'https://spintopventures.com';
+const PAGE_URL = `${BASE_URL}/portfolio`;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-// wordpress: the portfolio is a grid of logos, thirty a page
-// (/portfolio/page/2/), a logo a company linking its page here. the logos
-// have no alt text, and the company's page alone names it, in its heading
-// ("Acamp"), with a few lines about it — no site, no year and nothing
-// saying which companies the fund is out of — so every company links its
-// page here and carries no tags. every page of the grid must load.
+// framer, since the move off wordpress on 2026-11-11: the portfolio page is
+// one grid holding every company, a card each linking its page here
+// ("./portfolio/velatir"), named in a layer of its own, and, for one the fund
+// is out of, a pill saying how it went — "Acquired by Klarna, 2021", "IPO",
+// "Exited, 2021". the pill is kept as "Acquired by …" or "IPO" beside the
+// Exited tag; the year goes, and so does a deal's price ("in a USD 700M
+// deal"). the "notable exits" row above the grid repeats five of the exits
+// and is not read.
 //
-// a company without its page has no name to list it by, so a company page
-// that will not load, or is not reached by the deadline, fails the run
-// rather than leave the company out.
+// the move shortened a few names the old site wrote out ("Aiba AS" is now
+// "Aiba", "MariaDB Corporation" is "MariaDB"), and each is kept under the
+// name it was stored as, so it is not taken for a new company.
+const STORED_AS: Record<string, string> = {
+	'3lc': 'Three Lines of Code 3LC',
+	aiba: 'Aiba AS',
+	alexishr: 'Alexis',
+	mariadb: 'MariaDB Corporation',
+	waya: 'Waya Finance & Technology'
+};
 
-const CARD = /<a href="([^"]*)" class="portfolioCard_link"/g;
-const NEXT = /<a class="next page-numbers" href="([^"]*)"/;
-const NAME = /<h1>([\s\S]*?)<\/h1>/;
-const TITLE = /<title>\s*([^<]*?)\s*-\s*Spintop\s*<\/title>/;
+const CARD = /<a\b[^>]*\bdata-framer-name="Portfolio item"[^>]*\bhref="([^"]*)"[^>]*>([\s\S]*?)<\/a>/g;
+const NAME = /data-framer-name="Name"[^>]*>\s*<p\b[^>]*>([\s\S]*?)<\/p>/;
+const PILL = /<span class="spt-pill[^"]*">([\s\S]*?)<\/span>/;
+// "Acquired by Zynga in a USD 700M deal, 2018" -> "Zynga"
+const BUYER = /^Acquired by\s+(.+?)(?:\s+in a\b.*?)?(?:,\s*(?:19|20)\d{2})?$/i;
+const IPO = /^IPO\b/i;
+const EXITED = /^Exited\b/i;
 const STEALTH = /^stealth\b/i;
 
 const unescape = (s: string) =>
@@ -37,62 +44,46 @@ const unescape = (s: string) =>
 
 const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
 
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+// the category is comma-joined, so a label holding a comma would read as two
+const tag = (s: string) => s.replace(/\s*,\s*/g, ' / ');
 
-// a page, or a refusal waited out once
-async function get(url: string): Promise<Response> {
-	const headers = { 'User-Agent': UA };
-	const resp = await fetch(url, { headers });
-	if (resp.status !== 429) return resp;
-	await resp.body?.cancel();
-	await wait(REFUSED_MS);
-	return fetch(url, { headers });
-}
-
-async function pageText(url: string): Promise<string> {
-	const resp = await get(url);
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${url}: ${resp.status}`);
+// a card's link is written relative to the page ("./portfolio/velatir"),
+// and the company's page sits under /portfolio/ whatever the page's own
+// address ends in
+const pageOf = (href: string) => {
+	const path = unescape(href).trim().replace(/^\.\//, '/');
+	try {
+		return path ? new URL(path, BASE_URL).href : PAGE_URL;
+	} catch {
+		return PAGE_URL;
 	}
-	return resp.text();
-}
-
-// a company page's name; a page that will not give it fails the run
-async function nameOf(href: string): Promise<string> {
-	const html = await pageText(href);
-	const name = clean(html.match(NAME)?.[1] ?? '') || clean(html.match(TITLE)?.[1] ?? '');
-	if (!name) {
-		throw new Error(`spintop: ${href} names no company — the company pages' markup moved`);
-	}
-	return name;
-}
+};
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-	const started = Date.now();
-
-	// the whole grid, a page at a time; a part of it must not pass for the whole
-	const pages: string[] = [];
-	for (let url: string | undefined = PAGE_URL, page = 0; url !== undefined && page < MAX_PAGES; page++) {
-		const html: string = await pageText(url);
-		for (const [, href] of html.matchAll(CARD)) {
-			const link = unescape(href).trim();
-			if (/^https?:\/\//i.test(link) && !pages.includes(link)) pages.push(link);
-		}
-		const next: string | undefined = html.match(NEXT)?.[1];
-		url = next ? unescape(next) : undefined;
+	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	if (!resp.ok) {
+		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}
+	const html = await resp.text();
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-	for (const href of pages) {
-		if (Date.now() - started >= DEADLINE_MS) {
-			throw new Error('spintop: the company pages ran past the deadline — the portfolio would be partial');
-		}
-		if (companies.length > 0) await wait(PACE_MS);
-		const name = await nameOf(href);
-		if (STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
+	for (const [, href, card] of html.matchAll(CARD)) {
+		const written = clean(card.match(NAME)?.[1] ?? '');
+		const name = STORED_AS[written.toLowerCase()] ?? written;
+		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 		seen.add(name.toLowerCase());
-		companies.push({ name, category: '', url: href });
+		const pill = clean(card.match(PILL)?.[1] ?? '');
+		const buyer = pill.match(BUYER)?.[1];
+		const ipo = IPO.test(pill);
+		const exited = Boolean(buyer) || ipo || EXITED.test(pill);
+		companies.push({
+			name,
+			category: [buyer ? `Acquired by ${tag(buyer)}` : '', ipo ? 'IPO' : '', exited ? 'Exited' : '']
+				.filter(Boolean)
+				.join(', '),
+			url: pageOf(href)
+		});
 	}
 
 	if (companies.length === 0) {
