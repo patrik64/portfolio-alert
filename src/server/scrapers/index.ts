@@ -80,8 +80,10 @@ import { scrape as alven } from './alven';
 import { scrape as amadeus } from './amadeus';
 import { scrape as amasia } from './amasia';
 import { scrape as ambition } from './ambition';
+import { scrape as angelinvest } from './angelinvest';
 import { scrape as animo } from './animo';
 import { scrape as anorak } from './anorak';
+import { scrape as another } from './another';
 import { scrape as anthem } from './anthem';
 import { scrape as anthemis } from './anthemis';
 import { scrape as antler } from './antler';
@@ -1138,8 +1140,10 @@ const impls: Record<string, () => Promise<ScrapedCompany[]>> = {
 	amadeus,
 	amasia,
 	ambition,
+	angelinvest,
 	animo,
 	anorak,
+	another,
 	anthem,
 	anthemis,
 	antler,

@@ -1,4 +1,4 @@
-// The 1057 tracked funds, in case-insensitive alphabetical order by name — the
+// The 1059 tracked funds, in case-insensitive alphabetical order by name — the
 // dashboard, the timeline and the download list them in this order. Slugs
 // match the scraper module filenames in
 // src/server/scrapers/; display names come from scrapa/all.json (with the
@@ -107,8 +107,10 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'amplifyher', name: 'AmplifyHer Ventures', url: 'https://www.amplifyherventures.com/#investments' },
 	{ slug: 'amplitude', name: 'Amplitude Ventures', url: 'https://amplitudevc.com/en/portfolio' },
 	{ slug: 'a16z', name: 'Andreessen Horowitz', url: 'https://a16z.com/portfolio/' },
+	{ slug: 'angelinvest', name: 'Angel Invest', url: 'https://angelinvest.ventures/portfolio' },
 	{ slug: 'animo', name: 'ANIMO Ventures', url: 'https://animo.vc/#portfolio' },
 	{ slug: 'anorak', name: 'Anorak Ventures', url: 'https://www.anorak.vc/portfolio' },
+	{ slug: 'another', name: 'another.vc', url: 'https://www.another.vc/#portfolio' },
 	{ slug: 'anthem', name: 'Anthem Venture Partners', url: 'https://anthemvp.com/?page_id=15' },
 	{ slug: 'anthemis', name: 'Anthemis', url: 'https://www.anthemis.com/portfolio/' },
 	{ slug: 'antler', name: 'Antler', url: 'https://www.antler.co/portfolio' },
