@@ -14,11 +14,22 @@ const UA =
 // the company sites live in a separate object keyed by company name, and the
 // slugs the tuples carry ("CyberDev", "vc") have their display labels in two
 // small lookup objects ("Cyber / Dev", "Venture").
+//
+// since the build of 2026-11-13 the unpacking adds an exited field, looked up
+// by name in a set of the companies the page badges "Exited" ("Airtable",
+// "Figma"); those are kept with the Exited tag.
+//
+// a company renamed since it was stored ("Athanor", fka Alembic) is kept under
+// the name it was stored as, so it is not taken for a new company.
+const STORED_AS: Record<string, string> = {
+	athanor: 'Alembic'
+};
 
 // the .map that unpacks the portfolio array; the minified argument names change
-// between builds but the fields they are unpacked into do not
+// between builds but the fields they are unpacked into do not, bar the fields
+// added after valuation, the set naming the exits among them
 const UNPACK =
-	/\.map\(\(\[[\w,$]*\]\)=>\(\{name:\w+,description:\w+,strategies:\w+,category:\w+,valuation:\w+\}\)\)/;
+	/\.map\(\(\[[\w,$]*\]\)=>\(\{name:[\w$]+,description:[\w$]+,strategies:[\w$]+,category:[\w$]+,valuation:[\w$]+(?:,exited:([\w$]+)\.has\([\w$]+\))?(?:,[\w$]+:[^{}()]*(?:\([^()]*\))?)*\}\)\)/;
 
 // both label objects lead with an "all" entry the portfolio itself never uses
 const LABELS = /\{all:"All",([^{}]*)\}/g;
@@ -74,6 +85,17 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		number | null
 	][];
 
+	// the set of exits the unpacking looks names up in: `DL=new Set(["Airtable",…])`
+	const exited = new Set<string>();
+	if (unpack[1]) {
+		const name = unpack[1].replace(/\$/g, '\\$');
+		const list = js.match(new RegExp(`(?<![\\w$])${name}=new Set\\((\\[[^\\]]*\\])\\)`))?.[1];
+		if (!list) {
+			throw new Error(`wndr: the set of exits (${unpack[1]}) is missing from the bundle`);
+		}
+		for (const exit of JSON.parse(list) as string[]) exited.add(exit);
+	}
+
 	// "CyberDev" -> "Cyber / Dev", "vc" -> "Venture"; the two objects share no
 	// keys, so one lookup serves both
 	const labels = new Map<string, string>();
@@ -92,14 +114,17 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-	for (const [name, , strategies, category] of rows) {
+	for (const [written, , strategies, category] of rows) {
+		// the exits and the sites are keyed by the name as the bundle writes it
+		const name = STORED_AS[written?.toLowerCase() ?? ''] ?? written;
 		if (!name || seen.has(name)) continue;
 		seen.add(name);
 		const tags = (strategies ?? []).map((s) => labels.get(s) ?? s);
 		// "Other" is the catch-all bucket — it names no sector
 		const sector = labels.get(category) ?? category;
 		if (sector && sector !== 'Other') tags.push(sector);
-		companies.push({ name, category: tags.join(', '), url: sites.get(name) ?? '' });
+		if (exited.has(written)) tags.push('Exited');
+		companies.push({ name, category: tags.join(', '), url: sites.get(written) ?? '' });
 	}
 
 	if (companies.length === 0) {
