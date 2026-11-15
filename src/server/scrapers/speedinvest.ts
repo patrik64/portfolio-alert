@@ -17,6 +17,13 @@ const UA =
 // is handed to a script that makes a link of it; a row without one links
 // the fund's own page of the company.
 
+// a company renamed since it was stored is kept under the name it was stored
+// as, so it is not taken for a new company ("TextCortex" was "text.cortex"
+// until 2026-11)
+const STORED_AS: Record<string, string> = {
+	textcortex: 'text.cortex'
+};
+
 const LIST = /class="portfolio-list_wrapper w-dyn-list"/;
 const ITEM = /(?=<div fs-list-element="list" role="listitem")/;
 const NAME = /fs-list-field="itemTitle"[^>]*>([\s\S]*?)<\/h\d>/;
@@ -63,7 +70,8 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 		const list = html.slice(start);
 
 		for (const item of list.split(ITEM).slice(1)) {
-			const name = clean(item.match(NAME)?.[1] ?? '');
+			const written = clean(item.match(NAME)?.[1] ?? '');
+			const name = STORED_AS[written.toLowerCase()] ?? written;
 			if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 			seen.add(name.toLowerCase());
 			// the sectors and programmes stand in the row's head, the country hidden in its fold

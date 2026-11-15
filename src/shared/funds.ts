@@ -141,7 +141,12 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'atomic', name: 'Atomic', url: 'https://www.atomic.vc/companies' },
 	{ slug: 'atomico', name: 'Atomico', url: 'https://careers.atomico.com/companies' },
 	{ slug: 'au21', name: 'AU21 Capital', url: 'https://au21.capital/portfolio' },
-	{ slug: 'audacity', name: 'Audacity Venture Capital', url: 'https://audacityvc.com/portfolio' },
+	{
+		slug: 'audacity',
+		name: 'Audacity Venture Capital',
+		url: 'https://audacityvc.com/portfolio',
+		paused: true
+	},
 	{ slug: 'av8', name: 'AV8', url: 'https://av8.vc/our-portfolio/' },
 	{ slug: 'avalanche', name: 'Avalanche VC', url: 'https://www.avalanche.vc/portfolio' },
 	{ slug: 'avesta', name: 'Avesta Fund', url: 'https://www.avesta.fund/portfolio' },
