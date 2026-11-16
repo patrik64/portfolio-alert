@@ -727,7 +727,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'm1c', name: 'M1C', url: 'https://m1c.vc/portfolio' },
 	{ slug: 'mac', name: 'MAC Venture Capital', url: 'https://macventurecapital.com/portfolio/' },
 	{ slug: 'magic', name: 'MAGIC Fund', url: 'https://www.magic.fund/' },
-	{ slug: 'mainsequence', name: 'Main Sequence', url: 'https://www.mseq.vc/all-companies' },
+	{ slug: 'mainsequence', name: 'Main Sequence', url: 'https://www.mseq.vc/portfolio' },
 	{ slug: 'makers', name: 'Makers Fund', url: 'https://www.makersfund.com/portfolio' },
 	{ slug: 'maki', name: 'Maki.vc', url: 'https://maki.vc/portfolio/' },
 	{ slug: 'mana', name: 'Mana Ventures', url: 'https://www.manaventures.vc/portfolio' },
