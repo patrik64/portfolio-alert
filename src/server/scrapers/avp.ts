@@ -1,166 +1,133 @@
 import type { ScrapedCompany } from './types';
 
-const BASE_URL = "https://avpcap.com";
+const BASE_URL = 'https://avpcap.com';
 const PAGE_URL = `${BASE_URL}/companies/`;
-// exits are only marked on the taxonomy archive, which pages 10 at a time
-const EXITED_URL = `${BASE_URL}/project-type/exited`;
 const UA =
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 const BATCH_SIZE = 8;
 const BATCH_DELAY_MS = 300;
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+// wordpress, rebuilt on 2026-11-16 around a portfolio plugin of the site's own:
+// the companies page is one grid of cards, each naming the company, filed for
+// the page's filter under the fund's strategies ("venture", "growth",
+// "european-defence") and opening a dialog the page fills from the plugin's
+// endpoint, one company at a time by its id — its strategies as the filter
+// writes them ("Venture"), its country, the year the fund came in and its
+// site. those are kept as tags beside the strategy. the exits archive the old
+// site kept (/project-type/exited) is gone, and nothing on the new one marks
+// an exit. a company whose details do not load is kept on its card's word,
+// linking its page here.
 
-const decode = (s: string) =>
-  s
-    .replace(/&#0?38;|&amp;/g, "&")
-    .replace(/&#0?39;|&#x27;|&rsquo;/g, "'")
-    .replace(/&quot;/g, '"')
-    .replace(/&#8211;/g, "–")
-    .trim();
+// the rebuild spelled a few names apart that the old site wrote as one word
+// ("Modern Message" was "ModernMessage"), and each is kept under the name it
+// was stored as, so it is not taken for a new company.
+const STORED_AS: Record<string, string> = {
+	'modern message': 'ModernMessage',
+	'security scorecard': 'SecurityScorecard'
+};
+
+const CARD = /<a\b(?=[^>]*\bclass="avp-company-card")[^>]*>/g;
+const ID = /\bdata-company-id="(\d+)"/;
+const NAME = /\bdata-company-name="([^"]*)"/;
+const PAGE = /\bdata-company-url="([^"]*)"/;
+const STRATEGIES = /\bdata-strategies="([^"]*)"/;
+const ENDPOINT = /\bdata-rest-url="([^"]*)"/;
+const FILTER = /<button\b[^>]*\bclass="avp-company-filter\b[^"]*"[^>]*\bdata-filter="([^"]*)"[^>]*>([\s\S]*?)<\/button>/g;
+const STEALTH = /^stealth\b/i;
 
 interface Detail {
-  sector: string;
-  stage: string;
-  location: string;
-  website: string;
+	name?: string;
+	strategies?: string[];
+	location?: string;
+	investYear?: string | number;
+	website?: string;
 }
 
-// every company page is the same WPBakery stack of text columns: the sector,
-// the description, then label/value pairs (stage, lead partner, founded, …)
-async function fetchDetail(url: string, attempt = 1): Promise<Detail | null> {
-  try {
-    const resp = await fetch(url, { headers: { "User-Agent": UA } });
-    if (!resp.ok) throw new Error(`${resp.status}`);
-    const html = await resp.text();
+const unescape = (s: string) =>
+	s
+		.replace(/&#0?39;|&apos;|&#8217;|&#x27;/g, "'")
+		.replace(/&quot;/g, '"')
+		.replace(/&nbsp;/g, ' ')
+		.replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
+		.replace(/&#0?38;|&amp;/g, '&');
 
-    const columns = [
-      ...html.matchAll(/<div class="wpb_text_column wpb_content_element[^"]*">([\s\S]*?)<\/div>/g),
-    ].map((m) => decode(m[1].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ")));
+const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
 
-    const valueOf = (...labels: string[]) => {
-      for (const label of labels) {
-        const at = columns.indexOf(label);
-        if (at >= 0) return columns[at + 1] ?? "";
-      }
-      return "";
-    };
+// the category is comma-joined, so a label holding a comma would read as two
+const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
 
-    // the sector heads the page, above the description — except on the handful
-    // of exit announcements, which put the status there and name no sector
-    const heading = columns[0] ?? "";
-    const sector = heading && heading !== "Exited" && heading.length < 60 && !heading.endsWith(".")
-      ? heading
-      : "";
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-    return {
-      sector,
-      stage: valueOf("Investment stage", "Stage"),
-      location: valueOf("Location"),
-      website:
-        html.match(
-          /<a class="nectar-button[^"]*"[^>]*href="(https?:\/\/[^"]+)"[^>]*>\s*<span>Visit website/,
-        )?.[1] ?? "",
-    };
-  } catch {
-    if (attempt < 3) {
-      await sleep(1000 * attempt);
-      return fetchDetail(url, attempt + 1);
-    }
-    return null;
-  }
-}
-
-// walk the exited archive until a page 404s or repeats nothing new
-async function fetchExited(): Promise<Set<string>> {
-  const slugs = new Set<string>();
-  for (let page = 1; page <= 20; page++) {
-    const url = page === 1 ? `${EXITED_URL}/` : `${EXITED_URL}/page/${page}/`;
-    const resp = await fetch(url, { headers: { "User-Agent": UA } });
-    if (resp.status === 404) break;
-    if (!resp.ok) throw new Error(`Failed to fetch ${url}: ${resp.status}`);
-    const html = await resp.text();
-    const found = [...html.matchAll(/<a href="https:\/\/avpcap\.com\/avp\/([^"/]+)\/"><\/a>/g)].map(
-      (m) => m[1],
-    );
-    if (found.length === 0) break;
-    for (const slug of found) slugs.add(slug);
-  }
-  return slugs;
+async function detailOf(endpoint: string, id: string): Promise<Detail | undefined> {
+	for (let attempt = 1; attempt <= 3; attempt++) {
+		try {
+			const resp = await fetch(`${endpoint}${id}`, { headers: { 'User-Agent': UA, Accept: 'application/json' } });
+			if (resp.ok) return (await resp.json()) as Detail;
+		} catch {
+			// asked again below
+		}
+		if (attempt < 3) await sleep(1000 * attempt);
+	}
+	return undefined;
 }
 
 export async function scrape(): Promise<ScrapedCompany[]> {
-  const resp = await fetch(PAGE_URL, { headers: { "User-Agent": UA } });
-  if (!resp.ok) {
-    throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
-  }
-  const html = await resp.text();
+	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+	if (!resp.ok) {
+		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+	}
+	const html = await resp.text();
 
-  const listed: { name: string; page: string; slug: string }[] = [];
-  const seen = new Set<string>();
-  for (const item of html.split('<div class="nectar-post-grid-item').slice(1)) {
-    const page = item.match(/<a class="nectar-post-grid-link" href="([^"]+)"/)?.[1] ?? "";
-    const name = decode(item.match(/class="post-heading"><span>([^<]+)</)?.[1] ?? "");
-    if (!name || !page || seen.has(name)) continue;
-    seen.add(name);
-    listed.push({ name, page, slug: page.replace(/.*\/avp\/|\/$/g, "") });
-  }
-  if (listed.length === 0) {
-    throw new Error("avp: no companies found in the portfolio grid");
-  }
+	// the filter's words for the strategies' slugs: "european-defence" -> "European Defence"
+	const labels = new Map<string, string>();
+	for (const [, slug, label] of html.matchAll(FILTER)) labels.set(slug, tag(label));
 
-  const exited = await fetchExited();
+	const cards: { id: string; name: string; page: string; strategies: string[] }[] = [];
+	const seen = new Set<string>();
+	for (const [card] of html.matchAll(CARD)) {
+		const written = clean(card.match(NAME)?.[1] ?? '');
+		const name = STORED_AS[written.toLowerCase()] ?? written;
+		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
+		seen.add(name.toLowerCase());
+		cards.push({
+			id: card.match(ID)?.[1] ?? '',
+			name,
+			page: unescape(card.match(PAGE)?.[1] ?? '').trim(),
+			strategies: (card.match(STRATEGIES)?.[1] ?? '')
+				.split(/\s+/)
+				.filter(Boolean)
+				.map((slug) => labels.get(slug) ?? tag(slug.replace(/-/g, ' ')))
+		});
+	}
+	if (cards.length === 0) {
+		throw new Error('avp: no companies found in the portfolio grid');
+	}
 
-  const fetched: { entry: (typeof listed)[number]; detail: Detail }[] = [];
-  for (let i = 0; i < listed.length; i += BATCH_SIZE) {
-    const batch = listed.slice(i, i + BATCH_SIZE);
-    const details = await Promise.all(
-      batch.map(async (entry) => ({ entry, detail: await fetchDetail(entry.page) })),
-    );
-    for (const { entry, detail } of details) {
-      if (detail) fetched.push({ entry, detail });
-    }
-    await sleep(BATCH_DELAY_MS);
-  }
+	const endpoint = unescape(html.match(ENDPOINT)?.[1] ?? '').trim();
+	const details: (Detail | undefined)[] = [];
+	if (endpoint) {
+		for (let i = 0; i < cards.length; i += BATCH_SIZE) {
+			if (i > 0) await sleep(BATCH_DELAY_MS);
+			const batch = cards.slice(i, i + BATCH_SIZE);
+			details.push(...(await Promise.all(batch.map(({ id }) => (id ? detailOf(endpoint, id) : undefined)))));
+		}
+	}
 
-  // the sectors are hand-typed per page, so the same one turns up in different
-  // casings ("Enterprise software"); settle on the spelling used most often
-  const spellings = new Map<string, Map<string, number>>();
-  for (const { detail } of fetched) {
-    if (!detail.sector) continue;
-    const key = detail.sector.toLowerCase();
-    const variants = spellings.get(key) ?? new Map<string, number>();
-    variants.set(detail.sector, (variants.get(detail.sector) ?? 0) + 1);
-    spellings.set(key, variants);
-  }
-  const canonicalSector = new Map(
-    [...spellings].map(([key, variants]) => [
-      key,
-      [...variants].sort((a, b) => b[1] - a[1])[0][0],
-    ]),
-  );
-
-  const companies: ScrapedCompany[] = fetched.map(({ entry, detail }) => ({
-    name: entry.name,
-    category: [
-      canonicalSector.get(detail.sector.toLowerCase()) ?? detail.sector,
-      detail.stage,
-      detail.location,
-      exited.has(entry.slug) ? "Exited" : "",
-    ]
-      .filter(Boolean)
-      .join(", "),
-    // the company's own site when AVP links it, its AVP page otherwise
-    url: detail.website || entry.page,
-  }));
-
-  // fail loudly rather than importing a partial portfolio, which would make the
-  // missing companies reappear as newcomers on a later run
-  if (companies.length < listed.length * 0.95) {
-    throw new Error(
-      `AVP portfolio incomplete: got ${companies.length} of ${listed.length} companies`,
-    );
-  }
-
-  return companies;
+	return cards.map((card, i) => {
+		const detail = details[i];
+		const year = String(detail?.investYear ?? '').match(/\b(?:19|20)\d{2}\b/)?.[0];
+		const website = (detail?.website ?? '').trim();
+		return {
+			name: card.name,
+			category: [
+				...(detail?.strategies?.length ? detail.strategies.map(tag) : card.strategies),
+				tag(detail?.location ?? ''),
+				year ? `Invested ${year}` : ''
+			]
+				.filter((t, j, all) => t && all.indexOf(t) === j)
+				.join(', '),
+			// the company's own site when the fund gives it, its page here otherwise
+			url: /^https?:\/\//i.test(website) ? website : card.page || PAGE_URL
+		};
+	});
 }

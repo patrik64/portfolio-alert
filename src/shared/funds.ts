@@ -227,7 +227,7 @@ export const FUNDS: FundInfo[] = [
 		url: 'https://www.bostonmillenniapartners.com/portfolio/'
 	},
 	{ slug: 'bostonseed', name: 'Boston Seed Capital', url: 'https://bostonseed.com/portfolio/' },
-	{ slug: 'boulder', name: 'Boulder Ventures', url: 'https://www.boulderventures.com/whatwevedone' },
+	{ slug: 'boulder', name: 'Boulder Ventures', url: 'https://www.boulderventures.com/what-weve-done' },
 	{ slug: 'bowery', name: 'Bowery Capital', url: 'https://bowerycap.com/' },
 	{ slug: 'boxgroup', name: 'BoxGroup', url: 'https://www.boxgroup.com/portfolio' },
 	{ slug: 'boxone', name: 'BoxOne Ventures', url: 'https://www.boxone.xyz/portfolio' },
@@ -721,7 +721,12 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'lumira', name: 'Lumira Ventures', url: 'https://www.lumiraventures.com/portfolio/' },
 	{ slug: 'lunar', name: 'Lunar Ventures', url: 'https://www.lunar.vc/portfolio' },
 	{ slug: 'lux', name: 'Lux Capital', url: 'https://www.luxcapital.com/companies' },
-	{ slug: 'lyticalventures', name: 'Lytical Ventures', url: 'https://www.lyticalventures.com/companies' },
+	{
+		slug: 'lyticalventures',
+		name: 'Lytical Ventures',
+		url: 'https://www.lyticalventures.com/companies',
+		paused: true
+	},
 	{ slug: 'm12', name: 'M12', url: 'https://m12.vc/portfolio/' },
 	{ slug: 'm13', name: 'M13', url: 'https://www.m13.co/portfolio' },
 	{ slug: 'm1c', name: 'M1C', url: 'https://m1c.vc/portfolio' },
@@ -930,7 +935,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'quantonation', name: 'Quantonation', url: 'https://www.quantonation.com/portfolio' },
 	{ slug: 'quest', name: 'Quest Venture Partners', url: 'https://www.questvp.com/portfolio.html' },
 	{ slug: 'quiet', name: 'Quiet Capital', url: 'https://quiet.com/portfolio/' },
-	{ slug: 'qumra', name: 'Qumra Capital', url: 'https://qumracapital.com/portfolio/' },
+	{ slug: 'qumra', name: 'Qumra Capital', url: 'https://qumracapital.com/portfolio' },
 	{ slug: 'quona', name: 'Quona Capital', url: 'https://quona.com/portfolio/' },
 	{ slug: 'r7', name: 'R7', url: 'https://www.r7.vc/' },
 	{ slug: 'racap', name: 'RA Capital', url: 'https://www.racap.com/portfolio' },
