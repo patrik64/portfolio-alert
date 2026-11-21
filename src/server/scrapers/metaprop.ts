@@ -1,87 +1,145 @@
 import type { ScrapedCompany } from './types';
 
-const PAGE_URL = 'https://www.metaprop.com/portfolio';
+const BASE_URL = 'https://www.metaprop.com';
+const PAGE_URL = `${BASE_URL}/portfolio`;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-// a wall of logos with nothing written on it: no alt, no title, no name in any
-// attribute, and the logo files are numbered rather than named. the only thing
-// a tile carries is the link, so the address names the company, as for p1 and
-// vu venture partners — which puts the compound ones back together as one
-// word: Boweryvaluation, Switchautomation, Pinpointanalytics.
+// vinext (next.js on vite), rebuilt on 2026-11-19: the portfolio page serves
+// a dozen featured companies, and its "all" and "exits" tabs are drawn in the
+// browser from a list baked into the page's portfolio script — a company each
+// with its name, the industries the fund files it under ("Real estate /
+// construction"), the stage it came in at, the year, where it is based, its
+// site, and, for one the fund is out of, "exited" and how ("acquired by
+// Nearmap, 2023"). the script is found through the page's entry module, whose
+// file names carry a build hash, and the list is the one json document it
+// parses. the founders' own investments (airbnb and the like) are a separate
+// list in the same script and are not read.
 //
-// the page holds two walls under two headings, and only the first is this
-// fund's. the second is the founders' own proptech investments and opens on
-// airbnb; taking the page at face value would credit this fund with it, the
-// way node.vc's and morpheus's second lists would have. the headings are what
-// tell them apart, since the theme gives both the same class.
-//
-// twenty-six of the fund's own hundred and twenty-three are marked as gone,
-// and those are left out. for a company it still holds the fund links to the
-// company; for one that has gone it links to wherever the company ended up,
-// which is often the buyer — Betterview points at nearmap, Ravti at building
-// engines, and others at moen, bp, zillow and wework as plainly. with no name
-// anywhere on the page there is nothing to tell a company from the firm that
-// bought it, and a portfolio listing BP would be worse than one that stops at
-// what the fund still holds.
-
-const SECTION = /<div class="founders-portfolio">([\s\S]*?)(?=<div class="founders-portfolio">|$)/g;
-const TITLE = /class="main-title[^"]*">([\s\S]*?)<span/;
-const BLOCK = /<div class="single-block([^"]*)">([\s\S]*?)(?=<div class="single-block|$)/g;
-const SITE = /<a href="(https?:\/\/[^"]+)"[^>]*class="absolute-link"/;
-// the wall that is not this fund's portfolio
-const NOT_THE_FUND = /founder/i;
-// the fund's own mark for a company it no longer holds
-const GONE = /exited-logo/;
-// what a company puts in front of its brand to get a free address
-const DECORATION = /^(?:hello|hey|with|get|try|use|join|my|the)(?=[a-z]{3,})/;
-// second levels that are not the brand — "spleet.africa" is Spleet
-const GENERIC = new Set([
-	'com', 'co', 'net', 'org', 'io', 'ai', 'app', 'vc', 'tech', 'us', 'me', 'is'
-]);
-
-const clean = (s: string) => s.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-
-const titled = (s: string) =>
-	s === s.toLowerCase() ? s.replace(/\b[a-z]/g, (c) => c.toUpperCase()) : s;
-
-const fromHost = (url: string) => {
-	try {
-		const labels = new URL(url).hostname.replace(/^www\./, '').split('.');
-		if (labels.length > 1) labels.pop();
-		if (labels.length > 1 && GENERIC.has(labels[labels.length - 1])) labels.pop();
-		return titled((labels[labels.length - 1] ?? '').replace(DECORATION, '').replace(/-+/g, ' '));
-	} catch {
-		return '';
-	}
+// the industries, the stage, the year and the place are kept as tags, an exit
+// with its buyer and the Exited tag. the old wall named no company at all, so
+// its companies were stored under names read off their addresses
+// ("Boweryvaluation", "Kel"); each is kept under that name, so it is not taken
+// for a new company.
+const STORED_AS: Record<string, string> = {
+	'100': 'Get100',
+	atc: 'Atcresearch',
+	'acorn finance': 'Acornfinance',
+	'at ease': 'Atease',
+	billy: 'Billyforinsurance',
+	bowery: 'Boweryvaluation',
+	'branch technology': 'Branchtechnology',
+	briq: 'Br',
+	cofi: 'Cofilending',
+	demex: 'Demexgroup',
+	'estate intel': 'Estateintel',
+	h2: 'H2corporation',
+	'jubilee homes': 'Jubileehomes',
+	kelvin: 'Kel',
+	'kwant.ai': 'Kwant',
+	'light rfp': 'Lightrfp',
+	'pest share': 'Pestshare',
+	'pinpoint analytics': 'Pinpointanalytics',
+	renegade: 'Renegadeinsurance',
+	showroom: 'Vestahome',
+	'socialsign.in': 'Socialsignin',
+	source: 'Tothesource',
+	'split pay': 'Splitpay',
+	'stay open': 'Stayopen',
+	'switch automation': 'Switchautomation',
+	'toggle holdings': 'Toggle',
+	tracflo: 'Tracfloapp',
+	trestle: 'Gotrestle',
+	'uniti ai': 'Uniti'
 };
 
-export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
+const ENTRY = /<script\b[^>]*\btype="module"[^>]*\bsrc="([^"]*\/index-[^"]*\.js)"/;
+const DIRECTORY = /_next\/static\/chunks\/portfolio-directory-[\w-]+\.js/;
+const LIST = 'JSON.parse(`[';
+const EXITED = /^exited$/i;
+// "acquired by Move, Inc. / Realtor.com, 2020" -> "Move / Realtor.com"
+const BUYER = /^acquired by\s+(.+?)(?:,\s*(?:19|20)\d{2})?$/i;
+const LEGAL = /,?\s+(?:inc|llc|ltd|corp)\.?(?=\s|,|$)/gi;
+const STEALTH = /^stealth\b/i;
+
+interface Company {
+	name?: unknown;
+	industries?: unknown;
+	stage?: unknown;
+	year?: unknown;
+	hq?: unknown;
+	status?: unknown;
+	exit?: unknown;
+	url?: unknown;
+}
+
+const text = (v: unknown) => (typeof v === 'string' ? v.replace(/\s+/g, ' ').trim() : '');
+
+// the category is comma-joined, so a label holding a comma would read as two
+const tag = (s: string) => s.replace(/\s*,\s*/g, ' / ');
+
+// how the fund got out, as "Acquired by …"; "PointCentral, an Alarm.com company" keeps its first part
+function exitOf(said: string): string {
+	const buyer = said.match(BUYER)?.[1]?.replace(LEGAL, '').split(/,\s*/)[0].trim();
+	return buyer ? `Acquired by ${buyer}` : '';
+}
+
+async function fetchText(url: string): Promise<string> {
+	const resp = await fetch(url, { headers: { 'User-Agent': UA } });
 	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
+		throw new Error(`Failed to fetch ${url}: ${resp.status}`);
 	}
-	const html = await resp.text();
+	return resp.text();
+}
+
+export async function scrape(): Promise<ScrapedCompany[]> {
+	const html = await fetchText(PAGE_URL);
+	const entry = html.match(ENTRY)?.[1];
+	if (!entry) {
+		throw new Error('metaprop: no entry module on the portfolio page');
+	}
+	const directory = (await fetchText(new URL(entry, BASE_URL).href)).match(DIRECTORY)?.[0];
+	if (!directory) {
+		throw new Error('metaprop: the entry module names no portfolio directory script');
+	}
+	const js = await fetchText(new URL(`/${directory}`, BASE_URL).href);
+	const start = js.indexOf(LIST);
+	const end = start < 0 ? -1 : js.indexOf('`)', start);
+	if (end < 0) {
+		throw new Error('metaprop: no company list in the portfolio directory script');
+	}
+	// the list sits in a template literal: its escapes are undone before parsing
+	const list = JSON.parse(js.slice(start + LIST.length - 1, end).replace(/\\([\\`$])/g, '$1')) as Company[];
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-	for (const [, wall] of html.matchAll(SECTION)) {
-		if (NOT_THE_FUND.test(clean(wall.match(TITLE)?.[1] ?? ''))) continue;
-
-		for (const [, classes, block] of wall.matchAll(BLOCK)) {
-			if (GONE.test(classes)) continue;
-
-			const url = block.match(SITE)?.[1] ?? '';
-			const name = fromHost(url);
-			if (!name || seen.has(name.toLowerCase())) continue;
-			seen.add(name.toLowerCase());
-
-			companies.push({ name, category: '', url });
-		}
+	for (const company of list) {
+		const written = text(company.name);
+		const name = STORED_AS[written.toLowerCase()] ?? written;
+		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
+		seen.add(name.toLowerCase());
+		const exited = EXITED.test(text(company.status));
+		const industries = Array.isArray(company.industries) ? company.industries.map(text) : [];
+		const year = String(company.year ?? '').match(/\b(?:19|20)\d{2}\b/)?.[0];
+		const site = text(company.url);
+		companies.push({
+			name,
+			category: [
+				...industries.map(tag),
+				tag(text(company.stage)),
+				year ? `Invested ${year}` : '',
+				tag(text(company.hq)),
+				exited ? tag(exitOf(text(company.exit))) : '',
+				exited ? 'Exited' : ''
+			]
+				.filter((t, i, all) => t && all.indexOf(t) === i)
+				.join(', '),
+			url: /^https?:\/\//i.test(site) ? site : PAGE_URL
+		});
 	}
 
 	if (companies.length === 0) {
-		throw new Error('metaprop: no companies on the portfolio wall');
+		throw new Error('metaprop: no companies in the portfolio list');
 	}
 
 	return companies;

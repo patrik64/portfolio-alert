@@ -270,7 +270,12 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'castleisland', name: 'Castle Island Ventures', url: 'https://castleisland.vc/portfolio/' },
 	{ slug: 'cathay', name: 'Cathay Innovation', url: 'https://cathayinnovation.com/portfolio/' },
 	{ slug: 'cathexis', name: 'Cathexis Ventures', url: 'https://cathexis.ventures/portfolio' },
-	{ slug: 'cdp', name: 'CDP Venture Capital', url: 'https://www.cdpventurecapital.it/en/portfolio.page' },
+	{
+		slug: 'cdp',
+		name: 'CDP Venture Capital',
+		url: 'https://www.cdpventurecapital.it/en/portfolio.page',
+		paused: true
+	},
 	{ slug: 'celesta', name: 'Celesta Capital', url: 'https://www.celesta.vc/portfolio' },
 	{ slug: 'centrestreet', name: 'Centre Street Partners', url: 'https://centrestreet.partners/portfolio' },
 	{ slug: 'cervin', name: 'Cervin Ventures', url: 'https://www.cervinventures.com/portfolio' },
