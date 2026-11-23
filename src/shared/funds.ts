@@ -66,7 +66,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'afore', name: 'Afore Capital', url: 'https://www.afore.vc/portfolio' },
 	{ slug: 'agfunder', name: 'AgFunder', url: 'https://agfunder.com/portfolio/' },
 	{ slug: 'aifund', name: 'AI.FUND', url: 'https://ai-fund.vc/our-portfolio/' },
-	{ slug: 'aic', name: 'AIC', url: 'https://aicapital.ai/our-companies' },
+	{ slug: 'aic', name: 'AIC', url: 'https://aicapital.ai/portfolio/' },
 	{ slug: 'ainventures', name: 'AIN Ventures', url: 'https://www.ainventures.com/portfolio' },
 	{ slug: 'airstreet', name: 'Air Street Capital', url: 'https://www.airstreet.com/portfolio' },
 	{
