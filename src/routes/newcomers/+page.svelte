@@ -75,12 +75,26 @@
 	{:else}
 		<div class="mt-4 flex flex-col gap-4">
 			{#each groups as group (group.slug)}
-				<details class="rounded-lg bg-white shadow-lg">
+				<!-- every block starts open; the fund's name opens its page, the rest of the
+				     header closes and opens the block -->
+				<details open class="group overflow-hidden rounded-lg bg-white shadow-lg">
 					<summary
-						class="cursor-pointer px-4 py-3 font-semibold text-gray-800 transition duration-150 select-none hover:underline"
+						class="flex cursor-pointer items-center gap-2 px-4 py-3 font-semibold text-gray-800 transition duration-150 select-none hover:bg-gray-200 [&::-webkit-details-marker]:hidden"
 					>
-						{group.name}
-						<span class="ml-1 text-sm font-normal text-gray-900">({group.companies.length})</span>
+						<a href={`/funds/${group.slug}`} class="text-lg text-dark-500 hover:underline">{group.name}</a>
+						<span class="text-sm font-normal text-gray-900">({group.companies.length})</span>
+						<svg
+							class="ml-auto h-5 w-5 shrink-0 text-gray-500 transition-transform duration-150 group-open:rotate-180"
+							viewBox="0 0 20 20"
+							fill="currentColor"
+							aria-hidden="true"
+						>
+							<path
+								fill-rule="evenodd"
+								d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+								clip-rule="evenodd"
+							/>
+						</svg>
 					</summary>
 					<ul class="divide-y divide-gray-200 border-t border-gray-200">
 						{#each group.companies as company (company.id)}
