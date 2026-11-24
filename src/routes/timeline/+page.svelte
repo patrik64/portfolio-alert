@@ -83,7 +83,7 @@
 </script>
 
 <svelte:head>
-	<title>timeline — portfolio alert</title>
+	<title>timeline — portfolio-alert</title>
 </svelte:head>
 
 <div

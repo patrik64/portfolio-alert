@@ -37,7 +37,7 @@
 </script>
 
 <svelte:head>
-	<title>{name} — portfolio alert</title>
+	<title>{name} — portfolio-alert</title>
 </svelte:head>
 
 <div
@@ -76,7 +76,7 @@
 		<Spinner label="loading companies" />
 	{:else if companies.length === 0}
 		<p class="mt-6 text-sm text-gray-900">
-			no companies yet — run a fetch from the <a href="/" class="font-semibold text-black transition duration-150 hover:text-white">dashboard</a>
+			no companies yet — run a fetch from the <a href="/funds" class="font-semibold text-black transition duration-150 hover:text-white">dashboard</a>
 		</p>
 	{:else}
 		<ul class="mt-4 divide-y divide-gray-200 rounded-lg bg-white shadow-lg">

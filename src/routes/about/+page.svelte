@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-	<title>about — portfolio alert</title>
+	<title>about — portfolio-alert</title>
 </svelte:head>
 
 <div class="mx-auto mt-2 w-full max-w-[53rem] px-6 py-4 lg:dashed-frame">
@@ -40,14 +40,14 @@
 			or an email (the email address is on my github page).
     	</p>
 		<p>
-			<span class="font-semibold">portfolio alert</span> tracks the portfolio companies of
+			<span class="font-semibold">portfolio-alert</span> tracks the portfolio companies of
 			{FUNDS.length} venture capital and private equity funds. It reads each fund's public
 			portfolio page, keeps every company it has ever seen, and highlights
 			<a href="/newcomers" class="font-semibold text-black transition duration-150 hover:text-white">newcomers</a> — companies
 			that appeared in a fund's portfolio since the last fetch.
 		</p>
 		<p>
-			The <a href="/" class="font-semibold text-black transition duration-150 hover:text-white">dashboard</a> shows one card per
+			The <a href="/funds" class="font-semibold text-black transition duration-150 hover:text-white">dashboard</a> shows one card per
 			fund with its company count, newcomer badge and last-fetch time. The first fetch of a
 			fund imports a baseline and is not counted as newcomers. Every company row shows when
 			it was first encountered.

@@ -39,7 +39,7 @@
 </script>
 
 <svelte:head>
-	<title>newcomers — portfolio alert</title>
+	<title>newcomers — portfolio-alert</title>
 </svelte:head>
 
 <div
@@ -70,7 +70,7 @@
 		<Spinner label="loading newcomers" />
 	{:else if groups.length === 0}
 		<p class="mt-6 text-sm text-gray-900">
-			no newcomers — run a fetch from the <a href="/" class="font-semibold text-black transition duration-150 hover:text-white">dashboard</a>
+			no newcomers — run a fetch from the <a href="/funds" class="font-semibold text-black transition duration-150 hover:text-white">dashboard</a>
 		</p>
 	{:else}
 		<div class="mt-4 flex flex-col gap-4">

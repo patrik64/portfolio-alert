@@ -328,7 +328,7 @@ function markdown(q: CompaniesQuery, now: Date, total: number, companies: ApiCom
 	if (companies.length === 0) lines.push(q.offset > 0 ? 'No more companies.' : 'No company matched.');
 	else {
 		lines.push(
-			`Newest first, ${q.offset + 1}–${q.offset + companies.length} of ${total}. Collected by portfolio alert, ${SITE_URL}`
+			`Newest first, ${q.offset + 1}–${q.offset + companies.length} of ${total}. Collected by portfolio-alert, ${SITE_URL}`
 		);
 		const byFund = new Map<string, ApiCompany[]>();
 		for (const company of companies) {

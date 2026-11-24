@@ -13,8 +13,8 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-	<link rel="alternate" type="application/rss+xml" title="portfolio alert" href="/rss.xml" />
-	<title>portfolio alert</title>
+	<link rel="alternate" type="application/rss+xml" title="portfolio-alert" href="/rss.xml" />
+	<title>portfolio-alert</title>
 </svelte:head>
 
 <svelte:window
@@ -45,11 +45,11 @@
 			{#if menuOpen}
 				<div class="absolute left-0 z-10 mt-1 w-40 rounded-md bg-white py-1 shadow-lg shadow-xs">
 					<a
-						href="/"
+						href="/newcomers"
 						onclick={() => (menuOpen = false)}
 						class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
 					>
-						funds
+						newcomers
 					</a>
 					<a
 						href="/search"
@@ -59,18 +59,11 @@
 						search
 					</a>
 					<a
-						href="/newcomers"
+						href="/funds"
 						onclick={() => (menuOpen = false)}
 						class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
 					>
-						newcomers
-					</a>
-					<a
-						href="/timeline"
-						onclick={() => (menuOpen = false)}
-						class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-					>
-						timeline
+						funds
 					</a>
 					<a
 						href="/statistics"
@@ -78,6 +71,13 @@
 						class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
 					>
 						statistics
+					</a>
+					<a
+						href="/timeline"
+						onclick={() => (menuOpen = false)}
+						class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+					>
+						timeline
 					</a>
 					{#if dev}
 						<a
@@ -126,37 +126,43 @@
 				</div>
 			{/if}
 		</div>
-		<a href="/" class="-mt-1 pl-2 font-semibold text-black transition duration-150 hover:text-white">portfolio alert</a>
+		<a href="/" class="-mt-1 pl-2 font-semibold text-black transition duration-150 hover:text-white">portfolio-alert</a>
 		<!-- each link drops out at the width where it stops fitting, rightmost first,
 		     so the icons on the right always keep their place; the menu holds them all -->
 		<nav class="-mt-1 flex items-center gap-3 pl-4 text-sm">
 			<a
-				href="/search"
-				class="hidden min-[315px]:block text-black transition duration-150 hover:text-white"
-			>
-				search
-			</a>
-			<a
 				href="/newcomers"
-				class="hidden min-[405px]:block text-black transition duration-150 hover:text-white"
+				class="hidden min-[355px]:block text-black transition duration-150 hover:text-white"
 			>
 				newcomers
 			</a>
 			<a
-				href="/timeline"
-				class="hidden min-[465px]:block text-black transition duration-150 hover:text-white"
+				href="/search"
+				class="hidden min-[410px]:block text-black transition duration-150 hover:text-white"
 			>
-				timeline
+				search
+			</a>
+			<a
+				href="/funds"
+				class="hidden min-[460px]:block text-black transition duration-150 hover:text-white"
+			>
+				funds
 			</a>
 			<a
 				href="/statistics"
-				class="hidden min-[540px]:block text-black transition duration-150 hover:text-white"
+				class="hidden min-[530px]:block text-black transition duration-150 hover:text-white"
 			>
 				statistics
 			</a>
 			<a
-				href="/about"
+				href="/timeline"
 				class="hidden min-[590px]:block text-black transition duration-150 hover:text-white"
+			>
+				timeline
+			</a>
+			<a
+				href="/about"
+				class="hidden min-[645px]:block text-black transition duration-150 hover:text-white"
 			>
 				about
 			</a>

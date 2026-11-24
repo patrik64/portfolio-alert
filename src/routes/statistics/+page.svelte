@@ -113,7 +113,7 @@
 </script>
 
 <svelte:head>
-	<title>statistics — portfolio alert</title>
+	<title>statistics — portfolio-alert</title>
 </svelte:head>
 
 <!-- a ranking as a card: the bars, and under them the same rows as a table -->

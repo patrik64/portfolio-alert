@@ -54,7 +54,7 @@
 </script>
 
 <svelte:head>
-	<title>search — portfolio alert</title>
+	<title>search — portfolio-alert</title>
 </svelte:head>
 
 <div

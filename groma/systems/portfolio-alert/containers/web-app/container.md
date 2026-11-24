@@ -9,7 +9,7 @@ groma:
 description: Serves the pages and APIs, and runs the fund scrapers
 ---
 
-The SvelteKit application at portfolio-alert.vercel.app, the only part that touches the database.
+The SvelteKit application at portfolio-alert.vercel.app, the only part that touches the database. Its root is a landing page that leads to the pages below.
 
 - **Pages** (Svelte, outside the scan): the fund dashboard, a fund's companies, newcomers, timeline, search, statistics and about. They read through the remult data API.
 - **Fund fetching:** a fetch, started from the dashboard or by the nightly job's HTTP calls, runs one fund's scraper inside a Vercel function and stores what it finds.

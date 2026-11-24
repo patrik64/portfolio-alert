@@ -21,7 +21,10 @@ https://portfolio-alert.vercel.app/rss.xml
 
 ## Pages
 
-- **dashboard** (`/`) — one card per fund with company count, newcomer badge and
+- **home** (`/`) — a hero card saying what the app does, with buttons to
+  newcomers, search, funds and statistics; the newcomers button carries the
+  number of companies currently flagged new.
+- **dashboard** (`/funds`) — one card per fund with company count, newcomer badge and
   last-fetch time; the whole card links to the fund's detail page. A **fetch
   all** button runs every scraper (5 at a time), and each card has its own
   **refresh** button.

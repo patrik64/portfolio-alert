@@ -158,7 +158,7 @@ export function rssFeed(rows: FeedRow[], now = new Date()) {
 		`<?xml version="1.0" encoding="UTF-8"?>\n` +
 		`<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n` +
 		`<channel>\n` +
-		`<title>portfolio alert</title>\n` +
+		`<title>portfolio-alert</title>\n` +
 		`<link>${SITE_URL}/</link>\n` +
 		`<atom:link href="${FEED_URL}" rel="self" type="application/rss+xml"/>\n` +
 		`<description>${escape(description)}</description>\n` +
