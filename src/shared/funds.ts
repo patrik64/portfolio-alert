@@ -1076,12 +1076,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'spacecadet', name: 'Space Cadet', url: 'https://spacecadet.ventures/portfolio' },
 	{ slug: 'spark', name: 'Spark Capital', url: 'https://www.sparkcapital.com/companies' },
 	{ slug: 'spectrum', name: 'Spectrum Equity', url: 'https://www.spectrumequity.com/portfolio/' },
-	{
-		slug: 'speedinvest',
-		name: 'Speedinvest',
-		url: 'https://www.speedinvest.com/portfolio',
-		local: true
-	},
+	{ slug: 'speedinvest', name: 'Speedinvest', url: 'https://www.speedinvest.com/portfolio' },
 	{ slug: 'spice', name: 'Spice Capital', url: 'https://www.spicecapital.xyz/portfolio' },
 	{ slug: 'spintop', name: 'Spintop Ventures', url: 'https://spintopventures.com/portfolio' },
 	{

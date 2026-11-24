@@ -165,7 +165,7 @@ nightly leaves the fund out, the dashboard says so, and it is refreshed from a
 laptop against a local dev server now and then:
 
 ```sh
-BASE_URL=http://localhost:5173 pnpm fetch-all --only=sante,speedinvest,stripes
+BASE_URL=http://localhost:5173 pnpm fetch-all --only=sante,stripes
 pnpm fetch-all --only=stripes --dry-run   # the scrape alone, from production,
                                           # to see whether the site relented
 ```
