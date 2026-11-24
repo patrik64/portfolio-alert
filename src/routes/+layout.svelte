@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
+	import { page } from '$app/state';
 	import { injectAnalytics } from '@vercel/analytics/sveltekit';
 	import favicon from '$lib/assets/favicon.svg';
 	import Footer from '$lib/components/Footer.svelte';
@@ -9,12 +10,33 @@
 
 	let { children } = $props();
 	let menuOpen = $state(false);
+
+	// what a link to the site shows when pasted into a chat (signal, whatsapp,
+	// imessage, slack…): the app's icon, its name and what it does. the apps
+	// read these tags from the page as served and want the picture as a png
+	// at a full address
+	const preview = {
+		title: 'portfolio-alert — discover new startups daily',
+		description:
+			'Every night portfolio-alert reads the public portfolio pages of over a thousand venture capital and private equity funds and tells you which companies are new.'
+	};
 </script>
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 	<link rel="alternate" type="application/rss+xml" title="portfolio-alert" href="/rss.xml" />
 	<title>portfolio-alert</title>
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="portfolio-alert" />
+	<meta property="og:title" content={preview.title} />
+	<meta property="og:description" content={preview.description} />
+	<meta property="og:image" content={`${page.url.origin}/icon-512.png`} />
+	<meta property="og:image:type" content="image/png" />
+	<meta property="og:image:width" content="512" />
+	<meta property="og:image:height" content="512" />
+	<meta property="og:image:alt" content="portfolio-alert: three rising bars, the newest in amber" />
+	<meta name="twitter:card" content="summary" />
 </svelte:head>
 
 <svelte:window
