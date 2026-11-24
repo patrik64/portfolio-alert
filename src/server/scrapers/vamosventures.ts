@@ -113,13 +113,15 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 	}
 	if (cards.size === 0) {
 		// from a datacenter address the page has answered 200 without its
-		// cards — some other page in its place — so the error says what came
+		// cards — some other page in its place — and on a bad night siteground's
+		// captcha, a 202 of some 180 bytes, so the error says what came
 		const title = clean(html.match(/<title[^>]*>([^<]*)</i)?.[1] ?? '');
 		const opening = clean(html.replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ')).slice(0, 120);
 		throw new Error(
 			`vamosventures: no company cards on the portfolio page — it answered ${html.length} bytes` +
 				(title ? ` titled "${title}"` : '') +
-				(opening ? `, opening "${opening}"` : '')
+				(opening ? `, opening "${opening}"` : '') +
+				(/sgcaptcha/i.test(html) ? ", siteground's captcha" : '')
 		);
 	}
 

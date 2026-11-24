@@ -20,13 +20,15 @@ const UA =
 // logos jetengine draws ten at a time through its own ajax, each a logo
 // linking the company's site and nothing else — no name, no alt text. the
 // rest api's portfolio type names every company, keyed by the same post id
-// the grid's items carry, and gives no site; so the api is read for the
-// names and the grid, page after page, for the sites. the grid's requests
-// need a signature and the listing's settings the page and its first answer
-// carry, read fresh each run. the filters the page offers — a country, a
-// practice area, the exits — are meta queries the grid does not repeat on
-// its items and the api does not expose, so a company comes with nothing to
-// file it under.
+// the grid's items carry, and gives no site; so the api is read for the names
+// and the grid, page after page, for the sites. the grid's requests need a
+// signature and the listing's settings the page and its first answer carry,
+// read fresh each run; since jetengine 3.9 (2026-11-22) the query goes beside
+// the page's settings, not inside them, and the widget's settings carry a
+// signature of their own, without which the grid answers "no company was
+// found". the filters the page offers — a country, a practice area, the exits
+// — are meta queries the grid does not repeat on its items and the api does
+// not expose, so a company comes with nothing to file it under.
 
 interface Post {
 	id: number;
@@ -130,14 +132,13 @@ async function sites(html: string): Promise<Map<number, string>> {
 	if (!lazy.query || !widget || !ajaxUrl) {
 		throw new Error('ffvc: the portfolio page no longer carries its listing settings');
 	}
-	const page = (settings: Record<string, unknown>) => {
+	const page = (handler: string, n: number, query: unknown, widgetSettings: unknown) => {
 		const body = new URLSearchParams();
-		flatten(body, 'page_settings', {
-			post_id: lazy.post_id,
-			queried_id: lazy.queried_id,
-			element_id: widget,
-			...settings
-		});
+		body.set('action', 'jet_engine_ajax');
+		body.set('handler', handler);
+		flatten(body, 'query', query);
+		if (widgetSettings) flatten(body, 'widget_settings', widgetSettings);
+		flatten(body, 'page_settings', { post_id: lazy.post_id, queried_id: lazy.queried_id, element_id: widget, page: n });
 		body.set('listing_type', 'elementor');
 		body.set('isEditMode', 'false');
 		return body;
@@ -155,18 +156,12 @@ async function sites(html: string): Promise<Map<number, string>> {
 		return added;
 	};
 
-	const first = page({ page: 1, query: lazy.query });
-	first.set('action', 'jet_engine_ajax');
-	first.set('handler', 'get_listing');
-	const grid = await ask(ajaxUrl, first);
+	const signed = lazy.settings_signature ? { _jet_engine_settings_signature: lazy.settings_signature } : undefined;
+	const grid = await ask(ajaxUrl, page('get_listing', 1, lazy.query, signed));
 	read(grid);
 	const nav = attrJson(grid.match(NAV)?.[1] ?? '{}');
 	for (let n = 2; n <= MAX_PAGES && nav.query; n++) {
-		const more = page({ page: n, query: nav.query });
-		more.set('action', 'jet_engine_ajax');
-		more.set('handler', 'listing_load_more');
-		flatten(more, 'widget_settings', nav.widget_settings);
-		if (read(await ask(ajaxUrl, more)) === 0) break;
+		if (read(await ask(ajaxUrl, page('listing_load_more', n, nav.query, nav.widget_settings))) === 0) break;
 	}
 	return found;
 }

@@ -23,14 +23,17 @@ const UA =
 // a company without its page has no name to list it by, so a company page
 // that will not load, or is not reached by the deadline, fails the run
 // rather than leave the company out.
+//
+// since 2026-11-22 webflow writes its own tracking attributes (data-wf-…)
+// ahead of a link's href, so a link is found by its attributes, in any order.
 
-const CARD = /(?=<div cms-item="" role="listitem" class="our-companies_item w-dyn-item">)/;
-const PAGE = /<a aria-label="our-companies-link" href="([^"]*)"/;
+const CARD = /(?=<div\b[^>]*\bclass="our-companies_item w-dyn-item")/;
+const PAGE = /<a\b[^>]*\baria-label="our-companies-link"[^>]*\bhref="([^"]*)"/;
 const YEAR = /class="our-companies_tag">\s*((?:19|20)\d{2})/;
 const FIELD = (name: string) => new RegExp(`fs-list-field="${name}"[^>]*>([^<]*)<`, 'g');
 const NAME = /<h2 class="heading-style-h1">([\s\S]*?)<\/h2>/;
 const TITLE = /<title>\s*Hexa\s*-\s*([^<]*)<\/title>/;
-const SITE = /class="page-destination-template_tag">WEBSITE<\/div>\s*<a href="([^"]*)"/;
+const SITE = /class="page-destination-template_tag">WEBSITE<\/div>\s*<a\b[^>]*\bhref="([^"]*)"/;
 const ACQUIRED = /^acquired$/i;
 const INACTIVE = /^inactive$/i;
 const UNSAID = /^(?:-|other|others|all|n\/a|active)$/i;

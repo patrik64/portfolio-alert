@@ -61,7 +61,13 @@ export async function scrape(): Promise<ScrapedCompany[]> {
 	}
 
 	if (companies.size === 0) {
-		throw new Error('transformhealth: no companies on the portfolio page');
+		// on a bad night siteground answers a datacenter address with its captcha,
+		// a 202 holding a redirect to /.well-known/sgcaptcha, in place of the page
+		throw new Error(
+			/sgcaptcha/i.test(html)
+				? `transformhealth: the site's firewall answered its captcha (${resp.status}, siteground's) in place of the portfolio page`
+				: 'transformhealth: no companies on the portfolio page'
+		);
 	}
 
 	return [...companies.values()].map(({ name, url, tags }) => ({ name, category: [...tags].join(', '), url }));
