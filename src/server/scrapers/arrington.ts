@@ -1,22 +1,31 @@
 import type { ScrapedCompany } from './types';
 
-const PAGE_URL = 'https://www.arringtoncapital.com/portfolio/';
+// www. sends its visitors to the bare domain, and /portfolio/ to /portfolio
+const PAGE_URL = 'https://arringtoncapital.com/portfolio';
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-// wordpress, a theme of its own: the portfolio page is a grid of blocks,
-// each the company's name and the tags the filter reads ("DeFi",
-// "Infrastructure", "Ethereum"), kept as tags, and behind each block a
-// panel served in the page, with a line about the company and a "Visit
-// Website" link. nothing marks an exit.
+// a site of the fund's own, rendered on the server, since the rebuild first
+// seen on 2026-11-24: the portfolio page no longer lists the portfolio, only "some
+// portfolio highlights selected to show some of the categories we have
+// invested in" (the fund says it has backed 300+). each highlight is a card,
+// the company's logo linking its site and named in the link's label, with
+// links to its site and its x account under it. nothing names a category or
+// marks an exit, so a company comes with nothing to file it under.
+//
+// the companies the old page listed and the highlights leave out stay stored
+// as they were; a company is new only when the fund adds it to the highlights.
+// a highlight named otherwise than the old page named it is kept under the name
+// it was stored as, so it is not taken for a new company.
+const STORED_AS: Record<string, string> = {
+	'domain money': 'Domain',
+	sui: 'Sui by Mysten Labs'
+};
 
-const PANELS = 'class="portfolio-modals"';
-const BLOCK = /(?=<div\b[^>]*\bclass="portfolio-block\b)/;
-const PANEL = /(?=<div\b[^>]*\bclass="modal-\d+ modal")/;
-const NAME = /^<div\b[^>]*\bdata-name="([^"]*)"/;
-const SLUG = /^<div\b[^>]*\bdata-slug="([^"]*)"/;
-const TAG = /class="post-tag"[^>]*>([\s\S]*?)<\/div>/g;
-const WEBSITE = /<a\b(?=[^>]*\bclass="portfolio-website")[^>]*\bhref="([^"]*)"/;
+const CARD = /(?=<div\b[^>]*\bclass="group flex flex-col\b)/;
+const LOGO = /<a\b([^>]*)>\s*<img\b[^>]*\balt="([^"]*)"/;
+const LABEL = /\baria-label="([^"]*)"/;
+const SITE = /\bhref="(https?:\/\/[^"]+)"/;
 const STEALTH = /^stealth\b/i;
 
 const unescape = (s: string) =>
@@ -29,41 +38,25 @@ const unescape = (s: string) =>
 
 const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
 
-// the category is comma-joined, so a label holding a comma would read as two
-const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
-
 export async function scrape(): Promise<ScrapedCompany[]> {
 	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
 	if (!resp.ok) {
 		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
 	}
 	const html = await resp.text();
-	const split = html.indexOf(PANELS);
-	const grid = split < 0 ? html : html.slice(0, split);
-	const panels = split < 0 ? '' : html.slice(split);
-
-	// each company's site, from its panel, by the slug the block shares
-	const sites = new Map<string, string>();
-	for (const panel of panels.split(PANEL).slice(1)) {
-		const slug = unescape(panel.match(SLUG)?.[1] ?? '');
-		const site = unescape(panel.match(WEBSITE)?.[1] ?? '').trim();
-		if (slug && /^https?:\/\//i.test(site)) sites.set(slug, site);
-	}
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-	for (const block of grid.split(BLOCK).slice(1)) {
-		const name = clean(block.match(NAME)?.[1] ?? '');
+	for (const card of html.split(CARD).slice(1)) {
+		const logo = card.match(LOGO);
+		if (!logo) continue;
+		const [, attrs, alt] = logo;
+		const written = clean(attrs.match(LABEL)?.[1] ?? '') || clean(alt);
+		const name = STORED_AS[written.toLowerCase()] ?? written;
 		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 		seen.add(name.toLowerCase());
-		companies.push({
-			name,
-			category: [...block.matchAll(TAG)]
-				.map(([, label]) => tag(label))
-				.filter((t, i, all) => t && all.indexOf(t) === i)
-				.join(', '),
-			url: sites.get(unescape(block.match(SLUG)?.[1] ?? '')) ?? PAGE_URL
-		});
+		const site = unescape(attrs.match(SITE)?.[1] ?? '').trim();
+		companies.push({ name, category: '', url: site || PAGE_URL });
 	}
 	if (companies.length === 0) {
 		throw new Error('arrington: no companies on the portfolio page');

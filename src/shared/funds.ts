@@ -127,7 +127,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'argon', name: 'Argon Ventures', url: 'https://www.argon.vc/companies' },
 	{ slug: 'armilar', name: 'Armilar Venture Partners', url: 'https://www.armilar.com/portfolio' },
 	{ slug: 'array', name: 'Array Ventures', url: 'https://www.array.vc/portfolio' },
-	{ slug: 'arrington', name: 'Arrington Capital', url: 'https://www.arringtoncapital.com/portfolio/' },
+	{ slug: 'arrington', name: 'Arrington Capital', url: 'https://arringtoncapital.com/portfolio' },
 	{ slug: 'artis', name: 'ARTIS', url: 'https://www.av.co/companies' },
 	{ slug: 'ascension', name: 'Ascension', url: 'https://www.ascension.vc/portfolio' },
 	{ slug: 'astanor', name: 'Astanor', url: 'https://astanor.com/portfolio/' },
@@ -480,7 +480,7 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'foundationcapital', name: 'Foundation Capital', url: 'https://foundationcapital.com/portfolio' },
 	{ slug: 'foundationventures', name: 'Foundation Ventures', url: 'https://www.foundationventures.com/' },
 	{ slug: 'foundercollective', name: 'Founder Collective', url: 'https://foundercollective.com/portfolio/' },
-	{ slug: 'founderfuel', name: 'FounderFuel', url: 'https://founderfuel.com/companies/' },
+	{ slug: 'founderfuel', name: 'FounderFuel', url: 'https://realventures.com/founderfuel' },
 	{
 		slug: 'foundersfactory',
 		name: 'Founders Factory',
@@ -1076,7 +1076,12 @@ export const FUNDS: FundInfo[] = [
 	{ slug: 'spacecadet', name: 'Space Cadet', url: 'https://spacecadet.ventures/portfolio' },
 	{ slug: 'spark', name: 'Spark Capital', url: 'https://www.sparkcapital.com/companies' },
 	{ slug: 'spectrum', name: 'Spectrum Equity', url: 'https://www.spectrumequity.com/portfolio/' },
-	{ slug: 'speedinvest', name: 'Speedinvest', url: 'https://www.speedinvest.com/portfolio' },
+	{
+		slug: 'speedinvest',
+		name: 'Speedinvest',
+		url: 'https://www.speedinvest.com/portfolio',
+		local: true
+	},
 	{ slug: 'spice', name: 'Spice Capital', url: 'https://www.spicecapital.xyz/portfolio' },
 	{ slug: 'spintop', name: 'Spintop Ventures', url: 'https://spintopventures.com/portfolio' },
 	{

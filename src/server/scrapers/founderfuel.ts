@@ -1,99 +1,134 @@
 import type { ScrapedCompany } from './types';
 
-const PAGE_URL = 'https://founderfuel.com/companies/';
+const BASE_URL = 'https://realventures.com';
+// founderfuel.com has sent its visitors here, Real Ventures' own site, since 2026-11-24
+const PAGE_URL = `${BASE_URL}/founderfuel`;
 const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-// wordpress, a theme of its own: every company of the accelerator is a card
-// in one list, naming it in a link to its site, and carrying what the page's
-// filters sort by as data attributes — its status ("active", "acquired",
-// "shutdown"), its stage, the cohort it went through ("2012-spring") and its
-// sectors — which the filter buttons spell out. an acquired company is an
-// exit, its buyer kept when the card names one ("Acquired by Unity
-// Technologies, March 2014"), as is one whose stage says "M&A" or "Public";
-// a company shut down folded rather than exited, and keeps the word only.
+// a react app of Real Ventures', the accelerator's page drawn in the browser
+// from records baked into the page's own script: every company that went
+// through FounderFuel, with its site, its status ("active", "acquired",
+// "shutdown"), its stage ("seed", "ma", "public"), its cohort ("2012-spring")
+// and its sectors, and a line saying how it stands ("Acquired by Unity
+// Technologies, March 2014"). the script is found through the app's entry
+// module, whose file names carry a build hash, and the records are the
+// objects in it that have a cohort and a status. an acquired company is an
+// exit, its buyer kept when the line names one, as is one whose stage says
+// "ma" or "public"; a company shut down folded rather than exited, and keeps
+// the word only.
 
-const CARD = /(?=<[a-z]+\b[^>]*class="[^"]*\bfiltered-list__grid-item\b)/;
-const OPENING = /^<[^>]+>/;
-const BUTTON = /<button\b[^>]*\bdata-filter-name="([^"]*)"[^>]*>([\s\S]*?)<\/button>/g;
-const NAME = /<h3\b[^>]*>([\s\S]*?)<\/h3>/;
-const HREF = /<a\b[^>]*\bhref="(https?:\/\/[^"]+)"/;
-const LINE = /<p\b[^>]*>([\s\S]*?)<\/p>/g;
+const ENTRY = /<script\b[^>]*\btype="module"[^>]*\bsrc="([^"]*\/index-[\w-]+\.js)"/;
+const PAGE_SCRIPT = /FounderFuelPage-[\w-]+\.js/;
+const RECORD = '{name:`';
 const STEALTH = /^stealth\b/i;
 
-const unescape = (s: string) =>
-	s
-		.replace(/&#0?39;|&apos;|&#8217;|&#x27;/g, "'")
-		.replace(/&quot;/g, '"')
-		.replace(/&nbsp;/g, ' ')
-		.replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
-		.replace(/&amp;/g, '&');
-
-const clean = (s: string) => unescape(s.replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
-
-// the category is comma-joined, so a label holding a comma would read as two
-const tag = (s: string) => clean(s).replace(/\s*,\s*/g, ' / ');
-
-const attr = (element: string, name: string) =>
-	element.match(new RegExp(`\\bdata-filtered-list-filter-${name}="([^"]*)"`))?.[1]?.trim() ?? '';
-
-// "food-and-beverage-tech" -> "Food And Beverage Tech", for a filter with no button
+// "food-and-beverage-tech" -> "Food And Beverage Tech", "series-a" -> "Series A"
 const titled = (slug: string) =>
 	slug
 		.split('-')
 		.filter(Boolean)
-		.map((word) => word[0].toUpperCase() + word.slice(1))
+		.map((word) => (word.length === 1 ? word.toUpperCase() : word[0].toUpperCase() + word.slice(1)))
 		.join(' ');
 
-export async function scrape(): Promise<ScrapedCompany[]> {
-	const resp = await fetch(PAGE_URL, { headers: { 'User-Agent': UA } });
-	if (!resp.ok) {
-		throw new Error(`Failed to fetch ${PAGE_URL}: ${resp.status}`);
-	}
-	const html = await resp.text();
+// "2012-spring" -> "Spring 2012", "2016" -> "2016"
+const cohortOf = (slug: string) => {
+	const [year, season] = slug.split('-');
+	return season ? `${titled(season)} ${year}` : year;
+};
 
-	// each filter's slug and its label; the "View all" buttons hold several
-	const labels = new Map<string, string>();
-	for (const [, slug, label] of html.matchAll(BUTTON)) {
-		const key = slug.trim();
-		if (key && !/\s/.test(key)) labels.set(key, tag(label));
+// the category is comma-joined, so a label holding a comma would read as two
+const tag = (s: string) => s.replace(/\s+/g, ' ').trim().replace(/\s*,\s*/g, ' / ');
+
+// the record that opens at `start`, up to the brace that closes it; its
+// strings are template literals, which may hold braces of their own
+function recordAt(js: string, start: number): string {
+	let depth = 0;
+	for (let i = start; i < js.length; i++) {
+		const ch = js[i];
+		if (ch === '`') {
+			for (i++; i < js.length && js[i] !== '`'; i++) if (js[i] === '\\') i++;
+		} else if (ch === '{') depth++;
+		else if (ch === '}' && --depth === 0) return js.slice(start, i + 1);
 	}
-	const label = (slug: string) => labels.get(slug) ?? titled(slug);
+	return '';
+}
+
+// a template literal's text, its escapes undone
+const literal = (s: string) =>
+	s.replace(/\\(u\{[0-9a-f]+\}|u[0-9a-f]{4}|[\s\S])/gi, (_, e: string) =>
+		/^u/i.test(e) && e.length > 1
+			? String.fromCodePoint(parseInt(e.replace(/[u{}]/gi, ''), 16))
+			: e === 'n'
+				? '\n'
+				: e === 't'
+					? '\t'
+					: e
+	);
+
+const field = (record: string, name: string) =>
+	literal(record.match(new RegExp(`[{,]${name}:\`((?:[^\`\\\\]|\\\\.)*)\``))?.[1] ?? '').trim();
+
+const list = (record: string, name: string) =>
+	[...(record.match(new RegExp(`[{,]${name}:\\[([^\\]]*)\\]`))?.[1] ?? '').matchAll(/`((?:[^`\\]|\\.)*)`/g)].map(
+		([, value]) => literal(value).trim()
+	);
+
+async function fetchText(url: string): Promise<string> {
+	const resp = await fetch(url, { headers: { 'User-Agent': UA } });
+	if (!resp.ok) {
+		throw new Error(`Failed to fetch ${url}: ${resp.status}`);
+	}
+	return resp.text();
+}
+
+export async function scrape(): Promise<ScrapedCompany[]> {
+	const html = await fetchText(PAGE_URL);
+	const entry = html.match(ENTRY)?.[1];
+	if (!entry) {
+		throw new Error('founderfuel: no entry module on the page');
+	}
+	const entryUrl = new URL(entry, BASE_URL);
+	const pageScript = (await fetchText(entryUrl.href)).match(PAGE_SCRIPT)?.[0];
+	if (!pageScript) {
+		throw new Error('founderfuel: the entry module names no FounderFuel page script');
+	}
+	const js = await fetchText(new URL(pageScript, entryUrl).href);
 
 	const companies: ScrapedCompany[] = [];
 	const seen = new Set<string>();
-	for (const card of html.split(CARD).slice(1)) {
-		const heading = card.match(NAME)?.[1] ?? '';
-		const name = clean(heading);
+	for (let at = js.indexOf(RECORD); at >= 0; at = js.indexOf(RECORD, at + 1)) {
+		const record = recordAt(js, at);
+		const status = field(record, 'activity');
+		const cohort = field(record, 'cohort');
+		if (!status || !/[{,]cohort:`/.test(record)) continue;
+		const name = field(record, 'name');
 		if (!name || STEALTH.test(name) || seen.has(name.toLowerCase())) continue;
 		seen.add(name.toLowerCase());
-		const opening = card.match(OPENING)?.[0] ?? '';
-		const status = attr(opening, 'one');
-		const stage = attr(opening, 'two');
-		const cohort = attr(opening, 'three');
-		const sectors = attr(opening, 'four').split(/\s+/).filter(Boolean);
+		const stage = field(record, 'investment');
 		// "Acquired by Unity Technologies, March 2014" -> the buyer, not the month
-		const said = [...card.matchAll(LINE)].map((m) => clean(m[1])).at(-1) ?? '';
+		const said = field(record, 'details');
 		const sold = /^acquired by\b/i.test(said) ? tag(said.split(',')[0]) : '';
 		const exited = status === 'acquired' || stage === 'ma' || stage === 'public';
+		const site = field(record, 'url');
 		companies.push({
 			name,
 			category: [
-				...sectors.map(label),
-				stage && stage !== 'ma' ? label(stage) : '',
-				cohort ? `Cohort ${label(cohort)}` : '',
-				status === 'shutdown' ? label(status) : '',
+				...list(record, 'industries').map(titled),
+				stage && stage !== 'ma' ? titled(stage) : '',
+				cohort ? `Cohort ${cohortOf(cohort)}` : '',
+				status === 'shutdown' ? 'Shutdown' : '',
 				sold,
 				exited ? 'Exited' : ''
 			]
 				.filter((t, i, all) => t && all.indexOf(t) === i)
 				.join(', '),
-			url: unescape(heading.match(HREF)?.[1] ?? '')
+			url: /^https?:\/\//i.test(site) ? site : PAGE_URL
 		});
 	}
 
 	if (companies.length === 0) {
-		throw new Error('founderfuel: no companies on the companies page');
+		throw new Error('founderfuel: no companies in the FounderFuel page script');
 	}
 
 	return companies;

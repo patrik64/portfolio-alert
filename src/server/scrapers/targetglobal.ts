@@ -20,15 +20,22 @@ const UA =
 // the new page lists fewer companies than the old one and adds much of the
 // fund's exit history. the old site's stay stored.
 
-// companies stored from the old site under the names it gave them
+// companies stored from the old site, or from this one before it renamed them
+// (2026-11-24), under the names they were stored as
 const STORED_AS: Record<string, string> = {
+  airnow: "Airnow Media",
   alta: "Graphiti",
   ferry: "Ferry (formerly ThirdRails)",
+  "health force": "HealthForce",
   karma: "KarmaNow",
+  tarabut: "Tarabut Gateway",
 };
 
+// webflow has written a tile's attributes in more than one order (since
+// 2026-11-24 the class comes first and the link opens on data-x-tile), so a
+// tile is found by its attributes, in any order
 const TILE =
-  /<div\b([^>]*)\brole="listitem" class="portfolio_item is-companies w-dyn-item"><a href="\/portfolio\/([^"/]+)"[^>]*><img\b[^>]*\balt="([^"]*)"/g;
+  /<div\b([^>]*\bclass="portfolio_item is-companies w-dyn-item"[^>]*)>\s*<a\b[^>]*\bhref="\/portfolio\/([^"/]+)"[^>]*>\s*<img\b[^>]*\balt="([^"]*)"/g;
 const STATUS = /\bdata-x-filter-status="([^"]*)"/;
 const FACT = /<div class="company_fact is-(\w+)">[\s\S]*?<dd class="company_fact-value">([\s\S]*?)<\/dd>/g;
 const SITE = /<a\b[^>]*\bhref="(https?:\/\/[^"]+)"[^>]*>\s*<span>Company website<\/span>/;
