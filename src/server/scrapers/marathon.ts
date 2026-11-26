@@ -28,7 +28,8 @@ const STATUS = /\bdata-status="([^"]*)"/;
 const NAME = /class="company-cell__name">([\s\S]*?)<\/span>/;
 const META = /class="company-cell__meta">([\s\S]*?)<\/span>/;
 const COUNT = />\s*(\d+) companies since\b/;
-const SITE = /<a class="btn-secondary" href="([^"]*)"[^>]*>\s*Visit website/;
+// "Visit website" on a button until 2026-11-25, "Visit company website" on a link since
+const SITE = /<a\b[^>]*\bhref="([^"]*)"[^>]*>\s*(?:<span>\s*)?Visit (?:company )?website/i;
 const INVESTED = /<dt>First investment<\/dt>\s*<dd>([\s\S]*?)<\/dd>/;
 // "Exited · CNH Industrial"
 const BUYER = /^exited\s*·\s*(.+)$/i;

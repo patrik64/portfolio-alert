@@ -6,8 +6,9 @@ const UA =
 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
 // nuxt: the portfolio page is a grid of cards, the whole of it in the page,
-// a card a company named in its logo's alt text, with a line about it and a
-// badge on the ones the fund is done with ("EXIT", "WE TRIED"). the card
+// a card a company — since the redesign of 2026-11-25 a button naming it,
+// with its sector and year, a line about it and a tag on the ones the fund is
+// done with ("exit", "acquired", "we tried"). the card
 // opens a panel drawn from the site's content, which its script carries
 // whole — a company each with its site, the year the fund invested, the
 // round it came in at ("Seed"), its sector, where it is and its status
@@ -23,9 +24,9 @@ const UA =
 // tags, an exit with the Exited tag, a sale with the Acquired tag and one
 // the fund "tried" with the Closed tag.
 
-const CARD = /(?=<div class="mt-4 w-1\/4 px-\[10px\])/;
-const NAME = /<img\b[^>]*\balt="([^"]*)"/;
-const BADGE = /text-white">([^<]*)<\/span>/;
+const CARD = /(?=<button\b[^>]*\bclass="(?:[^"]*\s)?pcell\b)/;
+const NAME = /\bclass="name"[^>]*>([^<]*)/;
+const BADGE = /\bclass="t-[\w-]+ tag"[^>]*>([^<]*)</;
 const SCRIPT = /\b(?:src|href)="(\/_nuxt\/[^"]+\.js)"/g;
 // the content as the script writes it: JSON.parse(`[{"id":…}]`)
 const CONTENT = /JSON\.parse\(`(\[[\s\S]*?\])`\)/g;
